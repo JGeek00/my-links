@@ -58,10 +58,6 @@ class OnboardingViewModel: ObservableObject {
         }
     }
     
-    func clearInstances() {
-        
-    }
-    
     func reset() {
         selectedTab = 0
         hostingMode = nil
@@ -151,10 +147,12 @@ class OnboardingViewModel: ObservableObject {
         Task {
             let instance = ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: token)
             let result = await instance.fetchDashboard()
-            self.connecting = false
+            DispatchQueue.main.async {
+                self.connecting = false
+            }
             guard let statusCode = result.statusCode else {
                 DispatchQueue.main.async {
-                    self.connectionErrorMessage = "Unknown error."
+                    self.connectionErrorMessage = "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid."
                     self.connectionErrorAlert.toggle()
                 }
                 return
@@ -164,6 +162,7 @@ class OnboardingViewModel: ObservableObject {
                 let saved = self.saveInstance()
                 if saved == true {
                     DispatchQueue.main.async {
+                        ApiClientProvider.shared.initialice(instance: instance)
                         self.showOnboarding = false
                     }
                 }

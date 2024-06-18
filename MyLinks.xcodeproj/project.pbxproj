@@ -41,6 +41,7 @@
 		0D55C5412C221171002CE99A /* Urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5402C221171002CE99A /* Urls.swift */; };
 		0D55C5432C2211FC002CE99A /* ReviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5422C2211FC002CE99A /* ReviewApp.swift */; };
 		0D55C5452C221215002CE99A /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5442C221215002CE99A /* ColorScheme.swift */; };
+		0D55C5472C22140D002CE99A /* ServerInstances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5462C22140D002CE99A /* ServerInstances.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		0D55C5402C221171002CE99A /* Urls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urls.swift; sourceTree = "<group>"; };
 		0D55C5422C2211FC002CE99A /* ReviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewApp.swift; sourceTree = "<group>"; };
 		0D55C5442C221215002CE99A /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
+		0D55C5462C22140D002CE99A /* ServerInstances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerInstances.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				0D55C5342C220A3A002CE99A /* SafariView.swift */,
 				0D55C5422C2211FC002CE99A /* ReviewApp.swift */,
 				0D55C5442C221215002CE99A /* ColorScheme.swift */,
+				0D55C5462C22140D002CE99A /* ServerInstances.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
+				0D55C5472C22140D002CE99A /* ServerInstances.swift in Sources */,
 				0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */,
 				0D55C51A2C21B689002CE99A /* OnboardingViewModel.swift in Sources */,
 				0D55C5412C221171002CE99A /* Urls.swift in Sources */,

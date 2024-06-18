@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject var settingsViewModel = SettingsViewModel()
+    @ObservedObject private var settingsViewModel = SettingsViewModel()
+    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
@@ -11,26 +12,26 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 Picker("Theme", selection: $theme) {
-                    HStack {
-                        Image(systemName: "iphone")
-                            .padding(.trailing, 6)
-                        Text("System defined")
-                    }
-                    .tag(Enums.Theme.system)
-                    HStack {
-                        Image(systemName: "sun.max")
-                            .padding(.trailing, 6)
-                        Text("Light")
-                    }
-                    .tag(Enums.Theme.light)
-                    HStack {
-                        Image(systemName: "moon")
-                            .padding(.trailing, 6)
-                        Text("Dark")
-                    }
-                    .tag(Enums.Theme.dark)
+                    Label("System defined", systemImage: "iphone")
+                        .tag(Enums.Theme.system)
+                    Label("Light", systemImage: "sun.max")
+                        .tag(Enums.Theme.light)
+                    Label("Dark", systemImage: "moon")
+                        .tag(Enums.Theme.dark)
                 }
+                .foregroundStyle(Color.foreground)
                 .pickerStyle(.inline)
+                Section {
+                    Button {
+                        onboardingViewModel.showOnboarding = true
+                        ApiClientProvider.shared.instance = nil
+                        clearInstances()
+                    } label: {
+                        Label("Disconnect from server", systemImage: "xmark")
+                            .foregroundStyle(Color.red)
+                    }
+                }
+                .buttonStyle(PlainButtonStyle())
                 Section {
 //                    NavigationLink {
 //                        TipsView()
