@@ -4,6 +4,8 @@ struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
+    @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
+    
     @FetchRequest(
         entity: ServerInstance.entity(),
         sortDescriptors: []
@@ -25,8 +27,10 @@ struct RootView: View {
             }
         }
         .fontDesign(.rounded)
+        .preferredColorScheme(getColorScheme(theme: theme))
         .onAppear(perform: {
             onboardingViewModel.checkInstance()
+            requestAppReview()
         })
         .fullScreenCover(isPresented: $onboardingViewModel.showOnboarding, content: {
             OnboardingView()

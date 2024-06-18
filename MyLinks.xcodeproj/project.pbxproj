@@ -35,6 +35,12 @@
 		0D55C52D2C220598002CE99A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C52C2C220598002CE99A /* Date.swift */; };
 		0D55C5352C220A3A002CE99A /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5342C220A3A002CE99A /* SafariView.swift */; };
 		0D55C5382C220E40002CE99A /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5372C220E40002CE99A /* UIApplicationExtension.swift */; };
+		0D55C53B2C221106002CE99A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C53A2C221106002CE99A /* SettingsViewModel.swift */; };
+		0D55C53D2C221130002CE99A /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C53C2C221130002CE99A /* StorageKeys.swift */; };
+		0D55C53F2C221144002CE99A /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C53E2C221144002CE99A /* UserDefaultsExtension.swift */; };
+		0D55C5412C221171002CE99A /* Urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5402C221171002CE99A /* Urls.swift */; };
+		0D55C5432C2211FC002CE99A /* ReviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5422C2211FC002CE99A /* ReviewApp.swift */; };
+		0D55C5452C221215002CE99A /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5442C221215002CE99A /* ColorScheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +74,12 @@
 		0D55C52C2C220598002CE99A /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		0D55C5342C220A3A002CE99A /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		0D55C5372C220E40002CE99A /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
+		0D55C53A2C221106002CE99A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		0D55C53C2C221130002CE99A /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
+		0D55C53E2C221144002CE99A /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
+		0D55C5402C221171002CE99A /* Urls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urls.swift; sourceTree = "<group>"; };
+		0D55C5422C2211FC002CE99A /* ReviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewApp.swift; sourceTree = "<group>"; };
+		0D55C5442C221215002CE99A /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +155,8 @@
 				0D55C52A2C22012E002CE99A /* GetUrlHost.swift */,
 				0D55C52C2C220598002CE99A /* Date.swift */,
 				0D55C5342C220A3A002CE99A /* SafariView.swift */,
+				0D55C5422C2211FC002CE99A /* ReviewApp.swift */,
+				0D55C5442C221215002CE99A /* ColorScheme.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -162,6 +176,8 @@
 				0D55C4FE2C219F38002CE99A /* Config.swift */,
 				0D55C51B2C21BBE9002CE99A /* Enums.swift */,
 				0D55C51D2C21E6DC002CE99A /* Regexps.swift */,
+				0D55C53C2C221130002CE99A /* StorageKeys.swift */,
+				0D55C5402C221171002CE99A /* Urls.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -209,6 +225,7 @@
 			children = (
 				0D55C5192C21B689002CE99A /* OnboardingViewModel.swift */,
 				0D55C5242C21F8D2002CE99A /* DashboardViewModel.swift */,
+				0D55C53A2C221106002CE99A /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -225,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				0D55C5372C220E40002CE99A /* UIApplicationExtension.swift */,
+				0D55C53E2C221144002CE99A /* UserDefaultsExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -299,13 +317,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D55C5452C221215002CE99A /* ColorScheme.swift in Sources */,
 				0D55C51E2C21E6DC002CE99A /* Regexps.swift in Sources */,
+				0D55C53D2C221130002CE99A /* StorageKeys.swift in Sources */,
+				0D55C53F2C221144002CE99A /* UserDefaultsExtension.swift in Sources */,
 				0D55C5352C220A3A002CE99A /* SafariView.swift in Sources */,
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
 				0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */,
 				0D55C51A2C21B689002CE99A /* OnboardingViewModel.swift in Sources */,
+				0D55C5412C221171002CE99A /* Urls.swift in Sources */,
 				0D55C5162C21B45F002CE99A /* ServerSelection.swift in Sources */,
 				0D55C51C2C21BBE9002CE99A /* Enums.swift in Sources */,
 				0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */,
@@ -318,6 +340,7 @@
 				0D55C5142C21B420002CE99A /* Welcome.swift in Sources */,
 				0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */,
 				0D55C5072C21AC0C002CE99A /* ApiClient.swift in Sources */,
+				0D55C5432C2211FC002CE99A /* ReviewApp.swift in Sources */,
 				0D55C50C2C21AD86002CE99A /* StatusResponse.swift in Sources */,
 				0D55C52D2C220598002CE99A /* Date.swift in Sources */,
 				0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */,
@@ -325,6 +348,7 @@
 				0D55C5202C21EABF002CE99A /* ServerUrl.swift in Sources */,
 				0D55C5382C220E40002CE99A /* UIApplicationExtension.swift in Sources */,
 				0D55C52B2C22012E002CE99A /* GetUrlHost.swift in Sources */,
+				0D55C53B2C221106002CE99A /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +498,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -514,7 +538,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
