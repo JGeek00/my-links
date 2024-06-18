@@ -1,13 +1,13 @@
 import Foundation
 
-class DashboardViewModel: ObservableObject {
-    @Published var data: Dashboard? = nil
+class TagsProvider: ObservableObject {
+    static let shared = TagsProvider()
+    
+    @Published var data: Tags? = nil
     @Published var loading = true
     @Published var error = false
-        
-    init() {
-        loadData()
-    }
+    
+    init() {}
     
     func loadData(setLoading: Bool = false) {
         if setLoading == true {
@@ -15,10 +15,10 @@ class DashboardViewModel: ObservableObject {
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
-            let dashboardResult = await instance.fetchDashboard()
-            if dashboardResult.successful == true {
+            let result = await instance.fetchTags()
+            if result.successful == true {
                 DispatchQueue.main.async {
-                    self.data = dashboardResult.data!
+                    self.data = result.data!
                     self.loading = false
                     self.error = false
                 }
@@ -30,5 +30,11 @@ class DashboardViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func reset() {
+        data = nil
+        loading = true
+        error = false
     }
 }

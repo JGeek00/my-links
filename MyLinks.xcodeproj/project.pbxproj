@@ -42,6 +42,8 @@
 		0D55C5432C2211FC002CE99A /* ReviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5422C2211FC002CE99A /* ReviewApp.swift */; };
 		0D55C5452C221215002CE99A /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5442C221215002CE99A /* ColorScheme.swift */; };
 		0D55C5472C22140D002CE99A /* ServerInstances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5462C22140D002CE99A /* ServerInstances.swift */; };
+		0D55C5492C2241DF002CE99A /* CollectionsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5482C2241DF002CE99A /* CollectionsProvider.swift */; };
+		0D55C54B2C22423C002CE99A /* TagsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C54A2C22423C002CE99A /* TagsProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,8 @@
 		0D55C5422C2211FC002CE99A /* ReviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewApp.swift; sourceTree = "<group>"; };
 		0D55C5442C221215002CE99A /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		0D55C5462C22140D002CE99A /* ServerInstances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerInstances.swift; sourceTree = "<group>"; };
+		0D55C5482C2241DF002CE99A /* CollectionsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsProvider.swift; sourceTree = "<group>"; };
+		0D55C54A2C22423C002CE99A /* TagsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +241,8 @@
 			isa = PBXGroup;
 			children = (
 				0D55C5222C21F1CE002CE99A /* ApiClientProvider.swift */,
+				0D55C5482C2241DF002CE99A /* CollectionsProvider.swift */,
+				0D55C54A2C22423C002CE99A /* TagsProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -329,6 +335,7 @@
 				0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
 				0D55C5472C22140D002CE99A /* ServerInstances.swift in Sources */,
+				0D55C54B2C22423C002CE99A /* TagsProvider.swift in Sources */,
 				0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */,
 				0D55C51A2C21B689002CE99A /* OnboardingViewModel.swift in Sources */,
 				0D55C5412C221171002CE99A /* Urls.swift in Sources */,
@@ -352,6 +359,7 @@
 				0D55C5202C21EABF002CE99A /* ServerUrl.swift in Sources */,
 				0D55C5382C220E40002CE99A /* UIApplicationExtension.swift in Sources */,
 				0D55C52B2C22012E002CE99A /* GetUrlHost.swift in Sources */,
+				0D55C5492C2241DF002CE99A /* CollectionsProvider.swift in Sources */,
 				0D55C53B2C221106002CE99A /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

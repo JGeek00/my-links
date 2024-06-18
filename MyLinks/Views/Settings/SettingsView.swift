@@ -23,15 +23,12 @@ struct SettingsView: View {
                 .pickerStyle(.inline)
                 Section {
                     Button {
-                        onboardingViewModel.showOnboarding = true
-                        ApiClientProvider.shared.instance = nil
-                        clearInstances()
+                        settingsViewModel.disconnectServer()
                     } label: {
                         Label("Disconnect from server", systemImage: "xmark")
                             .foregroundStyle(Color.red)
                     }
                 }
-                .buttonStyle(PlainButtonStyle())
                 Section {
 //                    NavigationLink {
 //                        TipsView()

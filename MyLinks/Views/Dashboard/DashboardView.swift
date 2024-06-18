@@ -2,6 +2,8 @@ import SwiftUI
 
 struct DashboardView: View {
     @StateObject private var dashboardViewModel = DashboardViewModel()
+    @EnvironmentObject private var tagsProvider: TagsProvider
+    @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
     init() {}
     
@@ -27,20 +29,20 @@ struct DashboardView: View {
                     List {
                         Section {
                             HStack {
-                                SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.dashboard?.response?.count ?? 0, color: Color.green)
+                                SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.data?.response?.count ?? 0, color: Color.green, status: .loaded)
                                     .frame(maxWidth: .infinity)
                                 Divider()
                                     .padding(.vertical, 6)
-                                SummaryEntry(icon: "folder.fill", label: "Collections", value: dashboardViewModel.collections?.response?.count ?? 0, color: Color.blue)
+                                SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data?.response?.count ?? 0, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
                                     .frame(maxWidth: .infinity)
                                 Divider()
                                     .padding(.vertical, 6)
-                                SummaryEntry(icon: "tag.fill", label: "Tags", value: dashboardViewModel.tags?.response?.count ?? 0, color: Color.red)
+                                SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data?.response?.count ?? 0, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
                                     .frame(maxWidth: .infinity)
                             }
                         }
-                        if (dashboardViewModel.dashboard?.response != nil) {
-                            let filtered = dashboardViewModel.dashboard!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil }
+                        if (dashboardViewModel.data?.response != nil) {
+                            let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil }
                             let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                             Section("Recent") {
                                 ForEach(Array(Set(filtered)), id: \.self) { item in
@@ -49,7 +51,7 @@ struct DashboardView: View {
                                     } label: {
                                         LinkEntry(item: item)
                                     }
-                                    .buttonStyle(PlainButtonStyle())
+                                    .foregroundColor(Color.foreground)
                                 }
                             }
                             Section("Pinned") {
@@ -59,7 +61,7 @@ struct DashboardView: View {
                                     } label: {
                                         LinkEntry(item: item)
                                     }
-                                    .buttonStyle(PlainButtonStyle())
+                                    .foregroundColor(Color.foreground)
                                 }
                             }
                         }
@@ -71,11 +73,6 @@ struct DashboardView: View {
             }
             .navigationTitle("Dashboard")
         }
-        .onAppear(perform: {
-            if dashboardViewModel.dashboard == nil || dashboardViewModel.collections == nil || dashboardViewModel.tags == nil {
-                dashboardViewModel.loadData(setLoading: true)
-            }
-        })
     }
 }
 
@@ -84,6 +81,15 @@ private struct SummaryEntry: View {
     var label: String
     var value: Int
     var color: Color
+    var status: Enums.Status
+    
+    init(icon: String, label: String, value: Int, color: Color, status: Enums.Status) {
+        self.icon = icon
+        self.label = label
+        self.value = value
+        self.color = color
+        self.status = status
+    }
     
     var body: some View {
         Section {
@@ -98,8 +104,16 @@ private struct SummaryEntry: View {
                 Text(label)
                 Spacer()
                     .frame(height: 6)
-                Text(String(value))
-                    .fontWeight(.semibold)
+                if status == .loading {
+                    ProgressView()
+                }
+                else if status == .error {
+                    Image(systemName: "exclamationmark.circle")
+                }
+                else {
+                    Text(String(value))
+                        .fontWeight(.semibold)
+                }
             }
         }
     }

@@ -4,6 +4,9 @@ struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
+    let collectionsProvider = CollectionsProvider.shared
+    let tagsProvider = TagsProvider.shared
+    
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
     @FetchRequest(
@@ -24,6 +27,16 @@ struct RootView: View {
                             Label("Settings", systemImage: "gear")
                         }
                 }
+                .environmentObject(collectionsProvider)
+                .environmentObject(tagsProvider)
+                .onAppear(perform: {
+                    if collectionsProvider.data == nil {
+                        collectionsProvider.loadData()
+                    }
+                    if tagsProvider.data == nil {
+                        tagsProvider.loadData()
+                    }
+                })
             }
         }
         .fontDesign(.rounded)

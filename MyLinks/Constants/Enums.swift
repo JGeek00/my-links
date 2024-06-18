@@ -29,4 +29,10 @@ class Enums {
             }
         }
     }
+    
+    enum Status: String {
+        case loaded
+        case loading
+        case error
+    }
 }
