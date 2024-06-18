@@ -6,7 +6,7 @@ struct Dashboard: Codable {
 }
 
 // MARK: - DashboardResponse
-struct DashboardResponse: Codable {
+struct DashboardResponse: Codable, Hashable {
     let id: Int?
     let name, type, description: String?
     let collectionID: Int?
@@ -21,7 +21,7 @@ struct DashboardResponse: Codable {
 }
 
 // MARK: - Collection
-struct Collection: Codable {
+struct Collection: Codable, Hashable {
     let id: Int?
     let name, description, color: String?
     let parentID: Int?
@@ -31,12 +31,12 @@ struct Collection: Codable {
 }
 
 // MARK: - PinnedBy
-struct PinnedBy: Codable {
+struct PinnedBy: Codable, Hashable {
     let id: Int?
 }
 
 // MARK: - Tag
-struct Tag: Codable {
+struct Tag: Codable, Hashable {
     let id: Int?
     let name: String?
     let ownerID: String?

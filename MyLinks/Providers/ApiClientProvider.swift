@@ -8,7 +8,6 @@ class ApiClientProvider: ObservableObject {
     init() {}
     
     func initialice(instance: ApiClient) {
-        print(instance)
         self.instance = instance
     }
 }

@@ -33,4 +33,54 @@ class ApiClient {
             return defaultErrorResponse
         }
     }
+    
+    func fetchCollections() async -> StatusResponse<Collections> {
+        let defaultErrorResponse = StatusResponse<Collections>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/collections") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            var request = URLRequest(url: components.url!)
+            
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(Collections.self, from: data)
+                return StatusResponse<Collections>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<Collections>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch let error {
+            return defaultErrorResponse
+        }
+    }
+    
+    func fetchTags() async -> StatusResponse<Tags> {
+        let defaultErrorResponse = StatusResponse<Tags>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/tags") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            var request = URLRequest(url: components.url!)
+            
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(Tags.self, from: data)
+                return StatusResponse<Tags>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<Tags>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch let error {
+            return defaultErrorResponse
+        }
+    }
 }
