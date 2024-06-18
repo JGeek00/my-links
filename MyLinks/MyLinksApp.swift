@@ -4,13 +4,14 @@ import SwiftUI
 struct MyLinksApp: App {
     let persistenceController = PersistenceController.shared
     
-    let instanceViewModel = InstanceViewModel()
+    let onboardingViewModel = OnboardingViewModel()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(instanceViewModel)
+                .environmentObject(onboardingViewModel)
+                .environmentObject(ApiClientProvider.shared)
         }
     }
 }

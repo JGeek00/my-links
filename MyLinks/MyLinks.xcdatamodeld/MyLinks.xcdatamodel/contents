@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Instance" representedClassName="Instance" syncable="YES" codeGenerationType="class">
+    <entity name="ServerInstance" representedClassName="ServerInstance" syncable="YES" codeGenerationType="class">
         <attribute name="domain" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isSelfHosted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="method" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="path" optional="YES" attributeType="String"/>
-        <attribute name="port" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="port" optional="YES" attributeType="String"/>
         <attribute name="token" optional="YES" attributeType="String"/>
     </entity>
 </model>

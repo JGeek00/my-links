@@ -1,16 +1,17 @@
 import SwiftUI
 
 struct RootView: View {
-    @EnvironmentObject private var instanceViewModel: InstanceViewModel
+    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
     @FetchRequest(
-        entity: Instance.entity(),
+        entity: ServerInstance.entity(),
         sortDescriptors: []
-    ) private var instances: FetchedResults<Instance>
+    ) private var instances: FetchedResults<ServerInstance>
     
     var body: some View {
         Group {
-            if !instances.isEmpty {
+            if !instances.isEmpty && apiClientProvider.instance != nil {
                 TabView {
                     DashboardView()
                         .tabItem {
@@ -25,11 +26,13 @@ struct RootView: View {
         }
         .fontDesign(.rounded)
         .onAppear(perform: {
-            instanceViewModel.checkInstance()
+            onboardingViewModel.checkInstance()
         })
-        .fullScreenCover(isPresented: $instanceViewModel.showOnboarding, content: {
+        .fullScreenCover(isPresented: $onboardingViewModel.showOnboarding, content: {
             OnboardingView()
-                .environmentObject(OnboardingViewModel())
         })
+        .onChange(of: onboardingViewModel.showOnboarding) {
+            onboardingViewModel.reset()
+        }
     }
 }

@@ -14,7 +14,7 @@ class ApiClient {
         
         guard let url = URL(string: "\(self.url)/api/v1/dashboard") else { return defaultErrorResponse }
         do {
-            var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             
             var request = URLRequest(url: components.url!)
             
