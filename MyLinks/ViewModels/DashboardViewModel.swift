@@ -10,6 +10,7 @@ class DashboardViewModel: ObservableObject {
     init() {}
     
     func loadData() {
+        self.loading = true
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
             let dashboardResult = await instance.fetchDashboard()

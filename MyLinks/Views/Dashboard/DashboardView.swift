@@ -12,7 +12,16 @@ struct DashboardView: View {
                     ProgressView()
                 }
                 else if dashboardViewModel.error == true {
-            
+                    ContentUnavailableView {
+                        Label("Error", systemImage: "exclamationmark.circle")
+                    } description: {
+                        Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
+                        Button {
+                            dashboardViewModel.loadData()
+                        } label: {
+                            Label("Retry", systemImage: "arrow.counterclockwise")
+                        }
+                    }
                 }
                 else {
                     List {
