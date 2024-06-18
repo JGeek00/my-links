@@ -16,6 +16,16 @@
 		0D55C4FF2C219F38002CE99A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4FE2C219F38002CE99A /* Config.swift */; };
 		0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5012C21A053002CE99A /* DashboardView.swift */; };
 		0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5042C21A094002CE99A /* SettingsView.swift */; };
+		0D55C5072C21AC0C002CE99A /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5062C21AC0C002CE99A /* ApiClient.swift */; };
+		0D55C50A2C21ACAB002CE99A /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5092C21ACAB002CE99A /* Dashboard.swift */; };
+		0D55C50C2C21AD86002CE99A /* StatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C50B2C21AD86002CE99A /* StatusResponse.swift */; };
+		0D55C50F2C21AE31002CE99A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C50E2C21AE31002CE99A /* OnboardingView.swift */; };
+		0D55C5122C21AEDE002CE99A /* InstanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5112C21AEDE002CE99A /* InstanceViewModel.swift */; };
+		0D55C5142C21B420002CE99A /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5132C21B420002CE99A /* Welcome.swift */; };
+		0D55C5162C21B45F002CE99A /* ServerSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5152C21B45F002CE99A /* ServerSelection.swift */; };
+		0D55C5182C21B472002CE99A /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5172C21B472002CE99A /* ConnectionForm.swift */; };
+		0D55C51A2C21B689002CE99A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5192C21B689002CE99A /* OnboardingViewModel.swift */; };
+		0D55C51C2C21BBE9002CE99A /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C51B2C21BBE9002CE99A /* Enums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +40,16 @@
 		0D55C4FE2C219F38002CE99A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		0D55C5012C21A053002CE99A /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		0D55C5042C21A094002CE99A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0D55C5062C21AC0C002CE99A /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		0D55C5092C21ACAB002CE99A /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
+		0D55C50B2C21AD86002CE99A /* StatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusResponse.swift; sourceTree = "<group>"; };
+		0D55C50E2C21AE31002CE99A /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		0D55C5112C21AEDE002CE99A /* InstanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceViewModel.swift; sourceTree = "<group>"; };
+		0D55C5132C21B420002CE99A /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
+		0D55C5152C21B45F002CE99A /* ServerSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelection.swift; sourceTree = "<group>"; };
+		0D55C5172C21B472002CE99A /* ConnectionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionForm.swift; sourceTree = "<group>"; };
+		0D55C5192C21B689002CE99A /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		0D55C51B2C21BBE9002CE99A /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +86,10 @@
 				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
 				0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */,
 				0D55C4FD2C219F2F002CE99A /* Constants */,
+				0D55C5082C21ACA0002CE99A /* Models */,
 				0D55C4FC2C219E6B002CE99A /* Services */,
 				0D55C4FB2C219E60002CE99A /* Utils */,
+				0D55C5102C21AECC002CE99A /* ViewModels */,
 				0D55C4FA2C219E3E002CE99A /* Views */,
 				0D55C4E62C219E13002CE99A /* MyLinksApp.swift */,
 				0D55C4F22C219E14002CE99A /* Preview Content */,
@@ -86,6 +108,7 @@
 		0D55C4FA2C219E3E002CE99A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0D55C50D2C21AE20002CE99A /* Onboarding */,
 				0D55C5032C21A08C002CE99A /* Settings */,
 				0D55C5002C21A03F002CE99A /* Dashboard */,
 				0D55C4ED2C219E13002CE99A /* RootView.swift */,
@@ -104,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				0D55C4E82C219E13002CE99A /* Persistence.swift */,
+				0D55C5062C21AC0C002CE99A /* ApiClient.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -112,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				0D55C4FE2C219F38002CE99A /* Config.swift */,
+				0D55C51B2C21BBE9002CE99A /* Enums.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -130,6 +155,35 @@
 				0D55C5042C21A094002CE99A /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		0D55C5082C21ACA0002CE99A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C5092C21ACAB002CE99A /* Dashboard.swift */,
+				0D55C50B2C21AD86002CE99A /* StatusResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0D55C50D2C21AE20002CE99A /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C50E2C21AE31002CE99A /* OnboardingView.swift */,
+				0D55C5132C21B420002CE99A /* Welcome.swift */,
+				0D55C5152C21B45F002CE99A /* ServerSelection.swift */,
+				0D55C5172C21B472002CE99A /* ConnectionForm.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		0D55C5102C21AECC002CE99A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C5112C21AEDE002CE99A /* InstanceViewModel.swift */,
+				0D55C5192C21B689002CE99A /* OnboardingViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,10 +259,20 @@
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
 				0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */,
+				0D55C51A2C21B689002CE99A /* OnboardingViewModel.swift in Sources */,
+				0D55C5162C21B45F002CE99A /* ServerSelection.swift in Sources */,
+				0D55C51C2C21BBE9002CE99A /* Enums.swift in Sources */,
 				0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */,
+				0D55C5182C21B472002CE99A /* ConnectionForm.swift in Sources */,
+				0D55C50A2C21ACAB002CE99A /* Dashboard.swift in Sources */,
 				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,
+				0D55C5142C21B420002CE99A /* Welcome.swift in Sources */,
 				0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */,
+				0D55C5122C21AEDE002CE99A /* InstanceViewModel.swift in Sources */,
+				0D55C5072C21AC0C002CE99A /* ApiClient.swift in Sources */,
+				0D55C50C2C21AD86002CE99A /* StatusResponse.swift in Sources */,
 				0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */,
+				0D55C50F2C21AE31002CE99A /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
