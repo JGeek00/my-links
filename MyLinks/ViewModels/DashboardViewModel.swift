@@ -6,11 +6,13 @@ class DashboardViewModel: ObservableObject {
     @Published var tags: Tags? = nil
     @Published var loading = true
     @Published var error = false
-    
+        
     init() {}
     
-    func loadData() {
-        self.loading = true
+    func loadData(setLoading: Bool = false) {
+        if setLoading == true {
+            self.loading = true
+        }
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
             let dashboardResult = await instance.fetchDashboard()

@@ -44,22 +44,37 @@ struct DashboardView: View {
                             let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                             Section("Recent") {
                                 ForEach(Array(Set(filtered)), id: \.self) { item in
-                                    LinkEntry(item: item)
+                                    Button {
+                                        openSafariView(item.url!)
+                                    } label: {
+                                        LinkEntry(item: item)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
                             Section("Pinned") {
                                 ForEach(Array(Set(pinned)), id: \.self) { item in
-                                    LinkEntry(item: item)
+                                    Button {
+                                        openSafariView(item.url!)
+                                    } label: {
+                                        LinkEntry(item: item)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
                         }
+                    }
+                    .refreshable {
+                        dashboardViewModel.loadData()
                     }
                 }
             }
             .navigationTitle("Dashboard")
         }
         .onAppear(perform: {
-            dashboardViewModel.loadData()
+            if dashboardViewModel.dashboard == nil || dashboardViewModel.collections == nil || dashboardViewModel.tags == nil {
+                dashboardViewModel.loadData(setLoading: true)
+            }
         })
     }
 }
@@ -96,7 +111,7 @@ private struct LinkEntry: View {
     init(item: DashboardResponse) {
         self.item = item
     }
-    
+        
     var body: some View {
         let urlHost = getUrlHost(item.url!)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil

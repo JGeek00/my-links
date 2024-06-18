@@ -33,6 +33,8 @@
 		0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5282C21FBEA002CE99A /* Tags.swift */; };
 		0D55C52B2C22012E002CE99A /* GetUrlHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C52A2C22012E002CE99A /* GetUrlHost.swift */; };
 		0D55C52D2C220598002CE99A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C52C2C220598002CE99A /* Date.swift */; };
+		0D55C5352C220A3A002CE99A /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5342C220A3A002CE99A /* SafariView.swift */; };
+		0D55C5382C220E40002CE99A /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5372C220E40002CE99A /* UIApplicationExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +66,8 @@
 		0D55C5282C21FBEA002CE99A /* Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		0D55C52A2C22012E002CE99A /* GetUrlHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUrlHost.swift; sourceTree = "<group>"; };
 		0D55C52C2C220598002CE99A /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		0D55C5342C220A3A002CE99A /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		0D55C5372C220E40002CE99A /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 				0D55C4F12C219E14002CE99A /* MyLinks.entitlements */,
 				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
 				0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */,
+				0D55C5362C220E2C002CE99A /* Extensions */,
 				0D55C4FD2C219F2F002CE99A /* Constants */,
 				0D55C5082C21ACA0002CE99A /* Models */,
 				0D55C4FC2C219E6B002CE99A /* Services */,
@@ -137,6 +142,7 @@
 				0D55C51F2C21EABF002CE99A /* ServerUrl.swift */,
 				0D55C52A2C22012E002CE99A /* GetUrlHost.swift */,
 				0D55C52C2C220598002CE99A /* Date.swift */,
+				0D55C5342C220A3A002CE99A /* SafariView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -215,6 +221,14 @@
 			path = Providers;
 			sourceTree = "<group>";
 		};
+		0D55C5362C220E2C002CE99A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C5372C220E40002CE99A /* UIApplicationExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -286,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D55C51E2C21E6DC002CE99A /* Regexps.swift in Sources */,
+				0D55C5352C220A3A002CE99A /* SafariView.swift in Sources */,
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
@@ -308,6 +323,7 @@
 				0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */,
 				0D55C50F2C21AE31002CE99A /* OnboardingView.swift in Sources */,
 				0D55C5202C21EABF002CE99A /* ServerUrl.swift in Sources */,
+				0D55C5382C220E40002CE99A /* UIApplicationExtension.swift in Sources */,
 				0D55C52B2C22012E002CE99A /* GetUrlHost.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
