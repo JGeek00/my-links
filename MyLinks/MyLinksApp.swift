@@ -1,10 +1,3 @@
-//
-//  MyLinksApp.swift
-//  MyLinks
-//
-//  Created by Juan Gilsanz Polo on 18/6/24.
-//
-
 import SwiftUI
 
 @main
@@ -13,7 +6,7 @@ struct MyLinksApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

@@ -10,9 +10,12 @@
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
 		0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */; };
-		0D55C4EE2C219E13002CE99A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4ED2C219E13002CE99A /* ContentView.swift */; };
+		0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4ED2C219E13002CE99A /* RootView.swift */; };
 		0D55C4F02C219E14002CE99A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C4EF2C219E14002CE99A /* Assets.xcassets */; };
 		0D55C4F42C219E14002CE99A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C4F32C219E14002CE99A /* Preview Assets.xcassets */; };
+		0D55C4FF2C219F38002CE99A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4FE2C219F38002CE99A /* Config.swift */; };
+		0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5012C21A053002CE99A /* DashboardView.swift */; };
+		0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5042C21A094002CE99A /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +23,13 @@
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		0D55C4EB2C219E13002CE99A /* MyLinks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyLinks.xcdatamodel; sourceTree = "<group>"; };
-		0D55C4ED2C219E13002CE99A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0D55C4ED2C219E13002CE99A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		0D55C4EF2C219E14002CE99A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0D55C4F12C219E14002CE99A /* MyLinks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLinks.entitlements; sourceTree = "<group>"; };
 		0D55C4F32C219E14002CE99A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0D55C4FE2C219F38002CE99A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		0D55C5012C21A053002CE99A /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		0D55C5042C21A094002CE99A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,12 +62,14 @@
 		0D55C4E52C219E13002CE99A /* MyLinks */ = {
 			isa = PBXGroup;
 			children = (
-				0D55C4E62C219E13002CE99A /* MyLinksApp.swift */,
-				0D55C4E82C219E13002CE99A /* Persistence.swift */,
-				0D55C4ED2C219E13002CE99A /* ContentView.swift */,
-				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
 				0D55C4F12C219E14002CE99A /* MyLinks.entitlements */,
+				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
 				0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */,
+				0D55C4FD2C219F2F002CE99A /* Constants */,
+				0D55C4FC2C219E6B002CE99A /* Services */,
+				0D55C4FB2C219E60002CE99A /* Utils */,
+				0D55C4FA2C219E3E002CE99A /* Views */,
+				0D55C4E62C219E13002CE99A /* MyLinksApp.swift */,
 				0D55C4F22C219E14002CE99A /* Preview Content */,
 			);
 			path = MyLinks;
@@ -73,6 +81,55 @@
 				0D55C4F32C219E14002CE99A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0D55C4FA2C219E3E002CE99A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C5032C21A08C002CE99A /* Settings */,
+				0D55C5002C21A03F002CE99A /* Dashboard */,
+				0D55C4ED2C219E13002CE99A /* RootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0D55C4FB2C219E60002CE99A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		0D55C4FC2C219E6B002CE99A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C4E82C219E13002CE99A /* Persistence.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		0D55C4FD2C219F2F002CE99A /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C4FE2C219F38002CE99A /* Config.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		0D55C5002C21A03F002CE99A /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C5012C21A053002CE99A /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		0D55C5032C21A08C002CE99A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C5042C21A094002CE99A /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,9 +202,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
+				0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */,
 				0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */,
-				0D55C4EE2C219E13002CE99A /* ContentView.swift in Sources */,
+				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,
+				0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */,
 				0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +342,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MyLinks;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -292,10 +354,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -320,6 +382,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MyLinks;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -330,10 +394,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
