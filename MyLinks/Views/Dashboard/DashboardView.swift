@@ -4,6 +4,7 @@ struct DashboardView: View {
     @StateObject private var dashboardViewModel = DashboardViewModel()
     @EnvironmentObject private var tagsProvider: TagsProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     
     init() {}
     
@@ -29,7 +30,7 @@ struct DashboardView: View {
                     List {
                         Section {
                             HStack {
-                                SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.data?.response?.count ?? 0, color: Color.green, status: .loaded)
+                                SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.data?.response?.uniqued().count ?? 0, color: Color.green, status: .loaded)
                                     .frame(maxWidth: .infinity)
                                 Divider()
                                     .padding(.vertical, 6)
@@ -45,7 +46,7 @@ struct DashboardView: View {
                             let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil }
                             let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                             Section("Recent") {
-                                ForEach(Array(Set(filtered)), id: \.self) { item in
+                                ForEach(filtered.uniqued(), id: \.self) { item in
                                     Button {
                                         openSafariView(item.url!)
                                     } label: {
@@ -55,7 +56,7 @@ struct DashboardView: View {
                                 }
                             }
                             Section("Pinned") {
-                                ForEach(Array(Set(pinned)), id: \.self) { item in
+                                ForEach(pinned.uniqued(), id: \.self) { item in
                                     Button {
                                         openSafariView(item.url!)
                                     } label: {
@@ -72,6 +73,25 @@ struct DashboardView: View {
                 }
             }
             .navigationTitle("Dashboard")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button {
+                            linkFormViewModel.sheetOpen.toggle()
+                        } label: {
+                            Label("New link", systemImage: "link")
+                        }
+                        Button {
+                            
+                        } label: {
+                            Label("New collection", systemImage: "folder")
+                        }
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
+            }
         }
     }
 }

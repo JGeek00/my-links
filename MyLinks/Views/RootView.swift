@@ -3,6 +3,7 @@ import SwiftUI
 struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
+    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -27,8 +28,6 @@ struct RootView: View {
                             Label("Settings", systemImage: "gear")
                         }
                 }
-                .environmentObject(collectionsProvider)
-                .environmentObject(tagsProvider)
                 .onAppear(perform: {
                     if collectionsProvider.data == nil {
                         collectionsProvider.loadData()
@@ -36,6 +35,9 @@ struct RootView: View {
                     if tagsProvider.data == nil {
                         tagsProvider.loadData()
                     }
+                })
+                .sheet(isPresented: $linkFormViewModel.sheetOpen, content: {
+                    LinkFormView()
                 })
             }
         }
@@ -51,5 +53,7 @@ struct RootView: View {
         .onChange(of: onboardingViewModel.showOnboarding) {
             onboardingViewModel.reset()
         }
+        .environmentObject(collectionsProvider)
+        .environmentObject(tagsProvider)
     }
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-class DashboardViewModel: ObservableObject {
+class DashboardViewModel: ObservableObject {    
     @Published var data: Dashboard? = nil
     @Published var loading = true
     @Published var error = false

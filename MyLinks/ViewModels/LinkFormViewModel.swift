@@ -1,0 +1,80 @@
+import Foundation
+
+class LinkFormViewModel: ObservableObject {
+    static let shared = LinkFormViewModel()
+    
+    @Published var sheetOpen = false
+    
+    @Published var url = ""
+    @Published var name = ""
+    @Published var collection = 0
+    @Published var description = ""
+    @Published var selectedTags: [String] = []
+    
+    @Published var validationErrorAlert = false
+    @Published var validationErrorMessage = ""
+    
+    @Published var saving = false
+    @Published var savingErrorMessage = ""
+    @Published var savingErrorAlert = false
+    
+    func onSave() {
+        guard let collections = CollectionsProvider.shared.data?.response else { return }
+        
+        if NSPredicate(format: "SELF MATCHES %@", Regexps.url).evaluate(with: url) == false {
+            self.validationErrorMessage = "The introduced URL is not valid."
+            self.validationErrorAlert = true
+            return
+        }
+        
+        let col = collections.first(where: { $0.id == collection }) ?? collections[0]
+        
+        let body = LinkCreationRequest(
+            url: url,
+            name: name != "" ? name : nil,
+            description: description != "" ? description : nil,
+            tags: selectedTags.map() { TagCreation(name: $0) },
+            collection: CollectionCreation(id: col.id, name: col.name, ownerId: col.ownerId)
+        )
+    
+        self.saving = true
+        
+        guard let instance = ApiClientProvider.shared.instance else { return }
+        Task {
+            let result = await instance.createLink(body)
+            if result.successful == true {
+                DispatchQueue.main.async {
+                    self.saving = false
+                    self.sheetOpen = false
+                    TagsProvider.shared.loadData()
+                    CollectionsProvider.shared.loadData()
+                }
+            }
+            else {
+                guard let statusCode = result.statusCode else {
+                    DispatchQueue.main.async {
+                        self.saving = false
+                        self.savingErrorMessage = "Cannot reach the server. Check your Internet connection."
+                        self.savingErrorAlert = true
+                    }
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.saving = false
+                    self.savingErrorMessage = "Error \(statusCode)."
+                    self.savingErrorAlert = true
+                }
+            }
+        }
+    }
+    
+    func reset() {
+        self.url = ""
+        self.name = ""
+        self.collection = 0
+        self.description = ""
+        self.selectedTags = []
+        self.validationErrorAlert = false
+        self.validationErrorMessage = ""
+    }
+}

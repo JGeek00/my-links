@@ -6,7 +6,7 @@ struct Tags: Codable {
 }
 
 // MARK: - Response
-struct TagResponse: Codable, Identifiable {
+struct TagResponse: Codable, Hashable {
     let id: Int?
     let name: String?
     let ownerID: Int?
@@ -15,6 +15,6 @@ struct TagResponse: Codable, Identifiable {
 }
 
 // MARK: - TagCount
-struct TagCount: Codable {
+struct TagCount: Codable, Hashable {
     let links: Int?
 }
