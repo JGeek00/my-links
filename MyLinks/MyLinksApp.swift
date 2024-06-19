@@ -11,6 +11,7 @@ struct MyLinksApp: App {
                 .environmentObject(OnboardingViewModel.shared)
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkFormViewModel.shared)
+                .environmentObject(CollectionFormViewModel.shared)
         }
     }
 }

@@ -4,6 +4,7 @@ struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -38,6 +39,9 @@ struct RootView: View {
                 })
                 .sheet(isPresented: $linkFormViewModel.sheetOpen, content: {
                     LinkFormView()
+                })
+                .sheet(isPresented: $collectionFormViewModel.sheetOpen, content: {
+                    CollectionFormView()
                 })
             }
         }

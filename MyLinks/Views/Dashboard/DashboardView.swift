@@ -5,6 +5,7 @@ struct DashboardView: View {
     @EnvironmentObject private var tagsProvider: TagsProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
     init() {}
     
@@ -76,7 +77,7 @@ struct DashboardView: View {
                             Label("New link", systemImage: "link")
                         }
                         Button {
-                            
+                            collectionFormViewModel.sheetOpen.toggle()
                         } label: {
                             Label("New collection", systemImage: "folder")
                         }
