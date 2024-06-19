@@ -36,17 +36,17 @@ struct DashboardView: View {
                         Section {
                             HStack {
                                 SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.data?.response?.uniqued().count ?? 0, color: Color.green, status: .loaded)
-                                    .frame(maxWidth: .infinity)
-                                Divider()
-                                    .padding(.vertical, 6)
+                                Spacer()
+                                    .frame(width: 12)
                                 SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data?.response?.count ?? 0, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                                    .frame(maxWidth: .infinity)
-                                Divider()
-                                    .padding(.vertical, 6)
+                                Spacer()
+                                    .frame(width: 12)
                                 SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data?.response?.count ?? 0, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
-                                    .frame(maxWidth: .infinity)
                             }
                         }
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        .padding(.top, 16)
                         if (dashboardViewModel.data?.response != nil) {
                             let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                             let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
@@ -146,29 +146,32 @@ private struct SummaryEntry: View {
     }
     
     var body: some View {
-        Section {
-            VStack {
-                Image(systemName: icon)
-                    .frame(width: 32, height: 32)
-                    .background(color)
-                    .foregroundStyle(Color.white)
-                    .cornerRadius(8)
-                Spacer()
-                    .frame(height: 6)
-                Text(LocalizedStringKey(label))
-                Spacer()
-                    .frame(height: 6)
-                if status == .loading {
-                    ProgressView()
-                }
-                else if status == .error {
-                    Image(systemName: "exclamationmark.circle")
-                }
-                else {
-                    Text(String(value))
-                        .fontWeight(.semibold)
-                }
+        VStack {
+            Image(systemName: icon)
+                .frame(width: 32, height: 32)
+                .background(color)
+                .foregroundStyle(Color.white)
+                .cornerRadius(8)
+            Spacer()
+                .frame(height: 6)
+            Text(LocalizedStringKey(label))
+                .lineLimit(1)
+            Spacer()
+                .frame(height: 6)
+            if status == .loading {
+                ProgressView()
+            }
+            else if status == .error {
+                Image(systemName: "exclamationmark.circle")
+            }
+            else {
+                Text(String(value))
+                    .fontWeight(.semibold)
             }
         }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.white)
+        .cornerRadius(12)
     }
 }
