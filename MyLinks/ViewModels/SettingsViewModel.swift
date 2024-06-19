@@ -4,6 +4,8 @@ class SettingsViewModel: ObservableObject {
     @Published var contactDeveloperSafariOpen = false
     @Published var dataSourceSafariOpen = false
     @Published var showBuildNumber = false
+    @Published var linkwardenSiteOpen = false
+    @Published var linkwardenRepoOpen = false
     
     func disconnectServer() {
         OnboardingViewModel.shared.showOnboarding = true

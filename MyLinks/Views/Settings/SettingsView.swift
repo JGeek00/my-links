@@ -14,12 +14,14 @@ struct SettingsView: View {
                 Picker("Theme", selection: $theme) {
                     Label("System defined", systemImage: "iphone")
                         .tag(Enums.Theme.system)
+                        .foregroundStyle(Color.foreground)
                     Label("Light", systemImage: "sun.max")
                         .tag(Enums.Theme.light)
+                        .foregroundStyle(Color.foreground)
                     Label("Dark", systemImage: "moon")
                         .tag(Enums.Theme.dark)
+                        .foregroundStyle(Color.foreground)
                 }
-                .foregroundStyle(Color.foreground)
                 .pickerStyle(.inline)
                 Section {
                     Button {
@@ -27,6 +29,30 @@ struct SettingsView: View {
                     } label: {
                         Label("Disconnect from server", systemImage: "xmark")
                             .foregroundStyle(Color.red)
+                    }
+                }
+                Section("Linkwarden") {
+                    Button {
+                        settingsViewModel.linkwardenSiteOpen.toggle()
+                    } label: {
+                        HStack {
+                            Text("Website")
+                                .foregroundColor(.foreground)
+                            Spacer()
+                            Image(systemName: "link")
+                                .foregroundColor(Color.listItemValue)
+                        }
+                    }
+                    Button {
+                        settingsViewModel.linkwardenRepoOpen.toggle()
+                    } label: {
+                        HStack {
+                            Text("Repository")
+                                .foregroundColor(.foreground)
+                            Spacer()
+                            Image(systemName: "link")
+                                .foregroundColor(Color.listItemValue)
+                        }
                     }
                 }
                 Section {
@@ -72,6 +98,12 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .fullScreenCover(isPresented: $settingsViewModel.contactDeveloperSafariOpen, content: {
                 SFSafariViewWrapper(url: URL(string: Urls.appSupport)!).ignoresSafeArea()
+            })
+            .fullScreenCover(isPresented: $settingsViewModel.linkwardenSiteOpen, content: {
+                SFSafariViewWrapper(url: URL(string: Urls.linkwardenSite)!).ignoresSafeArea()
+            })
+            .fullScreenCover(isPresented: $settingsViewModel.linkwardenRepoOpen, content: {
+                SFSafariViewWrapper(url: URL(string: Urls.linkwardenRepo)!).ignoresSafeArea()
             })
         }
     }
