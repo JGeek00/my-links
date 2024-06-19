@@ -16,12 +16,12 @@ struct Link: Codable, Hashable {
     let importDate: String?
     let createdAt, updatedAt: String?
     let tags: [Tag]?
-    let collection: Collection?
+    let collection: LinkCollection?
     let pinnedBy: [PinnedBy]?
 }
 
-// MARK: - Collection
-struct Collection: Codable, Hashable {
+// MARK: - LinkCollection
+struct LinkCollection: Codable, Hashable {
     let id: Int?
     let name, description, color: String?
     let parentID: Int?

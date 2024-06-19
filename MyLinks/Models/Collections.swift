@@ -2,11 +2,11 @@ import Foundation
 
 // MARK: - Collections
 struct Collections: Codable {
-    let response: [CollectionResponse]?
+    let response: [Collection]?
 }
 
-// MARK: - CollectionResponse
-struct CollectionResponse: Codable, Hashable {
+// MARK: - Collection
+struct Collection: Codable, Hashable {
     let id: Int?
     let name, description, color: String?
     let parentID: Int?
@@ -14,7 +14,7 @@ struct CollectionResponse: Codable, Hashable {
     let ownerId: Int?
     let createdAt, updatedAt: String?
     let parent: Parent?
-    let count: CollectionCount?
+    let _count: CollectionCount?
 }
 
 // MARK: - CollectionCount

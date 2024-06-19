@@ -28,6 +28,10 @@ struct RootView: View {
                         .tabItem {
                             Label("Links", systemImage: "link")
                         }
+                    CollectionView()
+                        .tabItem {
+                            Label("Collections", systemImage: "folder")
+                        }
                     SettingsView()
                         .tabItem {
                             Label("Settings", systemImage: "gear")
