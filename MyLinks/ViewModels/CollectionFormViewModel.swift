@@ -23,12 +23,17 @@ class CollectionFormViewModel: ObservableObject {
             return
         }
         
-        let data = CollectionCreationRequest(name: name, description: description, color: color.toHex())
+        let data = CollectionCreationRequest(
+            name: name,
+            description: description,
+            color: color.toHex(),
+            members: []
+        )
         
         guard let instance = ApiClientProvider.shared.instance else { return }
         self.saving = true
         Task {
-            let result = await instance.createCollection(data)
+            let result = editingId != nil ? await instance.editCollection(collectionId: editingId!, body: data) : await instance.createCollection(data)
             if result.successful == true {
                 DispatchQueue.main.async {
                     self.saving = false
