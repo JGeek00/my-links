@@ -59,6 +59,7 @@
 		0D55C5692C2312E7002CE99A /* LinksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5682C2312E7002CE99A /* LinksViewModel.swift */; };
 		0D55C56D2C2314EB002CE99A /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C56C2C2314EB002CE99A /* CollectionView.swift */; };
 		0D55C5742C2315F0002CE99A /* CollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5732C2315F0002CE99A /* CollectionItem.swift */; };
+		0D55C5782C233A0A002CE99A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 0D55C5772C233A0A002CE99A /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -124,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D55C5782C233A0A002CE99A /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +361,9 @@
 			dependencies = (
 			);
 			name = MyLinks;
+			packageProductDependencies = (
+				0D55C5772C233A0A002CE99A /* Sentry */,
+			);
 			productName = MyLinks;
 			productReference = 0D55C4E32C219E13002CE99A /* MyLinks.app */;
 			productType = "com.apple.product-type.application";
@@ -387,6 +392,9 @@
 				Base,
 			);
 			mainGroup = 0D55C4DA2C219E12002CE99A;
+			packageReferences = (
+				0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+			);
 			productRefGroup = 0D55C4E42C219E13002CE99A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -685,6 +693,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = exactVersion;
+				version = 8.29.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0D55C5772C233A0A002CE99A /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */ = {

@@ -1,8 +1,19 @@
 import SwiftUI
+import Sentry
 
 @main
 struct MyLinksApp: App {
     let persistenceController = PersistenceController.shared
+    
+    init() {
+        #if RELEASE
+        SentrySDK.start { options in
+            options.dsn = Config.sentryDsn
+            options.debug = false
+            options.enableTracing = false
+        }
+        #endif
+    }
 
     var body: some Scene {
         WindowGroup {
