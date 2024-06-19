@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 class LinkFormViewModel: ObservableObject {
     static let shared = LinkFormViewModel()
@@ -56,14 +57,14 @@ class LinkFormViewModel: ObservableObject {
                 guard let statusCode = result.statusCode else {
                     DispatchQueue.main.async {
                         self.saving = false
-                        self.savingErrorMessage = "Cannot reach the server. Check your Internet connection."
+                        self.savingErrorMessage = LocalizedStringKey("Cannot reach the server. Check your Internet connection.").localizedString()
                         self.savingErrorAlert = true
                     }
                     return
                 }
                 DispatchQueue.main.async {
                     self.saving = false
-                    self.savingErrorMessage = "Error \(statusCode)."
+                    self.savingErrorMessage = LocalizedStringKey("Error \(statusCode).").localizedString()
                     self.savingErrorAlert = true
                 }
             }

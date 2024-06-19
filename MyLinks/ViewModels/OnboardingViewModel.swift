@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
     static let shared = OnboardingViewModel()
@@ -129,28 +130,28 @@ class OnboardingViewModel: ObservableObject {
         if hostingMode == .selfhosted {
             let validIpDomain = validateIpDomain(value: ipDomain)
             if validIpDomain == false {
-                invalidValuesMessage = "Invalid IP or domain."
+                invalidValuesMessage = LocalizedStringKey("Invalid IP or domain.").localizedString()
                 invalidValuesAlert.toggle()
                 return
             }
             
             let validPort = validatePort(value: port)
             if validPort == false {
-                invalidValuesMessage = "Invalid port."
+                invalidValuesMessage = LocalizedStringKey("Invalid port.").localizedString()
                 invalidValuesAlert.toggle()
                 return
             }
             
             let validPath = validatePath(value: path)
             if validPath == false {
-                invalidValuesMessage = "Invalid path."
+                invalidValuesMessage = LocalizedStringKey("Invalid path.").localizedString()
                 invalidValuesAlert.toggle()
                 return
             }
         }
         
         if token == "" {
-            invalidValuesMessage = "Authentication token is required."
+            invalidValuesMessage = LocalizedStringKey("Authentication token is required.").localizedString()
             invalidValuesAlert.toggle()
             return
         }
@@ -164,7 +165,7 @@ class OnboardingViewModel: ObservableObject {
             }
             guard let statusCode = result.statusCode else {
                 DispatchQueue.main.async {
-                    self.connectionErrorMessage = "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid."
+                    self.connectionErrorMessage = LocalizedStringKey("Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid.").localizedString()
                     self.connectionErrorAlert.toggle()
                 }
                 return
@@ -181,13 +182,13 @@ class OnboardingViewModel: ObservableObject {
             }
             else if statusCode == 401 {
                 DispatchQueue.main.async {
-                    self.connectionErrorMessage = "Authentication error. Check your authentication token."
+                    self.connectionErrorMessage = LocalizedStringKey("Authentication error. Check your authentication token.").localizedString()
                     self.connectionErrorAlert.toggle()
                 }
             }
             else {
                 DispatchQueue.main.async {
-                    self.connectionErrorMessage = "Error \(statusCode)."
+                    self.connectionErrorMessage = LocalizedStringKey("Error \(statusCode).").localizedString()
                     self.connectionErrorAlert.toggle()
                 }
             }
