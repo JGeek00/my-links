@@ -132,7 +132,7 @@ private struct SummaryEntry: View {
                     .cornerRadius(8)
                 Spacer()
                     .frame(height: 6)
-                Text(label)
+                Text(LocalizedStringKey(label))
                 Spacer()
                     .frame(height: 6)
                 if status == .loading {
