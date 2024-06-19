@@ -6,9 +6,11 @@ struct Welcome: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
-                Rectangle()
+                Image("AppIconImage")
+                    .resizable()
                     .frame(width: 100, height: 100)
-                    .foregroundStyle(Color.blue)
+                    .cornerRadius(12)
+                    .shadow(radius: 10)
                 Spacer()
                     .frame(height: 24)
                 Text("Welcome to MyLinks")

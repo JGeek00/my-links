@@ -31,26 +31,38 @@ class OnboardingViewModel: ObservableObject {
                 showOnboarding = true
             }
             else {
-                guard let method = res[0].method else {
-                    clearInstances()
-                    return
+                if res[0].isSelfHosted == true {
+                    guard let method = res[0].method else {
+                        clearInstances()
+                        return
+                    }
+                    guard let parsedMethod = Enums.ConnectionMethod(rawValue: method) else {
+                        clearInstances()
+                        return
+                    }
+                    guard let domain = res[0].domain else {
+                        clearInstances()
+                        return
+                    }
+                    guard let token = res[0].token else {
+                        clearInstances()
+                        return
+                    }
+                    let port = res[0].port != nil ? Int(res[0].port!) : nil
+                    let client = ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token)
+                    DispatchQueue.main.async {
+                        ApiClientProvider.shared.initialice(instance: client)
+                    }
                 }
-                guard let parsedMethod = Enums.ConnectionMethod(rawValue: method) else {
-                    clearInstances()
-                    return
-                }
-                guard let domain = res[0].domain else {
-                    clearInstances()
-                    return
-                }
-                guard let token = res[0].token else {
-                    clearInstances()
-                    return
-                }
-                let port = res[0].port != nil ? Int(res[0].port!) : nil
-                let client = ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token)
-                DispatchQueue.main.async {
-                    ApiClientProvider.shared.initialice(instance: client)
+                else {
+                    guard let token = res[0].token else {
+                        clearInstances()
+                        return
+                    }
+                    let client = ApiClient(url: serverUrl(method: .https, domain: "linkwarden.app", port: nil, path: nil), token: token)
+                    DispatchQueue.main.async {
+                        ApiClientProvider.shared.initialice(instance: client)
+                    }
                 }
             }
         } catch {
@@ -114,7 +126,6 @@ class OnboardingViewModel: ObservableObject {
     }
     
     func onConnect() {
-        self.connecting = true
         if hostingMode == .selfhosted {
             let validIpDomain = validateIpDomain(value: ipDomain)
             if validIpDomain == false {
@@ -144,6 +155,7 @@ class OnboardingViewModel: ObservableObject {
             return
         }
         
+        self.connecting = true
         Task {
             let instance = ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: token)
             let result = await instance.fetchDashboard()
