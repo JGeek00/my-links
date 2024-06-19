@@ -9,25 +9,23 @@ class TagsProvider: ObservableObject {
     
     init() {}
     
-    func loadData(setLoading: Bool = false) {
+    func loadData(setLoading: Bool = false) async {
         if setLoading == true {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        Task {
-            let result = await instance.fetchTags()
-            if result.successful == true {
-                DispatchQueue.main.async {
-                    self.data = result.data!
-                    self.loading = false
-                    self.error = false
-                }
+        let result = await instance.fetchTags()
+        if result.successful == true {
+            DispatchQueue.main.async {
+                self.data = result.data!
+                self.loading = false
+                self.error = false
             }
-            else {
-                DispatchQueue.main.async {
-                    self.loading = false
-                    self.error = true
-                }
+        }
+        else {
+            DispatchQueue.main.async {
+                self.loading = false
+                self.error = true
             }
         }
     }

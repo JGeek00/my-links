@@ -10,7 +10,10 @@ struct CollectionView: View {
         NavigationStack {
             Group {
                 if collectionsProvider.loading == true {
-                    ProgressView()
+                    Group {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else if collectionsProvider.error == true {
                     ContentUnavailableView {
@@ -18,7 +21,7 @@ struct CollectionView: View {
                     } description: {
                         Text("An error occured when loading the links data. Check your Internet connection and try again later.")
                         Button {
-                            collectionsProvider.loadData(setLoading: true)
+                            Task { await collectionsProvider.loadData(setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -53,7 +56,7 @@ struct CollectionView: View {
                 }
             }
             .refreshable {
-                collectionsProvider.loadData()
+                await collectionsProvider.loadData()
             }
             .background(Color.listBackground)
         }

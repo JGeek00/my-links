@@ -10,7 +10,10 @@ struct LinksView: View {
         NavigationStack {
             Group {
                 if linksViewModel.loading == true {
-                    ProgressView()
+                    Group {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else if linksViewModel.error == true {
                     ContentUnavailableView {

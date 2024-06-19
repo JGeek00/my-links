@@ -39,10 +39,10 @@ struct RootView: View {
                 }
                 .onAppear(perform: {
                     if collectionsProvider.data == nil {
-                        collectionsProvider.loadData()
+                        Task { await collectionsProvider.loadData() }
                     }
                     if tagsProvider.data == nil {
-                        tagsProvider.loadData()
+                        Task { await tagsProvider.loadData() }
                     }
                 })
                 .sheet(isPresented: $linkFormViewModel.sheetOpen, content: {

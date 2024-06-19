@@ -48,8 +48,8 @@ class LinkFormViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.saving = false
                     self.sheetOpen = false
-                    TagsProvider.shared.loadData()
-                    CollectionsProvider.shared.loadData()
+                    Task { await TagsProvider.shared.loadData() }
+                    Task { await CollectionsProvider.shared.loadData() }
                 }
             }
             else {

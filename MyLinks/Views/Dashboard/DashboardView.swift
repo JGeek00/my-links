@@ -13,7 +13,10 @@ struct DashboardView: View {
         NavigationStack {
             Group {
                 if dashboardViewModel.loading == true {
-                    ProgressView()
+                    Group {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else if dashboardViewModel.error == true {
                     ContentUnavailableView {
@@ -21,7 +24,7 @@ struct DashboardView: View {
                     } description: {
                         Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
                         Button {
-                            dashboardViewModel.loadData(setLoading: true)
+                            Task { await dashboardViewModel.loadData(setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -75,7 +78,7 @@ struct DashboardView: View {
                         }
                     }
                     .refreshable {
-                        dashboardViewModel.loadData()
+                        await dashboardViewModel.loadData()
                     }
                 }
             }

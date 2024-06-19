@@ -38,7 +38,7 @@ class CollectionFormViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.saving = false
                     self.sheetOpen = false
-                    CollectionsProvider.shared.loadData()
+                    Task { await CollectionsProvider.shared.loadData() }
                 }
             }
             else {
