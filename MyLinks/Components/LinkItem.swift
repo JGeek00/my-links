@@ -3,13 +3,16 @@ import SwiftUI
 struct LinkItemComponent: View {
     var item: Link
     var onTap: () -> Void
+    var onDelete: () -> Void
     
-    init(item: Link, onTap: @escaping () -> Void) {
+    init(item: Link, onTap: @escaping () -> Void, onDelete: @escaping () -> Void) {
         self.item = item
         self.onTap = onTap
+        self.onDelete = onDelete
     }
     
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @State private var showDeleteAlert = false
         
     var body: some View {
         let urlHost = getUrlHost(item.url!)
@@ -64,8 +67,18 @@ struct LinkItemComponent: View {
                 linkFormViewModel.sheetOpen = true
             }
             Button("Delete", systemImage: "trash", role: .destructive) {
-                
+                showDeleteAlert.toggle()
             }
+        }
+        .alert("Delete link", isPresented: $showDeleteAlert) {
+            Button("Cancel", role: .cancel) {
+                showDeleteAlert.toggle()
+            }
+            Button("Delete", role: .destructive) {
+                onDelete()
+            }
+        } message: {
+            Text("This link will be deleted. This action is not reversible.")
         }
     }
 }

@@ -81,6 +81,9 @@
         }
       }
     },
+    "Cancel" : {
+
+    },
     "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid." : {
       "localizations" : {
         "es" : {
@@ -240,6 +243,9 @@
           }
         }
       }
+    },
+    "Delete link" : {
+
     },
     "Description" : {
       "localizations" : {
@@ -651,6 +657,9 @@
         }
       }
     },
+    "The link could not be deleted due to an error." : {
+
+    },
     "Theme" : {
       "localizations" : {
         "es" : {
@@ -660,6 +669,9 @@
           }
         }
       }
+    },
+    "This link will be deleted. This action is not reversible." : {
+
     },
     "To begin, select the place where your data is stored" : {
       "localizations" : {

@@ -62,6 +62,7 @@
 		0D55C5782C233A0A002CE99A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 0D55C5772C233A0A002CE99A /* Sentry */; };
 		0D55C57A2C236C72002CE99A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C5792C236C72002CE99A /* Localizable.xcstrings */; };
 		0D55C57C2C237065002CE99A /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C57B2C237065002CE99A /* LocalizedStringKey.swift */; };
+		0D55C57F2C23904A002CE99A /* CustomAlert in Frameworks */ = {isa = PBXBuildFile; productRef = 0D55C57E2C23904A002CE99A /* CustomAlert */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D55C57F2C23904A002CE99A /* CustomAlert in Frameworks */,
 				0D55C5782C233A0A002CE99A /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,6 +371,7 @@
 			name = MyLinks;
 			packageProductDependencies = (
 				0D55C5772C233A0A002CE99A /* Sentry */,
+				0D55C57E2C23904A002CE99A /* CustomAlert */,
 			);
 			productName = MyLinks;
 			productReference = 0D55C4E32C219E13002CE99A /* MyLinks.app */;
@@ -401,6 +404,7 @@
 			mainGroup = 0D55C4DA2C219E12002CE99A;
 			packageReferences = (
 				0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				0D55C57D2C23904A002CE99A /* XCRemoteSwiftPackageReference "CustomAlert" */,
 			);
 			productRefGroup = 0D55C4E42C219E13002CE99A /* Products */;
 			projectDirPath = "";
@@ -712,6 +716,14 @@
 				version = 8.29.1;
 			};
 		};
+		0D55C57D2C23904A002CE99A /* XCRemoteSwiftPackageReference "CustomAlert" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/divadretlaw/CustomAlert.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.6.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -719,6 +731,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
 			productName = Sentry;
+		};
+		0D55C57E2C23904A002CE99A /* CustomAlert */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0D55C57D2C23904A002CE99A /* XCRemoteSwiftPackageReference "CustomAlert" */;
+			productName = CustomAlert;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -1,7 +1,8 @@
 import SwiftUI
+import CustomAlert
 
 struct LinksView: View {
-    @StateObject private var linksViewModel = LinksViewModel()
+    @StateObject private var linksViewModel = LinksViewModel.shared
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     
     init() {}
@@ -21,7 +22,7 @@ struct LinksView: View {
                     } description: {
                         Text("An error occured when loading the links data. Check your Internet connection and try again later.")
                         Button {
-                            linksViewModel.loadData(setLoading: true)
+                            Task { await linksViewModel.loadData(setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -33,6 +34,8 @@ struct LinksView: View {
                         List(filtered, id: \.self) { item in
                             LinkItemComponent(item: item) {
                                 openSafariView(item.url!)
+                            } onDelete: {
+                                linksViewModel.deleteLink(id: item.id!)
                             }
                         }
                     }
@@ -56,9 +59,24 @@ struct LinksView: View {
                 }
             }
             .refreshable {
-                linksViewModel.loadData()
+                await linksViewModel.loadData()
             }
             .background(Color.listBackground)
+            .customAlert(isPresented: $linksViewModel.deleting, content: {
+                ProgressView()
+            })
+            .alert("Error", isPresented: $linksViewModel.deleteError) {
+                Button("Close", role: .cancel) {
+                    linksViewModel.deleteError.toggle()
+                }
+            } message: {
+                Text("The link could not be deleted due to an error.")
+            }
         }
+        .onAppear(perform: {
+            if linksViewModel.data == nil {
+                Task { await linksViewModel.loadData() }
+            }
+        })
     }
 }

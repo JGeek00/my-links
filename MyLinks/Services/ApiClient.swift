@@ -219,4 +219,29 @@ class ApiClient {
             return defaultErrorResponse
         }
     }
+    
+    func deleteLink(linkId: Int) async -> StatusResponse<Bool> {
+        let defaultErrorResponse = StatusResponse<Bool>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/links/\(linkId)") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "DELETE"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                return StatusResponse<Bool>(successful: true, statusCode: response.statusCode, data: true)
+            }
+            else {
+                return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch let error {
+            return defaultErrorResponse
+        }
+    }
 }

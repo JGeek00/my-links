@@ -51,6 +51,8 @@ class LinkFormViewModel: ObservableObject {
                     self.sheetOpen = false
                     Task { await TagsProvider.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
+                    Task { await DashboardViewModel.shared.loadData() }
+                    Task { await LinksViewModel.shared.loadData() }
                 }
             }
             else {
