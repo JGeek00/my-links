@@ -12,6 +12,7 @@ struct ServerSelection: View {
             Text("To begin, select the place where your data is stored")
                 .font(.system(size: 30))
                 .fontWeight(.semibold)
+                .padding(.bottom, 12)
             Spacer()
             VStack(alignment: .leading) {
                 Button {
