@@ -2,6 +2,9 @@ import SwiftUI
 
 struct CollectionView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
+    
+    init() {}
     
     var body: some View {
         NavigationStack {
@@ -31,6 +34,15 @@ struct CollectionView: View {
                 }
             }
             .navigationTitle("Collections")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        collectionFormViewModel.sheetOpen = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
             .refreshable {
                 collectionsProvider.loadData()
             }

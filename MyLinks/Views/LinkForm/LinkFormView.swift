@@ -98,7 +98,9 @@ struct LinkFormView: View {
         }
         .onChange(of: linkFormViewModel.sheetOpen) { value in
             if value == false {
-                linkFormViewModel.reset()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    linkFormViewModel.reset()
+                }
             }
         }
     }

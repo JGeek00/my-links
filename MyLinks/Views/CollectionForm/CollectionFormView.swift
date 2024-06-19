@@ -63,7 +63,9 @@ struct CollectionFormView: View {
         }
         .onChange(of: collectionFormViewModel.sheetOpen) { value in
             if value == false {
-                collectionFormViewModel.reset()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    collectionFormViewModel.reset()
+                }
             }
         }
     }

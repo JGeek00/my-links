@@ -2,6 +2,7 @@ import SwiftUI
 
 struct LinksView: View {
     @StateObject private var linksViewModel = LinksViewModel()
+    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     
     init() {}
     
@@ -33,6 +34,15 @@ struct LinksView: View {
                 }
             }
             .navigationTitle("Links")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        linkFormViewModel.sheetOpen = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
             .refreshable {
                 linksViewModel.loadData()
             }
