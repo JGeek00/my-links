@@ -11,6 +11,16 @@
         }
       }
     },
+    "Add tags to links to see them here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade tags a enlaces para verlos aquí."
+          }
+        }
+      }
+    },
     "An error occured when loading the dashboard data. Check your Internet connection and try again later." : {
       "localizations" : {
         "es" : {
@@ -82,7 +92,14 @@
       }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar."
+          }
+        }
+      }
     },
     "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid." : {
       "localizations" : {
@@ -245,10 +262,24 @@
       }
     },
     "Delete collection" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar colección"
+          }
+        }
+      }
     },
     "Delete link" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar enlace"
+          }
+        }
+      }
     },
     "Description" : {
       "localizations" : {
@@ -520,6 +551,16 @@
         }
       }
     },
+    "No tags created" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay tags creados"
+          }
+        }
+      }
+    },
     "Path" : {
       "localizations" : {
         "es" : {
@@ -661,10 +702,24 @@
       }
     },
     "The collection could not be deleted due to an error." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La colección no pudo ser eliminada debido a un error."
+          }
+        }
+      }
     },
     "The link could not be deleted due to an error." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser eliminado debido a un error."
+          }
+        }
+      }
     },
     "Theme" : {
       "localizations" : {
@@ -677,10 +732,24 @@
       }
     },
     "This collection and all it's links will be deleted. This action is not reversible." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta colección  y todos sus enlaces se eliminará. Esta acción no es reversible."
+          }
+        }
+      }
     },
     "This link will be deleted. This action is not reversible." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este enlace será eliminado. Esta acción no es reversible."
+          }
+        }
+      }
     },
     "To begin, select the place where your data is stored" : {
       "localizations" : {

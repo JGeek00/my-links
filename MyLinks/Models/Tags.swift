@@ -2,16 +2,16 @@ import Foundation
 
 // MARK: - Tags
 struct Tags: Codable {
-    let response: [TagResponse]?
+    let response: [Tag]?
 }
 
-// MARK: - Response
-struct TagResponse: Codable, Hashable {
+// MARK: - Tag
+struct Tag: Codable, Hashable {
     let id: Int?
     let name: String?
-    let ownerID: Int?
+    let ownerId: Int?
     let createdAt, updatedAt: String?
-    let count: TagCount?
+    let _count: TagCount?
 }
 
 // MARK: - TagCount

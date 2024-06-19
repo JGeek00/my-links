@@ -15,7 +15,7 @@ struct Link: Codable, Hashable {
     let readable, lastPreserved: String?
     let importDate: String?
     let createdAt, updatedAt: String?
-    let tags: [Tag]?
+    let tags: [TagInfo]?
     let collection: LinkCollection?
     let pinnedBy: [PinnedBy]?
 }
@@ -35,8 +35,8 @@ struct PinnedBy: Codable, Hashable {
     let id: Int?
 }
 
-// MARK: - Tag
-struct Tag: Codable, Hashable {
+// MARK: - TagInfo
+struct TagInfo: Codable, Hashable {
     let id: Int?
     let name: String?
     let ownerID: String?

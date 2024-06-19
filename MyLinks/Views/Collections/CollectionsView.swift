@@ -1,7 +1,7 @@
 import SwiftUI
 import CustomAlert
 
-struct CollectionView: View {
+struct CollectionsView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
@@ -29,7 +29,7 @@ struct CollectionView: View {
                     }
                 }
                 else {
-                    let filtered = collectionsProvider.data?.response?.filter() { $0.name != nil && $0.createdAt != nil } ?? []
+                    let filtered = collectionsProvider.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil } ?? []
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             CollectionItemComponent(collection: item) {

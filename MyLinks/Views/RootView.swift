@@ -28,9 +28,13 @@ struct RootView: View {
                         .tabItem {
                             Label("Links", systemImage: "link")
                         }
-                    CollectionView()
+                    CollectionsView()
                         .tabItem {
                             Label("Collections", systemImage: "folder")
+                        }
+                    TagsView()
+                        .tabItem {
+                            Label("Tags", systemImage: "tag")
                         }
                     SettingsView()
                         .tabItem {
