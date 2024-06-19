@@ -3,13 +3,16 @@ import SwiftUI
 struct CollectionItemComponent: View {
     let collection: Collection
     let onTap: () -> Void
+    let onDelete: () -> Void
     
-    init(collection: Collection, onTap: @escaping () -> Void) {
+    init(collection: Collection, onTap: @escaping () -> Void, onDelete: @escaping () -> Void) {
         self.collection = collection
         self.onTap = onTap
+        self.onDelete = onDelete
     }
     
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
+    @State private var showDeleteAlert = false
     
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
@@ -67,8 +70,18 @@ struct CollectionItemComponent: View {
                 collectionFormViewModel.sheetOpen = true
             }
             Button("Delete", systemImage: "trash", role: .destructive) {
-                
+                showDeleteAlert.toggle()
             }
+        }
+        .alert("Delete collection", isPresented: $showDeleteAlert) {
+            Button("Cancel", role: .cancel) {
+                showDeleteAlert.toggle()
+            }
+            Button("Delete", role: .destructive) {
+                onDelete()
+            }
+        } message: {
+            Text("This collection and all it's links will be deleted. This action is not reversible.")
         }
     }
 }

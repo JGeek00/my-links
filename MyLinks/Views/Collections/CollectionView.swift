@@ -1,4 +1,5 @@
 import SwiftUI
+import CustomAlert
 
 struct CollectionView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
@@ -33,6 +34,8 @@ struct CollectionView: View {
                         List(filtered, id: \.self) { item in
                             CollectionItemComponent(collection: item) {
                                 
+                            } onDelete: {
+                                collectionsProvider.deleteCollection(id: item.id!)
                             }
                         }
                     }
@@ -49,6 +52,7 @@ struct CollectionView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
+                        collectionFormViewModel.editingId = nil
                         collectionFormViewModel.sheetOpen = true
                     } label: {
                         Image(systemName: "plus")
@@ -59,6 +63,16 @@ struct CollectionView: View {
                 await collectionsProvider.loadData()
             }
             .background(Color.listBackground)
+            .customAlert(isPresented: $collectionsProvider.deleting, content: {
+                ProgressView()
+            })
+            .alert("Error", isPresented: $collectionsProvider.deleteError) {
+                Button("Close", role: .cancel) {
+                    collectionsProvider.deleteError.toggle()
+                }
+            } message: {
+                Text("The collection could not be deleted due to an error.")
+            }
         }
     }
 }

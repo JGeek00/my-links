@@ -7,6 +7,9 @@ class CollectionsProvider: ObservableObject {
     @Published var loading = true
     @Published var error = false
     
+    @Published var deleting = false
+    @Published var deleteError = false
+    
     init() {}
     
     func loadData(setLoading: Bool = false) async {
@@ -30,9 +33,38 @@ class CollectionsProvider: ObservableObject {
         }
     }
     
+    func deleteCollection(id: Int) {
+        guard let instance = ApiClientProvider.shared.instance else { return }
+        self.deleting = true
+        Task {
+            let result = await instance.deleteCollection(collectionId: id)
+            if result.successful == true {
+                DispatchQueue.main.async {
+                    self.deleting = false
+                    self.deleteError = false
+                    Task { await self.loadData() }
+                    if LinksViewModel.shared.data != nil {
+                        Task { await LinksViewModel.shared.loadData() }
+                    }
+                    if DashboardViewModel.shared.data != nil {
+                        Task { await DashboardViewModel.shared.loadData() }
+                    }
+                }
+            }
+            else {
+                DispatchQueue.main.async {
+                    self.deleting = false
+                    self.deleteError = true
+                }
+            }
+        }
+    }
+    
     func reset() {
         data = nil
         loading = true
         error = false
+        deleting = false
+        deleteError = false
     }
 }

@@ -244,6 +244,9 @@
         }
       }
     },
+    "Delete collection" : {
+
+    },
     "Delete link" : {
 
     },
@@ -657,6 +660,9 @@
         }
       }
     },
+    "The collection could not be deleted due to an error." : {
+
+    },
     "The link could not be deleted due to an error." : {
 
     },
@@ -669,6 +675,9 @@
           }
         }
       }
+    },
+    "This collection and all it's links will be deleted. This action is not reversible." : {
+
     },
     "This link will be deleted. This action is not reversible." : {
 

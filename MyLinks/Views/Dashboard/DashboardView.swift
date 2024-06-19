@@ -93,11 +93,13 @@ struct DashboardView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button {
+                            linkFormViewModel.editingId = nil
                             linkFormViewModel.sheetOpen.toggle()
                         } label: {
                             Label("New link", systemImage: "link")
                         }
                         Button {
+                            collectionFormViewModel.editingId = nil
                             collectionFormViewModel.sheetOpen.toggle()
                         } label: {
                             Label("New collection", systemImage: "folder")

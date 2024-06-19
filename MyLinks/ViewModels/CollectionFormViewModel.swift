@@ -60,6 +60,7 @@ class CollectionFormViewModel: ObservableObject {
     }
     
     func reset() {
+        self.editingId = nil
         self.sheetOpen = false
         self.name = ""
         self.description = ""

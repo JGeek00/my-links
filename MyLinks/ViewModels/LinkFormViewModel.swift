@@ -66,7 +66,7 @@ class LinkFormViewModel: ObservableObject {
                 }
                 DispatchQueue.main.async {
                     self.saving = false
-                    self.savingErrorMessage = LocalizedStringKey("Error \(statusCode).").localizedString()
+                    self.savingErrorMessage = "Error \(statusCode)."
                     self.savingErrorAlert = true
                 }
             }
