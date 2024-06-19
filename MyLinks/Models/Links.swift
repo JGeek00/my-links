@@ -1,12 +1,12 @@
 import Foundation
 
-// MARK: - Dashboard
-struct Dashboard: Codable {
-    let response: [DashboardResponse]?
+// MARK: - Links
+struct Links: Codable {
+    let response: [Link]?
 }
 
-// MARK: - DashboardResponse
-struct DashboardResponse: Codable, Hashable {
+// MARK: - Link
+struct Link: Codable, Hashable {
     let id: Int?
     let name, type, description: String?
     let collectionID: Int?

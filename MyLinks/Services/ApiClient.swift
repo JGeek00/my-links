@@ -9,8 +9,8 @@ class ApiClient {
         self.token = token
     }
     
-    func fetchDashboard() async -> StatusResponse<Dashboard> {
-        let defaultErrorResponse = StatusResponse<Dashboard>(successful: false, statusCode: nil, data: nil)
+    func fetchDashboard() async -> StatusResponse<Links> {
+        let defaultErrorResponse = StatusResponse<Links>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/dashboard") else { return defaultErrorResponse }
         do {
@@ -27,11 +27,11 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(Dashboard.self, from: data)
-                return StatusResponse<Dashboard>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(Links.self, from: data)
+                return StatusResponse<Links>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Dashboard>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<Links>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch let error {
             return defaultErrorResponse
@@ -186,6 +186,34 @@ class ApiClient {
             }
             else {
                 return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch let error {
+            return defaultErrorResponse
+        }
+    }
+    
+    func fetchLinks() async -> StatusResponse<Links> {
+        let defaultErrorResponse = StatusResponse<Links>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/links") else { return defaultErrorResponse }
+        do {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            components.queryItems = [
+              URLQueryItem(name: "sort", value: "0"),
+            ]
+            
+            var request = URLRequest(url: components.url!)
+            
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(Links.self, from: data)
+                return StatusResponse<Links>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<Links>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch let error {
             return defaultErrorResponse
