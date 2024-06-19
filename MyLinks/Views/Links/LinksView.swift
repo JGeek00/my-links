@@ -25,10 +25,19 @@ struct LinksView: View {
                     }
                 }
                 else {
-                    let filtered = linksViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
-                    List(filtered ?? [], id: \.self) { item in
-                        LinkItemComponent(item: item) {
-                            openSafariView(item.url!)
+                    let filtered = linksViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil } ?? []
+                    if !filtered.isEmpty {
+                        List(filtered, id: \.self) { item in
+                            LinkItemComponent(item: item) {
+                                openSafariView(item.url!)
+                            }
+                        }
+                    }
+                    else {
+                        ContentUnavailableView {
+                            Label("No links added", systemImage: "link")
+                        } description: {
+                            Text("Save some links on Linkwarden to see them here.")
                         }
                     }
                 }
@@ -46,6 +55,7 @@ struct LinksView: View {
             .refreshable {
                 linksViewModel.loadData()
             }
+            .background(Color.listBackground)
         }
     }
 }

@@ -25,10 +25,19 @@ struct CollectionView: View {
                     }
                 }
                 else {
-                    let filtered = collectionsProvider.data?.response?.filter() { $0.name != nil && $0.createdAt != nil }
-                    List(filtered ?? [], id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            
+                    let filtered = collectionsProvider.data?.response?.filter() { $0.name != nil && $0.createdAt != nil } ?? []
+                    if !filtered.isEmpty {
+                        List(filtered, id: \.self) { item in
+                            CollectionItemComponent(collection: item) {
+                                
+                            }
+                        }
+                    }
+                    else {
+                        ContentUnavailableView {
+                            Label("No collections added", systemImage: "folder")
+                        } description: {
+                            Text("Create some collections on Linkwarden to see them here.")
                         }
                     }
                 }
@@ -46,6 +55,7 @@ struct CollectionView: View {
             .refreshable {
                 collectionsProvider.loadData()
             }
+            .background(Color.listBackground)
         }
     }
 }

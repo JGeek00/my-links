@@ -46,19 +46,31 @@ struct DashboardView: View {
                         if (dashboardViewModel.data?.response != nil) {
                             let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                             let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
-                            Section("Recent") {
-                                ForEach(filtered.uniqued(), id: \.self) { item in
-                                    LinkItemComponent(item: item) {
-                                        openSafariView(item.url!)
+                            if !filtered.isEmpty {
+                                Section("Recent") {
+                                    ForEach(filtered.uniqued(), id: \.self) { item in
+                                        LinkItemComponent(item: item) {
+                                            openSafariView(item.url!)
+                                        }
+                                    }
+                                }
+                                if !pinned.isEmpty {
+                                    Section("Pinned") {
+                                        ForEach(pinned.uniqued(), id: \.self) { item in
+                                            LinkItemComponent(item: item) {
+                                                openSafariView(item.url!)
+                                            }
+                                        }
                                     }
                                 }
                             }
-                            Section("Pinned") {
-                                ForEach(pinned.uniqued(), id: \.self) { item in
-                                    LinkItemComponent(item: item) {
-                                        openSafariView(item.url!)
-                                    }
+                            else {
+                                ContentUnavailableView {
+                                    Label("No links added", systemImage: "link")
+                                } description: {
+                                    Text("Save some links on Linkwarden to see them here.")
                                 }
+                                .listRowBackground(Color.clear)
                             }
                         }
                     }
@@ -87,6 +99,7 @@ struct DashboardView: View {
 
                 }
             }
+            .background(Color.listBackground)
         }
     }
 }
