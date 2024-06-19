@@ -116,6 +116,7 @@
 		0D55C5682C2312E7002CE99A /* LinksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksViewModel.swift; sourceTree = "<group>"; };
 		0D55C56C2C2314EB002CE99A /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		0D55C5732C2315F0002CE99A /* CollectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionItem.swift; sourceTree = "<group>"; };
+		0D55C5752C23366A002CE99A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +149,7 @@
 		0D55C4E52C219E13002CE99A /* MyLinks */ = {
 			isa = PBXGroup;
 			children = (
+				0D55C5752C23366A002CE99A /* PrivacyInfo.xcprivacy */,
 				0D55C4F12C219E14002CE99A /* MyLinks.entitlements */,
 				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
 				0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */,
