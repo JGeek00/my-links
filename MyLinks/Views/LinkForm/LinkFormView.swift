@@ -49,7 +49,7 @@ struct LinkFormView: View {
                 }
             }
             .disabled(linkFormViewModel.saving)
-            .navigationTitle("New link")
+            .navigationTitle(linkFormViewModel.editingId != nil ? "Edit link" : "New link")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -96,8 +96,10 @@ struct LinkFormView: View {
                 Text(linkFormViewModel.savingErrorMessage)
             }
         }
-        .onChange(of: linkFormViewModel.sheetOpen) {
-            linkFormViewModel.reset()
+        .onChange(of: linkFormViewModel.sheetOpen) { value in
+            if value == false {
+                linkFormViewModel.reset()
+            }
         }
     }
 }

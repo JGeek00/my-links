@@ -35,4 +35,9 @@ class Enums {
         case loading
         case error
     }
+    
+    enum LinkFormMode: String {
+        case creation
+        case editing
+    }
 }

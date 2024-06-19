@@ -5,6 +5,8 @@ class LinkFormViewModel: ObservableObject {
     
     @Published var sheetOpen = false
     
+    @Published var editingId: Int? = nil
+    
     @Published var url = ""
     @Published var name = ""
     @Published var collection = 0
@@ -41,7 +43,7 @@ class LinkFormViewModel: ObservableObject {
         
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
-            let result = await instance.createLink(body)
+            let result = editingId != nil ? await instance.editLink(linkId: editingId!, body: body) : await instance.createLink(body)
             if result.successful == true {
                 DispatchQueue.main.async {
                     self.saving = false
@@ -69,6 +71,7 @@ class LinkFormViewModel: ObservableObject {
     }
     
     func reset() {
+        self.editingId = nil
         self.url = ""
         self.name = ""
         self.collection = 0

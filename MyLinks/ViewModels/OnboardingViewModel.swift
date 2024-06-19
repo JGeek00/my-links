@@ -191,6 +191,7 @@ class OnboardingViewModel: ObservableObject {
         newInstance.port = port != "" ? port : nil
         newInstance.path = path != "" ? path : nil
         newInstance.token = token
+        newInstance.isSelfHosted = hostingMode == .selfhosted
         
         do {
             try managedContext.save()

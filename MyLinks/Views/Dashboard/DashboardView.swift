@@ -43,26 +43,20 @@ struct DashboardView: View {
                             }
                         }
                         if (dashboardViewModel.data?.response != nil) {
-                            let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil }
+                            let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                             let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                             Section("Recent") {
                                 ForEach(filtered.uniqued(), id: \.self) { item in
-                                    Button {
+                                    LinkEntry(item: item) {
                                         openSafariView(item.url!)
-                                    } label: {
-                                        LinkEntry(item: item)
                                     }
-                                    .foregroundColor(Color.foreground)
                                 }
                             }
                             Section("Pinned") {
                                 ForEach(pinned.uniqued(), id: \.self) { item in
-                                    Button {
+                                    LinkEntry(item: item) {
                                         openSafariView(item.url!)
-                                    } label: {
-                                        LinkEntry(item: item)
                                     }
-                                    .foregroundColor(Color.foreground)
                                 }
                             }
                         }
@@ -141,46 +135,69 @@ private struct SummaryEntry: View {
 
 private struct LinkEntry: View {
     var item: DashboardResponse
+    var onTap: () -> Void
     
-    init(item: DashboardResponse) {
+    init(item: DashboardResponse, onTap: @escaping () -> Void) {
         self.item = item
+        self.onTap = onTap
     }
+    
+    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
         
     var body: some View {
         let urlHost = getUrlHost(item.url!)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
-        VStack(alignment: .leading) {
-            Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
-                .lineLimit(1)
-                .fontWeight(.medium)
-            if urlHost != nil {
-                Spacer()
-                    .frame(height: 4)
-                HStack {
-                    Image(systemName: "link")
-                        .font(.system(size: 10))
-                    Text(urlHost!)
-                        .font(.system(size: 14))
-                }
-                .foregroundStyle(Color.gray)
-            }
-            if dateFormatted != nil || (item.collection?.name != nil) {
-                Spacer()
-                    .frame(height: 4)
-                HStack {
-                    Image(systemName: "folder")
-                        .font(.system(size: 10))
-                    Text(item.collection!.name!)
-                        .font(.system(size: 14))
-                    if dateFormatted != nil {
-                        Spacer()
-                        Image(systemName: "calendar")
-                            .font(.system(size: 12))
-                        Text(dateFormatted!)
+        Button {
+            onTap()
+        } label: {
+            VStack(alignment: .leading) {
+                Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
+                    .lineLimit(1)
+                    .fontWeight(.medium)
+                if urlHost != nil {
+                    Spacer()
+                        .frame(height: 4)
+                    HStack {
+                        Image(systemName: "link")
+                            .font(.system(size: 10))
+                        Text(urlHost!)
                             .font(.system(size: 14))
                     }
+                    .foregroundStyle(Color.gray)
                 }
-                .foregroundStyle(Color.gray)
+                if dateFormatted != nil || (item.collection?.name != nil) {
+                    Spacer()
+                        .frame(height: 4)
+                    HStack {
+                        Image(systemName: "folder")
+                            .font(.system(size: 10))
+                        Text(item.collection!.name!)
+                            .font(.system(size: 14))
+                        if dateFormatted != nil {
+                            Spacer()
+                            Image(systemName: "calendar")
+                                .font(.system(size: 12))
+                            Text(dateFormatted!)
+                                .font(.system(size: 14))
+                        }
+                    }
+                    .foregroundStyle(Color.gray)
+                }
+            }
+        }
+        .foregroundColor(Color.foreground)
+        .contextMenu {
+            Button("Edit", systemImage: "pencil") {
+                linkFormViewModel.editingId = item.id!
+                linkFormViewModel.url = item.url!
+                linkFormViewModel.name = item.name!
+                linkFormViewModel.description = item.description!
+                linkFormViewModel.selectedTags = item.tags!.map() { $0.name! }
+                linkFormViewModel.collection = item.collection!.id!
+                linkFormViewModel.sheetOpen = true
+            }
+            Button("Delete", systemImage: "trash", role: .destructive) {
+                
             }
         }
     }
