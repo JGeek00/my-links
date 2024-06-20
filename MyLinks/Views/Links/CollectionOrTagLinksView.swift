@@ -5,9 +5,10 @@ struct CollectionOrTagLinksView: View {
     
     init(input: CollectionOrTagLinksRequest) {
         self.input = input
+        CollectionOrTagsLinksViewModel.shared.input = input
     }
     
-    @ObservedObject private var collectionOrTagLinksViewModel = CollectionorTagsLinksViewModel()
+    @EnvironmentObject private var collectionOrTagLinksViewModel: CollectionOrTagsLinksViewModel
     
     var body: some View {
         Group {
@@ -40,7 +41,7 @@ struct CollectionOrTagLinksView: View {
                 let filtered = collectionOrTagLinksViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil } ?? []
                 if !filtered.isEmpty {
                     List(filtered, id: \.self) { item in
-                        LinkItemComponent(item: item) {
+                        LinkItemComponent(item: item, fromCollectionOrTagLinkView: true) {
                             openSafariView(item.url!)
                         }
                     }
@@ -61,7 +62,7 @@ struct CollectionOrTagLinksView: View {
         .background(Color.listBackground)
         .onAppear(perform: {
             if collectionOrTagLinksViewModel.data == nil && (input.collectionId != nil || input.tagId != nil) {
-                Task { await collectionOrTagLinksViewModel.loadData(collectionId: input.collectionId, tagId: input.tagId) }
+                Task { await collectionOrTagLinksViewModel.loadData() }
             }
         })
     }

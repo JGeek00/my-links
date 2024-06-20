@@ -6,7 +6,7 @@ class DeleteLinkProvider: ObservableObject {
     @Published var deleting = false
     @Published var deleteError = false
     
-    func deleteLink(id: Int) {
+    func deleteLink(id: Int, fromCollectionOrTagLinkView: Bool = false) {
         guard let instance = ApiClientProvider.shared.instance else { return }
         self.deleting = true
         Task {
@@ -18,6 +18,9 @@ class DeleteLinkProvider: ObservableObject {
                     if DashboardViewModel.shared.data != nil {
                         Task { await DashboardViewModel.shared.loadData() }
                         Task { await LinksViewModel.shared.loadData() }
+                        if fromCollectionOrTagLinkView == true {
+                            Task { await CollectionOrTagsLinksViewModel.shared.loadData() }
+                        }
                     }
                 }
             }

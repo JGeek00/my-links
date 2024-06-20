@@ -24,6 +24,7 @@ struct MyLinksApp: App {
                 .environmentObject(LinkFormViewModel.shared)
                 .environmentObject(CollectionFormViewModel.shared)
                 .environmentObject(DeleteLinkProvider.shared)
+                .environmentObject(CollectionOrTagsLinksViewModel.shared)
         }
     }
 }
