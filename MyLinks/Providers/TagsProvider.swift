@@ -3,7 +3,7 @@ import Foundation
 class TagsProvider: ObservableObject {
     static let shared = TagsProvider()
     
-    @Published var data: Tags? = nil
+    @Published var data: [Tag] = []
     @Published var loading = true
     @Published var error = false
     
@@ -17,7 +17,7 @@ class TagsProvider: ObservableObject {
         let result = await instance.fetchTags()
         if result.successful == true {
             DispatchQueue.main.async {
-                self.data = result.data!
+                self.data = result.data?.response ?? []
                 self.loading = false
                 self.error = false
             }
@@ -31,7 +31,7 @@ class TagsProvider: ObservableObject {
     }
     
     func reset() {
-        data = nil
+        data = []
         loading = true
         error = false
     }

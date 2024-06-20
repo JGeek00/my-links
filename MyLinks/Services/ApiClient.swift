@@ -9,8 +9,8 @@ class ApiClient {
         self.token = token
     }
     
-    func fetchDashboard() async -> StatusResponse<Links> {
-        let defaultErrorResponse = StatusResponse<Links>(successful: false, statusCode: nil, data: nil)
+    func fetchDashboard() async -> StatusResponse<LinksResponse> {
+        let defaultErrorResponse = StatusResponse<LinksResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/dashboard") else { return defaultErrorResponse }
         do {
@@ -27,19 +27,19 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(Links.self, from: data)
-                return StatusResponse<Links>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(LinksResponse.self, from: data)
+                return StatusResponse<LinksResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Links>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<LinksResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch let error {
             return defaultErrorResponse
         }
     }
     
-    func fetchCollections() async -> StatusResponse<Collections> {
-        let defaultErrorResponse = StatusResponse<Collections>(successful: false, statusCode: nil, data: nil)
+    func fetchCollections() async -> StatusResponse<CollectionsResponse> {
+        let defaultErrorResponse = StatusResponse<CollectionsResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/collections") else { return defaultErrorResponse }
         do {
@@ -52,19 +52,19 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(Collections.self, from: data)
-                return StatusResponse<Collections>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(CollectionsResponse.self, from: data)
+                return StatusResponse<CollectionsResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Collections>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<CollectionsResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch let error {
             return defaultErrorResponse
         }
     }
     
-    func fetchTags() async -> StatusResponse<Tags> {
-        let defaultErrorResponse = StatusResponse<Tags>(successful: false, statusCode: nil, data: nil)
+    func fetchTags() async -> StatusResponse<TagsResponse> {
+        let defaultErrorResponse = StatusResponse<TagsResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/tags") else { return defaultErrorResponse }
         do {
@@ -77,11 +77,11 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(Tags.self, from: data)
-                return StatusResponse<Tags>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(TagsResponse.self, from: data)
+                return StatusResponse<TagsResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Tags>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<TagsResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch let error {
             return defaultErrorResponse
@@ -192,8 +192,8 @@ class ApiClient {
         }
     }
     
-    func fetchLinks(collectionId: Int? = nil, tagId: Int? = nil, pinnedOnly: Bool? = nil, recentOnly: Bool? = nil) async -> StatusResponse<Links> {
-        let defaultErrorResponse = StatusResponse<Links>(successful: false, statusCode: nil, data: nil)
+    func fetchLinks(collectionId: Int? = nil, tagId: Int? = nil, pinnedOnly: Bool? = nil, recentOnly: Bool? = nil) async -> StatusResponse<LinksResponse> {
+        let defaultErrorResponse = StatusResponse<LinksResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links") else { return defaultErrorResponse }
         do {
@@ -222,11 +222,11 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(Links.self, from: data)
-                return StatusResponse<Links>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(LinksResponse.self, from: data)
+                return StatusResponse<LinksResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Links>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<LinksResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch let error {
             return defaultErrorResponse

@@ -3,7 +3,7 @@ import Foundation
 class LinksViewModel: ObservableObject {
     static let shared = LinksViewModel()
     
-    @Published var data: Links? = nil
+    @Published var data: [Link] = []
     @Published var loading = true
     @Published var error = false
     
@@ -15,7 +15,7 @@ class LinksViewModel: ObservableObject {
         let dashboardResult = await instance.fetchLinks()
         if dashboardResult.successful == true {
             DispatchQueue.main.async {
-                self.data = dashboardResult.data!
+                self.data = dashboardResult.data?.response ?? []
                 self.loading = false
                 self.error = false
             }

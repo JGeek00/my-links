@@ -8,7 +8,7 @@ struct TagsPickerView: View {
     @State private var newTagName = ""
     
     var body: some View {
-        let filtered = tagsProvider.data?.response?.filter() { $0.name != nil } ?? []
+        let filtered = tagsProvider.data.filter() { $0.name != nil }
         let mapped = (filtered.map() { $0.name! }) + linkFormViewModel.localTags
         Group {
             if mapped.isEmpty {

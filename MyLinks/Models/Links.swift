@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - Links
-struct Links: Codable {
+struct LinksResponse: Codable {
     let response: [Link]?
 }
 

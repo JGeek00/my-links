@@ -3,7 +3,7 @@ import Foundation
 class DashboardViewModel: ObservableObject { 
     static let shared = DashboardViewModel()
     
-    @Published var data: Links? = nil
+    @Published var data: [Link] = []
     @Published var loading = true
     @Published var error = false
     
@@ -15,7 +15,7 @@ class DashboardViewModel: ObservableObject {
         let dashboardResult = await instance.fetchDashboard()
         if dashboardResult.successful == true {
             DispatchQueue.main.async {
-                self.data = dashboardResult.data!
+                self.data = dashboardResult.data?.response ?? []
                 self.loading = false
                 self.error = false
             }

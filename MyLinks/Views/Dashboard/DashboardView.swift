@@ -34,27 +34,49 @@ struct DashboardView: View {
                     }
                 }
                 else {
+                    let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                    let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                     List {
                         Section {
                             HStack {
-                                SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.data?.response?.uniqued().count ?? 0, color: Color.green, status: .loaded)
+                                SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.data.uniqued().count, color: Color.green, status: .loaded)
                                 Spacer()
                                     .frame(width: 12)
-                                SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data?.response?.count ?? 0, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
+                                SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
                                 Spacer()
                                     .frame(width: 12)
-                                SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data?.response?.count ?? 0, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
+                                SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
                             }
                         }
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                         .padding(.top, 16)
-                        if (dashboardViewModel.data?.response != nil) {
-                            let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
-                            let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
-                            if !filtered.isEmpty {
+                        if !filtered.isEmpty {
+                            Section {
+                                ForEach(filtered.uniqued(), id: \.self) { item in
+                                    LinkItemComponent(item: item) {
+                                        openSafariView(item.url!)
+                                    } onTaskCompleted: {
+                                        dashboardViewModel.reload()
+                                    }
+                                }
+                            } header: {
+                                HStack {
+                                    Text("Recent")
+                                    Spacer()
+                                    Button {
+                                        let request = LinksFilteredRequest(name: LocalizedStringKey("Recent").localizedString(), mode: .recent, id: nil)
+                                        navigationPath.append(request)
+                                    } label: {
+                                        Text("View all")
+                                        Image(systemName: "chevron.right")
+                                    }
+                                    .font(.system(size: 12))
+                                }
+                            }
+                            if !pinned.isEmpty {
                                 Section {
-                                    ForEach(filtered.uniqued(), id: \.self) { item in
+                                    ForEach(pinned.uniqued(), id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
                                         } onTaskCompleted: {
@@ -63,54 +85,30 @@ struct DashboardView: View {
                                     }
                                 } header: {
                                     HStack {
-                                        Text("Recent")
+                                        Text("Pinned")
                                         Spacer()
                                         Button {
-                                            let request = LinksFilteredRequest(name: LocalizedStringKey("Recent").localizedString(), mode: .recent, id: nil)
+                                            let request = LinksFilteredRequest(name: LocalizedStringKey("Pinned").localizedString(), mode: .pinned, id: nil)
                                             navigationPath.append(request)
                                         } label: {
                                             Text("View all")
                                             Image(systemName: "chevron.right")
                                         }
-                                        .font(.system(size: 12))
                                     }
+                                    .font(.system(size: 12))
                                 }
-                                if !pinned.isEmpty {
-                                    Section {
-                                        ForEach(pinned.uniqued(), id: \.self) { item in
-                                            LinkItemComponent(item: item) {
-                                                openSafariView(item.url!)
-                                            } onTaskCompleted: {
-                                                dashboardViewModel.reload()
-                                            }
-                                        }
-                                    } header: {
-                                        HStack {
-                                            Text("Pinned")
-                                            Spacer()
-                                            Button {
-                                                let request = LinksFilteredRequest(name: LocalizedStringKey("Pinned").localizedString(), mode: .pinned, id: nil)
-                                                navigationPath.append(request)
-                                            } label: {
-                                                Text("View all")
-                                                Image(systemName: "chevron.right")
-                                            }
-                                        }
-                                        .font(.system(size: 12))
-                                    }
-                                }
-                            }
-                            else {
-                                ContentUnavailableView {
-                                    Label("No links added", systemImage: "link")
-                                } description: {
-                                    Text("Save some links on Linkwarden to see them here.")
-                                }
-                                .listRowBackground(Color.clear)
                             }
                         }
+                        else {
+                            ContentUnavailableView {
+                                Label("No links added", systemImage: "link")
+                            } description: {
+                                Text("Save some links on Linkwarden to see them here.")
+                            }
+                            .listRowBackground(Color.clear)
+                        }
                     }
-                    .animation(.default, value: dashboardViewModel.data?.response)
+                    .animation(.default, value: dashboardViewModel.data)
                     .refreshable {
                         await dashboardViewModel.loadData()
                     }
@@ -144,7 +142,7 @@ struct DashboardView: View {
             }
         }
         .onAppear(perform: {
-            if dashboardViewModel.data == nil {
+            if dashboardViewModel.data.isEmpty {
                 Task { await dashboardViewModel.loadData() }
             }
         })

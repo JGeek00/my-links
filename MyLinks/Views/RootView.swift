@@ -44,10 +44,10 @@ struct RootView: View {
                         }
                 }
                 .onAppear(perform: {
-                    if collectionsProvider.data == nil {
+                    if collectionsProvider.data.isEmpty {
                         Task { await collectionsProvider.loadData() }
                     }
-                    if tagsProvider.data == nil {
+                    if tagsProvider.data.isEmpty {
                         Task { await tagsProvider.loadData() }
                     }
                 })

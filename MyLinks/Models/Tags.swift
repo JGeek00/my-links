@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - Tags
-struct Tags: Codable {
+struct TagsResponse: Codable {
     let response: [Tag]?
 }
 

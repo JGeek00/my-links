@@ -27,7 +27,7 @@ class LinkFormViewModel: ObservableObject {
     @Published var finishedEditingFlag = false
     
     func onSave() {
-        guard let collections = CollectionsProvider.shared.data?.response else { return }
+        let collections = CollectionsProvider.shared.data
         
         if NSPredicate(format: "SELF MATCHES %@", Regexps.url).evaluate(with: url) == false {
             self.validationErrorMessage = "The introduced URL is not valid."

@@ -3,7 +3,7 @@ import Foundation
 class CollectionsProvider: ObservableObject {
     static let shared = CollectionsProvider()
     
-    @Published var data: Collections? = nil
+    @Published var data: [Collection] = []
     @Published var loading = true
     @Published var error = false
     
@@ -20,7 +20,7 @@ class CollectionsProvider: ObservableObject {
         let collectionsResult = await instance.fetchCollections()
         if collectionsResult.successful == true {
             DispatchQueue.main.async {
-                self.data = collectionsResult.data!
+                self.data = collectionsResult.data?.response ?? []
                 self.loading = false
                 self.error = false
             }
@@ -43,10 +43,10 @@ class CollectionsProvider: ObservableObject {
                     self.deleting = false
                     self.deleteError = false
                     Task { await self.loadData() }
-                    if LinksViewModel.shared.data != nil {
+                    if !LinksViewModel.shared.data.isEmpty {
                         Task { await LinksViewModel.shared.loadData() }
                     }
-                    if DashboardViewModel.shared.data != nil {
+                    if !DashboardViewModel.shared.data.isEmpty {
                         Task { await DashboardViewModel.shared.loadData() }
                     }
                 }
@@ -61,7 +61,7 @@ class CollectionsProvider: ObservableObject {
     }
     
     func reset() {
-        data = nil
+        data = []
         loading = true
         error = false
         deleting = false

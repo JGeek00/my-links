@@ -29,7 +29,7 @@ struct TagsView: View {
                     }
                 }
                 else {
-                    let filtered = tagsProvider.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil } ?? []
+                    let filtered = tagsProvider.data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             TagItemComponent(tag: item) {

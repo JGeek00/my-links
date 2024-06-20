@@ -29,7 +29,7 @@ struct LinksView: View {
                     }
                 }
                 else {
-                    let filtered = linksViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil } ?? []
+                    let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             LinkItemComponent(item: item) {
@@ -66,7 +66,7 @@ struct LinksView: View {
             .background(Color.listBackground)
         }
         .onAppear(perform: {
-            if linksViewModel.data == nil {
+            if linksViewModel.data.isEmpty {
                 Task { await linksViewModel.loadData() }
             }
         })

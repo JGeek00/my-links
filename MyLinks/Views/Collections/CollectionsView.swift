@@ -31,7 +31,7 @@ struct CollectionsView: View {
                     }
                 }
                 else {
-                    let filtered = collectionsProvider.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil } ?? []
+                    let filtered = collectionsProvider.data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             CollectionItemComponent(collection: item) {

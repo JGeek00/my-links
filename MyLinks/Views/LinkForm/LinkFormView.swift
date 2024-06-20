@@ -19,16 +19,16 @@ struct LinkFormView: View {
                     TextField("Description", text: $linkFormViewModel.description, axis: .vertical)
                 }
                 Section {
-                    if collectionsProvider.data?.response != nil {
+                    if !collectionsProvider.data.isEmpty {
                         Picker("Collection", selection: $linkFormViewModel.collection) {
-                            let filtered = collectionsProvider.data!.response!.filter() { $0.name != nil && $0.id != nil }
+                            let filtered = collectionsProvider.data.filter() { $0.name != nil && $0.id != nil }
                             ForEach(filtered, id: \.self) { item in
                                 Text(item.name!)
                                     .tag(item.id!)
                             }
                         }
                     }
-                    if tagsProvider.data?.response != nil {
+                    if !tagsProvider.data.isEmpty {
                         NavigationLink {
                             TagsPickerView()
                         } label: {

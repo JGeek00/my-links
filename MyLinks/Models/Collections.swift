@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - Collections
-struct Collections: Codable {
+struct CollectionsResponse: Codable {
     let response: [Collection]?
 }
 

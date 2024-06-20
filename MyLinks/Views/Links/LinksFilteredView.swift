@@ -39,7 +39,7 @@ struct LinksFilteredView: View {
                 }
             }
             else {
-                let filtered = linksFilteredViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil } ?? []
+                let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                 if !filtered.isEmpty {
                     List(filtered, id: \.self) { item in
                         LinkItemComponent(item: item) {
@@ -64,7 +64,7 @@ struct LinksFilteredView: View {
         }
         .background(Color.listBackground)
         .onAppear(perform: {
-            if linksFilteredViewModel.data == nil {
+            if linksFilteredViewModel.data.isEmpty {
                 Task { await linksFilteredViewModel.loadData() }
             }
         })

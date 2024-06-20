@@ -7,7 +7,7 @@ class LinksFilteredViewModel: ObservableObject {
         self.input = input
     }
     
-    @Published var data: Links? = nil
+    @Published var data: [Link] = []
     @Published var loading = true
     @Published var error = false
     
@@ -28,7 +28,7 @@ class LinksFilteredViewModel: ObservableObject {
         )
         if dashboardResult.successful == true {
             DispatchQueue.main.async {
-                self.data = dashboardResult.data!
+                self.data = dashboardResult.data?.response ?? []
                 self.loading = false
                 self.error = false
             }
