@@ -58,7 +58,7 @@ struct LinksView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        linkFormViewModel.editingLink = nil
+                        linkFormViewModel.reset()
                         linkFormViewModel.sheetOpen = true
                     } label: {
                         Image(systemName: "plus")

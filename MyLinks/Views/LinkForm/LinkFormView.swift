@@ -13,6 +13,7 @@ struct LinkFormView: View {
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                         .keyboardType(.URL)
+                        .disabled(linkFormViewModel.editingLink != nil)
                 }
                 Section {
                     TextField("Name", text: $linkFormViewModel.name)
@@ -96,8 +97,8 @@ struct LinkFormView: View {
                 Text(linkFormViewModel.savingErrorMessage)
             }
         }
-        .onChange(of: linkFormViewModel.sheetOpen) { value in
-            if value == false {
+        .onChange(of: linkFormViewModel.sheetOpen) {
+            if linkFormViewModel.sheetOpen == false {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     linkFormViewModel.reset()
                 }

@@ -66,7 +66,7 @@ struct CollectionsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        collectionFormViewModel.editingId = nil
+                        collectionFormViewModel.reset()
                         collectionFormViewModel.sheetOpen = true
                     } label: {
                         Image(systemName: "plus")
