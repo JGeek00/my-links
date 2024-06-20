@@ -55,19 +55,14 @@ struct DashboardView: View {
                                     ForEach(filtered.uniqued(), id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
-                                        } onDelete: {
-                                            dashboardViewModel.deleteLink(id: item.id!)
                                         }
                                     }
                                 }
                                 if !pinned.isEmpty {
                                     Section("Pinned") {
                                         ForEach(pinned.uniqued(), id: \.self) { item in
-                                            
                                             LinkItemComponent(item: item) {
                                                 openSafariView(item.url!)
-                                            } onDelete: {
-                                                dashboardViewModel.deleteLink(id: item.id!)
                                             }
                                         }
                                     }
@@ -111,16 +106,6 @@ struct DashboardView: View {
                 }
             }
             .background(Color.listBackground)
-            .customAlert(isPresented: $dashboardViewModel.deleting, content: {
-                ProgressView()
-            })
-            .alert("Error", isPresented: $dashboardViewModel.deleteError) {
-                Button("Close", role: .cancel) {
-                    dashboardViewModel.deleteError.toggle()
-                }
-            } message: {
-                Text("The link could not be deleted due to an error.")
-            }
         }
         .onAppear(perform: {
             if dashboardViewModel.data == nil {

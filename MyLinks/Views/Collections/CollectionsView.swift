@@ -7,8 +7,10 @@ struct CollectionsView: View {
     
     init() {}
     
+    @State private var navigationPath = NavigationPath()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             Group {
                 if collectionsProvider.loading == true {
                     Group {
@@ -33,7 +35,7 @@ struct CollectionsView: View {
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             CollectionItemComponent(collection: item) {
-                                
+                                navigationPath.append(CollectionOrTagLinksRequest(name: item.name!, tagId: nil, collectionId: item.id!))
                             } onDelete: {
                                 collectionsProvider.deleteCollection(id: item.id!)
                             }
@@ -72,6 +74,9 @@ struct CollectionsView: View {
                 }
             } message: {
                 Text("The collection could not be deleted due to an error.")
+            }
+            .navigationDestination(for: CollectionOrTagLinksRequest.self) { value in
+                CollectionOrTagLinksView(input: value)
             }
         }
     }

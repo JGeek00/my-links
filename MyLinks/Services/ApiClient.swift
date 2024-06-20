@@ -192,15 +192,22 @@ class ApiClient {
         }
     }
     
-    func fetchLinks() async -> StatusResponse<Links> {
+    func fetchLinks(collectionId: Int? = nil, tagId: Int? = nil) async -> StatusResponse<Links> {
         let defaultErrorResponse = StatusResponse<Links>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links") else { return defaultErrorResponse }
         do {
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-            components.queryItems = [
+            var queryItems = [
               URLQueryItem(name: "sort", value: "0"),
             ]
+            if collectionId != nil {
+                queryItems.append(URLQueryItem(name: "collectionId", value: "\(collectionId!)"))
+            }
+            if tagId != nil {
+                queryItems.append(URLQueryItem(name: "tagId", value: "\(tagId!)"))
+            }
+            components.queryItems = queryItems
             
             var request = URLRequest(url: components.url!)
             

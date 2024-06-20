@@ -23,6 +23,7 @@ struct MyLinksApp: App {
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkFormViewModel.shared)
                 .environmentObject(CollectionFormViewModel.shared)
+                .environmentObject(DeleteLinkProvider.shared)
         }
     }
 }

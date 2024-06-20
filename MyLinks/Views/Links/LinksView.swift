@@ -34,8 +34,6 @@ struct LinksView: View {
                         List(filtered, id: \.self) { item in
                             LinkItemComponent(item: item) {
                                 openSafariView(item.url!)
-                            } onDelete: {
-                                linksViewModel.deleteLink(id: item.id!)
                             }
                         }
                     }
@@ -63,16 +61,6 @@ struct LinksView: View {
                 await linksViewModel.loadData()
             }
             .background(Color.listBackground)
-            .customAlert(isPresented: $linksViewModel.deleting, content: {
-                ProgressView()
-            })
-            .alert("Error", isPresented: $linksViewModel.deleteError) {
-                Button("Close", role: .cancel) {
-                    linksViewModel.deleteError.toggle()
-                }
-            } message: {
-                Text("The link could not be deleted due to an error.")
-            }
         }
         .onAppear(perform: {
             if linksViewModel.data == nil {

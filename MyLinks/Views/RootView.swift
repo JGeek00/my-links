@@ -1,10 +1,12 @@
 import SwiftUI
+import CustomAlert
 
 struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
+    @EnvironmentObject private var deleteLinkProvider: DeleteLinkProvider
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -55,6 +57,16 @@ struct RootView: View {
                 .sheet(isPresented: $collectionFormViewModel.sheetOpen, content: {
                     CollectionFormView()
                 })
+                .customAlert(isPresented: $deleteLinkProvider.deleting, content: {
+                    ProgressView()
+                })
+                .alert("Error", isPresented: $deleteLinkProvider.deleteError) {
+                    Button("Close", role: .cancel) {
+                        deleteLinkProvider.deleteError.toggle()
+                    }
+                } message: {
+                    Text("The link could not be deleted due to an error.")
+                }
             }
         }
         .fontDesign(.rounded)

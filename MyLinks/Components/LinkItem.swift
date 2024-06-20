@@ -3,15 +3,14 @@ import SwiftUI
 struct LinkItemComponent: View {
     var item: Link
     var onTap: () -> Void
-    var onDelete: () -> Void
     
-    init(item: Link, onTap: @escaping () -> Void, onDelete: @escaping () -> Void) {
+    init(item: Link, onTap: @escaping () -> Void) {
         self.item = item
         self.onTap = onTap
-        self.onDelete = onDelete
     }
     
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @EnvironmentObject private var deleteLinkProvider: DeleteLinkProvider
     @State private var showDeleteAlert = false
         
     var body: some View {
@@ -75,7 +74,7 @@ struct LinkItemComponent: View {
                 showDeleteAlert.toggle()
             }
             Button("Delete", role: .destructive) {
-                onDelete()
+                deleteLinkProvider.deleteLink(id: item.id!)
             }
         } message: {
             Text("This link will be deleted. This action is not reversible.")

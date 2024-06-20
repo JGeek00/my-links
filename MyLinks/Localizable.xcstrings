@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "404" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "404"
+          }
+        }
+      }
+    },
     "About the app" : {
       "localizations" : {
         "es" : {
@@ -96,7 +106,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cancelar."
+            "value" : "Cancelar"
           }
         }
       }
@@ -607,6 +617,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Repositorio"
+          }
+        }
+      }
+    },
+    "Requested links not found." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los enlaces solicitados no se han encontrado."
           }
         }
       }

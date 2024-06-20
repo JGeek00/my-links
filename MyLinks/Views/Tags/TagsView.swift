@@ -2,12 +2,13 @@ import SwiftUI
 import CustomAlert
 
 struct TagsView: View {
-    @EnvironmentObject private var tagsProvider: TagsProvider
-    
     init() {}
     
+    @EnvironmentObject private var tagsProvider: TagsProvider
+    @State private var navigationPath = NavigationPath()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             Group {
                 if tagsProvider.loading == true {
                     Group {
@@ -32,7 +33,7 @@ struct TagsView: View {
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             TagItemComponent(tag: item) {
-                                
+                                navigationPath.append(CollectionOrTagLinksRequest(name: item.name!, tagId: item.id!, collectionId: nil))
                             }
                         }
                     }
@@ -50,6 +51,9 @@ struct TagsView: View {
                 await tagsProvider.loadData()
             }
             .background(Color.listBackground)
+            .navigationDestination(for: CollectionOrTagLinksRequest.self) { value in
+                CollectionOrTagLinksView(input: value)
+            }
         }
     }
 }
