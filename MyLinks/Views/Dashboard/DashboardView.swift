@@ -121,7 +121,7 @@ struct DashboardView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button {
-                            linkFormViewModel.editingId = nil
+                            linkFormViewModel.editingLink = nil
                             linkFormViewModel.sheetOpen.toggle()
                         } label: {
                             Label("New link", systemImage: "link")

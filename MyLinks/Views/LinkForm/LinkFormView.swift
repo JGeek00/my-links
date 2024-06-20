@@ -49,7 +49,7 @@ struct LinkFormView: View {
                 }
             }
             .disabled(linkFormViewModel.saving)
-            .navigationTitle(linkFormViewModel.editingId != nil ? "Edit link" : "New link")
+            .navigationTitle(linkFormViewModel.editingLink != nil ? "Edit link" : "New link")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

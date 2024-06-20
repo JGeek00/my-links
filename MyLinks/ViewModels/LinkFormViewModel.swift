@@ -6,7 +6,7 @@ class LinkFormViewModel: ObservableObject {
     
     @Published var sheetOpen = false
     
-    @Published var editingId: Int? = nil
+    @Published var editingLink: Link? = nil
     
     @Published var url = ""
     @Published var name = ""
@@ -21,6 +21,10 @@ class LinkFormViewModel: ObservableObject {
     @Published var saving = false
     @Published var savingErrorMessage = ""
     @Published var savingErrorAlert = false
+    
+    // This flag is used on the LinksFilteredView to reload the data after editing
+    // On LinksFilteredView there's an onChange that reloads the data when this flag value changes
+    @Published var finishedEditingFlag = false
     
     func onSave() {
         guard let collections = CollectionsProvider.shared.data?.response else { return }
@@ -39,14 +43,14 @@ class LinkFormViewModel: ObservableObject {
             description: description != "" ? description : nil,
             tags: selectedTags.map() { TagCreation(name: $0) },
             collection: CollectionCreation(id: col.id, name: col.name, ownerId: col.ownerId),
-            pinnedBy: []
+            pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequest(id: $0.id!) } : []
         )
     
         self.saving = true
         
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
-            let result = editingId != nil ? await instance.editLink(linkId: editingId!, body: body) : await instance.createLink(body)
+            let result = editingLink != nil ? await instance.editLink(linkId: editingLink!.id!, body: body) : await instance.createLink(body)
             if result.successful == true {
                 DispatchQueue.main.async {
                     self.saving = false
@@ -55,6 +59,7 @@ class LinkFormViewModel: ObservableObject {
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await DashboardViewModel.shared.loadData() }
                     Task { await LinksViewModel.shared.loadData() }
+                    self.finishedEditingFlag.toggle()
                 }
             }
             else {
@@ -76,7 +81,7 @@ class LinkFormViewModel: ObservableObject {
     }
     
     func reset() {
-        self.editingId = nil
+        self.editingLink = nil
         self.url = ""
         self.name = ""
         self.collection = 0

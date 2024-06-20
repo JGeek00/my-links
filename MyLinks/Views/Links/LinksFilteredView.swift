@@ -4,6 +4,7 @@ struct LinksFilteredView: View {
     var input: LinksFilteredRequest
     
     @ObservedObject private var linksFilteredViewModel: LinksFilteredViewModel
+    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     
     init(input: LinksFilteredRequest) {
         self.input = input
@@ -67,5 +68,9 @@ struct LinksFilteredView: View {
                 Task { await linksFilteredViewModel.loadData() }
             }
         })
+        .onChange(of: linkFormViewModel.finishedEditingFlag) {
+            // Reload the data when this flag changes
+            Task { await linksFilteredViewModel.loadData() }
+        }
     }
 }
