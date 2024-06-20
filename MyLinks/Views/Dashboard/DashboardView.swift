@@ -39,7 +39,7 @@ struct DashboardView: View {
                     List {
                         Section {
                             HStack {
-                                SummaryEntry(icon: "link", label: "Links", value: dashboardViewModel.data.uniqued().count, color: Color.green, status: .loaded)
+                                SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: .loaded)
                                 Spacer()
                                     .frame(width: 12)
                                 SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
