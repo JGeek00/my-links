@@ -58,7 +58,7 @@ struct LinkFormView: View {
                     } label: {
                         Image(systemName: "xmark")
                             .fontWeight(.semibold)
-                            .foregroundColor(Color.listItemValue)
+                            .foregroundColor(Color.foreground.opacity(0.5))
                     }
                     .buttonStyle(BorderedButtonStyle())
                     .clipShape(Circle())

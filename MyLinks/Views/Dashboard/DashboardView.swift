@@ -156,7 +156,7 @@ private struct SummaryEntry: View {
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color.white)
+        .background(Color.listItemBackground)
         .cornerRadius(12)
     }
 }
