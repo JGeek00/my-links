@@ -19,7 +19,7 @@ class LinkManagerProvider: ObservableObject {
                 self.processing = false
                 self.errorMessage = ""
                 self.errorAlert = false
-                if DashboardViewModel.shared.data != nil {
+                if !DashboardViewModel.shared.data.isEmpty {
                     Task { await DashboardViewModel.shared.loadData() }
                     Task { await LinksViewModel.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
@@ -31,7 +31,7 @@ class LinkManagerProvider: ObservableObject {
         else {
             DispatchQueue.main.async {
                 self.processing = false
-                self.errorMessage = LocalizedStringKey("The link could not be deleted due to an error.").localizedString()
+                self.errorMessage = String(localized: "The link could not be deleted due to an error.")
                 self.errorAlert = true
             }
             return false
@@ -57,7 +57,7 @@ class LinkManagerProvider: ObservableObject {
                 self.processing = false
                 self.errorMessage = ""
                 self.errorAlert = false
-                if DashboardViewModel.shared.data != nil {
+                if !DashboardViewModel.shared.data.isEmpty {
                     Task { await DashboardViewModel.shared.loadData() }
                     Task { await LinksViewModel.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
@@ -70,10 +70,10 @@ class LinkManagerProvider: ObservableObject {
             DispatchQueue.main.async {
                 self.processing = false
                 if link.pinnedBy!.isEmpty {
-                    self.errorMessage = LocalizedStringKey("The link could not be pinned due to an error.").localizedString()
+                    self.errorMessage = String(localized: "The link could not be pinned due to an error.")
                 }
                 else {
-                    self.errorMessage = LocalizedStringKey("The link could not be unpinned due to an error.").localizedString()
+                    self.errorMessage = String(localized: "The link could not be unpinned due to an error.")
                 }
                 self.errorAlert = true
             }

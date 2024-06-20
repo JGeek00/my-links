@@ -63,7 +63,7 @@ struct TagsView: View {
             .refreshable {
                 await tagsProvider.loadData()
             }
-            .searchable(text: $searchText)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .background(Color.listBackground)
             .navigationDestination(for: LinksFilteredRequest.self) { value in
                 LinksFilteredView(input: value)

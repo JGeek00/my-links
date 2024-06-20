@@ -130,28 +130,28 @@ class OnboardingViewModel: ObservableObject {
         if hostingMode == .selfhosted {
             let validIpDomain = validateIpDomain(value: ipDomain)
             if validIpDomain == false {
-                invalidValuesMessage = LocalizedStringKey("Invalid IP or domain.").localizedString()
+                invalidValuesMessage = String(localized: "Invalid IP or domain.")
                 invalidValuesAlert.toggle()
                 return
             }
             
             let validPort = validatePort(value: port)
             if validPort == false {
-                invalidValuesMessage = LocalizedStringKey("Invalid port.").localizedString()
+                invalidValuesMessage = String(localized: "Invalid port.")
                 invalidValuesAlert.toggle()
                 return
             }
             
             let validPath = validatePath(value: path)
             if validPath == false {
-                invalidValuesMessage = LocalizedStringKey("Invalid path.").localizedString()
+                invalidValuesMessage = String(localized: "Invalid path.")
                 invalidValuesAlert.toggle()
                 return
             }
         }
         
         if token == "" {
-            invalidValuesMessage = LocalizedStringKey("Authentication token is required.").localizedString()
+            invalidValuesMessage = String(localized: "Authentication token is required.")
             invalidValuesAlert.toggle()
             return
         }
@@ -165,7 +165,7 @@ class OnboardingViewModel: ObservableObject {
             }
             guard let statusCode = result.statusCode else {
                 DispatchQueue.main.async {
-                    self.connectionErrorMessage = LocalizedStringKey("Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid.").localizedString()
+                    self.connectionErrorMessage = String(localized: "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid.")
                     self.connectionErrorAlert.toggle()
                 }
                 return
@@ -182,13 +182,13 @@ class OnboardingViewModel: ObservableObject {
             }
             else if statusCode == 401 {
                 DispatchQueue.main.async {
-                    self.connectionErrorMessage = LocalizedStringKey("Authentication error. Check your authentication token.").localizedString()
+                    self.connectionErrorMessage = String(localized: "Authentication error. Check your authentication token.")
                     self.connectionErrorAlert.toggle()
                 }
             }
             else {
                 DispatchQueue.main.async {
-                    self.connectionErrorMessage = LocalizedStringKey("Error \(statusCode).").localizedString()
+                    self.connectionErrorMessage = "Error \(statusCode)."
                     self.connectionErrorAlert.toggle()
                 }
             }

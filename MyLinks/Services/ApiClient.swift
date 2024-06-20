@@ -33,7 +33,7 @@ class ApiClient {
             else {
                 return StatusResponse<LinksResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -58,7 +58,7 @@ class ApiClient {
             else {
                 return StatusResponse<CollectionsResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -83,7 +83,7 @@ class ApiClient {
             else {
                 return StatusResponse<TagsResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -109,7 +109,7 @@ class ApiClient {
             else {
                 return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -135,7 +135,7 @@ class ApiClient {
             else {
                 return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -161,7 +161,7 @@ class ApiClient {
             else {
                 return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -187,7 +187,7 @@ class ApiClient {
             else {
                 return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -245,7 +245,7 @@ class ApiClient {
             else {
                 return StatusResponse<LinksResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -270,7 +270,7 @@ class ApiClient {
             else {
                 return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -295,7 +295,7 @@ class ApiClient {
             else {
                 return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }

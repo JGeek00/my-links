@@ -20,6 +20,7 @@ struct TagItemComponent: View {
                 Text(tag.name!)
                     .lineLimit(1)
                     .fontWeight(.medium)
+                    .animation(.default, value: tag.name!)
                 Spacer()
                     .frame(height: 6)
                 HStack {
@@ -28,6 +29,7 @@ struct TagItemComponent: View {
                             .font(.system(size: 12))
                         Text(dateFormatted!)
                             .font(.system(size: 14))
+                            .animation(.default, value: dateFormatted!)
                         Spacer()
                     }
                     if tag._count?.links != nil {
@@ -36,6 +38,7 @@ struct TagItemComponent: View {
                             .font(.system(size: 12))
                         Text(String(tag._count!.links!))
                             .font(.system(size: 14))
+                            .animation(.default, value: tag._count!.links!)
                     }
                 }
                 .foregroundStyle(Color.gray)

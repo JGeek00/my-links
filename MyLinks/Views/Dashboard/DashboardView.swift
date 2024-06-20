@@ -65,7 +65,7 @@ struct DashboardView: View {
                                     Text("Recent")
                                     Spacer()
                                     Button {
-                                        let request = LinksFilteredRequest(name: LocalizedStringKey("Recent").localizedString(), mode: .recent, id: nil)
+                                        let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
                                         navigationPath.append(request)
                                     } label: {
                                         Text("View all")
@@ -88,7 +88,7 @@ struct DashboardView: View {
                                         Text("Pinned")
                                         Spacer()
                                         Button {
-                                            let request = LinksFilteredRequest(name: LocalizedStringKey("Pinned").localizedString(), mode: .pinned, id: nil)
+                                            let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
                                             navigationPath.append(request)
                                         } label: {
                                             Text("View all")

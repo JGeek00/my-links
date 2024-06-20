@@ -76,7 +76,7 @@ struct CollectionsView: View {
             .refreshable {
                 await collectionsProvider.loadData()
             }
-            .searchable(text: $searchText)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .background(Color.listBackground)
             .customAlert(isPresented: $collectionsProvider.deleting, content: {
                 ProgressView()

@@ -61,8 +61,8 @@ struct CollectionFormView: View {
                 Text(collectionFormViewModel.savingErrorMessage)
             }
         }
-        .onChange(of: collectionFormViewModel.sheetOpen) { value in
-            if value == false {
+        .onChange(of: collectionFormViewModel.sheetOpen) {
+            if collectionFormViewModel.sheetOpen == false {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     collectionFormViewModel.reset()
                 }

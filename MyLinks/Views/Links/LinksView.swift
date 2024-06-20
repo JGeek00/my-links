@@ -68,7 +68,7 @@ struct LinksView: View {
             .refreshable {
                 await linksViewModel.loadData()
             }
-            .searchable(text: $linksViewModel.searchFieldValue, isPresented: $linksViewModel.searchPresented)
+            .searchable(text: $linksViewModel.searchFieldValue, isPresented: $linksViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
             .onSubmit(of: .search) {
                 linksViewModel.search()
             }

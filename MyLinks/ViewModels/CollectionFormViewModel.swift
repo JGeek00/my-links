@@ -45,14 +45,14 @@ class CollectionFormViewModel: ObservableObject {
                 guard let statusCode = result.statusCode else {
                     DispatchQueue.main.async {
                         self.saving = false
-                        self.savingErrorMessage = LocalizedStringKey("Cannot reach the server. Check your Internet connection.").localizedString()
+                        self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
                         self.savingErrorAlert = true
                     }
                     return
                 }
                 DispatchQueue.main.async {
                     self.saving = false
-                    self.savingErrorMessage = LocalizedStringKey("Error \(statusCode).").localizedString()
+                    self.savingErrorMessage = "Error \(statusCode)."
                     self.savingErrorAlert = true
                 }
             }
