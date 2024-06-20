@@ -8,6 +8,7 @@ struct CollectionsView: View {
     init() {}
     
     @State private var navigationPath = NavigationPath()
+    @State private var searchText = ""
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -32,21 +33,31 @@ struct CollectionsView: View {
                 }
                 else {
                     let filtered = collectionsProvider.data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
-                    if !filtered.isEmpty {
-                        List(filtered, id: \.self) { item in
-                            CollectionItemComponent(collection: item) {
-                                navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                            } onDelete: {
-                                collectionsProvider.deleteCollection(id: item.id!)
-                            }
-                        }
-                        .animation(.default, value: filtered)
-                    }
-                    else {
+                    if filtered.isEmpty {
                         ContentUnavailableView {
                             Label("No collections added", systemImage: "folder")
                         } description: {
                             Text("Create some collections on Linkwarden to see them here.")
+                        }
+                    }
+                    else {
+                        let searched = searchText != "" ? filtered.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : filtered
+                        if !searched.isEmpty {
+                            List(searched, id: \.self) { item in
+                                CollectionItemComponent(collection: item) {
+                                    navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                } onDelete: {
+                                    collectionsProvider.deleteCollection(id: item.id!)
+                                }
+                            }
+                            .animation(.default, value: searched)
+                        }
+                        else {
+                            ContentUnavailableView {
+                                Label("No collections found", systemImage: "folder")
+                            } description: {
+                                Text("Change the search term to see some collections.")
+                            }
                         }
                     }
                 }
@@ -65,6 +76,7 @@ struct CollectionsView: View {
             .refreshable {
                 await collectionsProvider.loadData()
             }
+            .searchable(text: $searchText)
             .background(Color.listBackground)
             .customAlert(isPresented: $collectionsProvider.deleting, content: {
                 ProgressView()

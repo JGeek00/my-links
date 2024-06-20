@@ -2,10 +2,12 @@ import SwiftUI
 import CustomAlert
 
 struct TagsView: View {
-    init() {}
-    
     @EnvironmentObject private var tagsProvider: TagsProvider
+    
+    init() {}
+
     @State private var navigationPath = NavigationPath()
+    @State private var searchText = ""
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -30,19 +32,29 @@ struct TagsView: View {
                 }
                 else {
                     let filtered = tagsProvider.data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
-                    if !filtered.isEmpty {
-                        List(filtered, id: \.self) { item in
-                            TagItemComponent(tag: item) {
-                                navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
-                            }
-                        }
-                        .animation(.default, value: filtered)
-                    }
-                    else {
+                    if filtered.isEmpty {
                         ContentUnavailableView {
                             Label("No tags created", systemImage: "tag")
                         } description: {
                             Text("Add tags to links to see them here.")
+                        }
+                    }
+                    else {
+                        let searched = searchText != "" ? filtered.filter() { $0.name!.lowercased().contains(searchText.lowercased()) } : filtered
+                        if !searched.isEmpty {
+                            List(searched, id: \.self) { item in
+                                TagItemComponent(tag: item) {
+                                    navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
+                                }
+                            }
+                            .animation(.default, value: searched)
+                        }
+                        else {
+                            ContentUnavailableView {
+                                Label("No tags found", systemImage: "tag")
+                            } description: {
+                                Text("Change the search term to see some tags.")
+                            }
                         }
                     }
                 }
@@ -51,6 +63,7 @@ struct TagsView: View {
             .refreshable {
                 await tagsProvider.loadData()
             }
+            .searchable(text: $searchText)
             .background(Color.listBackground)
             .navigationDestination(for: LinksFilteredRequest.self) { value in
                 LinksFilteredView(input: value)

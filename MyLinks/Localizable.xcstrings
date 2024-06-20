@@ -141,6 +141,26 @@
         }
       }
     },
+    "Change the search term to see some collections." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia el término de búsqueda para ver algunas colecciones."
+          }
+        }
+      }
+    },
+    "Change the search term to see some tags." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia el término de búsqueda para ver algunas colecciones."
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "es" : {
@@ -561,6 +581,16 @@
         }
       }
     },
+    "No collections found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado colecciones"
+          }
+        }
+      }
+    },
     "No links added" : {
       "localizations" : {
         "es" : {
@@ -577,6 +607,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay tags creados"
+          }
+        }
+      }
+    },
+    "No tags found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado etiquetas"
           }
         }
       }
