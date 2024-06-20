@@ -591,6 +591,16 @@
         }
       }
     },
+    "Pin to the dashboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fijar en el tablero"
+          }
+        }
+      }
+    },
     "Pinned" : {
       "localizations" : {
         "es" : {
@@ -761,6 +771,26 @@
         }
       }
     },
+    "The link could not be pinned due to an error." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser fijado debido a un error."
+          }
+        }
+      }
+    },
+    "The link could not be unpinned due to an error." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser desfijado debido a un error."
+          }
+        }
+      }
+    },
     "Theme" : {
       "localizations" : {
         "es" : {
@@ -807,6 +837,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Token"
+          }
+        }
+      }
+    },
+    "Unpin from the dashboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desfijar del tablero"
           }
         }
       }

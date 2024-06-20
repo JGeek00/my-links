@@ -26,7 +26,7 @@ struct LinkCollection: Codable, Hashable {
     let name, description, color: String?
     let parentID: Int?
     let isPublic: Bool?
-    let ownerID: Int?
+    let ownerId: Int?
     let createdAt, updatedAt: String?
 }
 

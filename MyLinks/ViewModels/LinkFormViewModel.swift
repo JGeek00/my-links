@@ -38,7 +38,8 @@ class LinkFormViewModel: ObservableObject {
             name: name != "" ? name : nil,
             description: description != "" ? description : nil,
             tags: selectedTags.map() { TagCreation(name: $0) },
-            collection: CollectionCreation(id: col.id, name: col.name, ownerId: col.ownerId)
+            collection: CollectionCreation(id: col.id, name: col.name, ownerId: col.ownerId),
+            pinnedBy: []
         )
     
         self.saving = true

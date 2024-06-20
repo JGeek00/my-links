@@ -68,7 +68,7 @@
 		0D55C5882C23A67A002CE99A /* LinksFilteredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5872C23A67A002CE99A /* LinksFilteredView.swift */; };
 		0D55C58A2C23A6C1002CE99A /* CollectionOrTagLinksRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5892C23A6C1002CE99A /* CollectionOrTagLinksRequest.swift */; };
 		0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */; };
-		0D55C58E2C23AFF5002CE99A /* DeleteLinkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58D2C23AFF5002CE99A /* DeleteLinkProvider.swift */; };
+		0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,7 +134,7 @@
 		0D55C5872C23A67A002CE99A /* LinksFilteredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredView.swift; sourceTree = "<group>"; };
 		0D55C5892C23A6C1002CE99A /* CollectionOrTagLinksRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionOrTagLinksRequest.swift; sourceTree = "<group>"; };
 		0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredViewModel.swift; sourceTree = "<group>"; };
-		0D55C58D2C23AFF5002CE99A /* DeleteLinkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteLinkProvider.swift; sourceTree = "<group>"; };
+		0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkManagerProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,7 +310,7 @@
 				0D55C5222C21F1CE002CE99A /* ApiClientProvider.swift */,
 				0D55C5482C2241DF002CE99A /* CollectionsProvider.swift */,
 				0D55C54A2C22423C002CE99A /* TagsProvider.swift */,
-				0D55C58D2C23AFF5002CE99A /* DeleteLinkProvider.swift */,
+				0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -505,7 +505,7 @@
 				0D55C5882C23A67A002CE99A /* LinksFilteredView.swift in Sources */,
 				0D55C52D2C220598002CE99A /* Date.swift in Sources */,
 				0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */,
-				0D55C58E2C23AFF5002CE99A /* DeleteLinkProvider.swift in Sources */,
+				0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */,
 				0D55C50F2C21AE31002CE99A /* OnboardingView.swift in Sources */,
 				0D55C5202C21EABF002CE99A /* ServerUrl.swift in Sources */,
 				0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */,

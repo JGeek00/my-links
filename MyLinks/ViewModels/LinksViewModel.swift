@@ -27,4 +27,9 @@ class LinksViewModel: ObservableObject {
             }
         }
     }
+    
+    func reload() {
+        Task { await loadData() }
+        Task { await DashboardViewModel.shared.loadData() }
+    }
 }

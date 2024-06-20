@@ -3,16 +3,16 @@ import SwiftUI
 struct LinkItemComponent: View {
     var item: Link
     var onTap: () -> Void
-    var onSuccessfulDeletion: () -> Void
+    var onTaskCompleted: () -> Void
     
-    init(item: Link, onTap: @escaping () -> Void, onSuccessfulDeletion: @escaping () -> Void) {
+    init(item: Link, onTap: @escaping () -> Void, onTaskCompleted: @escaping () -> Void) {
         self.item = item
         self.onTap = onTap
-        self.onSuccessfulDeletion = onSuccessfulDeletion
+        self.onTaskCompleted = onTaskCompleted
     }
     
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
-    @EnvironmentObject private var deleteLinkProvider: DeleteLinkProvider
+    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @State private var showDeleteAlert = false
         
     var body: some View {
@@ -58,17 +58,41 @@ struct LinkItemComponent: View {
         }
         .foregroundColor(Color.foreground)
         .contextMenu {
-            Button("Edit", systemImage: "pencil") {
-                linkFormViewModel.editingId = item.id!
-                linkFormViewModel.url = item.url!
-                linkFormViewModel.name = item.name!
-                linkFormViewModel.description = item.description!
-                linkFormViewModel.selectedTags = item.tags!.map() { $0.name! }
-                linkFormViewModel.collection = item.collection!.id!
-                linkFormViewModel.sheetOpen = true
+            Section {
+                if item.pinnedBy!.isEmpty {
+                    Button("Pin to the dashboard", systemImage: "pin") {
+                        Task {
+                            let result = await linkManagerProvider.pinUnpinLink(link: item)
+                            if result == true {
+                                onTaskCompleted()
+                            }
+                        }
+                    }
+                }
+                else {
+                    Button("Unpin from the dashboard", systemImage: "pin.slash") {
+                        Task {
+                            let result = await linkManagerProvider.pinUnpinLink(link: item)
+                            if result == true {
+                                onTaskCompleted()
+                            }
+                        }
+                    }
+                }
             }
-            Button("Delete", systemImage: "trash", role: .destructive) {
-                showDeleteAlert.toggle()
+            Section {
+                Button("Edit", systemImage: "pencil") {
+                    linkFormViewModel.editingId = item.id!
+                    linkFormViewModel.url = item.url!
+                    linkFormViewModel.name = item.name!
+                    linkFormViewModel.description = item.description!
+                    linkFormViewModel.selectedTags = item.tags!.map() { $0.name! }
+                    linkFormViewModel.collection = item.collection!.id!
+                    linkFormViewModel.sheetOpen = true
+                }
+                Button("Delete", systemImage: "trash", role: .destructive) {
+                    showDeleteAlert.toggle()
+                }
             }
         }
         .alert("Delete link", isPresented: $showDeleteAlert) {
@@ -77,9 +101,9 @@ struct LinkItemComponent: View {
             }
             Button("Delete", role: .destructive) {
                 Task {
-                    let deleted = await deleteLinkProvider.deleteLink(id: item.id!)
+                    let deleted = await linkManagerProvider.deleteLink(id: item.id!)
                     if deleted == true {
-                        onSuccessfulDeletion()
+                        onTaskCompleted()
                     }
                 }
             }

@@ -34,7 +34,9 @@ struct LinksView: View {
                         List(filtered, id: \.self) { item in
                             LinkItemComponent(item: item) {
                                 openSafariView(item.url!)
-                            } onSuccessfulDeletion: {}
+                            } onTaskCompleted: {
+                                linksViewModel.reload()
+                            }
                         }
                         .animation(.default, value: filtered)
                     }

@@ -12,7 +12,7 @@ struct LinksFilteredView: View {
     
     var body: some View {
         Group {
-            if (input.mode == .collection || input.mode == .pinned) && input.id == nil {
+            if (input.mode == .collection || input.mode == .tag) && input.id == nil {
                 ContentUnavailableView {
                     Label("404", systemImage: "exclamationmark.circle")
                 } description: {
@@ -43,8 +43,8 @@ struct LinksFilteredView: View {
                     List(filtered, id: \.self) { item in
                         LinkItemComponent(item: item) {
                             openSafariView(item.url!)
-                        } onSuccessfulDeletion: {
-                            Task { await linksFilteredViewModel.loadData() }
+                        } onTaskCompleted: {
+                            linksFilteredViewModel.reload()
                         }
                     }
                 }

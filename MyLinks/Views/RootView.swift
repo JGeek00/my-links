@@ -6,7 +6,7 @@ struct RootView: View {
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
-    @EnvironmentObject private var deleteLinkProvider: DeleteLinkProvider
+    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -57,15 +57,15 @@ struct RootView: View {
                 .sheet(isPresented: $collectionFormViewModel.sheetOpen, content: {
                     CollectionFormView()
                 })
-                .customAlert(isPresented: $deleteLinkProvider.deleting, content: {
+                .customAlert(isPresented: $linkManagerProvider.processing, content: {
                     ProgressView()
                 })
-                .alert("Error", isPresented: $deleteLinkProvider.deleteError) {
+                .alert("Error", isPresented: $linkManagerProvider.errorAlert) {
                     Button("Close", role: .cancel) {
-                        deleteLinkProvider.deleteError.toggle()
+                        linkManagerProvider.errorAlert.toggle()
                     }
                 } message: {
-                    Text("The link could not be deleted due to an error.")
+                    Text(linkManagerProvider.errorMessage)
                 }
             }
         }

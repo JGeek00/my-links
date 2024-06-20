@@ -57,7 +57,9 @@ struct DashboardView: View {
                                     ForEach(filtered.uniqued(), id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
-                                        } onSuccessfulDeletion: {}
+                                        } onTaskCompleted: {
+                                            dashboardViewModel.reload()
+                                        }
                                     }
                                 } header: {
                                     HStack {
@@ -78,7 +80,9 @@ struct DashboardView: View {
                                         ForEach(pinned.uniqued(), id: \.self) { item in
                                             LinkItemComponent(item: item) {
                                                 openSafariView(item.url!)
-                                            } onSuccessfulDeletion: {}
+                                            } onTaskCompleted: {
+                                                dashboardViewModel.reload()
+                                            }
                                         }
                                     } header: {
                                         HStack {

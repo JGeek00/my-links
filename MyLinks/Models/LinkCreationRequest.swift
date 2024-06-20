@@ -6,6 +6,7 @@ struct LinkCreationRequest: Codable {
     let name, description: String?
     let tags: [TagCreation]?
     let collection: CollectionCreation?
+    let pinnedBy: [PinnedByRequest]?
 }
 
 // MARK: - CollectionCreation
@@ -18,4 +19,9 @@ struct CollectionCreation: Codable {
 // MARK: - TagCreation
 struct TagCreation: Codable {
     let name: String?
+}
+
+// MARK: - PinnedByRequest
+struct PinnedByRequest: Codable, Hashable {
+    let id: Int?
 }

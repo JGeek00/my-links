@@ -40,4 +40,10 @@ class LinksFilteredViewModel: ObservableObject {
             }
         }
     }
+    
+    func reload() {
+        Task { await loadData() }
+        Task { await DashboardViewModel.shared.loadData() }
+        Task { await LinksViewModel.shared.loadData() }
+    }
 }
