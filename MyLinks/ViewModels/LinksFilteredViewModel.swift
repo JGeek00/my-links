@@ -12,7 +12,7 @@ class LinksFilteredViewModel: ObservableObject {
     @Published var error = false
     
     func loadData(setLoading: Bool = false) async {
-        if (input.mode == .collection || input.mode == .pinned) && input.id == nil {
+        if (input.mode == .collection || input.mode == .tag) && input.id == nil {
             return
         }
         
