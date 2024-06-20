@@ -37,6 +37,11 @@ struct LinksView: View {
                             } onTaskCompleted: {
                                 linksViewModel.reload()
                             }
+                            .onAppear {
+                                if item == filtered.last {
+                                    linksViewModel.loadMore()
+                                }
+                            }
                         }
                         .animation(.default, value: filtered)
                     }
@@ -63,6 +68,15 @@ struct LinksView: View {
             .refreshable {
                 await linksViewModel.loadData()
             }
+            .searchable(text: $linksViewModel.searchFieldValue, isPresented: $linksViewModel.searchPresented)
+            .onSubmit(of: .search) {
+                linksViewModel.search()
+            }
+            .onChange(of: linksViewModel.searchPresented, { oldValue, newValue in
+                if oldValue == true && newValue == false {
+                    linksViewModel.clearSearch()
+                }
+            })
             .background(Color.listBackground)
         }
         .onAppear(perform: {

@@ -62,6 +62,15 @@ struct LinksFilteredView: View {
         .refreshable {
             await linksFilteredViewModel.loadData()
         }
+        .searchable(text: $linksFilteredViewModel.searchFieldValue, isPresented: $linksFilteredViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
+        .onSubmit(of: .search) {
+            linksFilteredViewModel.search()
+        }
+        .onChange(of: linksFilteredViewModel.searchPresented, { oldValue, newValue in
+            if oldValue == true && newValue == false {
+                linksFilteredViewModel.clearSearch()
+            }
+        })
         .background(Color.listBackground)
         .onAppear(perform: {
             if linksFilteredViewModel.data.isEmpty {

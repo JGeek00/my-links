@@ -192,7 +192,15 @@ class ApiClient {
         }
     }
     
-    func fetchLinks(collectionId: Int? = nil, tagId: Int? = nil, pinnedOnly: Bool? = nil, recentOnly: Bool? = nil) async -> StatusResponse<LinksResponse> {
+    func fetchLinks(
+        cursor: Int? = nil, 
+        collectionId: Int? = nil,
+        tagId: Int? = nil,
+        pinnedOnly: Bool? = nil,
+        recentOnly: Bool? = nil,
+        searchQueryString: String? = nil,
+        searchByName: Bool? = true
+    ) async -> StatusResponse<LinksResponse> {
         let defaultErrorResponse = StatusResponse<LinksResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links") else { return defaultErrorResponse }
@@ -201,6 +209,9 @@ class ApiClient {
             var queryItems = [
               URLQueryItem(name: "sort", value: "0"),
             ]
+            if cursor != nil {
+                queryItems.append(URLQueryItem(name: "cursor", value: "\(cursor!)"))
+            }
             if collectionId != nil {
                 queryItems.append(URLQueryItem(name: "collectionId", value: "\(collectionId!)"))
             }
@@ -212,6 +223,12 @@ class ApiClient {
             }
             if recentOnly != nil {
                 queryItems.append(URLQueryItem(name: "recentOnly", value: "\(recentOnly!)"))
+            }
+            if searchQueryString != nil {
+                queryItems.append(URLQueryItem(name: "searchQueryString", value: "\(searchQueryString!)"))
+            }
+            if searchByName != nil {
+                queryItems.append(URLQueryItem(name: "searchByName", value: "\(searchByName!)"))
             }
             components.queryItems = queryItems
             
