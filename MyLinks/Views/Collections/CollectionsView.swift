@@ -35,7 +35,7 @@ struct CollectionsView: View {
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             CollectionItemComponent(collection: item) {
-                                navigationPath.append(CollectionOrTagLinksRequest(name: item.name!, tagId: nil, collectionId: item.id!))
+                                navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
                             } onDelete: {
                                 collectionsProvider.deleteCollection(id: item.id!)
                             }
@@ -76,8 +76,8 @@ struct CollectionsView: View {
             } message: {
                 Text("The collection could not be deleted due to an error.")
             }
-            .navigationDestination(for: CollectionOrTagLinksRequest.self) { value in
-                CollectionOrTagLinksView(input: value)
+            .navigationDestination(for: LinksFilteredRequest.self) { value in
+                LinksFilteredView(input: value)
             }
         }
     }

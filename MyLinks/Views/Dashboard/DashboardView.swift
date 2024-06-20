@@ -10,8 +10,10 @@ struct DashboardView: View {
     
     init() {}
     
+    @State private var navigationPath = NavigationPath()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             Group {
                 if dashboardViewModel.loading == true {
                     Group {
@@ -51,20 +53,46 @@ struct DashboardView: View {
                             let filtered = dashboardViewModel.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                             let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                             if !filtered.isEmpty {
-                                Section("Recent") {
+                                Section {
                                     ForEach(filtered.uniqued(), id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
                                         } onSuccessfulDeletion: {}
                                     }
+                                } header: {
+                                    HStack {
+                                        Text("Recent")
+                                        Spacer()
+                                        Button {
+                                            let request = LinksFilteredRequest(name: LocalizedStringKey("Recent").localizedString(), mode: .recent, id: nil)
+                                            navigationPath.append(request)
+                                        } label: {
+                                            Text("View all")
+                                            Image(systemName: "chevron.right")
+                                        }
+                                        .font(.system(size: 12))
+                                    }
                                 }
                                 if !pinned.isEmpty {
-                                    Section("Pinned") {
+                                    Section {
                                         ForEach(pinned.uniqued(), id: \.self) { item in
                                             LinkItemComponent(item: item) {
                                                 openSafariView(item.url!)
                                             } onSuccessfulDeletion: {}
                                         }
+                                    } header: {
+                                        HStack {
+                                            Text("Pinned")
+                                            Spacer()
+                                            Button {
+                                                let request = LinksFilteredRequest(name: LocalizedStringKey("Pinned").localizedString(), mode: .pinned, id: nil)
+                                                navigationPath.append(request)
+                                            } label: {
+                                                Text("View all")
+                                                Image(systemName: "chevron.right")
+                                            }
+                                        }
+                                        .font(.system(size: 12))
                                     }
                                 }
                             }
@@ -107,6 +135,9 @@ struct DashboardView: View {
                 }
             }
             .background(Color.listBackground)
+            .navigationDestination(for: LinksFilteredRequest.self) { value in
+                LinksFilteredView(input: value)
+            }
         }
         .onAppear(perform: {
             if dashboardViewModel.data == nil {

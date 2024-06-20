@@ -1,13 +1,13 @@
 import Foundation
 
-struct CollectionOrTagLinksRequest: Hashable, Equatable {    
+struct LinksFilteredRequest: Hashable, Equatable {
     let name: String
-    let tagId: Int?
-    let collectionId: Int?
+    let mode: Enums.LinksFilteredMode
+    let id: Int?
     
-    init(name: String, tagId: Int?, collectionId: Int?) {
+    init(name: String, mode: Enums.LinksFilteredMode, id: Int?) {
         self.name = name
-        self.tagId = tagId
-        self.collectionId = collectionId
+        self.mode = mode
+        self.id = id
     }
 }

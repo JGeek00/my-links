@@ -33,7 +33,7 @@ struct TagsView: View {
                     if !filtered.isEmpty {
                         List(filtered, id: \.self) { item in
                             TagItemComponent(tag: item) {
-                                navigationPath.append(CollectionOrTagLinksRequest(name: item.name!, tagId: item.id!, collectionId: nil))
+                                navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
                             }
                         }
                         .animation(.default, value: filtered)
@@ -52,8 +52,8 @@ struct TagsView: View {
                 await tagsProvider.loadData()
             }
             .background(Color.listBackground)
-            .navigationDestination(for: CollectionOrTagLinksRequest.self) { value in
-                CollectionOrTagLinksView(input: value)
+            .navigationDestination(for: LinksFilteredRequest.self) { value in
+                LinksFilteredView(input: value)
             }
         }
     }

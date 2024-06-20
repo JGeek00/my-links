@@ -40,4 +40,11 @@ class Enums {
         case creation
         case editing
     }
+    
+    enum LinksFilteredMode: String {
+        case collection
+        case tag
+        case recent
+        case pinned
+    }
 }

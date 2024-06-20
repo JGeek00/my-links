@@ -1,50 +1,50 @@
 import SwiftUI
 
-struct CollectionOrTagLinksView: View {
-    var input: CollectionOrTagLinksRequest
+struct LinksFilteredView: View {
+    var input: LinksFilteredRequest
     
-    @ObservedObject private var collectionOrTagLinksViewModel: CollectionOrTagLinksViewModel
+    @ObservedObject private var linksFilteredViewModel: LinksFilteredViewModel
     
-    init(input: CollectionOrTagLinksRequest) {
+    init(input: LinksFilteredRequest) {
         self.input = input
-        _collectionOrTagLinksViewModel = ObservedObject(wrappedValue: CollectionOrTagLinksViewModel(input: input))
+        _linksFilteredViewModel = ObservedObject(wrappedValue: LinksFilteredViewModel(input: input))
     }
     
     var body: some View {
         Group {
-            if input.tagId == nil && input.collectionId == nil {
+            if (input.mode == .collection || input.mode == .pinned) && input.id == nil {
                 ContentUnavailableView {
                     Label("404", systemImage: "exclamationmark.circle")
                 } description: {
                     Text("Requested links not found.")
                 }
             }
-            else if collectionOrTagLinksViewModel.loading == true {
+            else if linksFilteredViewModel.loading == true {
                 Group {
                     ProgressView()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            else if collectionOrTagLinksViewModel.error == true {
+            else if linksFilteredViewModel.error == true {
                 ContentUnavailableView {
                     Label("Error", systemImage: "exclamationmark.circle")
                 } description: {
                     Text("An error occured when loading the links data. Check your Internet connection and try again later.")
                     Button {
-                        Task { await collectionOrTagLinksViewModel.loadData(setLoading: true) }
+                        Task { await linksFilteredViewModel.loadData(setLoading: true) }
                     } label: {
                         Label("Retry", systemImage: "arrow.counterclockwise")
                     }
                 }
             }
             else {
-                let filtered = collectionOrTagLinksViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil } ?? []
+                let filtered = linksFilteredViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil } ?? []
                 if !filtered.isEmpty {
                     List(filtered, id: \.self) { item in
                         LinkItemComponent(item: item) {
                             openSafariView(item.url!)
                         } onSuccessfulDeletion: {
-                            Task { await collectionOrTagLinksViewModel.loadData() }
+                            Task { await linksFilteredViewModel.loadData() }
                         }
                     }
                 }
@@ -59,12 +59,12 @@ struct CollectionOrTagLinksView: View {
         }
         .navigationTitle(input.name)
         .refreshable {
-            await collectionOrTagLinksViewModel.loadData()
+            await linksFilteredViewModel.loadData()
         }
         .background(Color.listBackground)
         .onAppear(perform: {
-            if collectionOrTagLinksViewModel.data == nil {
-                Task { await collectionOrTagLinksViewModel.loadData() }
+            if linksFilteredViewModel.data == nil {
+                Task { await linksFilteredViewModel.loadData() }
             }
         })
     }

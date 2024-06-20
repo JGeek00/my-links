@@ -831,6 +831,16 @@
         }
       }
     },
+    "View all" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver todos"
+          }
+        }
+      }
+    },
     "Website" : {
       "localizations" : {
         "es" : {

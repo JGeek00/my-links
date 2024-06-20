@@ -192,7 +192,7 @@ class ApiClient {
         }
     }
     
-    func fetchLinks(collectionId: Int? = nil, tagId: Int? = nil) async -> StatusResponse<Links> {
+    func fetchLinks(collectionId: Int? = nil, tagId: Int? = nil, pinnedOnly: Bool? = nil, recentOnly: Bool? = nil) async -> StatusResponse<Links> {
         let defaultErrorResponse = StatusResponse<Links>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links") else { return defaultErrorResponse }
@@ -206,6 +206,12 @@ class ApiClient {
             }
             if tagId != nil {
                 queryItems.append(URLQueryItem(name: "tagId", value: "\(tagId!)"))
+            }
+            if pinnedOnly != nil {
+                queryItems.append(URLQueryItem(name: "pinnedOnly", value: "\(pinnedOnly!)"))
+            }
+            if recentOnly != nil {
+                queryItems.append(URLQueryItem(name: "recentOnly", value: "\(recentOnly!)"))
             }
             components.queryItems = queryItems
             
