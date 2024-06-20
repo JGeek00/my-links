@@ -3,12 +3,12 @@ import SwiftUI
 struct CollectionOrTagLinksView: View {
     var input: CollectionOrTagLinksRequest
     
+    @ObservedObject private var collectionOrTagLinksViewModel: CollectionOrTagLinksViewModel
+    
     init(input: CollectionOrTagLinksRequest) {
         self.input = input
-        CollectionOrTagsLinksViewModel.shared.input = input
+        _collectionOrTagLinksViewModel = ObservedObject(wrappedValue: CollectionOrTagLinksViewModel(input: input))
     }
-    
-    @EnvironmentObject private var collectionOrTagLinksViewModel: CollectionOrTagsLinksViewModel
     
     var body: some View {
         Group {
@@ -41,8 +41,10 @@ struct CollectionOrTagLinksView: View {
                 let filtered = collectionOrTagLinksViewModel.data?.response?.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil } ?? []
                 if !filtered.isEmpty {
                     List(filtered, id: \.self) { item in
-                        LinkItemComponent(item: item, fromCollectionOrTagLinkView: true) {
+                        LinkItemComponent(item: item) {
                             openSafariView(item.url!)
+                        } onSuccessfulDeletion: {
+                            Task { await collectionOrTagLinksViewModel.loadData() }
                         }
                     }
                 }
@@ -61,7 +63,7 @@ struct CollectionOrTagLinksView: View {
         }
         .background(Color.listBackground)
         .onAppear(perform: {
-            if collectionOrTagLinksViewModel.data == nil && (input.collectionId != nil || input.tagId != nil) {
+            if collectionOrTagLinksViewModel.data == nil {
                 Task { await collectionOrTagLinksViewModel.loadData() }
             }
         })

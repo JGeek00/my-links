@@ -34,7 +34,7 @@ struct LinksView: View {
                         List(filtered, id: \.self) { item in
                             LinkItemComponent(item: item) {
                                 openSafariView(item.url!)
-                            }
+                            } onSuccessfulDeletion: {}
                         }
                     }
                     else {

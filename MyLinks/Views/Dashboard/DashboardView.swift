@@ -55,7 +55,7 @@ struct DashboardView: View {
                                     ForEach(filtered.uniqued(), id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
-                                        }
+                                        } onSuccessfulDeletion: {}
                                     }
                                 }
                                 if !pinned.isEmpty {
@@ -63,7 +63,7 @@ struct DashboardView: View {
                                         ForEach(pinned.uniqued(), id: \.self) { item in
                                             LinkItemComponent(item: item) {
                                                 openSafariView(item.url!)
-                                            }
+                                            } onSuccessfulDeletion: {}
                                         }
                                     }
                                 }
