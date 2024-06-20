@@ -13,6 +13,7 @@ class LinkFormViewModel: ObservableObject {
     @Published var collection = 0
     @Published var description = ""
     @Published var selectedTags: [String] = []
+    @Published var localTags: [String] = []
     
     @Published var validationErrorAlert = false
     @Published var validationErrorMessage = ""
@@ -80,6 +81,7 @@ class LinkFormViewModel: ObservableObject {
         self.collection = 0
         self.description = ""
         self.selectedTags = []
+        self.localTags = []
         self.validationErrorAlert = false
         self.validationErrorMessage = ""
     }

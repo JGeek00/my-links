@@ -21,6 +21,16 @@
         }
       }
     },
+    "Add tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir etiqueta"
+          }
+        }
+      }
+    },
     "Add tags to links to see them here." : {
       "localizations" : {
         "es" : {
@@ -707,6 +717,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Definido por el sistema"
+          }
+        }
+      }
+    },
+    "Tag name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la etiqueta"
           }
         }
       }

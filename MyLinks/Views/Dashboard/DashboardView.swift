@@ -78,6 +78,7 @@ struct DashboardView: View {
                             }
                         }
                     }
+                    .animation(.default, value: dashboardViewModel.data?.response)
                     .refreshable {
                         await dashboardViewModel.loadData()
                     }

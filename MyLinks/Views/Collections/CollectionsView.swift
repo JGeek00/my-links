@@ -40,6 +40,7 @@ struct CollectionsView: View {
                                 collectionsProvider.deleteCollection(id: item.id!)
                             }
                         }
+                        .animation(.default, value: filtered)
                     }
                     else {
                         ContentUnavailableView {

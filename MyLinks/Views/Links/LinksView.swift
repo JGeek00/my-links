@@ -36,6 +36,7 @@ struct LinksView: View {
                                 openSafariView(item.url!)
                             } onSuccessfulDeletion: {}
                         }
+                        .animation(.default, value: filtered)
                     }
                     else {
                         ContentUnavailableView {

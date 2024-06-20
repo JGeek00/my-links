@@ -36,6 +36,7 @@ struct TagsView: View {
                                 navigationPath.append(CollectionOrTagLinksRequest(name: item.name!, tagId: item.id!, collectionId: nil))
                             }
                         }
+                        .animation(.default, value: filtered)
                     }
                     else {
                         ContentUnavailableView {
