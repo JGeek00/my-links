@@ -39,8 +39,8 @@ class LinkFormViewModel: ObservableObject {
         
         let body = LinkCreationRequest(
             url: url,
-            name: name != "" ? name : nil,
-            description: description != "" ? description : nil,
+            name: name,
+            description: description,
             tags: selectedTags.map() { TagCreation(name: $0) },
             collection: CollectionCreation(id: col.id, name: col.name, ownerId: col.ownerId),
             pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequest(id: $0.id!) } : []
