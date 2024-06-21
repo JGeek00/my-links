@@ -6,6 +6,7 @@ struct TagsPickerView: View {
     
     @State private var addTagAlert = false
     @State private var newTagName = ""
+    @State private var searchText = ""
     
     var body: some View {
         let filtered = tagsProvider.data.filter() { $0.name != nil }
@@ -19,7 +20,8 @@ struct TagsPickerView: View {
                 }
             }
             else {
-                List(mapped, id: \.self) { item in
+                let searched = searchText != "" ? mapped.filter() { $0.lowercased().contains(searchText.lowercased()) } : mapped
+                List(searched, id: \.self) { item in
                     Button {
                         if linkFormViewModel.selectedTags.contains(item) {
                             linkFormViewModel.selectedTags = linkFormViewModel.selectedTags.filter() { $0 != item }
@@ -40,7 +42,7 @@ struct TagsPickerView: View {
                         }
                     }
                 }
-                .animation(.default, value: mapped)
+                .animation(.default, value: searched)
             }
         }
         .navigationTitle("Tags")
@@ -53,6 +55,7 @@ struct TagsPickerView: View {
                 }
             }
         }
+        .searchable(text: $searchText)
         .background(Color.listBackground)
         .alert("Add tag", isPresented: $addTagAlert) {
             Button("Cancel", role: .cancel) {
