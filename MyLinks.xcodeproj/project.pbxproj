@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D083C812C25E9F300F0EB3B /* SquareIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C802C25E9F300F0EB3B /* SquareIcon.swift */; };
+		0D083C832C25EAD300F0EB3B /* ListRowWithIconEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */; };
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
 		0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */; };
@@ -71,6 +73,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D083C802C25E9F300F0EB3B /* SquareIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareIcon.swift; sourceTree = "<group>"; };
+		0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowWithIconEntry.swift; sourceTree = "<group>"; };
 		0D55C4E32C219E13002CE99A /* MyLinks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLinks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -356,6 +360,8 @@
 				0D55C5662C231199002CE99A /* LinkItem.swift */,
 				0D55C5732C2315F0002CE99A /* CollectionItem.swift */,
 				0D55C5842C23A1F1002CE99A /* TagItem.swift */,
+				0D083C802C25E9F300F0EB3B /* SquareIcon.swift */,
+				0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -482,6 +488,7 @@
 				0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */,
 				0D55C5522C224F07002CE99A /* TagsPickerView.swift in Sources */,
 				0D55C5642C231142002CE99A /* LinksView.swift in Sources */,
+				0D083C832C25EAD300F0EB3B /* ListRowWithIconEntry.swift in Sources */,
 				0D55C5182C21B472002CE99A /* ConnectionForm.swift in Sources */,
 				0D55C50A2C21ACAB002CE99A /* Links.swift in Sources */,
 				0D55C54E2C2248E7002CE99A /* LinkFormView.swift in Sources */,
@@ -494,6 +501,7 @@
 				0D55C5142C21B420002CE99A /* Welcome.swift in Sources */,
 				0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */,
 				0D55C5072C21AC0C002CE99A /* ApiClient.swift in Sources */,
+				0D083C812C25E9F300F0EB3B /* SquareIcon.swift in Sources */,
 				0D55C5432C2211FC002CE99A /* ReviewApp.swift in Sources */,
 				0D55C5562C225F3F002CE99A /* JsonEncoder.swift in Sources */,
 				0D55C56D2C2314EB002CE99A /* CollectionsView.swift in Sources */,

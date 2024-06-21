@@ -331,6 +331,16 @@
         }
       }
     },
+    "Disconnect" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar"
+          }
+        }
+      }
+    },
     "Disconnect from server" : {
       "localizations" : {
         "es" : {
@@ -937,6 +947,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bienvenido a MyLinks"
+          }
+        }
+      }
+    },
+    "You will have to establish a connection again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendrás que establecer una conexión de nuevo."
           }
         }
       }

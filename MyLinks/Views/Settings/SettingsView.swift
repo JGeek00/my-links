@@ -6,53 +6,51 @@ struct SettingsView: View {
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
+    @Environment(\.colorScheme) private var colorScheme
+    
+    @State var disconnectAlert = false
+    
     var body: some View {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
         let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
         NavigationStack {
             List {
                 Picker("Theme", selection: $theme) {
-                    Label("System defined", systemImage: "iphone")
+                    ListRowWithIconEntry(systemIcon: "iphone", iconColor: .green, label: "System defined")
                         .tag(Enums.Theme.system)
-                        .foregroundStyle(Color.foreground)
-                    Label("Light", systemImage: "sun.max")
+                    ListRowWithIconEntry(systemIcon: "sun.max.fill", iconColor: .orange, label: "Light")
                         .tag(Enums.Theme.light)
-                        .foregroundStyle(Color.foreground)
-                    Label("Dark", systemImage: "moon")
+                    ListRowWithIconEntry(systemIcon: "moon.fill", iconColor: .indigo, label: "Dark")
                         .tag(Enums.Theme.dark)
-                        .foregroundStyle(Color.foreground)
                 }
                 .pickerStyle(.inline)
                 Section {
                     Button {
-                        settingsViewModel.disconnectServer()
+                        disconnectAlert.toggle()
                     } label: {
-                        Label("Disconnect from server", systemImage: "xmark")
-                            .foregroundStyle(Color.red)
+                        ListRowWithIconEntry(systemIcon: "xmark", iconColor: .red, textColor: .red, label: "Disconnect from server")
+                    }
+                    .alert("Disconnect from server", isPresented: $disconnectAlert) {
+                        Button("Cancel", role: .cancel) {
+                            disconnectAlert.toggle()
+                        }
+                        Button("Disconnect", role: .destructive) {
+                            settingsViewModel.disconnectServer()
+                        }
+                    } message: {
+                        Text("You will have to establish a connection again.")
                     }
                 }
                 Section("Linkwarden") {
                     Button {
                         settingsViewModel.linkwardenSiteOpen.toggle()
                     } label: {
-                        HStack {
-                            Text("Website")
-                                .foregroundColor(.foreground)
-                            Spacer()
-                            Image(systemName: "link")
-                                .foregroundColor(Color.listItemValue)
-                        }
+                        ListRowWithIconEntry(systemIcon: "network", iconColor: .blue, label: "Website")
                     }
                     Button {
                         settingsViewModel.linkwardenRepoOpen.toggle()
                     } label: {
-                        HStack {
-                            Text("Repository")
-                                .foregroundColor(.foreground)
-                            Spacer()
-                            Image(systemName: "link")
-                                .foregroundColor(Color.listItemValue)
-                        }
+                        ListRowWithIconEntry(assetIcon: colorScheme == .dark ? "github" : "github-white", iconColor: Color.gitHub, label: "Repository")
                     }
                 }
                 Section {
@@ -64,16 +62,10 @@ struct SettingsView: View {
                     Button {
                         settingsViewModel.contactDeveloperSafariOpen.toggle()
                     } label: {
-                        HStack {
-                            Text("Contact the developer")
-                                .foregroundColor(.foreground)
-                            Spacer()
-                            Image(systemName: "link")
-                                .foregroundColor(Color.listItemValue)
-                        }
+                        ListRowWithIconEntry(systemIcon: "message.fill", iconColor: .brown, label: "Contact the developer")
                     }
                     HStack {
-                        Text("App version")
+                        ListRowWithIconEntry(systemIcon: "info.circle.fill", iconColor: .teal, label: "App version")
                         Spacer()
                         Text(settingsViewModel.showBuildNumber == true ? buildNumber : version)
                             .foregroundColor(Color.listItemValue)
