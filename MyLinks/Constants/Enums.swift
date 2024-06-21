@@ -47,4 +47,9 @@ class Enums {
         case recent
         case pinned
     }
+    
+    enum LinkTaskCompleted: String {
+        case delete
+        case pin
+    }
 }

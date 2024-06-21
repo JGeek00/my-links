@@ -83,6 +83,25 @@ class LinksViewModel: ObservableObject {
         }
     }
     
+    func removeLinkData(linkId: Int) {
+        DispatchQueue.main.async {
+            self.data = self.data.filter() { $0.id! != linkId }
+        }
+    }
+    
+    func updateLinkData(link: Link) {
+        DispatchQueue.main.async {
+            self.data = self.data.map() { item in
+                if item.id == link.id {
+                    return link
+                }
+                else {
+                    return item
+                }
+            }
+        }
+    }
+    
     func reload() {
         Task { await loadData() }
         Task { await DashboardViewModel.shared.loadData() }

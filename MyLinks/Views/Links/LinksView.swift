@@ -35,9 +35,7 @@ struct LinksView: View {
                             List(filtered, id: \.self) { item in
                                 LinkItemComponent(item: item) {
                                     openSafariView(item.url!)
-                                } onTaskCompleted: {
-                                    linksViewModel.reload()
-                                }
+                                } onTaskCompleted: { _, _ in }
                                 .onAppear {
                                     if item == filtered.last {
                                         linksViewModel.loadMore()

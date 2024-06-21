@@ -96,6 +96,30 @@ class LinksFilteredViewModel: ObservableObject {
         }
     }
     
+    func onTaskCompleted(link: Link, action: Enums.LinkTaskCompleted) {
+        switch action {
+        case .delete:
+            removeLinkData(linkId: link.id!)
+        case .pin:
+            updateLinkData(link: link)
+        }
+    }
+    
+    func removeLinkData(linkId: Int) {
+        self.data = self.data.filter() { $0.id! != linkId }
+    }
+    
+    func updateLinkData(link: Link) {
+        self.data = self.data.map() { item in
+            if item.id == link.id {
+                return link
+            }
+            else {
+                return item
+            }
+        }
+    }
+    
     func reload() {
         Task { await loadData() }
         Task { await DashboardViewModel.shared.loadData() }

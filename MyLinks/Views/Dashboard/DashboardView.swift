@@ -69,7 +69,7 @@ struct DashboardView: View {
                                 ForEach(filtered.uniqued(), id: \.self) { item in
                                     LinkItemComponent(item: item) {
                                         openSafariView(item.url!)
-                                    } onTaskCompleted: {
+                                    } onTaskCompleted: { link, action in
                                         dashboardViewModel.reload()
                                     }
                                 }
@@ -92,7 +92,7 @@ struct DashboardView: View {
                                     ForEach(pinned.uniqued(), id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
-                                        } onTaskCompleted: {
+                                        } onTaskCompleted: { link, action in
                                             dashboardViewModel.reload()
                                         }
                                     }

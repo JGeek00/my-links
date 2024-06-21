@@ -24,7 +24,7 @@ class LinkFormViewModel: ObservableObject {
     
     // This flag is used on the LinksFilteredView to reload the data after editing
     // On LinksFilteredView there's an onChange that reloads the data when this flag value changes
-    @Published var finishedEditingFlag = false
+    @Published var finishedEditingLink: Link? = nil
         
     func onSave() {
         let collections = CollectionsProvider.shared.data
@@ -58,11 +58,16 @@ class LinkFormViewModel: ObservableObject {
                     Task { await TagsProvider.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await DashboardViewModel.shared.loadData() }
-                    Task {
-                        await LinksViewModel.shared.loadData()
-                        LinksViewModel.shared.scrollTopList.toggle()
+                    if self.editingLink != nil {
+                        LinksViewModel.shared.updateLinkData(link: result.data!.response!)
+                        self.finishedEditingLink = result.data!.response!
                     }
-                    self.finishedEditingFlag.toggle()
+                    else {
+                        Task {
+                            await LinksViewModel.shared.loadData()
+                            LinksViewModel.shared.scrollTopList.toggle()
+                        }
+                    }
                 }
             }
             else {

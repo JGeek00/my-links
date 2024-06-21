@@ -3,9 +3,9 @@ import SwiftUI
 struct LinkItemComponent: View {
     var item: Link
     var onTap: () -> Void
-    var onTaskCompleted: () -> Void
+    var onTaskCompleted: (Link, Enums.LinkTaskCompleted) -> Void
     
-    init(item: Link, onTap: @escaping () -> Void, onTaskCompleted: @escaping () -> Void) {
+    init(item: Link, onTap: @escaping () -> Void, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
         self.item = item
         self.onTap = onTap
         self.onTaskCompleted = onTaskCompleted
@@ -66,9 +66,8 @@ struct LinkItemComponent: View {
                 if item.pinnedBy!.isEmpty {
                     Button("Pin to the dashboard", systemImage: "pin") {
                         Task {
-                            let result = await linkManagerProvider.pinUnpinLink(link: item)
-                            if result == true {
-                                onTaskCompleted()
+                            await linkManagerProvider.pinUnpinLink(link: item) { item in
+                                onTaskCompleted(item, .pin)
                             }
                         }
                     }
@@ -76,9 +75,8 @@ struct LinkItemComponent: View {
                 else {
                     Button("Unpin from the dashboard", systemImage: "pin.slash") {
                         Task {
-                            let result = await linkManagerProvider.pinUnpinLink(link: item)
-                            if result == true {
-                                onTaskCompleted()
+                            await linkManagerProvider.pinUnpinLink(link: item) { item in
+                                onTaskCompleted(item, .pin)
                             }
                         }
                     }
@@ -105,9 +103,8 @@ struct LinkItemComponent: View {
             }
             Button("Delete", role: .destructive) {
                 Task {
-                    let deleted = await linkManagerProvider.deleteLink(id: item.id!)
-                    if deleted == true {
-                        onTaskCompleted()
+                    await linkManagerProvider.deleteLink(id: item.id!) { link in
+                        onTaskCompleted(link, .delete)
                     }
                 }
             }

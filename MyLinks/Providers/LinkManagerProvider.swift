@@ -8,8 +8,8 @@ class LinkManagerProvider: ObservableObject {
     @Published var errorAlert = false
     @Published var errorMessage = ""
     
-    func deleteLink(id: Int) async -> Bool {
-        guard let instance = ApiClientProvider.shared.instance else { return false }
+    func deleteLink(id: Int, onComplete: @escaping (Link) -> Void) async {
+        guard let instance = ApiClientProvider.shared.instance else { return }
         DispatchQueue.main.async {
             self.processing = true
         }
@@ -21,15 +21,12 @@ class LinkManagerProvider: ObservableObject {
                 self.errorAlert = false
                 if !DashboardViewModel.shared.data.isEmpty {
                     Task { await DashboardViewModel.shared.loadData() }
-                    Task {
-                        await LinksViewModel.shared.loadData()
-                        LinksViewModel.shared.scrollTopList.toggle()
-                    }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await TagsProvider.shared.loadData() }
                 }
+                LinksViewModel.shared.removeLinkData(linkId: result.data!.response!.id!)
+                onComplete(result.data!.response!)
             }
-            return true
         }
         else {
             DispatchQueue.main.async {
@@ -37,12 +34,11 @@ class LinkManagerProvider: ObservableObject {
                 self.errorMessage = String(localized: "The link could not be deleted due to an error.")
                 self.errorAlert = true
             }
-            return false
         }
     }
     
-    func pinUnpinLink(link: Link) async -> Bool {
-        guard let instance = ApiClientProvider.shared.instance else { return false }
+    func pinUnpinLink(link: Link, onCompleted: @escaping (Link) -> Void) async {
+        guard let instance = ApiClientProvider.shared.instance else { return }
         DispatchQueue.main.async {
             self.processing = true
         }
@@ -62,15 +58,12 @@ class LinkManagerProvider: ObservableObject {
                 self.errorAlert = false
                 if !DashboardViewModel.shared.data.isEmpty {
                     Task { await DashboardViewModel.shared.loadData() }
-                    Task {
-                        await LinksViewModel.shared.loadData()
-                        LinksViewModel.shared.scrollTopList.toggle()
-                    }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await TagsProvider.shared.loadData() }
                 }
+                LinksViewModel.shared.updateLinkData(link: result.data!.response!)
+                onCompleted(result.data!.response!)
             }
-            return true
         }
         else {
             DispatchQueue.main.async {
@@ -83,7 +76,6 @@ class LinkManagerProvider: ObservableObject {
                 }
                 self.errorAlert = true
             }
-            return false
         }
     }
 }

@@ -88,8 +88,8 @@ class ApiClient {
         }
     }
     
-    func createLink(_ body: LinkCreationRequest) async -> StatusResponse<Bool> {
-        let defaultErrorResponse = StatusResponse<Bool>(successful: false, statusCode: nil, data: nil)
+    func createLink(_ body: LinkCreationRequest) async -> StatusResponse<LinkResponse> {
+        let defaultErrorResponse = StatusResponse<LinkResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links") else { return defaultErrorResponse }
         do {            
@@ -104,18 +104,19 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                return StatusResponse<Bool>(successful: true, statusCode: response.statusCode, data: true)
+                let formatted = try JSONDecoder().decode(LinkResponse.self, from: data)
+                return StatusResponse<LinkResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<LinkResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse
         }
     }
     
-    func editLink(linkId: Int, body: LinkCreationRequest) async -> StatusResponse<Bool> {
-        let defaultErrorResponse = StatusResponse<Bool>(successful: false, statusCode: nil, data: nil)
+    func editLink(linkId: Int, body: LinkCreationRequest) async -> StatusResponse<LinkResponse> {
+        let defaultErrorResponse = StatusResponse<LinkResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links/\(linkId)") else { return defaultErrorResponse }
         do {
@@ -130,10 +131,11 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                return StatusResponse<Bool>(successful: true, statusCode: response.statusCode, data: true)
+                let formatted = try JSONDecoder().decode(LinkResponse.self, from: data)
+                return StatusResponse<LinkResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<LinkResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse
@@ -250,8 +252,8 @@ class ApiClient {
         }
     }
     
-    func deleteLink(linkId: Int) async -> StatusResponse<Bool> {
-        let defaultErrorResponse = StatusResponse<Bool>(successful: false, statusCode: nil, data: nil)
+    func deleteLink(linkId: Int) async -> StatusResponse<LinkResponse> {
+        let defaultErrorResponse = StatusResponse<LinkResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links/\(linkId)") else { return defaultErrorResponse }
         do {
@@ -265,10 +267,11 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                return StatusResponse<Bool>(successful: true, statusCode: response.statusCode, data: true)
+                let formatted = try JSONDecoder().decode(LinkResponse.self, from: data)
+                return StatusResponse<LinkResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<LinkResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse

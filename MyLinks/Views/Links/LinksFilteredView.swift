@@ -45,17 +45,15 @@ struct LinksFilteredView: View {
                         List(filtered, id: \.self) { item in
                             LinkItemComponent(item: item) {
                                 openSafariView(item.url!)
-                            } onTaskCompleted: {
-                                linksFilteredViewModel.reload()
-                                guard let first = filtered.first else { return }
-                                scrollView.scrollTo(first)
+                            } onTaskCompleted: { link, action in
+                                linksFilteredViewModel.onTaskCompleted(link: link, action: action)
                             }
                         }
                         .animation(.default, value: filtered)
-                        .onChange(of: linkFormViewModel.finishedEditingFlag) {
-                            guard let first = filtered.first else { return }
-                            scrollView.scrollTo(first)
-                        }
+//                        .onChange(of: linkFormViewModel.finishedEditingFlag) {
+//                            guard let first = filtered.first else { return }
+//                            scrollView.scrollTo(first)
+//                        }
                     }
                 }
                 else {
@@ -81,9 +79,10 @@ struct LinksFilteredView: View {
                 linksFilteredViewModel.clearSearch()
             }
         })
-        .onChange(of: linkFormViewModel.finishedEditingFlag) {
-            // Reload the data when this flag changes
-            Task { await linksFilteredViewModel.loadData() }
+        .onChange(of: linkFormViewModel.finishedEditingLink) {
+            guard let link = linkFormViewModel.finishedEditingLink else { return }
+            linksFilteredViewModel.updateLinkData(link: link)
+            LinkFormViewModel.shared.finishedEditingLink = nil
         }
         .onAppear(perform: {
             if linksFilteredViewModel.data.isEmpty {
