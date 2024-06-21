@@ -60,7 +60,7 @@ class OnboardingViewModel: ObservableObject {
                         clearInstances()
                         return
                     }
-                    let client = ApiClient(url: serverUrl(method: .https, domain: "linkwarden.app", port: nil, path: nil), token: token)
+                    let client = ApiClient(url: serverUrl(method: .https, domain: Config.linkwardenCloudDomain, port: nil, path: nil), token: token)
                     DispatchQueue.main.async {
                         ApiClientProvider.shared.initialice(instance: client)
                     }
