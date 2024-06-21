@@ -41,11 +41,20 @@ struct LinksFilteredView: View {
             else {
                 let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                 if !filtered.isEmpty {
-                    List(filtered, id: \.self) { item in
-                        LinkItemComponent(item: item) {
-                            openSafariView(item.url!)
-                        } onTaskCompleted: {
-                            linksFilteredViewModel.reload()
+                    ScrollViewReader { scrollView in
+                        List(filtered, id: \.self) { item in
+                            LinkItemComponent(item: item) {
+                                openSafariView(item.url!)
+                            } onTaskCompleted: {
+                                linksFilteredViewModel.reload()
+                                guard let first = filtered.first else { return }
+                                scrollView.scrollTo(first)
+                            }
+                        }
+                        .animation(.default, value: filtered)
+                        .onChange(of: linkFormViewModel.finishedEditingFlag) {
+                            guard let first = filtered.first else { return }
+                            scrollView.scrollTo(first)
                         }
                     }
                 }
@@ -66,20 +75,20 @@ struct LinksFilteredView: View {
         .onSubmit(of: .search) {
             linksFilteredViewModel.search()
         }
+        .background(Color.listBackground)
         .onChange(of: linksFilteredViewModel.searchPresented, { oldValue, newValue in
             if oldValue == true && newValue == false {
                 linksFilteredViewModel.clearSearch()
-            }
-        })
-        .background(Color.listBackground)
-        .onAppear(perform: {
-            if linksFilteredViewModel.data.isEmpty {
-                Task { await linksFilteredViewModel.loadData() }
             }
         })
         .onChange(of: linkFormViewModel.finishedEditingFlag) {
             // Reload the data when this flag changes
             Task { await linksFilteredViewModel.loadData() }
         }
+        .onAppear(perform: {
+            if linksFilteredViewModel.data.isEmpty {
+                Task { await linksFilteredViewModel.loadData() }
+            }
+        })
     }
 }

@@ -44,7 +44,10 @@ class CollectionsProvider: ObservableObject {
                     self.deleteError = false
                     Task { await self.loadData() }
                     if !LinksViewModel.shared.data.isEmpty {
-                        Task { await LinksViewModel.shared.loadData() }
+                        Task {
+                            await LinksViewModel.shared.loadData()
+                            LinksViewModel.shared.scrollTopList.toggle()
+                        }
                     }
                     if !DashboardViewModel.shared.data.isEmpty {
                         Task { await DashboardViewModel.shared.loadData() }

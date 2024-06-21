@@ -21,7 +21,10 @@ class LinkManagerProvider: ObservableObject {
                 self.errorAlert = false
                 if !DashboardViewModel.shared.data.isEmpty {
                     Task { await DashboardViewModel.shared.loadData() }
-                    Task { await LinksViewModel.shared.loadData() }
+                    Task {
+                        await LinksViewModel.shared.loadData()
+                        LinksViewModel.shared.scrollTopList.toggle()
+                    }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await TagsProvider.shared.loadData() }
                 }
@@ -59,7 +62,10 @@ class LinkManagerProvider: ObservableObject {
                 self.errorAlert = false
                 if !DashboardViewModel.shared.data.isEmpty {
                     Task { await DashboardViewModel.shared.loadData() }
-                    Task { await LinksViewModel.shared.loadData() }
+                    Task {
+                        await LinksViewModel.shared.loadData()
+                        LinksViewModel.shared.scrollTopList.toggle()
+                    }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await TagsProvider.shared.loadData() }
                 }

@@ -9,10 +9,13 @@ class LinksViewModel: ObservableObject {
     
     @Published var searchFieldValue = ""
     @Published var searchPresented = false
+    var searchQueryValue: String? = nil
+    var previousSearch: String? = nil
     
     @Published var loadingMore = false
     
-    var searchQueryValue: String? = nil
+    // Flag to triger onChange
+    @Published var scrollTopList = false
     
     func loadData(
         cursor: Int? = nil,
@@ -66,13 +69,17 @@ class LinksViewModel: ObservableObject {
         self.searchQueryValue = searchFieldValue
         Task {
             await loadData(setLoading: true)
+            self.previousSearch = searchFieldValue
         }
     }
     
     func clearSearch() {
         self.searchQueryValue = nil
-        Task {
-            await loadData(setLoading: true)
+        if previousSearch != nil {
+            Task {
+                await loadData(setLoading: true)
+                self.previousSearch = nil
+            }
         }
     }
     

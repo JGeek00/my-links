@@ -58,7 +58,10 @@ class LinkFormViewModel: ObservableObject {
                     Task { await TagsProvider.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await DashboardViewModel.shared.loadData() }
-                    Task { await LinksViewModel.shared.loadData() }
+                    Task {
+                        await LinksViewModel.shared.loadData()
+                        LinksViewModel.shared.scrollTopList.toggle()
+                    }
                     self.finishedEditingFlag.toggle()
                 }
             }

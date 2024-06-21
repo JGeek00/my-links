@@ -31,19 +31,25 @@ struct LinksView: View {
                 else {
                     let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                     if !filtered.isEmpty {
-                        List(filtered, id: \.self) { item in
-                            LinkItemComponent(item: item) {
-                                openSafariView(item.url!)
-                            } onTaskCompleted: {
-                                linksViewModel.reload()
-                            }
-                            .onAppear {
-                                if item == filtered.last {
-                                    linksViewModel.loadMore()
+                        ScrollViewReader { scrollView in
+                            List(filtered, id: \.self) { item in
+                                LinkItemComponent(item: item) {
+                                    openSafariView(item.url!)
+                                } onTaskCompleted: {
+                                    linksViewModel.reload()
+                                }
+                                .onAppear {
+                                    if item == filtered.last {
+                                        linksViewModel.loadMore()
+                                    }
                                 }
                             }
+                            .animation(.default, value: filtered)
+                            .onChange(of: linksViewModel.scrollTopList, initial: false) {
+                                guard let first = linksViewModel.data.first else { return }
+                                scrollView.scrollTo(first)
+                            }
                         }
-                        .animation(.default, value: filtered)
                     }
                     else {
                         ContentUnavailableView {

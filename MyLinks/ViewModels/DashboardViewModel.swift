@@ -30,6 +30,9 @@ class DashboardViewModel: ObservableObject {
     
     func reload() {
         Task { await loadData() }
-        Task { await LinksViewModel.shared.loadData() }
+        Task {
+            await LinksViewModel.shared.loadData()
+            LinksViewModel.shared.scrollTopList.toggle()
+        }
     }
 }

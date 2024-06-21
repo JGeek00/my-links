@@ -14,6 +14,7 @@ class LinksFilteredViewModel: ObservableObject {
     @Published var searchFieldValue = ""
     @Published var searchQueryValue: String? = nil
     @Published var searchPresented = false
+    var previousSearch: String? = nil
     
     @Published var loadingMore = false
     
@@ -81,19 +82,26 @@ class LinksFilteredViewModel: ObservableObject {
         self.searchQueryValue = searchFieldValue
         Task {
             await loadData(setLoading: true)
+            self.previousSearch = searchFieldValue
         }
     }
     
     func clearSearch() {
         self.searchQueryValue = nil
-        Task {
-            await loadData(setLoading: true)
+        if previousSearch != nil {
+            Task {
+                await loadData(setLoading: true)
+                self.previousSearch = nil
+            }
         }
     }
     
     func reload() {
         Task { await loadData() }
         Task { await DashboardViewModel.shared.loadData() }
-        Task { await LinksViewModel.shared.loadData() }
+        Task {
+            await LinksViewModel.shared.loadData()
+            LinksViewModel.shared.scrollTopList.toggle()
+        }
     }
 }
