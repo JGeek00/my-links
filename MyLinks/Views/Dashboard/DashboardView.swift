@@ -8,6 +8,8 @@ struct DashboardView: View {
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     init() {}
     
     @State private var navigationPath = NavigationPath()
@@ -38,14 +40,25 @@ struct DashboardView: View {
                     let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                     List {
                         Section {
-                            HStack {
-                                SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: .loaded)
-                                Spacer()
-                                    .frame(width: 12)
-                                SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                                Spacer()
-                                    .frame(width: 12)
-                                SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
+                            if horizontalSizeClass == .regular {
+                                HStack(spacing: 12) {
+                                    SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
+                                    SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardViewModel.data.filter() { $0.pinnedBy!.isEmpty == false }.count, color: Color.orange, status: .loaded)
+                                    SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
+                                    SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
+                                }
+                            }
+                            else {
+                                VStack(spacing: 12) {
+                                    HStack(spacing: 12) {
+                                        SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
+                                        SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardViewModel.data.filter() { $0.pinnedBy!.isEmpty == false }.count, color: Color.orange, status: .loaded)
+                                    }
+                                    HStack(spacing: 12) {
+                                        SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
+                                        SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
+                                    }
+                                }
                             }
                         }
                         .listRowBackground(Color.clear)
@@ -165,31 +178,40 @@ private struct SummaryEntry: View {
     }
     
     var body: some View {
-        VStack {
-            Image(systemName: icon)
-                .frame(width: 32, height: 32)
-                .background(color)
-                .foregroundStyle(Color.white)
-                .cornerRadius(8)
-            Spacer()
-                .frame(height: 6)
-            Text(LocalizedStringKey(label))
-                .lineLimit(1)
-            Spacer()
-                .frame(height: 6)
-            if status == .loading {
-                ProgressView()
-            }
-            else if status == .error {
-                Image(systemName: "exclamationmark.circle")
-            }
-            else {
-                Text(String(value))
+        HStack {
+            VStack(alignment: .leading) {
+                Image(systemName: icon)
+                    .frame(width: 32, height: 32)
+                    .background(color)
+                    .foregroundStyle(Color.white)
+                    .clipShape(Circle())
+                Spacer()
+                    .frame(height: 12)
+                Text(LocalizedStringKey(label))
+                    .lineLimit(1)
+                    .foregroundStyle(Color.dashboardSummaryText)
                     .fontWeight(.semibold)
+            }
+            Spacer()
+            VStack(alignment: .trailing) {
+                Group {
+                    if status == .loading {
+                        ProgressView()
+                    }
+                    else if status == .error {
+                        Image(systemName: "exclamationmark.circle")
+                    }
+                    else {
+                        Text(String(value))
+                    }
+                }
+                .fontWeight(.bold)
+                .font(.system(size: 24))
+                Spacer()
             }
         }
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(12)
         .background(Color.listItemBackground)
         .cornerRadius(12)
     }
