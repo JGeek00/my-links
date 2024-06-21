@@ -741,6 +741,9 @@
         }
       }
     },
+    "Server" : {
+
+    },
     "Server route" : {
       "localizations" : {
         "es" : {
@@ -890,6 +893,9 @@
           }
         }
       }
+    },
+    "Unorganized" : {
+
     },
     "Unpin from the dashboard" : {
       "localizations" : {

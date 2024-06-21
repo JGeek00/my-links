@@ -24,7 +24,7 @@ struct SettingsView: View {
                         .tag(Enums.Theme.dark)
                 }
                 .pickerStyle(.inline)
-                Section {
+                Section("Server") {
                     Button {
                         disconnectAlert.toggle()
                     } label: {

@@ -20,13 +20,17 @@ struct LinkFormView: View {
                     TextField("Description", text: $linkFormViewModel.description, axis: .vertical)
                 }
                 Section {
-                    if !collectionsProvider.data.isEmpty {
-                        Picker("Collection", selection: $linkFormViewModel.collection) {
-                            let filtered = collectionsProvider.data.filter() { $0.name != nil && $0.id != nil }
+                    let filtered = collectionsProvider.data.filter() { $0.name != nil && $0.id != nil }
+                    Picker("Collection", selection: $linkFormViewModel.collection) {
+                        if !filtered.isEmpty {
                             ForEach(filtered, id: \.self) { item in
                                 Text(item.name!)
                                     .tag(item.id!)
                             }
+                        }
+                        else {
+                            Text("Unorganized")
+                                .tag(1)
                         }
                     }
                     if !tagsProvider.data.isEmpty {

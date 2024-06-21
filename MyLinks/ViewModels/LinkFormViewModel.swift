@@ -25,7 +25,7 @@ class LinkFormViewModel: ObservableObject {
     // This flag is used on the LinksFilteredView to reload the data after editing
     // On LinksFilteredView there's an onChange that reloads the data when this flag value changes
     @Published var finishedEditingFlag = false
-    
+        
     func onSave() {
         let collections = CollectionsProvider.shared.data
         
@@ -35,14 +35,14 @@ class LinkFormViewModel: ObservableObject {
             return
         }
         
-        let col = collections.first(where: { $0.id == collection }) ?? collections[0]
+        let col = collections.first(where: { $0.id == collection })
         
         let body = LinkCreationRequest(
             url: url,
             name: name,
             description: description,
             tags: selectedTags.map() { TagCreation(name: $0) },
-            collection: CollectionCreation(id: col.id, name: col.name, ownerId: col.ownerId),
+            collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : Config.defaultCollection,
             pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequest(id: $0.id!) } : []
         )
     
