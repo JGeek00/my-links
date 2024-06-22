@@ -302,4 +302,30 @@ class ApiClient {
             return defaultErrorResponse
         }
     }
+    
+    func fetchReader(linkId: Int) async -> StatusResponse<ReaderResponse> {
+        let defaultErrorResponse = StatusResponse<ReaderResponse>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/archives/\(linkId)?format=3") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(ReaderResponse.self, from: data)
+                return StatusResponse<ReaderResponse>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<ReaderResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
 }

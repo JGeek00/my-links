@@ -15,10 +15,12 @@ struct LinkItemComponent: View {
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
+    @State private var readerModeSheet = false
         
     var body: some View {
         let urlHost = getUrlHost(item.url!)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
+        let readerUrl = item.readable != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
         Button {
             onTap()
         } label: {
@@ -68,6 +70,17 @@ struct LinkItemComponent: View {
                     showDetailsSheet.toggle()
                 } label: {
                     Label("Link details", systemImage: "info.circle")
+                }
+                if readerUrl != nil || item.pdf != nil || item.image != nil {
+                    Menu("Preserved formats", systemImage: "doc.viewfinder") {
+                        if readerUrl != nil {
+                            Button {
+                                readerModeSheet.toggle()
+                            } label: {
+                                Label("Readable", systemImage: "textformat")
+                            }
+                        }
+                    }
                 }
                 if item.pinnedBy!.isEmpty {
                     Button("Pin to the dashboard", systemImage: "pin") {
@@ -120,6 +133,11 @@ struct LinkItemComponent: View {
         .sheet(isPresented: $showDetailsSheet, content: {
             LinkDetailsSheet(link: item) {
                 showDetailsSheet.toggle()
+            }
+        })
+        .sheet(isPresented: $readerModeSheet, content: {
+            ReaderView(link: item) {
+                readerModeSheet.toggle()
             }
         })
     }

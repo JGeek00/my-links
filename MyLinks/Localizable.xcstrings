@@ -61,6 +61,16 @@
         }
       }
     },
+    "An error occured when loading the reader view. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar la vista de lectura. Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
+    },
     "App version" : {
       "localizations" : {
         "es" : {
@@ -711,12 +721,32 @@
         }
       }
     },
+    "Preserved formats" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatos preservados"
+          }
+        }
+      }
+    },
     "Processing..." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Procesando..."
+          }
+        }
+      }
+    },
+    "Readable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo lectura"
           }
         }
       }
