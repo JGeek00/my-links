@@ -45,22 +45,37 @@ struct ImageViewerView: View {
                     )
                 }
             }
-            .navigationTitle(name)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        onClose()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.foreground.opacity(0.5))
+            .overlay(alignment: .topLeading) {
+                GeometryReader(content: { geometry in
+                    Group {
+                        Button {
+                            onClose()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 22))
+                                .foregroundStyle(Color.foreground)
+                        }
+                        .frame(width: 40, height: 40)
+                        .background(.regularMaterial)
+                        .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.3), radius: 5)
                     }
-                    .buttonStyle(BorderedButtonStyle())
-                    .clipShape(Circle())
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack {
+                    .offset(x: 12, y: 12)
+                    Group {
+                        Button {
+                            Task { await imageViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
+                        } label: {
+                            Image(systemName: "arrow.counterclockwise")
+                                .font(.system(size: 22))
+                                .foregroundStyle(Color.foreground)
+                        }
+                        .frame(width: 40, height: 40)
+                        .background(.regularMaterial)
+                        .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.3), radius: 5)
+                    }
+                    .offset(x: geometry.size.width - 52, y: 12)
+                    Group {
                         Button {
                             Task { await imageViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
                         } label: {
@@ -82,10 +97,17 @@ struct ImageViewerView: View {
                             }
                         } label: {
                             Image(systemName: "ellipsis.circle")
+                                .font(.system(size: 22))
+                                .foregroundStyle(Color.foreground)
                         }
                         .disabled(imageViewerViewModel.loading == true || imageViewerViewModel.data == nil)
+                        .frame(width: 40, height: 40)
+                        .background(.regularMaterial)
+                        .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.3), radius: 5)
                     }
-                }
+                    .offset(x: geometry.size.width - 52, y: 70)
+                })
             }
             .sheet(isPresented: $imageViewerViewModel.saveDocumentSheet, content: {
                 if imageViewerViewModel.data != nil {
