@@ -61,12 +61,32 @@
         }
       }
     },
+    "An error occured when loading the PDF. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar el PDF. Comprueba tu conexión a internet y prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
     "An error occured when loading the reader view. Check your Internet connection and try again later." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocurrió un error al cargar la vista de lectura. Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
+    },
+    "An error occured when saving the file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al guardar el fichero"
           }
         }
       }
@@ -691,6 +711,16 @@
         }
       }
     },
+    "PDF" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF"
+          }
+        }
+      }
+    },
     "Pin to the dashboard" : {
       "localizations" : {
         "es" : {
@@ -977,6 +1007,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Token"
+          }
+        }
+      }
+    },
+    "Unable to access document directory" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede acceder al directorio de documentos"
           }
         }
       }

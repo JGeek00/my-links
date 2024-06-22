@@ -1,4 +1,5 @@
 import Foundation
+import PDFKit
 
 class ApiClient {
     var url: String
@@ -323,6 +324,31 @@ class ApiClient {
             }
             else {
                 return StatusResponse<ReaderResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+    
+    func fetchPdf(linkId: Int) async -> StatusResponse<Data> {
+        let defaultErrorResponse = StatusResponse<Data>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/archives/\(linkId)?format=2") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "GET"
+            request.addValue("application/pdf", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                return StatusResponse<Data>(successful: true, statusCode: response.statusCode, data: data)
+            }
+            else {
+                return StatusResponse<Data>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse

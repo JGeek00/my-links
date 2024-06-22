@@ -1,4 +1,5 @@
 import SwiftUI
+import PDFViewer
 
 struct LinkItemComponent: View {
     var item: Link
@@ -16,6 +17,7 @@ struct LinkItemComponent: View {
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
     @State private var readerModeSheet = false
+    @State private var pdfViewerSheet = false
         
     var body: some View {
         let urlHost = getUrlHost(item.url!)
@@ -80,6 +82,13 @@ struct LinkItemComponent: View {
                                 Label("Readable", systemImage: "textformat")
                             }
                         }
+                        if item.pdf != nil {
+                            Button {
+                                pdfViewerSheet.toggle()
+                            } label: {
+                                Label("PDF", systemImage: "doc")
+                            }
+                        }
                     }
                 }
                 if item.pinnedBy!.isEmpty {
@@ -138,6 +147,11 @@ struct LinkItemComponent: View {
         .sheet(isPresented: $readerModeSheet, content: {
             ReaderView(link: item) {
                 readerModeSheet.toggle()
+            }
+        })
+        .sheet(isPresented: $pdfViewerSheet, content: {
+            PDFViewerView(link: item) {
+                pdfViewerSheet.toggle()
             }
         })
     }
