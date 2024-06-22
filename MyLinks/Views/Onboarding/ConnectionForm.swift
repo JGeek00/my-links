@@ -87,6 +87,22 @@ struct ConnectionForm: View {
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                Section {
+                    Button {
+                        withAnimation(.default) {
+                            onboardingViewModel.selectedTab = 1
+                        }
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                            Spacer()
+                        }
+                    }
+                }
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             }
             .disabled(onboardingViewModel.connecting)
             .alert("Invalid values", isPresented: $onboardingViewModel.invalidValuesAlert, actions: {

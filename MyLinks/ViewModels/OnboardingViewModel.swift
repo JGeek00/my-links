@@ -60,7 +60,7 @@ class OnboardingViewModel: ObservableObject {
                         clearInstances()
                         return
                     }
-                    let client = ApiClient(url: serverUrl(method: .https, domain: Config.linkwardenCloudDomain, port: nil, path: nil), token: token)
+                    let client = ApiClient(url: Config.linkwardenCloudUrl, token: token)
                     DispatchQueue.main.async {
                         ApiClientProvider.shared.initialice(instance: client)
                     }
@@ -158,7 +158,7 @@ class OnboardingViewModel: ObservableObject {
         
         self.connecting = true
         Task {
-            let instance = ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: token)
+            let instance = hostingMode == .selfhosted ? ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: token) : ApiClient(url: Config.linkwardenCloudUrl, token: token)
             let result = await instance.fetchDashboard()
             DispatchQueue.main.async {
                 self.connecting = false

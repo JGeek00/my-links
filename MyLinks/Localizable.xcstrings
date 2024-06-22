@@ -131,6 +131,16 @@
         }
       }
     },
+    "Back" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atrás"
+          }
+        }
+      }
+    },
     "Back to hosting mode selection" : {
       "localizations" : {
         "es" : {
