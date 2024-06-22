@@ -244,7 +244,7 @@ private struct DetailsItem: View {
                 .frame(height: 12)
             value
                 .font(.system(size: 16))
-                .selectionDisabled(false)
+                .textSelection(.enabled)
         }
     }
 }
