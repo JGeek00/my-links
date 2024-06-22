@@ -20,6 +20,9 @@
 		0D083CB02C272A1300F0EB3B /* PdfViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CAF2C272A1300F0EB3B /* PdfViewerView.swift */; };
 		0D083CB22C27366700F0EB3B /* PdfViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CB12C27366700F0EB3B /* PdfViewer.swift */; };
 		0D083CB42C27368C00F0EB3B /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CB32C27368C00F0EB3B /* DocumentPicker.swift */; };
+		0D083CB92C27588700F0EB3B /* ImageViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CB82C27588700F0EB3B /* ImageViewerView.swift */; };
+		0D083CBB2C2758A900F0EB3B /* ImageViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBA2C2758A900F0EB3B /* ImageViewerViewModel.swift */; };
+		0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBE2C27648700F0EB3B /* ImageViewer.swift */; };
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
 		0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */; };
@@ -95,6 +98,9 @@
 		0D083CAF2C272A1300F0EB3B /* PdfViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfViewerView.swift; sourceTree = "<group>"; };
 		0D083CB12C27366700F0EB3B /* PdfViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfViewer.swift; sourceTree = "<group>"; };
 		0D083CB32C27368C00F0EB3B /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
+		0D083CB82C27588700F0EB3B /* ImageViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerView.swift; sourceTree = "<group>"; };
+		0D083CBA2C2758A900F0EB3B /* ImageViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewModel.swift; sourceTree = "<group>"; };
+		0D083CBE2C27648700F0EB3B /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		0D55C4E32C219E13002CE99A /* MyLinks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLinks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -174,20 +180,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0D083C9D2C26638A00F0EB3B /* ReaderView */ = {
-			isa = PBXGroup;
-			children = (
-				0D083C9E2C26639800F0EB3B /* ReaderView.swift */,
-			);
-			path = ReaderView;
-			sourceTree = "<group>";
-		};
-		0D083CAE2C272A0500F0EB3B /* PdfViewer */ = {
+		0D083CB62C27586400F0EB3B /* ContentViewers */ = {
 			isa = PBXGroup;
 			children = (
 				0D083CAF2C272A1300F0EB3B /* PdfViewerView.swift */,
+				0D083C9E2C26639800F0EB3B /* ReaderView.swift */,
+				0D083CB82C27588700F0EB3B /* ImageViewerView.swift */,
 			);
-			path = PdfViewer;
+			path = ContentViewers;
 			sourceTree = "<group>";
 		};
 		0D55C4DA2C219E12002CE99A = {
@@ -240,8 +240,7 @@
 		0D55C4FA2C219E3E002CE99A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0D083CAE2C272A0500F0EB3B /* PdfViewer */,
-				0D083C9D2C26638A00F0EB3B /* ReaderView */,
+				0D083CB62C27586400F0EB3B /* ContentViewers */,
 				0D55C5802C23A0F8002CE99A /* Tags */,
 				0D55C56B2C2314E2002CE99A /* Collections */,
 				0D55C5622C231131002CE99A /* Links */,
@@ -346,6 +345,7 @@
 				0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */,
 				0D083CA02C2663B200F0EB3B /* ReaderViewModel.swift */,
 				0D083CAC2C27291800F0EB3B /* PdfViewerViewModel.swift */,
+				0D083CBA2C2758A900F0EB3B /* ImageViewerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -409,6 +409,7 @@
 				0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */,
 				0D083CB12C27366700F0EB3B /* PdfViewer.swift */,
 				0D083CB32C27368C00F0EB3B /* DocumentPicker.swift */,
+				0D083CBE2C27648700F0EB3B /* ImageViewer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -526,10 +527,13 @@
 				0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */,
 				0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */,
 				0D083CAD2C27291800F0EB3B /* PdfViewerViewModel.swift in Sources */,
+				0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
 				0D55C5472C22140D002CE99A /* ServerInstances.swift in Sources */,
 				0D55C54B2C22423C002CE99A /* TagsProvider.swift in Sources */,
+				0D083CB92C27588700F0EB3B /* ImageViewerView.swift in Sources */,
 				0D55C55D2C22FDFE002CE99A /* CollectionFormViewModel.swift in Sources */,
+				0D083CBB2C2758A900F0EB3B /* ImageViewerViewModel.swift in Sources */,
 				0D55C5022C21A053002CE99A /* DashboardView.swift in Sources */,
 				0D55C5502C224907002CE99A /* LinkFormViewModel.swift in Sources */,
 				0D083CA32C26642D00F0EB3B /* ReaderResponse.swift in Sources */,

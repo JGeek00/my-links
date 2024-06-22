@@ -51,6 +51,16 @@
         }
       }
     },
+    "An error occured when loading the image. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar la imagen. Comprueba tu conexión a internet y prueba más tarde."
+          }
+        }
+      }
+    },
     "An error occured when loading the links data. Check your Internet connection and try again later." : {
       "localizations" : {
         "es" : {
@@ -511,6 +521,26 @@
         }
       }
     },
+    "Image" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imagen"
+          }
+        }
+      }
+    },
+    "Image unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imagen no disponible"
+          }
+        }
+      }
+    },
     "Invalid data" : {
       "localizations" : {
         "es" : {
@@ -741,6 +771,16 @@
         }
       }
     },
+    "PDF unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF no disponible"
+          }
+        }
+      }
+    },
     "Pin to the dashboard" : {
       "localizations" : {
         "es" : {
@@ -961,6 +1001,16 @@
         }
       }
     },
+    "The image of the link is not available." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La imagen del enlace no está disponible."
+          }
+        }
+      }
+    },
     "The link could not be deleted due to an error." : {
       "localizations" : {
         "es" : {
@@ -987,6 +1037,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El enlace no pudo ser desfijado debido a un error."
+          }
+        }
+      }
+    },
+    "The PDF document of the link is not available." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El documento PDF del enlace no está disponible."
           }
         }
       }
@@ -1042,6 +1102,7 @@
       }
     },
     "Unable to access document directory" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

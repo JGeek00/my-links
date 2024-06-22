@@ -1,9 +1,9 @@
 import Foundation
-import PDFKit
+import SwiftUI
 
-class PdfViewerViewModel: ObservableObject {
-    @Published var pdfData: PDFDocument? = nil
+class ImageViewerViewModel: ObservableObject {
     @Published var data: Data? = nil
+    @Published var imageData: UIImage? = nil
     @Published var loading = true
     @Published var error = false
     
@@ -14,7 +14,7 @@ class PdfViewerViewModel: ObservableObject {
     @Published var savingErrorMessage = ""
     
     init(link: Link) {
-        Task { await loadData(linkId: link.id!) }
+        Task { await self.loadData(linkId: link.id!) }
     }
     
     func loadData(linkId: Int, setLoading: Bool = false) async {
@@ -24,11 +24,11 @@ class PdfViewerViewModel: ObservableObject {
             }
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchPdf(linkId: linkId)
+        let result = await instance.fetchImage(linkId: linkId)
         if result.successful == true {
             DispatchQueue.main.async {
                 self.data = result.data!
-                self.pdfData = PDFDocument(data: result.data!)
+                self.imageData = UIImage(data: result.data!)
                 self.loading = false
                 self.error = false
             }

@@ -18,6 +18,7 @@ struct LinkItemComponent: View {
     @State private var showDetailsSheet = false
     @State private var readerModeSheet = false
     @State private var pdfViewerSheet = false
+    @State private var imageViewerSheet = false
         
     var body: some View {
         let urlHost = getUrlHost(item.url!)
@@ -89,6 +90,13 @@ struct LinkItemComponent: View {
                                 Label("PDF", systemImage: "doc")
                             }
                         }
+                        if item.image != nil {
+                            Button {
+                                imageViewerSheet.toggle()
+                            } label: {
+                                Label("Image", systemImage: "photo")
+                            }
+                        }
                     }
                 }
             }
@@ -154,6 +162,11 @@ struct LinkItemComponent: View {
         .sheet(isPresented: $pdfViewerSheet, content: {
             PDFViewerView(link: item) {
                 pdfViewerSheet.toggle()
+            }
+        })
+        .sheet(isPresented: $imageViewerSheet, content: {
+            ImageViewerView(link: item) {
+                imageViewerSheet.toggle()
             }
         })
     }

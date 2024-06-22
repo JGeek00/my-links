@@ -40,8 +40,11 @@ struct PDFViewerView: View {
                     PDFKitView(showing: pdfViewerViewModel.pdfData!)
                 }
                 else {
-                    Rectangle()
-                        .foregroundStyle(Color.clear)
+                    ContentUnavailableView(
+                        "PDF unavailable",
+                        systemImage: "doc",
+                        description: Text("The PDF document of the link is not available.")
+                    )
                 }
             }
             .navigationTitle(name)
@@ -68,7 +71,7 @@ struct PDFViewerView: View {
                         .disabled(pdfViewerViewModel.loading == true)
                         Menu {
                             Button {
-                                pdfViewerViewModel.saveDocumentToStorage(linkId: link.id!)
+                                pdfViewerViewModel.saveDocumentSheet = true
                             } label: {
                                 Label("Download", systemImage: "square.and.arrow.down")
                             }
