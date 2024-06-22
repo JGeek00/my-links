@@ -63,6 +63,12 @@ class LinkManagerProvider: ObservableObject {
                 }
                 LinksViewModel.shared.updateLinkData(link: result.data!.response!)
                 onCompleted(result.data!.response!)
+                if link.pinnedBy!.isEmpty {
+                    ToastProvider.shared.showToast(icon: "pin.fill", title: "Link pinned")
+                }
+                else {
+                    ToastProvider.shared.showToast(icon: "pin.slash.fill", title: "Link unpinned")
+                }
             }
         }
         else {

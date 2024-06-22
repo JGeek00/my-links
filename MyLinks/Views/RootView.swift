@@ -1,5 +1,6 @@
 import SwiftUI
 import CustomAlert
+import AlertToast
 
 struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
@@ -7,6 +8,7 @@ struct RootView: View {
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
+    @EnvironmentObject private var toastProvider: ToastProvider
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -57,8 +59,21 @@ struct RootView: View {
                 .sheet(isPresented: $collectionFormViewModel.sheetOpen, content: {
                     CollectionFormView()
                 })
+                .toast(isPresenting: $toastProvider.presenting, duration: 2, tapToDismiss: true) {
+                    toastProvider.toast ?? AlertToast(type: .regular)
+                }
                 .customAlert(isPresented: $linkManagerProvider.processing, content: {
-                    ProgressView()
+                    HStack {
+                        ProgressView()
+                            .tint(Color.gray)
+                            .font(.system(size: 20))
+                        Spacer()
+                            .frame(width: 12)
+                        Text("Processing...")
+                            .fontWeight(.medium)
+                            .font(.system(size: 16))
+                    }
+                    .padding(.horizontal)
                 })
                 .alert("Error", isPresented: $linkManagerProvider.errorAlert) {
                     Button("Close", role: .cancel) {

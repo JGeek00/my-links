@@ -521,6 +521,26 @@
         }
       }
     },
+    "Link pinned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace fijado"
+          }
+        }
+      }
+    },
+    "Link unpinned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace desfijado"
+          }
+        }
+      }
+    },
     "Links" : {
       "localizations" : {
         "es" : {
@@ -671,6 +691,16 @@
         }
       }
     },
+    "Processing..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Procesando..."
+          }
+        }
+      }
+    },
     "Recent" : {
       "localizations" : {
         "es" : {
@@ -742,7 +772,14 @@
       }
     },
     "Server" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servidor"
+          }
+        }
+      }
     },
     "Server route" : {
       "localizations" : {
@@ -895,7 +932,14 @@
       }
     },
     "Unorganized" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No categorizado"
+          }
+        }
+      }
     },
     "Unpin from the dashboard" : {
       "localizations" : {

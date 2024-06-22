@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0D083C812C25E9F300F0EB3B /* SquareIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C802C25E9F300F0EB3B /* SquareIcon.swift */; };
 		0D083C832C25EAD300F0EB3B /* ListRowWithIconEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */; };
+		0D083C962C264E8300F0EB3B /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 0D083C952C264E8300F0EB3B /* AlertToast */; };
+		0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C972C264E9800F0EB3B /* ToastProvider.swift */; };
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
 		0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */; };
@@ -75,6 +77,7 @@
 /* Begin PBXFileReference section */
 		0D083C802C25E9F300F0EB3B /* SquareIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareIcon.swift; sourceTree = "<group>"; };
 		0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowWithIconEntry.swift; sourceTree = "<group>"; };
+		0D083C972C264E9800F0EB3B /* ToastProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastProvider.swift; sourceTree = "<group>"; };
 		0D55C4E32C219E13002CE99A /* MyLinks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLinks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -144,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D083C962C264E8300F0EB3B /* AlertToast in Frameworks */,
 				0D55C57F2C23904A002CE99A /* CustomAlert in Frameworks */,
 				0D55C5782C233A0A002CE99A /* Sentry in Frameworks */,
 			);
@@ -313,6 +317,7 @@
 				0D55C5482C2241DF002CE99A /* CollectionsProvider.swift */,
 				0D55C54A2C22423C002CE99A /* TagsProvider.swift */,
 				0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */,
+				0D083C972C264E9800F0EB3B /* ToastProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -401,6 +406,7 @@
 			packageProductDependencies = (
 				0D55C5772C233A0A002CE99A /* Sentry */,
 				0D55C57E2C23904A002CE99A /* CustomAlert */,
+				0D083C952C264E8300F0EB3B /* AlertToast */,
 			);
 			productName = MyLinks;
 			productReference = 0D55C4E32C219E13002CE99A /* MyLinks.app */;
@@ -434,6 +440,7 @@
 			packageReferences = (
 				0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				0D55C57D2C23904A002CE99A /* XCRemoteSwiftPackageReference "CustomAlert" */,
+				0D083C942C264E8300F0EB3B /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = 0D55C4E42C219E13002CE99A /* Products */;
 			projectDirPath = "";
@@ -489,6 +496,7 @@
 				0D55C5522C224F07002CE99A /* TagsPickerView.swift in Sources */,
 				0D55C5642C231142002CE99A /* LinksView.swift in Sources */,
 				0D083C832C25EAD300F0EB3B /* ListRowWithIconEntry.swift in Sources */,
+				0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */,
 				0D55C5182C21B472002CE99A /* ConnectionForm.swift in Sources */,
 				0D55C50A2C21ACAB002CE99A /* Links.swift in Sources */,
 				0D55C54E2C2248E7002CE99A /* LinkFormView.swift in Sources */,
@@ -744,6 +752,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0D083C942C264E8300F0EB3B /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.3.9;
+			};
+		};
 		0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
@@ -763,6 +779,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0D083C952C264E8300F0EB3B /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0D083C942C264E8300F0EB3B /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
 		0D55C5772C233A0A002CE99A /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
