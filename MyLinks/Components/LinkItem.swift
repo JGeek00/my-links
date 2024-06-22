@@ -91,6 +91,8 @@ struct LinkItemComponent: View {
                         }
                     }
                 }
+            }
+            Section {
                 if item.pinnedBy!.isEmpty {
                     Button("Pin to the dashboard", systemImage: "pin") {
                         Task {

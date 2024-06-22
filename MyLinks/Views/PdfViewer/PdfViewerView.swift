@@ -66,10 +66,21 @@ struct PDFViewerView: View {
                             Image(systemName: "arrow.counterclockwise")
                         }
                         .disabled(pdfViewerViewModel.loading == true)
-                        Button {
-                            pdfViewerViewModel.saveDocumentToStorage(linkId: link.id!)
+                        Menu {
+                            Button {
+                                pdfViewerViewModel.saveDocumentToStorage(linkId: link.id!)
+                            } label: {
+                                Label("Download", systemImage: "square.and.arrow.down")
+                            }
+                            if pdfViewerViewModel.data != nil {
+                                ShareLink(
+                                    "Share",
+                                    item: pdfViewerViewModel.data!,
+                                    preview: SharePreview(name)
+                                )
+                            }
                         } label: {
-                            Image(systemName: "square.and.arrow.down")
+                            Image(systemName: "ellipsis.circle")
                         }
                         .disabled(pdfViewerViewModel.loading == true || pdfViewerViewModel.data == nil)
                     }
