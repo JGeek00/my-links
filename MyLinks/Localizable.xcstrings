@@ -261,6 +261,16 @@
         }
       }
     },
+    "Created at" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creado"
+          }
+        }
+      }
+    },
     "Created on 🇪🇸 by JGeek00" : {
       "localizations" : {
         "es" : {
@@ -517,6 +527,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Claro"
+          }
+        }
+      }
+    },
+    "Link details" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles del enlace"
           }
         }
       }
@@ -947,6 +967,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desfijar del tablero"
+          }
+        }
+      }
+    },
+    "Updated at" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizado"
           }
         }
       }

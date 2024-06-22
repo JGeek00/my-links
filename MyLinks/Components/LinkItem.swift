@@ -14,6 +14,7 @@ struct LinkItemComponent: View {
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @State private var showDeleteAlert = false
+    @State private var showDetailsSheet = false
         
     var body: some View {
         let urlHost = getUrlHost(item.url!)
@@ -63,6 +64,11 @@ struct LinkItemComponent: View {
         .foregroundColor(Color.foreground)
         .contextMenu {
             Section {
+                Button {
+                    showDetailsSheet.toggle()
+                } label: {
+                    Label("Link details", systemImage: "info.circle")
+                }
                 if item.pinnedBy!.isEmpty {
                     Button("Pin to the dashboard", systemImage: "pin") {
                         Task {
@@ -110,6 +116,103 @@ struct LinkItemComponent: View {
             }
         } message: {
             Text("This link will be deleted. This action is not reversible.")
+        }
+        .sheet(isPresented: $showDetailsSheet, content: {
+            LinkDetailsSheet(link: item) {
+                showDetailsSheet.toggle()
+            }
+        })
+    }
+}
+
+private struct LinkDetailsSheet: View {
+    var link: Link
+    var onClose: () -> Void
+
+    init(link: Link, onClose: @escaping () -> Void) {
+        self.link = link
+        self.onClose = onClose
+    }
+    
+    var body: some View {
+        let createdAt = link.createdAt != nil && link.createdAt != "" ? stringToDate(link.createdAt!) : nil
+        let updatedAt = link.updatedAt != nil && link.updatedAt != "" ? stringToDate(link.updatedAt!) : nil
+        NavigationStack {
+            List {
+                DetailsItem(icon: "link", iconColor: .green, label: "URL", value: Text(link.url!))
+                if link.name != "" {
+                    DetailsItem(icon: "textformat.size.smaller", iconColor: .blue, label: String(localized: "Name"), value: Text(link.name!))
+                }
+                if link.description != "" {
+                    DetailsItem(icon: "paragraph", iconColor: .orange, label: String(localized: "Description"), value: Text(link.description!))
+                }
+                if link.collection!.name != "" {
+                    DetailsItem(icon: "folder.fill", iconColor: .red, label: String(localized: "Collection"), value: Text(link.collection!.name!))
+                }
+                if !link.tags!.isEmpty {
+                    DetailsItem(icon: "tag.fill", iconColor: .gray, label: String(localized: "Tags"), value: Text(link.tags!.map() { $0.name! }.joined(separator: ", ")))
+                }
+                if createdAt != nil {
+                    DetailsItem(icon: "clock.fill", iconColor: .brown, label: String(localized: "Created at"), value: Text(createdAt!.formatted(date: .complete, time: .shortened)))
+                }
+                if updatedAt != nil {
+                    DetailsItem(icon: "clock.fill", iconColor: .indigo, label: String(localized: "Updated at"), value: Text(updatedAt!.formatted(date: .complete, time: .shortened)))
+                }
+            }
+            .listRowSpacing(12)
+            .navigationTitle("Link details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        onClose()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color.foreground.opacity(0.5))
+                    }
+                    .buttonStyle(BorderedButtonStyle())
+                    .clipShape(Circle())
+                }
+            }
+            .background(.listBackground)
+        }
+    }
+}
+
+private struct DetailsItem: View {
+    var icon: String
+    var iconColor: Color
+    var label: String
+    var value: Text
+    
+    init(icon: String, iconColor: Color, label: String, value: Text) {
+        self.icon = icon
+        self.iconColor = iconColor
+        self.label = label
+        self.value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 14))
+                    .frame(width: 24, height: 24)
+                    .background(iconColor)
+                    .foregroundStyle(Color.white)
+                    .cornerRadius(6)
+                Spacer()
+                    .frame(width: 12)
+                Text(label)
+                    .font(.system(size: 20))
+                    .fontWeight(.semibold)
+            }
+            Spacer()
+                .frame(height: 12)
+            value
+                .font(.system(size: 16))
+                .selectionDisabled(false)
         }
     }
 }
