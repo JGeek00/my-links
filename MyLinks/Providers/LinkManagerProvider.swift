@@ -8,6 +8,54 @@ class LinkManagerProvider: ObservableObject {
     @Published var errorAlert = false
     @Published var errorMessage = ""
     
+    // This flag is used on the LinksFilteredView to reload the data after editing
+    // On LinksFilteredView there's an onChange that reloads the data when this flag value changes
+    @Published var finishedEditingLink: Link? = nil
+    
+    func createLink(link: LinkCreationRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
+        guard let instance = ApiClientProvider.shared.instance else { return }
+        Task {
+            let result = await instance.createLink(link)
+            if result.successful == true {
+                onSuccess(result.data!.response!)
+                DispatchQueue.main.async {
+                    Task { await TagsProvider.shared.loadData() }
+                    Task { await CollectionsProvider.shared.loadData() }
+                    Task { await DashboardViewModel.shared.loadData() }
+                    Task {
+                        await LinksViewModel.shared.loadData()
+                        LinksViewModel.shared.scrollTopList.toggle()
+                    }
+                }
+            }
+            else {
+                onError(result.statusCode)
+            }
+        }
+    }
+    
+    func editLink(id: Int, body: LinkCreationRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
+        guard let instance = ApiClientProvider.shared.instance else { return }
+        Task {
+            let result = await instance.editLink(linkId: id, body: body)
+            if result.successful == true {
+                onSuccess(result.data!.response!)
+                DispatchQueue.main.async {
+                    Task { await TagsProvider.shared.loadData() }
+                    Task { await CollectionsProvider.shared.loadData() }
+                    Task { await DashboardViewModel.shared.loadData() }
+                    Task {
+                        LinksViewModel.shared.updateLinkData(link: result.data!.response!)
+                        self.finishedEditingLink = result.data!.response!
+                    }
+                }
+            }
+            else {
+                onError(result.statusCode)
+            }
+        }
+    }
+    
     func deleteLink(id: Int, onComplete: @escaping (Link) -> Void) async {
         guard let instance = ApiClientProvider.shared.instance else { return }
         DispatchQueue.main.async {

@@ -1,6 +1,14 @@
 import SwiftUI
 
 struct LinkFormView: View {
+    var onClose: () -> Void
+    var onSuccess: (Link, Enums.LinkTaskCompleted) -> Void
+    
+    init(onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+        self.onClose = onClose
+        self.onSuccess = onSuccess
+    }
+    
     @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var tagsProvider: TagsProvider
@@ -30,7 +38,7 @@ struct LinkFormView: View {
                         }
                         else {
                             Text("Unorganized")
-                                .tag(1)
+                                .tag(0)
                         }
                     }
                     if !tagsProvider.data.isEmpty {
@@ -59,7 +67,7 @@ struct LinkFormView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        linkFormViewModel.sheetOpen.toggle()
+                        onClose()
                     } label: {
                         Image(systemName: "xmark")
                             .fontWeight(.semibold)
@@ -70,7 +78,9 @@ struct LinkFormView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        linkFormViewModel.onSave()
+                        linkFormViewModel.onSave() { newLink in
+                            onSuccess(newLink, linkFormViewModel.editingLink != nil ? .edit : .create)
+                        }
                     } label: {
                         if linkFormViewModel.saving == true {
                             ProgressView()
@@ -101,12 +111,9 @@ struct LinkFormView: View {
                 Text(linkFormViewModel.savingErrorMessage)
             }
         }
-        .onChange(of: linkFormViewModel.sheetOpen) {
-            if linkFormViewModel.sheetOpen == false {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    linkFormViewModel.reset()
-                }
-            }
-        }
+        .onAppear(perform: {
+            let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
+            linkFormViewModel.collection = filtered.first?.id ?? 0
+        })
     }
 }

@@ -21,7 +21,6 @@ struct MyLinksApp: App {
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(OnboardingViewModel.shared)
                 .environmentObject(ApiClientProvider.shared)
-                .environmentObject(LinkFormViewModel.shared)
                 .environmentObject(CollectionFormViewModel.shared)
                 .environmentObject(LinkManagerProvider.shared)
                 .environmentObject(ToastProvider.shared)

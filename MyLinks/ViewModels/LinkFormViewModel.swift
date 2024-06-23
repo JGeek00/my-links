@@ -1,11 +1,7 @@
 import Foundation
 import SwiftUI
 
-class LinkFormViewModel: ObservableObject {
-    static let shared = LinkFormViewModel()
-    
-    @Published var sheetOpen = false
-    
+class LinkFormViewModel: ObservableObject {    
     @Published var editingLink: Link? = nil
     
     @Published var url = ""
@@ -22,11 +18,17 @@ class LinkFormViewModel: ObservableObject {
     @Published var savingErrorMessage = ""
     @Published var savingErrorAlert = false
     
-    // This flag is used on the LinksFilteredView to reload the data after editing
-    // On LinksFilteredView there's an onChange that reloads the data when this flag value changes
-    @Published var finishedEditingLink: Link? = nil
+    init(link: Link? = nil) {
+        guard let link = link else { return }
+        editingLink = link
+        url = link.url ?? ""
+        name = link.name ?? ""
+        description = link.description ?? ""
+        selectedTags = link.tags?.map() { $0.name! } ?? []
+        collection = link.collection?.id ?? 0
+    }
         
-    func onSave() {
+    func onSave(onCompleted: @escaping (Link) -> Void) {
         let collections = CollectionsProvider.shared.data
         
         if NSPredicate(format: "SELF MATCHES %@", Regexps.url).evaluate(with: url) == false {
@@ -48,30 +50,14 @@ class LinkFormViewModel: ObservableObject {
     
         self.saving = true
         
-        guard let instance = ApiClientProvider.shared.instance else { return }
-        Task {
-            let result = editingLink != nil ? await instance.editLink(linkId: editingLink!.id!, body: body) : await instance.createLink(body)
-            if result.successful == true {
+        if editingLink != nil {
+            LinkManagerProvider.shared.editLink(id: editingLink!.id!, body: body) { link in
                 DispatchQueue.main.async {
                     self.saving = false
-                    self.sheetOpen = false
-                    Task { await TagsProvider.shared.loadData() }
-                    Task { await CollectionsProvider.shared.loadData() }
-                    Task { await DashboardViewModel.shared.loadData() }
-                    if self.editingLink != nil {
-                        LinksViewModel.shared.updateLinkData(link: result.data!.response!)
-                        self.finishedEditingLink = result.data!.response!
-                    }
-                    else {
-                        Task {
-                            await LinksViewModel.shared.loadData()
-                            LinksViewModel.shared.scrollTopList.toggle()
-                        }
-                    }
                 }
-            }
-            else {
-                guard let statusCode = result.statusCode else {
+                onCompleted(link)
+            } onError: { statusCode in
+                guard let statusCode = statusCode else {
                     DispatchQueue.main.async {
                         self.saving = false
                         self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
@@ -86,17 +72,27 @@ class LinkFormViewModel: ObservableObject {
                 }
             }
         }
-    }
-    
-    func reset() {
-        self.editingLink = nil
-        self.url = ""
-        self.name = ""
-        self.collection = 0
-        self.description = ""
-        self.selectedTags = []
-        self.localTags = []
-        self.validationErrorAlert = false
-        self.validationErrorMessage = ""
+        else {
+            LinkManagerProvider.shared.createLink(link: body) { link in
+                DispatchQueue.main.async {
+                    self.saving = false
+                }
+                onCompleted(link)
+            } onError: { statusCode in
+                guard let statusCode = statusCode else {
+                    DispatchQueue.main.async {
+                        self.saving = false
+                        self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                        self.savingErrorAlert = true
+                    }
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.saving = false
+                    self.savingErrorMessage = "Error \(statusCode)."
+                    self.savingErrorAlert = true
+                }
+            }
+        }
     }
 }

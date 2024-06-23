@@ -4,7 +4,7 @@ struct LinksFilteredView: View {
     var input: LinksFilteredRequest
     
     @ObservedObject private var linksFilteredViewModel: LinksFilteredViewModel
-    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     
     init(input: LinksFilteredRequest) {
         self.input = input
@@ -79,10 +79,10 @@ struct LinksFilteredView: View {
                 linksFilteredViewModel.clearSearch()
             }
         })
-        .onChange(of: linkFormViewModel.finishedEditingLink) {
-            guard let link = linkFormViewModel.finishedEditingLink else { return }
+        .onChange(of: linkManagerProvider.finishedEditingLink) {
+            guard let link = linkManagerProvider.finishedEditingLink else { return }
             linksFilteredViewModel.updateLinkData(link: link)
-            LinkFormViewModel.shared.finishedEditingLink = nil
+            linkManagerProvider.finishedEditingLink = nil
         }
         .onAppear(perform: {
             if linksFilteredViewModel.data.isEmpty {

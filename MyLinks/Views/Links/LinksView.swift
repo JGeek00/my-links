@@ -3,9 +3,10 @@ import CustomAlert
 
 struct LinksView: View {
     @StateObject private var linksViewModel = LinksViewModel.shared
-    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     
     init() {}
+    
+    @State private var linkFormSheet = false
     
     var body: some View {
         NavigationStack {
@@ -62,8 +63,7 @@ struct LinksView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        linkFormViewModel.reset()
-                        linkFormViewModel.sheetOpen = true
+                        linkFormSheet.toggle()
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -76,6 +76,14 @@ struct LinksView: View {
             .onSubmit(of: .search) {
                 linksViewModel.search()
             }
+            .sheet(isPresented: $linkFormSheet, content: {
+                LinkFormView() {
+                    linkFormSheet = false
+                } onSuccess: { newLink, action in
+                    linkFormSheet = false
+                }
+                .environmentObject(LinkFormViewModel())
+            })
             .onChange(of: linksViewModel.searchPresented, { oldValue, newValue in
                 if oldValue == true && newValue == false {
                     linksViewModel.clearSearch()

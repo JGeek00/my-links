@@ -102,6 +102,10 @@ class LinksFilteredViewModel: ObservableObject {
             removeLinkData(linkId: link.id!)
         case .pin:
             updateLinkData(link: link)
+        case .edit:
+            updateLinkData(link: link)
+        case .create:
+            return
         }
     }
     

@@ -51,5 +51,7 @@ class Enums {
     enum LinkTaskCompleted: String {
         case delete
         case pin
+        case edit
+        case create
     }
 }

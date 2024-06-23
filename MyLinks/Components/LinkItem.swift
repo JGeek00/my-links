@@ -11,8 +11,8 @@ struct LinkItemComponent: View {
         self.onTaskCompleted = onTaskCompleted
     }
     
-    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
+    @State private var linkFormOpen = false
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
     @State private var readerModeSheet = false
@@ -121,13 +121,7 @@ struct LinkItemComponent: View {
             }
             Section {
                 Button("Edit", systemImage: "pencil") {
-                    linkFormViewModel.editingLink = item
-                    linkFormViewModel.url = item.url!
-                    linkFormViewModel.name = item.name!
-                    linkFormViewModel.description = item.description!
-                    linkFormViewModel.selectedTags = item.tags!.map() { $0.name! }
-                    linkFormViewModel.collection = item.collection!.id!
-                    linkFormViewModel.sheetOpen = true
+                    linkFormOpen.toggle()
                 }
                 Button("Delete", systemImage: "trash", role: .destructive) {
                     showDeleteAlert.toggle()
@@ -148,6 +142,15 @@ struct LinkItemComponent: View {
         } message: {
             Text("This link will be deleted. This action is not reversible.")
         }
+        .sheet(isPresented: $linkFormOpen, content: {
+            LinkFormView {
+                linkFormOpen = false
+            } onSuccess: { resultLink, action in
+                linkFormOpen = false
+                onTaskCompleted(resultLink, action)
+            }
+            .environmentObject(LinkFormViewModel(link: item))
+        })
         .sheet(isPresented: $showDetailsSheet, content: {
             LinkDetailsSheet(link: item) {
                 showDetailsSheet.toggle()

@@ -5,7 +5,6 @@ struct DashboardView: View {
     @StateObject private var dashboardViewModel = DashboardViewModel.shared
     @EnvironmentObject private var tagsProvider: TagsProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -13,6 +12,7 @@ struct DashboardView: View {
     init() {}
     
     @State private var navigationPath = NavigationPath()
+    @State private var linkFormSheet = false
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -132,8 +132,7 @@ struct DashboardView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button {
-                            linkFormViewModel.reset()
-                            linkFormViewModel.sheetOpen.toggle()
+                            linkFormSheet.toggle()
                         } label: {
                             Label("New link", systemImage: "link")
                         }
@@ -153,6 +152,14 @@ struct DashboardView: View {
             .navigationDestination(for: LinksFilteredRequest.self) { value in
                 LinksFilteredView(input: value)
             }
+            .sheet(isPresented: $linkFormSheet, content: {
+                LinkFormView() {
+                    linkFormSheet = false
+                } onSuccess: { newLink, action in
+                    linkFormSheet = false
+                }
+                .environmentObject(LinkFormViewModel())
+            })
         }
         .onAppear(perform: {
             if dashboardViewModel.data.isEmpty {
