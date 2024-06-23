@@ -110,16 +110,20 @@ class LinksFilteredViewModel: ObservableObject {
     }
     
     func removeLinkData(linkId: Int) {
-        self.data = self.data.filter() { $0.id! != linkId }
+        DispatchQueue.main.async {
+            self.data = self.data.filter() { $0.id! != linkId }
+        }
     }
     
     func updateLinkData(link: Link) {
-        self.data = self.data.map() { item in
-            if item.id == link.id {
-                return link
-            }
-            else {
-                return item
+        DispatchQueue.main.async {
+            self.data = self.data.map() { item in
+                if item.id == link.id {
+                    return link
+                }
+                else {
+                    return item
+                }
             }
         }
     }

@@ -8,10 +8,6 @@ class LinkManagerProvider: ObservableObject {
     @Published var errorAlert = false
     @Published var errorMessage = ""
     
-    // This flag is used on the LinksFilteredView to reload the data after editing
-    // On LinksFilteredView there's an onChange that reloads the data when this flag value changes
-    @Published var finishedEditingLink: Link? = nil
-    
     func createLink(link: LinkCreationRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
@@ -44,10 +40,7 @@ class LinkManagerProvider: ObservableObject {
                     Task { await TagsProvider.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await DashboardViewModel.shared.loadData() }
-                    Task {
-                        LinksViewModel.shared.updateLinkData(link: result.data!.response!)
-                        self.finishedEditingLink = result.data!.response!
-                    }
+                    LinksViewModel.shared.updateLinkData(link: result.data!.response!)
                 }
             }
             else {

@@ -3,12 +3,12 @@ import SwiftUI
 struct LinksFilteredView: View {
     var input: LinksFilteredRequest
     
-    @ObservedObject private var linksFilteredViewModel: LinksFilteredViewModel
+    @StateObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     
     init(input: LinksFilteredRequest) {
         self.input = input
-        _linksFilteredViewModel = ObservedObject(wrappedValue: LinksFilteredViewModel(input: input))
+        _linksFilteredViewModel = StateObject(wrappedValue: LinksFilteredViewModel(input: input))
     }
     
     var body: some View {
@@ -50,10 +50,6 @@ struct LinksFilteredView: View {
                             }
                         }
                         .animation(.default, value: filtered)
-//                        .onChange(of: linkFormViewModel.finishedEditingFlag) {
-//                            guard let first = filtered.first else { return }
-//                            scrollView.scrollTo(first)
-//                        }
                     }
                 }
                 else {
@@ -79,11 +75,6 @@ struct LinksFilteredView: View {
                 linksFilteredViewModel.clearSearch()
             }
         })
-        .onChange(of: linkManagerProvider.finishedEditingLink) {
-            guard let link = linkManagerProvider.finishedEditingLink else { return }
-            linksFilteredViewModel.updateLinkData(link: link)
-            linkManagerProvider.finishedEditingLink = nil
-        }
         .onAppear(perform: {
             if linksFilteredViewModel.data.isEmpty {
                 Task { await linksFilteredViewModel.loadData() }

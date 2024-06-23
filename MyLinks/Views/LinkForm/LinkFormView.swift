@@ -111,9 +111,5 @@ struct LinkFormView: View {
                 Text(linkFormViewModel.savingErrorMessage)
             }
         }
-        .onAppear(perform: {
-            let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
-            linkFormViewModel.collection = filtered.first?.id ?? 0
-        })
     }
 }
