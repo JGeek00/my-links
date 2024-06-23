@@ -13,7 +13,6 @@ class LinkManagerProvider: ObservableObject {
         Task {
             let result = await instance.createLink(link)
             if result.successful == true {
-                onSuccess(result.data!.response!)
                 DispatchQueue.main.async {
                     Task { await TagsProvider.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
@@ -23,6 +22,7 @@ class LinkManagerProvider: ObservableObject {
                         LinksViewModel.shared.scrollTopList.toggle()
                     }
                 }
+                onSuccess(result.data!.response!)
             }
             else {
                 onError(result.statusCode)
@@ -35,13 +35,13 @@ class LinkManagerProvider: ObservableObject {
         Task {
             let result = await instance.editLink(linkId: id, body: body)
             if result.successful == true {
-                onSuccess(result.data!.response!)
                 DispatchQueue.main.async {
                     Task { await TagsProvider.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await DashboardViewModel.shared.loadData() }
                     LinksViewModel.shared.updateLinkData(link: result.data!.response!)
                 }
+                onSuccess(result.data!.response!)
             }
             else {
                 onError(result.statusCode)

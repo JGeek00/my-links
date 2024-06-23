@@ -117,12 +117,25 @@ class LinksFilteredViewModel: ObservableObject {
     
     func updateLinkData(link: Link) {
         DispatchQueue.main.async {
-            self.data = self.data.map() { item in
-                if item.id == link.id {
-                    return link
+            if self.input.mode == .tag {
+                let contains = link.tags!.first { $0.id == self.input.id }
+                if contains == nil {
+                    self.data = self.data.filter() { $0.id! != link.id! }
                 }
-                else {
-                    return item
+            }
+            else if self.input.mode == .collection {
+                if link.collection!.id != self.input.id {
+                    self.data = self.data.filter() { $0.id! != link.id! }
+                }
+            }
+            else {
+                self.data = self.data.map() { item in
+                    if item.id == link.id {
+                        return link
+                    }
+                    else {
+                        return item
+                    }
                 }
             }
         }
