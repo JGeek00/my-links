@@ -17,10 +17,16 @@ class CollectionsProvider: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let collectionsResult = await instance.fetchCollections()
-        if collectionsResult.successful == true {
+        let result = await instance.fetchCollections()
+        if result.successful == true {
             DispatchQueue.main.async {
-                self.data = collectionsResult.data?.response ?? []
+                if result.data?.response != nil {
+                    let filtered = result.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
+                    self.data = filtered.sorted() { $0.name! < $1.name! }
+                }
+                else {
+                    self.data = []
+                }
                 self.loading = false
                 self.error = false
             }

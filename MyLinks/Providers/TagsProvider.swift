@@ -17,7 +17,13 @@ class TagsProvider: ObservableObject {
         let result = await instance.fetchTags()
         if result.successful == true {
             DispatchQueue.main.async {
-                self.data = result.data?.response ?? []
+                if result.data?.response != nil {
+                    let filtered = result.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
+                    self.data = filtered.sorted() { $0.name! < $1.name! }
+                }
+                else {
+                    self.data = []
+                }
                 self.loading = false
                 self.error = false
             }

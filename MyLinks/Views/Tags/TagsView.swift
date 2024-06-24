@@ -33,8 +33,7 @@ struct TagsView: View {
                     }
                 }
                 else {
-                    let filtered = tagsProvider.data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
-                    if filtered.isEmpty {
+                    if tagsProvider.data.isEmpty {
                         ContentUnavailableView {
                             Label("No tags created", systemImage: "tag")
                         } description: {
@@ -42,7 +41,7 @@ struct TagsView: View {
                         }
                     }
                     else {
-                        let searched = searchText != "" ? filtered.filter() { $0.name!.lowercased().contains(searchText.lowercased()) } : filtered
+                        let searched = searchText != "" ? tagsProvider.data.filter() { $0.name!.lowercased().contains(searchText.lowercased()) } : tagsProvider.data
                         if !searched.isEmpty {
                             if horizontalSizeClass == .regular {
                                 ScrollView {

@@ -34,8 +34,7 @@ struct CollectionsView: View {
                     }
                 }
                 else {
-                    let filtered = collectionsProvider.data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
-                    if filtered.isEmpty {
+                    if collectionsProvider.data.isEmpty {
                         ContentUnavailableView {
                             Label("No collections added", systemImage: "folder")
                         } description: {
@@ -43,7 +42,7 @@ struct CollectionsView: View {
                         }
                     }
                     else {
-                        let searched = searchText != "" ? filtered.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : filtered
+                        let searched = searchText != "" ? collectionsProvider.data.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : collectionsProvider.data
                         if !searched.isEmpty {
                             if horizontalSizeClass == .regular {
                                 ScrollView {
