@@ -18,6 +18,8 @@ class LinksFilteredViewModel: ObservableObject {
     
     @Published var loadingMore = false
     
+    @Published var sortingSelected = Enums.SortingOptions.dateNewestFirst
+    
     func loadData(
         cursor: Int? = nil,
         setLoading: Bool = false,
@@ -41,7 +43,8 @@ class LinksFilteredViewModel: ObservableObject {
             pinnedOnly: input.mode == .pinned ? true : nil,
             recentOnly: input.mode == .recent ? true : nil,
             searchQueryString: searchQueryValue,
-            searchByName: searchQueryValue != nil ? true : nil
+            searchByName: searchQueryValue != nil ? true : nil,
+            sort: sortingSelected.rawValue
         )
         if dashboardResult.successful == true {
             DispatchQueue.main.async {

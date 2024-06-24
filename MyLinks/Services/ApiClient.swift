@@ -202,16 +202,15 @@ class ApiClient {
         pinnedOnly: Bool? = nil,
         recentOnly: Bool? = nil,
         searchQueryString: String? = nil,
-        searchByName: Bool? = true
+        searchByName: Bool? = true,
+        sort: Int? = nil
     ) async -> StatusResponse<LinksResponse> {
         let defaultErrorResponse = StatusResponse<LinksResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links") else { return defaultErrorResponse }
         do {
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-            var queryItems = [
-              URLQueryItem(name: "sort", value: "0"),
-            ]
+            var queryItems: [URLQueryItem] = []
             if cursor != nil {
                 queryItems.append(URLQueryItem(name: "cursor", value: "\(cursor!)"))
             }
@@ -232,6 +231,9 @@ class ApiClient {
             }
             if searchByName != nil {
                 queryItems.append(URLQueryItem(name: "searchByName", value: "\(searchByName!)"))
+            }
+            if sort != nil {
+                queryItems.append(URLQueryItem(name: "sort", value: "\(sort!)"))
             }
             components.queryItems = queryItems
             

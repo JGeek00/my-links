@@ -1,6 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
     "404" : {
       "localizations" : {
         "es" : {
@@ -351,6 +367,26 @@
         }
       }
     },
+    "Date (newest first)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha (nuevos primero)"
+          }
+        }
+      }
+    },
+    "Date (oldest first)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha (antiguos primero)"
+          }
+        }
+      }
+    },
     "Delete" : {
       "localizations" : {
         "es" : {
@@ -387,6 +423,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descripción"
+          }
+        }
+      }
+    },
+    "Description (A-Z)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción (A-Z)"
+          }
+        }
+      }
+    },
+    "Description (Z-A)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción (Z-A)"
           }
         }
       }
@@ -667,6 +723,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "Name (A-Z)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre (A-Z)"
+          }
+        }
+      }
+    },
+    "Name (Z-A)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre (Z-A)"
           }
         }
       }
@@ -1097,17 +1173,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Token"
-          }
-        }
-      }
-    },
-    "Unable to access document directory" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se puede acceder al directorio de documentos"
           }
         }
       }

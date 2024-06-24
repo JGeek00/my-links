@@ -86,10 +86,34 @@ struct LinksView: View {
             .navigationTitle("Links")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        linkFormSheet.toggle()
-                    } label: {
-                        Image(systemName: "plus")
+                    HStack {
+                        Menu {
+                            Picker("", selection: $linksViewModel.sortingSelected) {
+                                Text("Date (newest first)")
+                                    .tag(Enums.SortingOptions.dateNewestFirst)
+                                Text("Date (oldest first)")
+                                    .tag(Enums.SortingOptions.dateOldestFirst)
+                                Text("Name (A-Z)")
+                                    .tag(Enums.SortingOptions.nameAZ)
+                                Text("Name (Z-A)")
+                                    .tag(Enums.SortingOptions.nameZA)
+                                Text("Description (A-Z)")
+                                    .tag(Enums.SortingOptions.descriptionAZ)
+                                Text("Description (Z-A)")
+                                    .tag(Enums.SortingOptions.descriptionZA)
+                            }
+                            .onChange(of: linksViewModel.sortingSelected, initial: false) {
+                                Task { await linksViewModel.loadData(setLoading: true) }
+                            }
+                        } label: {
+                            Image(systemName: "arrow.up.arrow.down")
+                        }
+                        .disabled(linksViewModel.loading)
+                        Button {
+                            linkFormSheet.toggle()
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }

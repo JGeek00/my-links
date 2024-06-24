@@ -54,4 +54,13 @@ class Enums {
         case edit
         case create
     }
+    
+    enum SortingOptions: Int {
+        case dateNewestFirst
+        case dateOldestFirst
+        case nameAZ
+        case nameZA
+        case descriptionAZ
+        case descriptionZA
+    }
 }

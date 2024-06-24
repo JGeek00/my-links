@@ -14,6 +14,8 @@ class LinksViewModel: ObservableObject {
     
     @Published var loadingMore = false
     
+    @Published var sortingSelected = Enums.SortingOptions.dateNewestFirst
+    
     // Flag to triger onChange
     @Published var scrollTopList = false
     
@@ -29,7 +31,7 @@ class LinksViewModel: ObservableObject {
             }
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let dashboardResult = await instance.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil)
+        let dashboardResult = await instance.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
         if dashboardResult.successful == true {
             DispatchQueue.main.async {
                 if loadMore == true {

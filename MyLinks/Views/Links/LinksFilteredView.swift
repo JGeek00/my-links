@@ -100,6 +100,32 @@ struct LinksFilteredView: View {
         .onSubmit(of: .search) {
             linksFilteredViewModel.search()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Picker("", selection: $linksFilteredViewModel.sortingSelected) {
+                        Text("Date (newest first)")
+                            .tag(Enums.SortingOptions.dateNewestFirst)
+                        Text("Date (oldest first)")
+                            .tag(Enums.SortingOptions.dateOldestFirst)
+                        Text("Name (A-Z)")
+                            .tag(Enums.SortingOptions.nameAZ)
+                        Text("Name (Z-A)")
+                            .tag(Enums.SortingOptions.nameZA)
+                        Text("Description (A-Z)")
+                            .tag(Enums.SortingOptions.descriptionAZ)
+                        Text("Description (Z-A)")
+                            .tag(Enums.SortingOptions.descriptionZA)
+                    }
+                    .onChange(of: linksFilteredViewModel.sortingSelected, initial: false) {
+                        Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                    }
+                } label: {
+                    Image(systemName: "arrow.up.arrow.down")
+                }
+                .disabled(linksFilteredViewModel.loading)
+            }
+        }
         .background(Color.listBackground)
         .onChange(of: linksFilteredViewModel.searchPresented, { oldValue, newValue in
             if oldValue == true && newValue == false {
