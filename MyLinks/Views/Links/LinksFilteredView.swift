@@ -3,6 +3,8 @@ import SwiftUI
 struct LinksFilteredView: View {
     var input: LinksFilteredRequest
     
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     @StateObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     
@@ -41,15 +43,42 @@ struct LinksFilteredView: View {
             else {
                 let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                 if !filtered.isEmpty {
-                    ScrollViewReader { scrollView in
-                        List(filtered, id: \.self) { item in
-                            LinkItemComponent(item: item) {
-                                openSafariView(item.url!)
-                            } onTaskCompleted: { link, action in
-                                linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                    if horizontalSizeClass == .regular {
+                        ScrollViewReader(content: { scrollView in
+                            ScrollView {
+                                LazyVGrid(columns: Config.gridColumns) {
+                                    ForEach(filtered, id: \.self) { item in
+                                        LinkItemComponent(item: item) {
+                                            openSafariView(item.url!)
+                                        } onTaskCompleted: { _, _ in }
+                                        .onAppear {
+                                            if item == filtered.last {
+                                                linksFilteredViewModel.loadMore()
+                                            }
+                                        }
+                                        .padding(6)
+                                    }
+                                }
+                                .padding(.horizontal, 12)
                             }
+                        })
+                    }
+                    else {
+                        ScrollViewReader { scrollView in
+                            List(filtered, id: \.self) { item in
+                                LinkItemComponent(item: item) {
+                                    openSafariView(item.url!)
+                                } onTaskCompleted: { link, action in
+                                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                }
+                                .onAppear {
+                                    if item == filtered.last {
+                                        linksFilteredViewModel.loadMore()
+                                    }
+                                }
+                            }
+                            .animation(.default, value: filtered)
                         }
-                        .animation(.default, value: filtered)
                     }
                 }
                 else {

@@ -11,6 +11,8 @@ struct CollectionItemComponent: View {
         self.onDelete = onDelete
     }
     
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     @State private var showDeleteAlert = false
     
@@ -64,7 +66,10 @@ struct CollectionItemComponent: View {
                 .foregroundStyle(Color.gray)
             }
         }
+        .padding(horizontalSizeClass == .regular ? 12 : 0)
         .foregroundStyle(Color.foreground)
+        .background(horizontalSizeClass == .regular ? Color.background : Color.clear)
+        .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
         .contextMenu {
             Button("Edit", systemImage: "pencil") {
                 collectionFormViewModel.editingId = collection.id!

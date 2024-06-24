@@ -5,6 +5,8 @@ struct CollectionsView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     init() {}
     
     @State private var navigationPath = NavigationPath()
@@ -43,14 +45,31 @@ struct CollectionsView: View {
                     else {
                         let searched = searchText != "" ? filtered.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : filtered
                         if !searched.isEmpty {
-                            List(searched, id: \.self) { item in
-                                CollectionItemComponent(collection: item) {
-                                    navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                } onDelete: {
-                                    collectionsProvider.deleteCollection(id: item.id!)
+                            if horizontalSizeClass == .regular {
+                                ScrollView {
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(searched, id: \.self) { item in
+                                            CollectionItemComponent(collection: item) {
+                                                navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                            } onDelete: {
+                                                collectionsProvider.deleteCollection(id: item.id!)
+                                            }
+                                            .padding(6)
+                                        }
+                                    }
+                                    .padding(.horizontal, 12)
                                 }
                             }
-                            .animation(.default, value: searched)
+                            else {
+                                List(searched, id: \.self) { item in
+                                    CollectionItemComponent(collection: item) {
+                                        navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                    } onDelete: {
+                                        collectionsProvider.deleteCollection(id: item.id!)
+                                    }
+                                }
+                                .animation(.default, value: searched)
+                            }
                         }
                         else {
                             ContentUnavailableView {

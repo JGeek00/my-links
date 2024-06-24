@@ -2,6 +2,8 @@ import SwiftUI
 import CustomAlert
 
 struct LinksView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     @StateObject private var linksViewModel = LinksViewModel.shared
     
     init() {}
@@ -32,21 +34,43 @@ struct LinksView: View {
                 else {
                     let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                     if !filtered.isEmpty {
-                        ScrollViewReader { scrollView in
-                            List(filtered, id: \.self) { item in
-                                LinkItemComponent(item: item) {
-                                    openSafariView(item.url!)
-                                } onTaskCompleted: { _, _ in }
-                                .onAppear {
-                                    if item == filtered.last {
-                                        linksViewModel.loadMore()
+                        if horizontalSizeClass == .regular {
+                            ScrollViewReader(content: { scrollView in
+                                ScrollView {
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(filtered, id: \.self) { item in
+                                            LinkItemComponent(item: item) {
+                                                openSafariView(item.url!)
+                                            } onTaskCompleted: { _, _ in }
+                                            .onAppear {
+                                                if item == filtered.last {
+                                                    linksViewModel.loadMore()
+                                                }
+                                            }
+                                            .padding(6)
+                                        }
+                                    }
+                                    .padding(.horizontal, 12)
+                                }
+                            })
+                        }
+                        else {
+                            ScrollViewReader { scrollView in
+                                List(filtered, id: \.self) { item in
+                                    LinkItemComponent(item: item) {
+                                        openSafariView(item.url!)
+                                    } onTaskCompleted: { _, _ in }
+                                    .onAppear {
+                                        if item == filtered.last {
+                                            linksViewModel.loadMore()
+                                        }
                                     }
                                 }
-                            }
-                            .animation(.default, value: filtered)
-                            .onChange(of: linksViewModel.scrollTopList, initial: false) {
-                                guard let first = linksViewModel.data.first else { return }
-                                scrollView.scrollTo(first)
+                                .animation(.default, value: filtered)
+                                .onChange(of: linksViewModel.scrollTopList, initial: false) {
+                                    guard let first = linksViewModel.data.first else { return }
+                                    scrollView.scrollTo(first)
+                                }
                             }
                         }
                     }

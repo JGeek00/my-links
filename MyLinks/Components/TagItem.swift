@@ -9,6 +9,8 @@ struct TagItemComponent: View {
         self.onTap = onTap
     }
     
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
     var body: some View {
@@ -44,6 +46,9 @@ struct TagItemComponent: View {
                 .foregroundStyle(Color.gray)
             }
         }
+        .padding(horizontalSizeClass == .regular ? 12 : 0)
         .foregroundStyle(Color.foreground)
+        .background(horizontalSizeClass == .regular ? Color.background : Color.clear)
+        .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
     }
 }

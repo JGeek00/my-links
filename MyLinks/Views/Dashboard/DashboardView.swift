@@ -38,17 +38,89 @@ struct DashboardView: View {
                 else {
                     let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                     let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
-                    List {
-                        Section {
-                            if horizontalSizeClass == .regular {
-                                HStack(spacing: 12) {
+                    
+                    if horizontalSizeClass == .regular {
+                        ScrollView {
+                            Section {
+                                HStack(spacing: 16) {
                                     SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
                                     SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardViewModel.data.filter() { $0.pinnedBy!.isEmpty == false }.count, color: Color.orange, status: .loaded)
                                     SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
                                     SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
                                 }
                             }
-                            else {
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            .padding(16)
+                            if !filtered.isEmpty {
+                                VStack {
+                                    HStack {
+                                        Text("Recent")
+                                            .font(.system(size: 16))
+                                            .fontWeight(.semibold)
+                                        Spacer()
+                                        Button {
+                                            let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
+                                            navigationPath.append(request)
+                                        } label: {
+                                            Text("View all")
+                                            Image(systemName: "chevron.right")
+                                        }
+                                        .font(.system(size: 16))
+                                    }
+                                    .padding(.horizontal, 8)
+                                    Spacer()
+                                        .frame(height: 16)
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(filtered.uniqued(), id: \.self) { item in
+                                            LinkItemComponent(item: item) {
+                                                openSafariView(item.url!)
+                                            } onTaskCompleted: { link, action in
+                                                dashboardViewModel.reload()
+                                            }
+                                            .padding(6)
+                                        }
+                                    }
+                                }
+                                .padding(8)
+                            }
+                            if !pinned.isEmpty {
+                                VStack {
+                                    HStack {
+                                        Text("Pinned")
+                                            .font(.system(size: 16))
+                                            .fontWeight(.semibold)
+                                        Spacer()
+                                        Button {
+                                            let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
+                                            navigationPath.append(request)
+                                        } label: {
+                                            Text("View all")
+                                            Image(systemName: "chevron.right")
+                                        }
+                                        .font(.system(size: 16))
+                                    }
+                                    .padding(.horizontal, 8)
+                                    Spacer()
+                                        .frame(height: 16)
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(pinned.uniqued(), id: \.self) { item in
+                                            LinkItemComponent(item: item) {
+                                                openSafariView(item.url!)
+                                            } onTaskCompleted: { link, action in
+                                                dashboardViewModel.reload()
+                                            }
+                                            .padding(6)
+                                        }
+                                    }
+                                }
+                                .padding(8)
+                            }
+                        }
+                    }
+                    else {
+                        List {
+                            Section {
                                 VStack(spacing: 12) {
                                     HStack(spacing: 12) {
                                         SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
@@ -60,36 +132,12 @@ struct DashboardView: View {
                                     }
                                 }
                             }
-                        }
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .padding(.top, 16)
-                        if !filtered.isEmpty {
-                            Section {
-                                ForEach(filtered.uniqued(), id: \.self) { item in
-                                    LinkItemComponent(item: item) {
-                                        openSafariView(item.url!)
-                                    } onTaskCompleted: { link, action in
-                                        dashboardViewModel.reload()
-                                    }
-                                }
-                            } header: {
-                                HStack {
-                                    Text("Recent")
-                                    Spacer()
-                                    Button {
-                                        let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
-                                        navigationPath.append(request)
-                                    } label: {
-                                        Text("View all")
-                                        Image(systemName: "chevron.right")
-                                    }
-                                    .font(.system(size: 12))
-                                }
-                            }
-                            if !pinned.isEmpty {
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            .padding(.top, 16)
+                            if !filtered.isEmpty {
                                 Section {
-                                    ForEach(pinned.uniqued(), id: \.self) { item in
+                                    ForEach(filtered.uniqued(), id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
                                         } onTaskCompleted: { link, action in
@@ -98,32 +146,56 @@ struct DashboardView: View {
                                     }
                                 } header: {
                                     HStack {
-                                        Text("Pinned")
+                                        Text("Recent")
                                         Spacer()
                                         Button {
-                                            let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
+                                            let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
                                             navigationPath.append(request)
                                         } label: {
                                             Text("View all")
                                             Image(systemName: "chevron.right")
                                         }
+                                        .font(.system(size: 12))
                                     }
-                                    .font(.system(size: 12))
+                                }
+                                if !pinned.isEmpty {
+                                    Section {
+                                        ForEach(pinned.uniqued(), id: \.self) { item in
+                                            LinkItemComponent(item: item) {
+                                                openSafariView(item.url!)
+                                            } onTaskCompleted: { link, action in
+                                                dashboardViewModel.reload()
+                                            }
+                                        }
+                                    } header: {
+                                        HStack {
+                                            Text("Pinned")
+                                            Spacer()
+                                            Button {
+                                                let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
+                                                navigationPath.append(request)
+                                            } label: {
+                                                Text("View all")
+                                                Image(systemName: "chevron.right")
+                                            }
+                                        }
+                                        .font(.system(size: 12))
+                                    }
                                 }
                             }
-                        }
-                        else {
-                            ContentUnavailableView {
-                                Label("No links added", systemImage: "link")
-                            } description: {
-                                Text("Save some links on Linkwarden to see them here.")
+                            else {
+                                ContentUnavailableView {
+                                    Label("No links added", systemImage: "link")
+                                } description: {
+                                    Text("Save some links on Linkwarden to see them here.")
+                                }
+                                .listRowBackground(Color.clear)
                             }
-                            .listRowBackground(Color.clear)
                         }
-                    }
-                    .animation(.default, value: dashboardViewModel.data)
-                    .refreshable {
-                        await dashboardViewModel.loadData()
+                        .animation(.default, value: dashboardViewModel.data)
+                        .refreshable {
+                            await dashboardViewModel.loadData()
+                        }
                     }
                 }
             }
@@ -221,5 +293,28 @@ private struct SummaryEntry: View {
         .padding(12)
         .background(Color.listItemBackground)
         .cornerRadius(12)
+    }
+}
+
+struct TabletListEntry: View {
+    var item: Link
+    var onTap: () -> Void
+    var onTaskCompleted: (Link, Enums.LinkTaskCompleted) -> Void
+    
+    init(item: Link, onTap: @escaping () -> Void, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+        self.item = item
+        self.onTap = onTap
+        self.onTaskCompleted = onTaskCompleted
+    }
+    
+    var body: some View {
+        Group {
+            LinkItemComponent(item: item) {
+                onTap()
+            } onTaskCompleted: { link, action in
+                onTaskCompleted(link, action)
+            }
+        }
+        .background(Color.listBackground)
     }
 }

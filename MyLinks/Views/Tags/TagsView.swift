@@ -5,6 +5,8 @@ struct TagsView: View {
     @EnvironmentObject private var tagsProvider: TagsProvider
     
     init() {}
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var navigationPath = NavigationPath()
     @State private var searchText = ""
@@ -42,12 +44,27 @@ struct TagsView: View {
                     else {
                         let searched = searchText != "" ? filtered.filter() { $0.name!.lowercased().contains(searchText.lowercased()) } : filtered
                         if !searched.isEmpty {
-                            List(searched, id: \.self) { item in
-                                TagItemComponent(tag: item) {
-                                    navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
+                            if horizontalSizeClass == .regular {
+                                ScrollView {
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(searched, id: \.self) { item in
+                                            TagItemComponent(tag: item) {
+                                                navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
+                                            }
+                                            .padding(6)
+                                        }
+                                    }
+                                    .padding(.horizontal, 12)
                                 }
                             }
-                            .animation(.default, value: searched)
+                            else {
+                                List(searched, id: \.self) { item in
+                                    TagItemComponent(tag: item) {
+                                        navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
+                                    }
+                                }
+                                .animation(.default, value: searched)
+                            }
                         }
                         else {
                             ContentUnavailableView {
