@@ -50,7 +50,9 @@ struct LinksFilteredView: View {
                                     ForEach(filtered, id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
-                                        } onTaskCompleted: { _, _ in }
+                                        } onTaskCompleted: { link, action in
+                                            linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                        }
                                         .onAppear {
                                             if item == filtered.last {
                                                 linksFilteredViewModel.loadMore()

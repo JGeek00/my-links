@@ -19,13 +19,15 @@ class LinkFormViewModel: ObservableObject {
     @Published var savingErrorAlert = false
     
     init(link: Link? = nil) {
+        let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
+        collection = link?.collection?.id ?? filtered.first?.id ?? 0
+        
         guard let link = link else { return }
         editingLink = link
         url = link.url ?? ""
         name = link.name ?? ""
         description = link.description ?? ""
         selectedTags = link.tags?.map() { $0.name! } ?? []
-        collection = link.collection?.id ?? 0
     }
         
     func onSave(onCompleted: @escaping (Link) -> Void) {

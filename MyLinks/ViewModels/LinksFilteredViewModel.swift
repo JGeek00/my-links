@@ -122,10 +122,30 @@ class LinksFilteredViewModel: ObservableObject {
                 if contains == nil {
                     self.data = self.data.filter() { $0.id! != link.id! }
                 }
+                else {
+                    self.data = self.data.map() { item in
+                        if item.id == link.id {
+                            return link
+                        }
+                        else {
+                            return item
+                        }
+                    }
+                }
             }
             else if self.input.mode == .collection {
                 if link.collection!.id != self.input.id {
                     self.data = self.data.filter() { $0.id! != link.id! }
+                }
+                else {
+                    self.data = self.data.map() { item in
+                        if item.id == link.id {
+                            return link
+                        }
+                        else {
+                            return item
+                        }
+                    }
                 }
             }
             else {
