@@ -66,9 +66,9 @@ struct ImageViewer: View {
                         }
                     }
             )
-            .animation(.easeInOut, value: scale)
-            .animation(.easeInOut, value: offset)
-            .animation(.easeInOut, value: rotation)
+            .animation(.linear, value: scale)
+            .animation(.linear, value: offset)
+            .animation(.linear, value: rotation)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

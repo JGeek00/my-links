@@ -91,7 +91,7 @@ struct ImageViewerView: View {
                             if imageViewerViewModel.data != nil {
                                 ShareLink(
                                     "Share",
-                                    item: imageViewerViewModel.data!,
+                                    item: Image(uiImage: imageViewerViewModel.imageData!),
                                     preview: SharePreview(name)
                                 )
                             }
