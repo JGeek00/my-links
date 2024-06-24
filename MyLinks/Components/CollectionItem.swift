@@ -25,9 +25,9 @@ struct CollectionItemComponent: View {
                 HStack {
                     if collection.color != nil {
                         Circle()
-                            .foregroundStyle(Color.init(hex: collection.color!))
+                            .stroke(Color.gray, lineWidth: 1)
+                            .fill(Color.init(hex: collection.color!))
                             .frame(width: 12, height: 12)
-                            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
                         Spacer()
                             .frame(width: 6)
                     }
@@ -66,10 +66,10 @@ struct CollectionItemComponent: View {
                 .foregroundStyle(Color.gray)
             }
         }
-        .padding(horizontalSizeClass == .regular ? 12 : 0)
+        .padding(horizontalSizeClass == .regular ? 12 : 2)
         .foregroundStyle(Color.foreground)
         .background(horizontalSizeClass == .regular ? Color.listItemBackground: Color.clear)
-        .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
+        .cornerRadius(horizontalSizeClass == .regular ? 12 : 1)
         .contextMenu {
             Button("Edit", systemImage: "pencil") {
                 collectionFormViewModel.editingId = collection.id!
