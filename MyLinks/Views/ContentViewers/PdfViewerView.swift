@@ -75,10 +75,10 @@ struct PDFViewerView: View {
                             } label: {
                                 Label("Download", systemImage: "square.and.arrow.down")
                             }
-                            if pdfViewerViewModel.data != nil {
+                            if pdfViewerViewModel.pdfData != nil {
                                 ShareLink(
                                     "Share",
-                                    item: pdfViewerViewModel.data!,
+                                    item: pdfViewerViewModel.pdfData!,
                                     preview: SharePreview(name)
                                 )
                             }

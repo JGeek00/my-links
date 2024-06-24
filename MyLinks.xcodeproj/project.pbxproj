@@ -23,6 +23,7 @@
 		0D083CB92C27588700F0EB3B /* ImageViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CB82C27588700F0EB3B /* ImageViewerView.swift */; };
 		0D083CBB2C2758A900F0EB3B /* ImageViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBA2C2758A900F0EB3B /* ImageViewerViewModel.swift */; };
 		0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBE2C27648700F0EB3B /* ImageViewer.swift */; };
+		0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */; };
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
 		0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */; };
@@ -101,6 +102,7 @@
 		0D083CB82C27588700F0EB3B /* ImageViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerView.swift; sourceTree = "<group>"; };
 		0D083CBA2C2758A900F0EB3B /* ImageViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewModel.swift; sourceTree = "<group>"; };
 		0D083CBE2C27648700F0EB3B /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
+		0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentExtension.swift; sourceTree = "<group>"; };
 		0D55C4E32C219E13002CE99A /* MyLinks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLinks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -369,6 +371,7 @@
 				0D55C53E2C221144002CE99A /* UserDefaultsExtension.swift */,
 				0D55C5572C22674F002CE99A /* ArrayExtension.swift */,
 				0D55C5602C230439002CE99A /* ColorExtension.swift */,
+				0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				0D55C5352C220A3A002CE99A /* SafariView.swift in Sources */,
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */,
+				0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */,
 				0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */,
 				0D083CAD2C27291800F0EB3B /* PdfViewerViewModel.swift in Sources */,
 				0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */,
