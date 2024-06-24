@@ -41,21 +41,19 @@ struct LinkFormView: View {
                                 .tag(0)
                         }
                     }
-                    if !tagsProvider.data.isEmpty {
-                        NavigationLink {
-                            TagsPickerView()
-                        } label: {
-                            HStack {
-                                Text("Tags")
-                                if linkFormViewModel.selectedTags.isEmpty == false {
-                                    Text(String(linkFormViewModel.selectedTags.count))
-                                        .font(.system(size: 12))
-                                        .fontWeight(.semibold)
-                                        .padding(6)
-                                        .foregroundStyle(Color.white)
-                                        .background(Color.accentColor)
-                                        .clipShape(Circle())
-                                }
+                    NavigationLink {
+                        TagsPickerView()
+                    } label: {
+                        HStack {
+                            Text("Tags")
+                            if linkFormViewModel.selectedTags.isEmpty == false {
+                                Text(String(linkFormViewModel.selectedTags.count))
+                                    .font(.system(size: 12))
+                                    .fontWeight(.semibold)
+                                    .padding(6)
+                                    .foregroundStyle(Color.white)
+                                    .background(Color.accentColor)
+                                    .clipShape(Circle())
                             }
                         }
                     }
