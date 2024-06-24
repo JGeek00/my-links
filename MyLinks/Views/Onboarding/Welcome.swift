@@ -2,25 +2,29 @@ import SwiftUI
 
 struct Welcome: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     var body: some View {
-        VStack(alignment: .leading) {
-            VStack(alignment: .leading) {
+        VStack(alignment: .center) {
+            VStack(alignment: .center) {
                 Image("AppIconImage")
                     .resizable()
-                    .frame(width: 100, height: 100)
+                    .frame(width: verticalSizeClass == .regular ? 130 : 90, height: verticalSizeClass == .regular ? 130 : 90)
                     .cornerRadius(12)
                     .shadow(radius: 10)
                 Spacer()
                     .frame(height: 24)
                 Text("Welcome to MyLinks")
-                    .font(.system(size: 40))
+                    .font(.system(size: verticalSizeClass == .regular ? 40 : 36))
                     .fontWeight(.bold)
                     .padding(.bottom, 12)
+                    .multilineTextAlignment(.center)
                 Text("Your application to manage your Linkwarden links")
                     .fontWeight(.medium)
-                    .font(.system(size: 30))
+                    .font(.system(size: verticalSizeClass == .regular ? 30 : 26))
                     .foregroundStyle(Color.gray)
+                    .multilineTextAlignment(.center)
             }
             .padding(24)
             Spacer()

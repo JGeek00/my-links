@@ -68,7 +68,7 @@ struct CollectionItemComponent: View {
         }
         .padding(horizontalSizeClass == .regular ? 12 : 0)
         .foregroundStyle(Color.foreground)
-        .background(horizontalSizeClass == .regular ? Color.background : Color.clear)
+        .background(horizontalSizeClass == .regular ? Color.listItemBackground: Color.clear)
         .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
         .contextMenu {
             Button("Edit", systemImage: "pencil") {

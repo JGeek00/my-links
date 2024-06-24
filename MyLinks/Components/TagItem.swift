@@ -48,7 +48,7 @@ struct TagItemComponent: View {
         }
         .padding(horizontalSizeClass == .regular ? 12 : 0)
         .foregroundStyle(Color.foreground)
-        .background(horizontalSizeClass == .regular ? Color.background : Color.clear)
+        .background(horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear)
         .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
     }
 }
