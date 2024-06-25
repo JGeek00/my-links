@@ -31,7 +31,6 @@ struct LinkItemComponent: View {
                 Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
                     .lineLimit(1)
                     .fontWeight(.medium)
-                    .animation(.default, value: item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
                 if urlHost != nil {
                     Spacer()
                         .frame(height: 4)
@@ -40,7 +39,6 @@ struct LinkItemComponent: View {
                             .font(.system(size: 10))
                         Text(urlHost!)
                             .font(.system(size: 14))
-                            .animation(.default, value: urlHost!)
                     }
                     .foregroundStyle(Color.gray)
                 }
@@ -52,14 +50,12 @@ struct LinkItemComponent: View {
                             .font(.system(size: 10))
                         Text(item.collection!.name!)
                             .font(.system(size: 14))
-                            .animation(.default, value: item.collection!.name!)
                         if dateFormatted != nil {
                             Spacer()
                             Image(systemName: "calendar")
                                 .font(.system(size: 12))
                             Text(dateFormatted!)
                                 .font(.system(size: 14))
-                                .animation(.default, value: dateFormatted!)
                         }
                     }
                     .foregroundStyle(Color.gray)

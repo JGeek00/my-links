@@ -34,14 +34,12 @@ struct CollectionItemComponent: View {
                     Text(collection.name!)
                         .lineLimit(1)
                         .fontWeight(.medium)
-                        .animation(.default, value: collection.name!)
                 }
                 if collection.description != "" {
                     Spacer()
                         .frame(height: 6)
                     Text(collection.description!)
                         .font(.system(size: 14))
-                        .animation(.default, value: collection.description!)
                 }
                 Spacer()
                     .frame(height: 6)
@@ -51,7 +49,6 @@ struct CollectionItemComponent: View {
                             .font(.system(size: 12))
                         Text(dateFormatted!)
                             .font(.system(size: 14))
-                            .animation(.default, value: dateFormatted!)
                         Spacer()
                     }
                     if collection._count?.links != nil {
@@ -60,7 +57,6 @@ struct CollectionItemComponent: View {
                             .font(.system(size: 12))
                         Text(String(collection._count!.links!))
                             .font(.system(size: 14))
-                            .animation(.default, value: collection._count!.links!)
                     }
                 }
                 .foregroundStyle(Color.gray)
