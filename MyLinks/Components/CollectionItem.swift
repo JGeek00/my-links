@@ -23,10 +23,10 @@ struct CollectionItemComponent: View {
         } label: {
             VStack(alignment: .leading) {
                 HStack {
-                    if collection.color != nil {
+                    if let color = collection.color {
                         Circle()
                             .stroke(Color.gray, lineWidth: 1)
-                            .fill(Color.init(hex: collection.color!))
+                            .fill(Color.init(hex: color))
                             .frame(width: 12, height: 12)
                         Spacer()
                             .frame(width: 6)
@@ -35,27 +35,27 @@ struct CollectionItemComponent: View {
                         .lineLimit(1)
                         .fontWeight(.medium)
                 }
-                if collection.description != "" {
+                if let description = collection.description {
                     Spacer()
                         .frame(height: 6)
-                    Text(collection.description!)
+                    Text(description)
                         .font(.system(size: 14))
                 }
                 Spacer()
                     .frame(height: 6)
                 HStack {
-                    if dateFormatted != nil {
+                    if let dateFormatted = dateFormatted {
                         Image(systemName: "calendar")
                             .font(.system(size: 12))
-                        Text(dateFormatted!)
+                        Text(dateFormatted)
                             .font(.system(size: 14))
                         Spacer()
                     }
-                    if collection._count?.links != nil {
+                    if let linkCount = collection._count?.links {
                         Spacer()
                         Image(systemName: "link")
                             .font(.system(size: 12))
-                        Text(String(collection._count!.links!))
+                        Text(String(linkCount))
                             .font(.system(size: 14))
                     }
                 }

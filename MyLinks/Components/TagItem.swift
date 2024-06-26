@@ -25,18 +25,18 @@ struct TagItemComponent: View {
                 Spacer()
                     .frame(height: 6)
                 HStack {
-                    if dateFormatted != nil {
+                    if let dateFormatted = dateFormatted {
                         Image(systemName: "calendar")
                             .font(.system(size: 12))
-                        Text(dateFormatted!)
+                        Text(dateFormatted)
                             .font(.system(size: 14))
                         Spacer()
                     }
-                    if tag._count?.links != nil {
+                    if let linkCount = tag._count?.links {
                         Spacer()
                         Image(systemName: "link")
                             .font(.system(size: 12))
-                        Text(String(tag._count!.links!))
+                        Text(String(linkCount))
                             .font(.system(size: 14))
                     }
                 }

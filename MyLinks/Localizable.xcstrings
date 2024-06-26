@@ -317,6 +317,16 @@
         }
       }
     },
+    "Copied to the clipboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiado al portapapeles"
+          }
+        }
+      }
+    },
     "Create some collections on Linkwarden to see them here." : {
       "localizations" : {
         "es" : {
@@ -797,12 +807,32 @@
         }
       }
     },
+    "No description" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin descripción"
+          }
+        }
+      }
+    },
     "No links added" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay enlaces añadidos"
+          }
+        }
+      }
+    },
+    "No name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin nombre"
           }
         }
       }
@@ -1143,6 +1173,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta colección  y todos sus enlaces se eliminará. Esta acción no es reversible."
+          }
+        }
+      }
+    },
+    "This link has no tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este enlace no tiene etiquetas"
           }
         }
       }

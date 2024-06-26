@@ -1,4 +1,5 @@
 import SwiftUI
+import AlertToast
 
 struct LinkItemComponent: View {
     var item: Link
@@ -23,7 +24,7 @@ struct LinkItemComponent: View {
     var body: some View {
         let urlHost = getUrlHost(item.url!)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
-        let readerUrl = item.readable != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
+        let readerUrl = item.readable != nil && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
         Button {
             onTap()
         } label: {
@@ -31,13 +32,13 @@ struct LinkItemComponent: View {
                 Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
                     .lineLimit(1)
                     .fontWeight(.medium)
-                if urlHost != nil {
+                if let urlHost = urlHost {
                     Spacer()
                         .frame(height: 4)
                     HStack {
                         Image(systemName: "link")
                             .font(.system(size: 10))
-                        Text(urlHost!)
+                        Text(urlHost)
                             .font(.system(size: 14))
                     }
                     .foregroundStyle(Color.gray)
@@ -46,15 +47,17 @@ struct LinkItemComponent: View {
                     Spacer()
                         .frame(height: 4)
                     HStack {
-                        Image(systemName: "folder")
-                            .font(.system(size: 10))
-                        Text(item.collection!.name!)
-                            .font(.system(size: 14))
-                        if dateFormatted != nil {
+                        if let name = item.collection?.name {
+                            Image(systemName: "folder")
+                                .font(.system(size: 10))
+                            Text(name)
+                                .font(.system(size: 14))
+                        }
+                        if let dateFormatted =  dateFormatted {
                             Spacer()
                             Image(systemName: "calendar")
                                 .font(.system(size: 12))
-                            Text(dateFormatted!)
+                            Text(dateFormatted)
                                 .font(.system(size: 14))
                         }
                     }
@@ -183,29 +186,59 @@ private struct LinkDetailsSheet: View {
         self.onClose = onClose
     }
     
+    @State private var copiedClipboard = false
+    
+    func setCopiedClipboard() {
+        if copiedClipboard == true {
+            copiedClipboard = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                copiedClipboard = true
+            }
+        }
+        else {
+            copiedClipboard = true
+        }
+    }
+    
     var body: some View {
         let createdAt = link.createdAt != nil && link.createdAt != "" ? stringToDate(link.createdAt!) : nil
         let updatedAt = link.updatedAt != nil && link.updatedAt != "" ? stringToDate(link.updatedAt!) : nil
         NavigationStack {
             List {
-                DetailsItem(icon: "link", iconColor: .green, label: "URL", value: Text(link.url!))
-                if link.name != "" {
-                    DetailsItem(icon: "textformat.size.smaller", iconColor: .blue, label: String(localized: "Name"), value: Text(link.name!))
+                if let url = link.url {
+                    DetailsItem(icon: "link", iconColor: .green, label: "URL", value: url) {
+                        setCopiedClipboard()
+                    }
                 }
-                if link.description != "" {
-                    DetailsItem(icon: "paragraph", iconColor: .orange, label: String(localized: "Description"), value: Text(link.description!))
+                if let name = link.name {
+                    DetailsItem(icon: "textformat.size.smaller", iconColor: .blue, label: String(localized: "Name"), value: name != "" ? name : String(localized: "No name")) {
+                        setCopiedClipboard()
+                    }
                 }
-                if link.collection!.name != "" {
-                    DetailsItem(icon: "folder.fill", iconColor: .red, label: String(localized: "Collection"), value: Text(link.collection!.name!))
+                if let description = link.description {
+                    DetailsItem(icon: "paragraph", iconColor: .orange, label: String(localized: "Description"), value: description != "" ? description : String(localized: "No description")) {
+                        setCopiedClipboard()
+                    }
                 }
-                if !link.tags!.isEmpty {
-                    DetailsItem(icon: "tag.fill", iconColor: .gray, label: String(localized: "Tags"), value: Text(link.tags!.map() { $0.name! }.joined(separator: ", ")))
+                if let collectionName = link.collection?.name {
+                    DetailsItem(icon: "folder.fill", iconColor: .red, label: String(localized: "Collection"), value: collectionName) {
+                        setCopiedClipboard()
+                    }
                 }
-                if createdAt != nil {
-                    DetailsItem(icon: "clock.fill", iconColor: .brown, label: String(localized: "Created at"), value: Text(createdAt!.formatted(date: .complete, time: .shortened)))
+                if let tags = link.tags {
+                    DetailsItem(icon: "tag.fill", iconColor: .gray, label: String(localized: "Tags"), value: tags.isEmpty ? String(localized: "This link has no tags") : tags.map() { $0.name! }.joined(separator: ", ")) {
+                        setCopiedClipboard()
+                    }
                 }
-                if updatedAt != nil {
-                    DetailsItem(icon: "clock.fill", iconColor: .indigo, label: String(localized: "Updated at"), value: Text(updatedAt!.formatted(date: .complete, time: .shortened)))
+                if let createdAt = createdAt {
+                    DetailsItem(icon: "clock.fill", iconColor: .brown, label: String(localized: "Created at"), value: createdAt.formatted(date: .complete, time: .shortened)) {
+                        setCopiedClipboard()
+                    }
+                }
+                if let updatedAt = updatedAt {
+                    DetailsItem(icon: "clock.fill", iconColor: .indigo, label: String(localized: "Updated at"), value: updatedAt.formatted(date: .complete, time: .shortened)) {
+                        setCopiedClipboard()
+                    }
                 }
             }
             .listRowSpacing(12)
@@ -225,6 +258,11 @@ private struct LinkDetailsSheet: View {
                 }
             }
             .background(.listBackground)
+            .toast(isPresenting: $copiedClipboard) {
+                AlertToast(type: .systemImage("doc.on.clipboard", .foreground), title: String(localized: "Copied to the clipboard"))
+            } onTap: {
+                copiedClipboard = false
+            }
         }
     }
 }
@@ -233,13 +271,15 @@ private struct DetailsItem: View {
     var icon: String
     var iconColor: Color
     var label: String
-    var value: Text
+    var value: String
+    var showCopiedClipboard: () -> Void
     
-    init(icon: String, iconColor: Color, label: String, value: Text) {
+    init(icon: String, iconColor: Color, label: String, value: String, showCopiedClipboard: @escaping () -> Void) {
         self.icon = icon
         self.iconColor = iconColor
         self.label = label
         self.value = value
+        self.showCopiedClipboard = showCopiedClipboard
     }
     
     var body: some View {
@@ -259,9 +299,14 @@ private struct DetailsItem: View {
             }
             Spacer()
                 .frame(height: 12)
-            value
+            Text(value)
                 .font(.system(size: 16))
-                .textSelection(.enabled)
+                .onTapGesture {
+                    let attributedString = NSAttributedString(string: value)
+                    let plainString = attributedString.string
+                    UIPasteboard.general.string = plainString
+                    showCopiedClipboard()
+                }
         }
     }
 }
