@@ -1,7 +1,7 @@
 import Foundation
 
 class LinksViewModel: ObservableObject {
-    static let shared = LinksViewModel()
+    static var shared = LinksViewModel()
     
     @Published var data: [Link] = []
     @Published var loading = true

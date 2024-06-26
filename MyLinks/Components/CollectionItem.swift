@@ -13,8 +13,8 @@ struct CollectionItemComponent: View {
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     @State private var showDeleteAlert = false
+    @State private var collectionFormSheet = false
     
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
@@ -36,10 +36,12 @@ struct CollectionItemComponent: View {
                         .fontWeight(.medium)
                 }
                 if let description = collection.description {
-                    Spacer()
-                        .frame(height: 6)
-                    Text(description)
-                        .font(.system(size: 14))
+                    if description != "" {
+                        Spacer()
+                            .frame(height: 6)
+                        Text(description)
+                            .font(.system(size: 14))
+                    }
                 }
                 Spacer()
                     .frame(height: 6)
@@ -68,16 +70,20 @@ struct CollectionItemComponent: View {
         .cornerRadius(horizontalSizeClass == .regular ? 12 : 1)
         .contextMenu {
             Button("Edit", systemImage: "pencil") {
-                collectionFormViewModel.editingId = collection.id!
-                collectionFormViewModel.name = collection.name!
-                collectionFormViewModel.description = collection.description ?? ""
-                collectionFormViewModel.color = collection.color != nil ? Color.init(hex: collection.color!) : Color.accentColor
-                collectionFormViewModel.sheetOpen = true
+                collectionFormSheet = true
             }
             Button("Delete", systemImage: "trash", role: .destructive) {
                 showDeleteAlert.toggle()
             }
         }
+        .sheet(isPresented: $collectionFormSheet, content: {
+            CollectionFormView() {
+                collectionFormSheet = false
+            } onSuccess: { item, action in
+                collectionFormSheet = false
+            }
+            .environmentObject(CollectionFormViewModel(collection: collection))
+        })
         .alert("Delete collection", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) {
                 showDeleteAlert.toggle()

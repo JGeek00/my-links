@@ -1,7 +1,7 @@
 import Foundation
 
 class TagsProvider: ObservableObject {
-    static let shared = TagsProvider()
+    static var shared = TagsProvider()
     
     @Published var data: [Tag] = []
     @Published var loading = true

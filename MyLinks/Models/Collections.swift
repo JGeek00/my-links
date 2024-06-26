@@ -5,6 +5,11 @@ struct CollectionsResponse: Codable {
     let response: [Collection]?
 }
 
+// MARK: - CollectionResponse
+struct CollectionResponse: Codable {
+    let response: Collection?
+}
+
 // MARK: - Collection
 struct Collection: Codable, Hashable {
     let id: Int?

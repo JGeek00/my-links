@@ -1,7 +1,7 @@
 import Foundation
 
 class CollectionsProvider: ObservableObject {
-    static let shared = CollectionsProvider()
+    static var shared = CollectionsProvider()
     
     @Published var data: [Collection] = []
     @Published var loading = true
@@ -65,6 +65,17 @@ class CollectionsProvider: ObservableObject {
                     self.deleting = false
                     self.deleteError = true
                 }
+            }
+        }
+    }
+    
+    func updateCollectionLocal(newCollection: Collection) {
+        self.data = self.data.map() { item in
+            if item.id == newCollection.id {
+                return newCollection
+            }
+            else {
+                return item
             }
         }
     }

@@ -3,7 +3,6 @@ import CustomAlert
 
 struct CollectionsView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -11,6 +10,7 @@ struct CollectionsView: View {
     
     @State private var navigationPath = NavigationPath()
     @State private var searchText = ""
+    @State private var collectionFormSheet = false
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -84,8 +84,7 @@ struct CollectionsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        collectionFormViewModel.reset()
-                        collectionFormViewModel.sheetOpen = true
+                        collectionFormSheet = true
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -98,6 +97,14 @@ struct CollectionsView: View {
             .background(Color.listBackground)
             .customAlert(isPresented: $collectionsProvider.deleting, content: {
                 ProgressView()
+            })
+            .sheet(isPresented: $collectionFormSheet, content: {
+                CollectionFormView {
+                    collectionFormSheet = false
+                } onSuccess: { item, action in
+                    collectionFormSheet = false
+                }
+                .environmentObject(CollectionFormViewModel())
             })
             .alert("Error", isPresented: $collectionsProvider.deleteError) {
                 Button("Close", role: .cancel) {

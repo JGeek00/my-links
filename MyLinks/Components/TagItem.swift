@@ -10,9 +10,7 @@ struct TagItemComponent: View {
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
-    
+        
     var body: some View {
         let dateFormatted = tag.createdAt != nil ? formatDate(tag.createdAt!) : nil
         Button {

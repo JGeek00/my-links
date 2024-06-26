@@ -2,11 +2,7 @@ import Foundation
 import SwiftUI
 
 class CollectionFormViewModel: ObservableObject {
-    static let shared = CollectionFormViewModel()
-    
-    @Published var sheetOpen = false
-    
-    @Published var editingId: Int? = nil
+    @Published var editingCollection: Collection? = nil
     @Published var name = ""
     @Published var description = ""
     @Published var color: Color = .accentColor
@@ -17,9 +13,21 @@ class CollectionFormViewModel: ObservableObject {
     @Published var savingErrorMessage = ""
     @Published var savingErrorAlert = false
     
-    func onSave() {
+    init(collection: Collection? = nil) {
+        guard let collection = collection else { return }
+        self.editingCollection = collection
+        self.name = collection.name ?? ""
+        self.description = collection.description ?? ""
+        if let color = collection.color {
+            self.color = Color(hex: color)
+        }
+    }
+    
+    func onSave(onCompleted: @escaping (Collection) -> Void) async {
         if name == "" {
-            self.nameRequiredAlert = true
+            DispatchQueue.main.sync {
+                self.nameRequiredAlert = true
+            }
             return
         }
         
@@ -31,14 +39,18 @@ class CollectionFormViewModel: ObservableObject {
         )
         
         guard let instance = ApiClientProvider.shared.instance else { return }
-        self.saving = true
-        Task {
-            let result = editingId != nil ? await instance.editCollection(collectionId: editingId!, body: data) : await instance.createCollection(data)
+        
+        DispatchQueue.main.sync {
+            self.saving = true
+        }
+        
+        if let editingCollection = editingCollection {
+            let result = await instance.editCollection(collectionId: editingCollection.id!, body: data)
             if result.successful == true {
                 DispatchQueue.main.async {
                     self.saving = false
-                    self.sheetOpen = false
-                    Task { await CollectionsProvider.shared.loadData() }
+                    CollectionsProvider.shared.updateCollectionLocal(newCollection: result.data!.response!)
+                    onCompleted(result.data!.response!)
                 }
             }
             else {
@@ -57,15 +69,30 @@ class CollectionFormViewModel: ObservableObject {
                 }
             }
         }
-    }
-    
-    func reset() {
-        self.editingId = nil
-        self.sheetOpen = false
-        self.name = ""
-        self.description = ""
-        self.color = .accentColor
-        self.saving = false
-        self.savingErrorMessage = ""
+        else {
+            let result = await instance.createCollection(data)
+            if result.successful == true {
+                DispatchQueue.main.async {
+                    self.saving = false
+                    Task { await CollectionsProvider.shared.loadData() }
+                    onCompleted(result.data!.response!)
+                }
+            }
+            else {
+                guard let statusCode = result.statusCode else {
+                    DispatchQueue.main.async {
+                        self.saving = false
+                        self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                        self.savingErrorAlert = true
+                    }
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.saving = false
+                    self.savingErrorMessage = "Error \(statusCode)."
+                    self.savingErrorAlert = true
+                }
+            }
+        }
     }
 }

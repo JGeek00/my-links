@@ -5,7 +5,6 @@ import AlertToast
 struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
-    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var toastProvider: ToastProvider
     
@@ -51,9 +50,6 @@ struct RootView: View {
                     if tagsProvider.data.isEmpty {
                         Task { await tagsProvider.loadData() }
                     }
-                })
-                .sheet(isPresented: $collectionFormViewModel.sheetOpen, content: {
-                    CollectionFormView()
                 })
                 .toast(isPresenting: $toastProvider.presenting, duration: 2, tapToDismiss: true) {
                     toastProvider.toast ?? AlertToast(type: .regular)

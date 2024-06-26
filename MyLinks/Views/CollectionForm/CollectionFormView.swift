@@ -1,6 +1,14 @@
 import SwiftUI
 
 struct CollectionFormView: View {
+    var onClose: () -> Void
+    var onSuccess: (Collection, Enums.LinkTaskCompleted) -> Void
+    
+    init(onClose: @escaping () -> Void, onSuccess: @escaping (Collection, Enums.LinkTaskCompleted) -> Void) {
+        self.onClose = onClose
+        self.onSuccess = onSuccess
+    }
+    
     @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
     var body: some View {
@@ -14,12 +22,12 @@ struct CollectionFormView: View {
                     ColorPicker("Color", selection: $collectionFormViewModel.color)
                 }
             }
-            .navigationTitle(collectionFormViewModel.editingId != nil ? "Edit collection" : "New collection")
+            .navigationTitle(collectionFormViewModel.editingCollection != nil ? "Edit collection" : "New collection")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        collectionFormViewModel.sheetOpen.toggle()
+                        onClose()
                     } label: {
                         Image(systemName: "xmark")
                             .fontWeight(.semibold)
@@ -30,7 +38,11 @@ struct CollectionFormView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        collectionFormViewModel.onSave()
+                        Task {
+                            await collectionFormViewModel.onSave() { item in
+                                onSuccess(item, collectionFormViewModel.editingCollection != nil ? .edit : .create)
+                            }
+                        }
                     } label: {
                         if collectionFormViewModel.saving == true {
                             ProgressView()
@@ -59,13 +71,6 @@ struct CollectionFormView: View {
                 }
             } message: {
                 Text(collectionFormViewModel.savingErrorMessage)
-            }
-        }
-        .onChange(of: collectionFormViewModel.sheetOpen) {
-            if collectionFormViewModel.sheetOpen == false {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    collectionFormViewModel.reset()
-                }
             }
         }
     }

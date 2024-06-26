@@ -11,7 +11,8 @@ class SettingsViewModel: ObservableObject {
         OnboardingViewModel.shared.showOnboarding = true
         ApiClientProvider.shared.instance = nil
         clearInstances()
-        TagsProvider.shared.reset()
-        CollectionsProvider.shared.reset()
+        TagsProvider.shared = TagsProvider()
+        CollectionsProvider.shared = CollectionsProvider()
+        LinksViewModel.shared = LinksViewModel()
     }
 }

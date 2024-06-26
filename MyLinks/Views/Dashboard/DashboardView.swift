@@ -5,7 +5,6 @@ struct DashboardView: View {
     @StateObject private var dashboardViewModel = DashboardViewModel.shared
     @EnvironmentObject private var tagsProvider: TagsProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -13,6 +12,7 @@ struct DashboardView: View {
     
     @State private var navigationPath = NavigationPath()
     @State private var linkFormSheet = false
+    @State private var collectionFormSheet = false
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -209,8 +209,7 @@ struct DashboardView: View {
                             Label("New link", systemImage: "link")
                         }
                         Button {
-                            collectionFormViewModel.reset()
-                            collectionFormViewModel.sheetOpen.toggle()
+                            collectionFormSheet = true
                         } label: {
                             Label("New collection", systemImage: "folder")
                         }
@@ -231,6 +230,14 @@ struct DashboardView: View {
                     linkFormSheet = false
                 }
                 .environmentObject(LinkFormViewModel())
+            })
+            .sheet(isPresented: $collectionFormSheet, content: {
+                CollectionFormView() {
+                    collectionFormSheet = false
+                } onSuccess: { item, action in
+                    collectionFormSheet = false
+                }
+                .environmentObject(CollectionFormViewModel())
             })
         }
         .onAppear(perform: {

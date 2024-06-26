@@ -143,8 +143,8 @@ class ApiClient {
         }
     }
     
-    func createCollection(_ body: CollectionCreationRequest) async -> StatusResponse<Bool> {
-        let defaultErrorResponse = StatusResponse<Bool>(successful: false, statusCode: nil, data: nil)
+    func createCollection(_ body: CollectionCreationRequest) async -> StatusResponse<CollectionResponse> {
+        let defaultErrorResponse = StatusResponse<CollectionResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/collections") else { return defaultErrorResponse }
         do {
@@ -159,18 +159,19 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                return StatusResponse<Bool>(successful: true, statusCode: response.statusCode, data: true)
+                let formatted = try JSONDecoder().decode(CollectionResponse.self, from: data)
+                return StatusResponse<CollectionResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<CollectionResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse
         }
     }
     
-    func editCollection(collectionId: Int, body: CollectionCreationRequest) async -> StatusResponse<Bool> {
-        let defaultErrorResponse = StatusResponse<Bool>(successful: false, statusCode: nil, data: nil)
+    func editCollection(collectionId: Int, body: CollectionCreationRequest) async -> StatusResponse<CollectionResponse> {
+        let defaultErrorResponse = StatusResponse<CollectionResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/collections/\(collectionId)") else { return defaultErrorResponse }
         do {
@@ -185,10 +186,11 @@ class ApiClient {
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                return StatusResponse<Bool>(successful: true, statusCode: response.statusCode, data: true)
+                let formatted = try JSONDecoder().decode(CollectionResponse.self, from: data)
+                return StatusResponse<CollectionResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Bool>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<CollectionResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse
