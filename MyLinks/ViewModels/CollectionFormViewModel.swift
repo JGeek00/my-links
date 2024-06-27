@@ -23,20 +23,13 @@ class CollectionFormViewModel: ObservableObject {
         }
     }
     
-    func onSave(onCompleted: @escaping (Collection) -> Void) async {
+    func onSave(parentId: Int? = nil, onCompleted: @escaping (Collection) -> Void) async {
         if name == "" {
             DispatchQueue.main.sync {
                 self.nameRequiredAlert = true
             }
             return
         }
-        
-        let data = CollectionCreationRequest(
-            name: name,
-            description: description,
-            color: color.toHex(),
-            members: []
-        )
         
         guard let instance = ApiClientProvider.shared.instance else { return }
         
@@ -45,12 +38,24 @@ class CollectionFormViewModel: ObservableObject {
         }
         
         if let editingCollection = editingCollection {
+            let data = CollectionCreationRequest(
+                name: name,
+                description: description,
+                color: color.toHex(),
+                members: [],
+                parentId: editingCollection.parent?.id,
+                parent: Parent(id: editingCollection.parent?.id, name: editingCollection.parent?.name)
+            )
             let result = await instance.editCollection(collectionId: editingCollection.id!, body: data)
             if result.successful == true {
                 DispatchQueue.main.async {
+                    var new = result.data!.response!
+                    new.parent = data.parent
+                    new.parentID = data.parentId
+                    
                     self.saving = false
-                    CollectionsProvider.shared.updateCollectionLocal(newCollection: result.data!.response!)
-                    onCompleted(result.data!.response!)
+                    CollectionsProvider.shared.updateCollectionLocal(newCollection: new)
+                    onCompleted(new)
                 }
             }
             else {
@@ -70,6 +75,14 @@ class CollectionFormViewModel: ObservableObject {
             }
         }
         else {
+            let data = CollectionCreationRequest(
+                name: name,
+                description: description,
+                color: color.toHex(),
+                members: [],
+                parentId: parentId,
+                parent: nil
+            )
             let result = await instance.createCollection(data)
             if result.successful == true {
                 DispatchQueue.main.async {

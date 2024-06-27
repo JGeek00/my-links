@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct CollectionFormView: View {
+    var parentCollection: Collection?
     var onClose: () -> Void
     var onSuccess: (Collection, Enums.LinkTaskCompleted) -> Void
     
-    init(onClose: @escaping () -> Void, onSuccess: @escaping (Collection, Enums.LinkTaskCompleted) -> Void) {
+    init(parentCollection: Collection? = nil, onClose: @escaping () -> Void, onSuccess: @escaping (Collection, Enums.LinkTaskCompleted) -> Void) {
+        self.parentCollection = parentCollection
         self.onClose = onClose
         self.onSuccess = onSuccess
     }
@@ -22,7 +24,7 @@ struct CollectionFormView: View {
                     ColorPicker("Color", selection: $collectionFormViewModel.color)
                 }
             }
-            .navigationTitle(collectionFormViewModel.editingCollection != nil ? "Edit collection" : "New collection")
+            .navigationTitle(collectionFormViewModel.editingCollection != nil ? collectionFormViewModel.editingCollection != nil ? "Edit subcollection" : "Edit collection" : parentCollection != nil ? "New subcollection" : "New collection")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -39,7 +41,7 @@ struct CollectionFormView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         Task {
-                            await collectionFormViewModel.onSave() { item in
+                            await collectionFormViewModel.onSave(parentId: parentCollection?.id) { item in
                                 onSuccess(item, collectionFormViewModel.editingCollection != nil ? .edit : .create)
                             }
                         }

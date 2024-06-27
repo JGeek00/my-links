@@ -7,11 +7,14 @@ struct LinksFilteredView: View {
     
     @StateObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
+    @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
     init(input: LinksFilteredRequest) {
         self.input = input
         _linksFilteredViewModel = StateObject(wrappedValue: LinksFilteredViewModel(input: input))
     }
+    
+    @State private var collectionFormSheet = false
     
     var body: some View {
         Group {
@@ -42,11 +45,99 @@ struct LinksFilteredView: View {
             }
             else {
                 let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
-                if !filtered.isEmpty {
-                    if horizontalSizeClass == .regular {
-                        ScrollViewReader(content: { scrollView in
-                            ScrollView {
-                                LazyVGrid(columns: Config.gridColumns) {
+                let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && input.id != nil && $0.parent!.id! == input.id! }
+                if horizontalSizeClass == .regular {
+                    ScrollViewReader(content: { scrollView in
+                        ScrollView {
+                            if input.mode == .collection && input.id != nil && !subCollections.isEmpty {
+                                VStack(alignment: .leading) {
+                                    Text("Collections")
+                                        .font(.system(size: 16))
+                                        .fontWeight(.semibold)
+                                        .padding(.leading, 8)
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(subCollections, id: \.self) { item in
+                                            CollectionItemComponent(collection: item) {
+                                                collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                            } onDelete: {
+                                                collectionsProvider.deleteCollection(id: item.id!)
+                                            }
+                                            .padding(6)
+                                        }
+                                    }
+                                }
+                                .padding(.top, 16)
+                                .padding(.horizontal, 14)
+                            }
+                            if !filtered.isEmpty {
+                                VStack(alignment: .leading) {
+                                    if input.mode == .collection {
+                                        Text("Links")
+                                            .font(.system(size: 16))
+                                            .fontWeight(.semibold)
+                                            .padding(.leading, 8)
+                                    }
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(filtered, id: \.self) { item in
+                                            LinkItemComponent(item: item) {
+                                                openSafariView(item.url!)
+                                            } onTaskCompleted: { link, action in
+                                                linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                            }
+                                            .onAppear {
+                                                if item == filtered.last {
+                                                    linksFilteredViewModel.loadMore()
+                                                }
+                                            }
+                                            .padding(6)
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 14)
+                                .padding(.top, 16)
+                            }
+                            else {
+                                ContentUnavailableView {
+                                    Label("No links added", systemImage: "link")
+                                } description: {
+                                    Text("Save some links on Linkwarden to see them here.")
+                                }
+                            }
+                        }
+                    })
+                }
+                else {
+                    ScrollViewReader { scrollView in
+                        List {
+                            if input.mode == .collection && input.id != nil && !subCollections.isEmpty {
+                                Section("Collections") {
+                                    ForEach(subCollections, id: \.self) { item in
+                                        CollectionItemComponent(collection: item) {
+                                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                        } onDelete: {
+                                            collectionsProvider.deleteCollection(id: item.id!)
+                                        }
+                                    }
+                                }
+                            }
+                            if !filtered.isEmpty {
+                                if input.mode == .collection {
+                                    Section("Links") {
+                                        ForEach(filtered, id: \.self) { item in
+                                            LinkItemComponent(item: item) {
+                                                openSafariView(item.url!)
+                                            } onTaskCompleted: { link, action in
+                                                linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                            }
+                                            .onAppear {
+                                                if item == filtered.last {
+                                                    linksFilteredViewModel.loadMore()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
                                     ForEach(filtered, id: \.self) { item in
                                         LinkItemComponent(item: item) {
                                             openSafariView(item.url!)
@@ -58,36 +149,21 @@ struct LinksFilteredView: View {
                                                 linksFilteredViewModel.loadMore()
                                             }
                                         }
-                                        .padding(6)
-                                    }
-                                }
-                                .padding(.horizontal, 12)
-                            }
-                        })
-                    }
-                    else {
-                        ScrollViewReader { scrollView in
-                            List(filtered, id: \.self) { item in
-                                LinkItemComponent(item: item) {
-                                    openSafariView(item.url!)
-                                } onTaskCompleted: { link, action in
-                                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
-                                }
-                                .onAppear {
-                                    if item == filtered.last {
-                                        linksFilteredViewModel.loadMore()
                                     }
                                 }
                             }
-                            .animation(.default, value: filtered)
+                            else {
+                                ContentUnavailableView {
+                                    Label("No links added", systemImage: "link")
+                                } description: {
+                                    Text("Save some links on Linkwarden to see them here.")
+                                }
+                                .listRowBackground(Color.clear)
+                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            }
                         }
-                    }
-                }
-                else {
-                    ContentUnavailableView {
-                        Label("No links added", systemImage: "link")
-                    } description: {
-                        Text("Save some links on Linkwarden to see them here.")
+                        .animation(.default, value: filtered)
+                        .animation(.default, value: subCollections)
                     }
                 }
             }
@@ -102,31 +178,48 @@ struct LinksFilteredView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Picker("", selection: $linksFilteredViewModel.sortingSelected) {
-                        Text("Date (newest first)")
-                            .tag(Enums.SortingOptions.dateNewestFirst)
-                        Text("Date (oldest first)")
-                            .tag(Enums.SortingOptions.dateOldestFirst)
-                        Text("Name (A-Z)")
-                            .tag(Enums.SortingOptions.nameAZ)
-                        Text("Name (Z-A)")
-                            .tag(Enums.SortingOptions.nameZA)
-                        Text("Description (A-Z)")
-                            .tag(Enums.SortingOptions.descriptionAZ)
-                        Text("Description (Z-A)")
-                            .tag(Enums.SortingOptions.descriptionZA)
+                HStack {
+                    Menu {
+                        Picker("", selection: $linksFilteredViewModel.sortingSelected) {
+                            Text("Date (newest first)")
+                                .tag(Enums.SortingOptions.dateNewestFirst)
+                            Text("Date (oldest first)")
+                                .tag(Enums.SortingOptions.dateOldestFirst)
+                            Text("Name (A-Z)")
+                                .tag(Enums.SortingOptions.nameAZ)
+                            Text("Name (Z-A)")
+                                .tag(Enums.SortingOptions.nameZA)
+                            Text("Description (A-Z)")
+                                .tag(Enums.SortingOptions.descriptionAZ)
+                            Text("Description (Z-A)")
+                                .tag(Enums.SortingOptions.descriptionZA)
+                        }
+                        .onChange(of: linksFilteredViewModel.sortingSelected, initial: false) {
+                            Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                        }
+                    } label: {
+                        Image(systemName: "arrow.up.arrow.down")
                     }
-                    .onChange(of: linksFilteredViewModel.sortingSelected, initial: false) {
-                        Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                    .disabled(linksFilteredViewModel.loading)
+                    if input.mode == .collection && input.id != nil {
+                        Button {
+                            collectionFormSheet = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
-                } label: {
-                    Image(systemName: "arrow.up.arrow.down")
                 }
-                .disabled(linksFilteredViewModel.loading)
             }
         }
         .background(Color.listBackground)
+        .sheet(isPresented: $collectionFormSheet, content: {
+            CollectionFormView(parentCollection: input.mode == .collection && input.id != nil ? collectionsProvider.data.first() { $0.id == input.id! } : nil) {
+                collectionFormSheet = false
+            } onSuccess: { item, action in
+                collectionFormSheet = false
+            }
+            .environmentObject(CollectionFormViewModel())
+        })
         .onChange(of: linksFilteredViewModel.searchPresented, { oldValue, newValue in
             if oldValue == true && newValue == false {
                 linksFilteredViewModel.clearSearch()

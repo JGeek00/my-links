@@ -5,4 +5,6 @@ struct CollectionCreationRequest: Codable {
     let description: String?
     let color: String?
     let members: [String]
+    let parentId: Int?
+    let parent: Parent?
 }

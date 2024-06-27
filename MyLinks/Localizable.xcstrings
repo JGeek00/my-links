@@ -517,6 +517,16 @@
         }
       }
     },
+    "Edit subcollection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar subcolección"
+          }
+        }
+      }
+    },
     "Error" : {
       "localizations" : {
         "es" : {
@@ -783,6 +793,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuevo enlace"
+          }
+        }
+      }
+    },
+    "New subcollection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva subcolección"
           }
         }
       }

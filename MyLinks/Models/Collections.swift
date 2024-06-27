@@ -14,11 +14,11 @@ struct CollectionResponse: Codable {
 struct Collection: Codable, Hashable {
     let id: Int?
     let name, description, color: String?
-    let parentID: Int?
+    var parentID: Int?
     let isPublic: Bool?
     let ownerId: Int?
     let createdAt, updatedAt: String?
-    let parent: Parent?
+    var parent: Parent?
     let _count: CollectionCount?
 }
 

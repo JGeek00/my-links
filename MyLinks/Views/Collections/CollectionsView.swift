@@ -8,12 +8,11 @@ struct CollectionsView: View {
     
     init() {}
     
-    @State private var navigationPath = NavigationPath()
     @State private var searchText = ""
     @State private var collectionFormSheet = false
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $collectionsProvider.navigationPath) {
             Group {
                 if collectionsProvider.loading == true {
                     Group {
@@ -42,14 +41,15 @@ struct CollectionsView: View {
                         }
                     }
                     else {
-                        let searched = searchText != "" ? collectionsProvider.data.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : collectionsProvider.data
+                        let notChildCollections = collectionsProvider.data.filter() { $0.parent == nil }
+                        let searched = searchText != "" ? notChildCollections.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : notChildCollections
                         if !searched.isEmpty {
                             if horizontalSizeClass == .regular {
                                 ScrollView {
                                     LazyVGrid(columns: Config.gridColumns) {
                                         ForEach(searched, id: \.self) { item in
                                             CollectionItemComponent(collection: item) {
-                                                navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                                collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
                                             } onDelete: {
                                                 collectionsProvider.deleteCollection(id: item.id!)
                                             }
@@ -62,7 +62,7 @@ struct CollectionsView: View {
                             else {
                                 List(searched, id: \.self) { item in
                                     CollectionItemComponent(collection: item) {
-                                        navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                        collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
                                     } onDelete: {
                                         collectionsProvider.deleteCollection(id: item.id!)
                                     }

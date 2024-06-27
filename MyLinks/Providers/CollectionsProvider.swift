@@ -1,7 +1,10 @@
 import Foundation
+import SwiftUI
 
 class CollectionsProvider: ObservableObject {
     static var shared = CollectionsProvider()
+    
+    @Published var navigationPath = NavigationPath()
     
     @Published var data: [Collection] = []
     @Published var loading = true
