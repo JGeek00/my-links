@@ -121,7 +121,7 @@ struct LinksFilteredView: View {
                                 }
                             }
                             if !filtered.isEmpty {
-                                if input.mode == .collection {
+                                if input.mode == .collection && !subCollections.isEmpty {
                                     Section("Links") {
                                         ForEach(filtered, id: \.self) { item in
                                             LinkItemComponent(item: item) {
