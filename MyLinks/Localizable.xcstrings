@@ -17,6 +17,56 @@
         }
       }
     },
+    "1. Log in into your Linkwarden account." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Inicia sesión en tu cuenta de Linkwarden."
+          }
+        }
+      }
+    },
+    "2. Click on your profile picture and then on Settings." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Haz click en tu foto de perfil, y después en Ajustes."
+          }
+        }
+      }
+    },
+    "3. Go to the Access tokens section." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Ve a la sección de tokens de acceso."
+          }
+        }
+      }
+    },
+    "4. Create a new access token, set a name and set no expiration date." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Crea un nuevo token de acceso, dale un nombre, y elige sin fecha de expiración."
+          }
+        }
+      }
+    },
+    "5. Copy the generated API token and paste it into the token field of MyLinks." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5. Copia el token generado y pégalo en el campo token de MyLinks."
+          }
+        }
+      }
+    },
     "404" : {
       "localizations" : {
         "es" : {
@@ -553,6 +603,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Empezar"
+          }
+        }
+      }
+    },
+    "How to get an API token" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cómo obtener un token de API"
           }
         }
       }
@@ -1233,6 +1293,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Token"
+          }
+        }
+      }
+    },
+    "Token instructions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instrucciones del token"
           }
         }
       }

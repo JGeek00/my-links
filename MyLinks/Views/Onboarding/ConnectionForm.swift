@@ -5,6 +5,8 @@ struct ConnectionForm: View {
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
+    @State private var tokenInstructionsSheet = false
+    
     var body: some View {
         if onboardingViewModel.hostingMode == nil {
             VStack {
@@ -18,7 +20,7 @@ struct ConnectionForm: View {
             }
         }
         else {
-            List {
+            Form {
                 Section {
                     VStack(alignment: .leading) {
                         Image(systemName: "list.bullet")
@@ -55,7 +57,7 @@ struct ConnectionForm: View {
                             .textInputAutocapitalization(.never)
                     }
                 }
-                Section("Authentication") {
+                Section {
                     HStack {
                         SecureField("Token", text: $onboardingViewModel.token)
                             .autocorrectionDisabled()
@@ -69,6 +71,13 @@ struct ConnectionForm: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
+                } header: {
+                    Text("Authentication")
+                } footer: {
+                    Button("How to get an API token") {
+                        tokenInstructionsSheet = true
+                    }
+                    .font(.system(size: 12))
                 }
                 Section {
                     Button {
@@ -127,6 +136,11 @@ struct ConnectionForm: View {
                 }
             }, message: {
                 Text(onboardingViewModel.connectionErrorMessage)
+            })
+            .sheet(isPresented: $tokenInstructionsSheet, content: {
+                TokenInstructions {
+                    tokenInstructionsSheet = false
+                }
             })
         }
     }
