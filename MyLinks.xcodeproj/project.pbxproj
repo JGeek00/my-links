@@ -90,11 +90,14 @@
 		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; platformFilters = (macos, ); };
 		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; platformFilters = (macos, ); };
 		0DEA27B02C31EDDA00F1802F /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AF2C31EDDA00F1802F /* Sidebar.swift */; platformFilters = (macos, ); };
-		0DEA27B32C31F1FD00F1802F /* LinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B22C31F1FD00F1802F /* LinksView.swift */; platformFilters = (macos, ); };
+		0DEA27B32C31F1FD00F1802F /* LinksFiltered.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B22C31F1FD00F1802F /* LinksFiltered.swift */; platformFilters = (macos, ); };
 		0DEA27B62C31F21100F1802F /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B52C31F21100F1802F /* CollectionsView.swift */; platformFilters = (macos, ); };
 		0DEA27BA2C31F54700F1802F /* LinkFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B92C31F54700F1802F /* LinkFormView.swift */; platformFilters = (macos, ); };
 		0DEA27BC2C31F55F00F1802F /* TagsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BB2C31F55F00F1802F /* TagsPickerView.swift */; platformFilters = (macos, ); };
 		0DEA27C02C31F89100F1802F /* CollectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BF2C31F89100F1802F /* CollectionFormView.swift */; platformFilters = (macos, ); };
+		0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C32C320D9A00F1802F /* LinkItem.swift */; platformFilters = (macos, ); };
+		0DEA27C62C32118B00F1802F /* LinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C52C32118B00F1802F /* LinksView.swift */; };
+		0DEA27C82C32133800F1802F /* CollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C72C32133800F1802F /* CollectionItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -180,11 +183,14 @@
 		0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionForm.swift; sourceTree = "<group>"; };
 		0DEA27AD2C31ED7900F1802F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		0DEA27AF2C31EDDA00F1802F /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
-		0DEA27B22C31F1FD00F1802F /* LinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksView.swift; sourceTree = "<group>"; };
+		0DEA27B22C31F1FD00F1802F /* LinksFiltered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFiltered.swift; sourceTree = "<group>"; };
 		0DEA27B52C31F21100F1802F /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		0DEA27B92C31F54700F1802F /* LinkFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFormView.swift; sourceTree = "<group>"; };
 		0DEA27BB2C31F55F00F1802F /* TagsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsPickerView.swift; sourceTree = "<group>"; };
 		0DEA27BF2C31F89100F1802F /* CollectionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionFormView.swift; sourceTree = "<group>"; };
+		0DEA27C32C320D9A00F1802F /* LinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkItem.swift; sourceTree = "<group>"; };
+		0DEA27C52C32118B00F1802F /* LinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksView.swift; sourceTree = "<group>"; };
+		0DEA27C72C32133800F1802F /* CollectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,14 +424,8 @@
 		0D55C5652C231184002CE99A /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				0D55C5662C231199002CE99A /* LinkItem.swift */,
-				0D55C5732C2315F0002CE99A /* CollectionItem.swift */,
-				0D55C5842C23A1F1002CE99A /* TagItem.swift */,
-				0D083C802C25E9F300F0EB3B /* SquareIcon.swift */,
-				0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */,
-				0D083CB12C27366700F0EB3B /* PdfViewer.swift */,
-				0D083CB32C27368C00F0EB3B /* DocumentPicker.swift */,
-				0D083CBE2C27648700F0EB3B /* ImageViewer.swift */,
+				0DEA27C22C320D7E00F1802F /* macOS */,
+				0DEA27C12C320D7200F1802F /* iOS */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -497,7 +497,8 @@
 		0DEA27B12C31F1ED00F1802F /* Links */ = {
 			isa = PBXGroup;
 			children = (
-				0DEA27B22C31F1FD00F1802F /* LinksView.swift */,
+				0DEA27B22C31F1FD00F1802F /* LinksFiltered.swift */,
+				0DEA27C52C32118B00F1802F /* LinksView.swift */,
 			);
 			path = Links;
 			sourceTree = "<group>";
@@ -525,6 +526,30 @@
 				0DEA27BF2C31F89100F1802F /* CollectionFormView.swift */,
 			);
 			path = CollectionForm;
+			sourceTree = "<group>";
+		};
+		0DEA27C12C320D7200F1802F /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				0D55C5662C231199002CE99A /* LinkItem.swift */,
+				0D55C5732C2315F0002CE99A /* CollectionItem.swift */,
+				0D55C5842C23A1F1002CE99A /* TagItem.swift */,
+				0D083C802C25E9F300F0EB3B /* SquareIcon.swift */,
+				0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */,
+				0D083CB12C27366700F0EB3B /* PdfViewer.swift */,
+				0D083CB32C27368C00F0EB3B /* DocumentPicker.swift */,
+				0D083CBE2C27648700F0EB3B /* ImageViewer.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		0DEA27C22C320D7E00F1802F /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				0DEA27C32C320D9A00F1802F /* LinkItem.swift */,
+				0DEA27C72C32133800F1802F /* CollectionItem.swift */,
+			);
+			path = macOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -621,9 +646,11 @@
 				0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */,
 				0D55C5542C225768002CE99A /* LinkCreationRequest.swift in Sources */,
 				0D55C5352C220A3A002CE99A /* SafariView.swift in Sources */,
+				0DEA27C62C32118B00F1802F /* LinksView.swift in Sources */,
 				0DEA27B02C31EDDA00F1802F /* Sidebar.swift in Sources */,
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */,
+				0DEA27C82C32133800F1802F /* CollectionItem.swift in Sources */,
 				0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */,
 				0D55C5292C21FBEA002CE99A /* Tags.swift in Sources */,
 				0D083CAD2C27291800F0EB3B /* PdfViewerViewModel.swift in Sources */,
@@ -651,7 +678,7 @@
 				0D083C832C25EAD300F0EB3B /* ListRowWithIconEntry.swift in Sources */,
 				0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */,
 				0D55C5182C21B472002CE99A /* ConnectionForm.swift in Sources */,
-				0DEA27B32C31F1FD00F1802F /* LinksView.swift in Sources */,
+				0DEA27B32C31F1FD00F1802F /* LinksFiltered.swift in Sources */,
 				0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */,
 				0D55C50A2C21ACAB002CE99A /* Links.swift in Sources */,
 				0D55C54E2C2248E7002CE99A /* LinkFormView.swift in Sources */,
@@ -661,6 +688,7 @@
 				0D55C5692C2312E7002CE99A /* LinksViewModel.swift in Sources */,
 				0D55C5832C23A117002CE99A /* TagsView.swift in Sources */,
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
+				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
 				0D55C5272C21FA6E002CE99A /* Collections.swift in Sources */,
 				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,
 				0D55C5142C21B420002CE99A /* Welcome.swift in Sources */,

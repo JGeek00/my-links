@@ -1,32 +1,39 @@
 import SwiftUI
 
-struct LinksView: View {
-    @StateObject private var linksViewModel = LinksViewModel.shared
-
+struct LinksFilteredView: View {
+    var input: LinksFilteredRequest
+    
+    @StateObject private var linksFilteredViewModel: LinksFilteredViewModel
+    
+    init(input: LinksFilteredRequest) {
+        self.input = input
+        _linksFilteredViewModel = StateObject(wrappedValue: LinksFilteredViewModel(input: input))
+    }
+    
     @State private var linkFormSheet = false
     
     var body: some View {
         Group {
-            if linksViewModel.loading == true {
+            if linksFilteredViewModel.loading == true {
                 Group {
                     ProgressView()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            else if linksViewModel.error == true {
+            else if linksFilteredViewModel.error == true {
                 ContentUnavailableView {
                     Label("Error", systemImage: "exclamationmark.circle")
                 } description: {
                     Text("An error occured when loading the links data. Check your Internet connection and try again later.")
                     Button {
-                        Task { await linksViewModel.loadData(setLoading: true) }
+                        Task { await linksFilteredViewModel.loadData(setLoading: true) }
                     } label: {
                         Label("Retry", systemImage: "arrow.counterclockwise")
                     }
                 }
             }
             else {
-                let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
                 if !filtered.isEmpty {
                     ScrollViewReader(content: { scrollView in
                         ScrollView {
@@ -35,7 +42,7 @@ struct LinksView: View {
                                     LinkItemComponent(item: item)
                                     .onAppear {
                                         if item == filtered.last {
-                                            linksViewModel.loadMore()
+                                            linksFilteredViewModel.loadMore()
                                         }
                                     }
                                     .padding(6)
@@ -54,10 +61,10 @@ struct LinksView: View {
                 }
             }
         }
-        .navigationTitle("Links")
+        .navigationTitle(input.name)
         .toolbar {
             ToolbarItem(placement: .automatic) {
-                Picker("Sort", systemImage: "arrow.up.arrow.down", selection: $linksViewModel.sortingSelected) {
+                Picker("Sort", systemImage: "arrow.up.arrow.down", selection: $linksFilteredViewModel.sortingSelected) {
                     Text("Date (newest first)")
                         .tag(Enums.SortingOptions.dateNewestFirst)
                     Text("Date (oldest first)")
@@ -71,27 +78,18 @@ struct LinksView: View {
                     Text("Description (Z-A)")
                         .tag(Enums.SortingOptions.descriptionZA)
                 }
-                .onChange(of: linksViewModel.sortingSelected, initial: false) {
-                    Task { await linksViewModel.loadData(setLoading: true) }
+                .onChange(of: linksFilteredViewModel.sortingSelected, initial: false) {
+                    Task { await linksFilteredViewModel.loadData(setLoading: true) }
                 }
-                .disabled(linksViewModel.loading)
+                .disabled(linksFilteredViewModel.loading)
             }
         }
         .refreshable {
-            await linksViewModel.loadData()
+            await linksFilteredViewModel.loadData()
         }
-        .searchable(text: $linksViewModel.searchFieldValue, isPresented: $linksViewModel.searchPresented)
+        .searchable(text: $linksFilteredViewModel.searchFieldValue, isPresented: $linksFilteredViewModel.searchPresented)
         .onSubmit(of: .search) {
-            linksViewModel.search()
-        }
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button {
-                    linkFormSheet = true
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
+            linksFilteredViewModel.search()
         }
         .sheet(isPresented: $linkFormSheet, content: {
             LinkFormView() {
@@ -101,14 +99,14 @@ struct LinksView: View {
             }
             .environmentObject(LinkFormViewModel())
         })
-        .onChange(of: linksViewModel.searchPresented, { oldValue, newValue in
+        .onChange(of: linksFilteredViewModel.searchPresented, { oldValue, newValue in
             if oldValue == true && newValue == false {
-                linksViewModel.clearSearch()
+                linksFilteredViewModel.clearSearch()
             }
         })
         .onAppear(perform: {
-            if linksViewModel.data.isEmpty {
-                Task { await linksViewModel.loadData() }
+            if linksFilteredViewModel.data.isEmpty {
+                Task { await linksFilteredViewModel.loadData() }
             }
         })
     }

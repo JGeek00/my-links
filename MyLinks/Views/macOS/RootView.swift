@@ -18,8 +18,6 @@ struct RootView: View {
     ) private var instances: FetchedResults<ServerInstance>
     
     @State private var selectedView = Enums.DashboardView.dashboard    
-    @State private var linkFormSheet = false
-    @State private var collectionFormSheet = false
     
     var body: some View {
         Group {
@@ -31,60 +29,8 @@ struct RootView: View {
                     .navigationSplitViewColumnWidth(min: 250, ideal: 250, max: 300)
                     
                 } detail: {
-                    Group {
-                        switch selectedView {
-                        case .dashboard:
-                            DashboardView(viewAllLinks: {
-                                selectedView = .links
-                            }, viewPinned: {
-                                selectedView = .pinned
-                            })
-                            .navigationTitle("Dashboard")
-                        case .links:
-                            LinksView()
-                                .navigationTitle("Links")
-                        case .pinned:
-                            LinksView()
-                                .navigationTitle("Pinned")
-                        case .collections:
-                            CollectionsView()
-                                .navigationTitle("Collections")
-                        }
-                    }
-                    .toolbar {
-                        ToolbarItem(placement: .automatic) {
-                            Menu {
-                                Button {
-                                    linkFormSheet.toggle()
-                                } label: {
-                                    Label("New link", systemImage: "link")
-                                }
-                                Button {
-                                    collectionFormSheet = true
-                                } label: {
-                                    Label("New collection", systemImage: "folder")
-                                }
-                            } label: {
-                                Image(systemName: "plus")
-                            }
-                        }
-                    }
-                    .sheet(isPresented: $linkFormSheet, content: {
-                        LinkFormView() {
-                            linkFormSheet = false
-                        } onSuccess: { newLink, action in
-                            linkFormSheet = false
-                        }
-                        .environmentObject(LinkFormViewModel())
-                    })
-                    .sheet(isPresented: $collectionFormSheet, content: {
-                        CollectionFormView() {
-                            collectionFormSheet = false
-                        } onSuccess: { item, action in
-                            collectionFormSheet = false
-                        }
-                        .environmentObject(CollectionFormViewModel())
-                    })
+                    DashboardView()
+                        .navigationTitle("Dashboard")
                 }
                 .onAppear(perform: {
                     if collectionsProvider.data.isEmpty {

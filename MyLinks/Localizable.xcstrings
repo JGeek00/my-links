@@ -208,6 +208,7 @@
       }
     },
     "Back" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -218,6 +219,7 @@
       }
     },
     "Back to hosting mode selection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -368,6 +370,7 @@
       }
     },
     "Copied to the clipboard" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -388,6 +391,7 @@
       }
     },
     "Created at" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -468,6 +472,7 @@
       }
     },
     "Delete link" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -658,6 +663,7 @@
       }
     },
     "Image" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -748,6 +754,7 @@
       }
     },
     "Link details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -888,6 +895,7 @@
       }
     },
     "No description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -908,6 +916,7 @@
       }
     },
     "No name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -948,6 +957,7 @@
       }
     },
     "PDF" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -968,6 +978,7 @@
       }
     },
     "Pin to the dashboard" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -998,6 +1009,7 @@
       }
     },
     "Preserved formats" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1008,6 +1020,7 @@
       }
     },
     "Processing..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1018,6 +1031,7 @@
       }
     },
     "Readable" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1117,6 +1131,9 @@
         }
       }
     },
+    "Server type" : {
+
+    },
     "Settings" : {
       "localizations" : {
         "es" : {
@@ -1146,6 +1163,9 @@
           }
         }
       }
+    },
+    "Sort" : {
+
     },
     "System defined" : {
       "localizations" : {
@@ -1258,6 +1278,7 @@
       }
     },
     "This link has no tags" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1268,6 +1289,7 @@
       }
     },
     "This link will be deleted. This action is not reversible." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1318,6 +1340,7 @@
       }
     },
     "Unpin from the dashboard" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1328,6 +1351,7 @@
       }
     },
     "Updated at" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

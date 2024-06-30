@@ -12,20 +12,12 @@ struct Sidebar: View {
             Group {
                 HStack(spacing: 6) {
                     VStack(spacing: 6) {
-                        SidebarButton(image: "house.fill", name: "Dashboard", color: .green) {
-                            onSelect(Enums.DashboardView.dashboard)
-                        }
-                        SidebarButton(image: "pin.fill", name: "Pinned", color: .red) {
-                            onSelect(Enums.DashboardView.pinned)
-                        }
+                        SidebarButton(image: "house.fill", name: "Dashboard", color: .green, dashboardView: .dashboard)
+                        SidebarButton(image: "pin.fill", name: "Pinned", color: .red, dashboardView: .pinned)
                     }
                     VStack(spacing: 6) {
-                        SidebarButton(image: "link", name: "Links", color: .blue) {
-                            onSelect(Enums.DashboardView.links)
-                        }
-                        SidebarButton(image: "folder.fill", name: "Collections", color: .orange) {
-                            onSelect(Enums.DashboardView.collections)
-                        }
+                        SidebarButton(image: "link", name: "Links", color: .blue, dashboardView: .links)
+                        SidebarButton(image: "folder.fill", name: "Collections", color: .orange, dashboardView: .collections)
                     }
                 }
             }
@@ -38,18 +30,27 @@ private struct SidebarButton: View {
     var image: String
     var name: String
     var color: Color
-    var onSelect: () -> Void
+    var dashboardView: Enums.DashboardView
     
-    init(image: String, name: String, color: Color, onSelect: @escaping () -> Void) {
+    init(image: String, name: String, color: Color, dashboardView: Enums.DashboardView) {
         self.image = image
         self.name = name
         self.color = color
-        self.onSelect = onSelect
+        self.dashboardView = dashboardView
     }
     
     var body: some View {
-        Button {
-            onSelect()
+        NavigationLink {
+            switch dashboardView {
+            case .dashboard:
+                DashboardView()
+            case .links:
+                LinksView()
+            case .pinned:
+                LinksFilteredView(input: LinksFilteredRequest(name: "Pinned", mode: .pinned, id: nil))
+            case .collections:
+                CollectionsView()
+            }
         } label: {
             HStack {
                 VStack(alignment: .leading) {

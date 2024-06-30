@@ -1,17 +1,12 @@
 import SwiftUI
 
 struct DashboardView: View {
-    var viewAllLinks: () -> Void
-    var viewPinned: () -> Void
-    
-    init(viewAllLinks: @escaping () -> Void, viewPinned: @escaping () -> Void) {
-        self.viewAllLinks = viewAllLinks
-        self.viewPinned = viewPinned
-    }
-    
     @StateObject private var dashboardViewModel = DashboardViewModel.shared
     @EnvironmentObject private var tagsProvider: TagsProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    
+    @State private var linkFormSheet = false
+    @State private var collectionFormSheet = false
 
     var body: some View {
         Group {
@@ -60,8 +55,8 @@ struct DashboardView: View {
                                     .font(.system(size: 16))
                                     .fontWeight(.semibold)
                                 Spacer()
-                                Button {
-                                    viewAllLinks()
+                                NavigationLink {
+                                    LinksFilteredView(input: LinksFilteredRequest(name: "Recent", mode: .recent, id: nil))
                                 } label: {
                                     Text("View all")
                                     Image(systemName: "chevron.right")
@@ -87,8 +82,8 @@ struct DashboardView: View {
                                     .font(.system(size: 16))
                                     .fontWeight(.semibold)
                                 Spacer()
-                                Button {
-                                    viewPinned()
+                                NavigationLink {
+                                    LinksFilteredView(input: LinksFilteredRequest(name: "Pinned", mode: .pinned, id: nil))
                                 } label: {
                                     Text("View all")
                                     Image(systemName: "chevron.right")
@@ -110,75 +105,46 @@ struct DashboardView: View {
                 }
             }
         }
+        .navigationTitle("Dashboard")
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Menu {
+                    Button {
+                        linkFormSheet.toggle()
+                    } label: {
+                        Label("New link", systemImage: "link")
+                    }
+                    Button {
+                        collectionFormSheet = true
+                    } label: {
+                        Label("New collection", systemImage: "folder")
+                    }
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $linkFormSheet, content: {
+            LinkFormView() {
+                linkFormSheet = false
+            } onSuccess: { newLink, action in
+                linkFormSheet = false
+            }
+            .environmentObject(LinkFormViewModel())
+        })
+        .sheet(isPresented: $collectionFormSheet, content: {
+            CollectionFormView() {
+                collectionFormSheet = false
+            } onSuccess: { item, action in
+                collectionFormSheet = false
+            }
+            .environmentObject(CollectionFormViewModel())
+        })
         .onAppear(perform: {
             if dashboardViewModel.data.isEmpty {
                 Task { await dashboardViewModel.loadData() }
             }
         })
-    }
-}
-
-struct LinkItemComponent: View {
-    var item: Link
-    
-    init(item: Link) {
-        self.item = item
-    }
-    
-    @Environment(\.openURL) var openURL
-    
-    var body: some View {
-        let urlHost = getUrlHost(item.url!)
-        let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
-        Button {
-            openURL(URL(string: item.url!)!)
-        } label: {
-            VStack(alignment: .leading) {
-                Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
-                    .lineLimit(1)
-                    .fontWeight(.medium)
-                if let urlHost = urlHost {
-                    Spacer()
-                        .frame(height: 4)
-                    HStack {
-                        Image(systemName: "link")
-                            .font(.system(size: 10))
-                        Text(urlHost)
-                            .font(.system(size: 14))
-                    }
-                    .foregroundStyle(Color.gray)
-                }
-                if dateFormatted != nil || (item.collection?.name != nil) {
-                    Spacer()
-                        .frame(height: 4)
-                    HStack {
-                        if let name = item.collection?.name {
-                            Image(systemName: "folder")
-                                .font(.system(size: 10))
-                            Text(name)
-                                .font(.system(size: 14))
-                        }
-                        if let dateFormatted =  dateFormatted {
-                            Spacer()
-                            Image(systemName: "calendar")
-                                .font(.system(size: 12))
-                            Text(dateFormatted)
-                                .font(.system(size: 14))
-                        }
-                    }
-                    .foregroundStyle(Color.gray)
-                }
-            }
-            .padding(12)
-            .foregroundColor(Color.foreground)
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(.gray.opacity(0.2), lineWidth: 1)
-            )
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 
