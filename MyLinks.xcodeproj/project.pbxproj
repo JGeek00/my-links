@@ -87,14 +87,14 @@
 		0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */; };
 		0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */; };
 		0DEA27A22C31E44800F1802F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27A12C31E44800F1802F /* RootView.swift */; platformFilters = (macos, ); };
-		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; };
-		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; };
-		0DEA27B02C31EDDA00F1802F /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AF2C31EDDA00F1802F /* Sidebar.swift */; };
-		0DEA27B32C31F1FD00F1802F /* LinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B22C31F1FD00F1802F /* LinksView.swift */; };
-		0DEA27B62C31F21100F1802F /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B52C31F21100F1802F /* CollectionsView.swift */; };
-		0DEA27BA2C31F54700F1802F /* LinkFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B92C31F54700F1802F /* LinkFormView.swift */; };
-		0DEA27BC2C31F55F00F1802F /* TagsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BB2C31F55F00F1802F /* TagsPickerView.swift */; };
-		0DEA27C02C31F89100F1802F /* CollectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BF2C31F89100F1802F /* CollectionFormView.swift */; };
+		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; platformFilters = (macos, ); };
+		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; platformFilters = (macos, ); };
+		0DEA27B02C31EDDA00F1802F /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AF2C31EDDA00F1802F /* Sidebar.swift */; platformFilters = (macos, ); };
+		0DEA27B32C31F1FD00F1802F /* LinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B22C31F1FD00F1802F /* LinksView.swift */; platformFilters = (macos, ); };
+		0DEA27B62C31F21100F1802F /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B52C31F21100F1802F /* CollectionsView.swift */; platformFilters = (macos, ); };
+		0DEA27BA2C31F54700F1802F /* LinkFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27B92C31F54700F1802F /* LinkFormView.swift */; platformFilters = (macos, ); };
+		0DEA27BC2C31F55F00F1802F /* TagsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BB2C31F55F00F1802F /* TagsPickerView.swift */; platformFilters = (macos, ); };
+		0DEA27C02C31F89100F1802F /* CollectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BF2C31F89100F1802F /* CollectionFormView.swift */; platformFilters = (macos, ); };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
