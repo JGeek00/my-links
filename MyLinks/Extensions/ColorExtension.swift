@@ -1,5 +1,11 @@
-import Foundation
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+typealias CompatibleColor = UIColor
+#elseif canImport(AppKit)
+import AppKit
+typealias CompatibleColor = NSColor
+#endif
 
 extension Color {
     init(hex: String) {
@@ -19,10 +25,11 @@ extension Color {
     }
     
     func toHex() -> String? {
-        #if os(macOS)
-        let c = NSColor(self)
-        #else
-        let c = UIColor(self)
+        #if canImport(UIKit)
+        let compatibleColor = CompatibleColor(self)
+        #elseif canImport(AppKit)
+        guard let cgColor = self.cgColor else { return nil }
+        guard let compatibleColor = CompatibleColor(cgColor: cgColor) else { return nil }
         #endif
         
         var red: CGFloat = 0
@@ -30,7 +37,7 @@ extension Color {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         
-        c.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        compatibleColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
         guard (0...1).contains(red), (0...1).contains(green), (0...1).contains(blue), (0...1).contains(alpha) else {
             return nil
