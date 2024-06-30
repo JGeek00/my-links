@@ -14,9 +14,11 @@ func requestAppReview() {
         guard let firstLaunchDate = firstLaunchDate else { return }
         if (currentDate - firstLaunchDate) >= oneDay && hasRequestedReview != true {
             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                #if os(iOS)
                 guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
                 SKStoreReviewController.requestReview(in: windowScene)
                 UserDefaults.shared.setValue(true, forKey: StorageKeys.hasRequestedReview)
+                #endif
             }
         }
     }

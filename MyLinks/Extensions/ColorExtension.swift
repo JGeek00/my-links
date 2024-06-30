@@ -19,14 +19,18 @@ extension Color {
     }
     
     func toHex() -> String? {
-        let uiColor = UIColor(self)
+        #if os(macOS)
+        let c = NSColor(self)
+        #else
+        let c = UIColor(self)
+        #endif
         
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         
-        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        c.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
         guard (0...1).contains(red), (0...1).contains(green), (0...1).contains(blue), (0...1).contains(alpha) else {
             return nil

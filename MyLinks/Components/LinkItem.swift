@@ -1,5 +1,4 @@
 import SwiftUI
-import AlertToast
 
 struct LinkItemComponent: View {
     var item: Link

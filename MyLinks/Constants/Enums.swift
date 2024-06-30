@@ -63,4 +63,11 @@ class Enums {
         case descriptionAZ
         case descriptionZA
     }
+    
+    enum DashboardView: String {
+        case dashboard
+        case links
+        case pinned
+        case collections
+    }
 }

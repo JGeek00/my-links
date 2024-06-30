@@ -8,7 +8,7 @@ class OnboardingViewModel: ObservableObject {
     @Published var showOnboarding = false
     
     @Published var selectedTab = 0
-    @Published var hostingMode: Enums.Hosting? = nil
+    @Published var hostingMode: Enums.Hosting = .cloud
     
     @Published var token = ""
     @Published var connectionMethod = Enums.ConnectionMethod.http
@@ -73,7 +73,7 @@ class OnboardingViewModel: ObservableObject {
     
     func reset() {
         selectedTab = 0
-        hostingMode = nil
+        hostingMode = .cloud
         token = ""
         connectionMethod = .http
         ipDomain = ""

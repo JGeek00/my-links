@@ -208,6 +208,7 @@
       }
     },
     "Back" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -218,6 +219,7 @@
       }
     },
     "Back to hosting mode selection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -258,6 +260,7 @@
       }
     },
     "Change the search term to see some collections." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -378,6 +381,7 @@
       }
     },
     "Create some collections on Linkwarden to see them here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -606,6 +610,9 @@
           }
         }
       }
+    },
+    "Hello, World!" : {
+
     },
     "How to get an API token" : {
       "localizations" : {
@@ -868,6 +875,7 @@
       }
     },
     "No collections added" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -878,6 +886,7 @@
       }
     },
     "No collections found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1008,6 +1017,7 @@
       }
     },
     "Processing..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1117,6 +1127,9 @@
         }
       }
     },
+    "Server type" : {
+
+    },
     "Settings" : {
       "localizations" : {
         "es" : {
@@ -1178,6 +1191,7 @@
       }
     },
     "The collection could not be deleted due to an error." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
