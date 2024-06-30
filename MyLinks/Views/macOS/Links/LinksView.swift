@@ -32,7 +32,7 @@ struct LinksView: View {
                         ScrollView {
                             LazyVGrid(columns: Config.gridColumns) {
                                 ForEach(filtered, id: \.self) { item in
-                                    LinkItemComponent(item: item)
+                                    LinkItemComponent(item: item) { _, _ in }
                                     .onAppear {
                                         if item == filtered.last {
                                             linksViewModel.loadMore()

@@ -391,7 +391,6 @@
       }
     },
     "Created at" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -472,7 +471,6 @@
       }
     },
     "Delete link" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -754,7 +752,6 @@
       }
     },
     "Link details" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -895,7 +892,6 @@
       }
     },
     "No description" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -916,7 +912,6 @@
       }
     },
     "No name" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -978,7 +973,6 @@
       }
     },
     "Pin to the dashboard" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1278,7 +1272,6 @@
       }
     },
     "This link has no tags" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1289,7 +1282,6 @@
       }
     },
     "This link will be deleted. This action is not reversible." : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1340,7 +1332,6 @@
       }
     },
     "Unpin from the dashboard" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1351,7 +1342,6 @@
       }
     },
     "Updated at" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

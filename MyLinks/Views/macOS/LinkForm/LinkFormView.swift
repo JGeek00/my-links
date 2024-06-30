@@ -105,6 +105,6 @@ struct LinkFormView: View {
             }
         }
         .padding()
-        
+        .frame(width: 500, height: 400)
     }
 }

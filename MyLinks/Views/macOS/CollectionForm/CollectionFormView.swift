@@ -25,7 +25,6 @@ struct CollectionFormView: View {
                 }
             }
             .formStyle(GroupedFormStyle())
-            .frame(minHeight: 200)
             .navigationTitle(collectionFormViewModel.editingCollection != nil ? collectionFormViewModel.editingCollection != nil ? "Edit subcollection" : "Edit collection" : parentCollection != nil ? "New subcollection" : "New collection")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -72,5 +71,6 @@ struct CollectionFormView: View {
                 Text(collectionFormViewModel.savingErrorMessage)
             }
         }
+        .frame(width: 500, height: 300)
     }
 }

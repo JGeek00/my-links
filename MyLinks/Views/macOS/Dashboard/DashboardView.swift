@@ -68,7 +68,9 @@ struct DashboardView: View {
                                 .frame(height: 16)
                             LazyVGrid(columns: Config.gridColumns) {
                                 ForEach(filtered.uniqued(), id: \.self) { item in
-                                    LinkItemComponent(item: item)
+                                    LinkItemComponent(item: item) { link, action in
+                                        dashboardViewModel.reload()
+                                    }
                                     .padding(6)
                                 }
                             }
@@ -95,7 +97,9 @@ struct DashboardView: View {
                                 .frame(height: 16)
                             LazyVGrid(columns: Config.gridColumns) {
                                 ForEach(pinned.uniqued(), id: \.self) { item in
-                                    LinkItemComponent(item: item)
+                                    LinkItemComponent(item: item) { link, action in
+                                        dashboardViewModel.reload()
+                                    }
                                     .padding(6)
                                 }
                             }

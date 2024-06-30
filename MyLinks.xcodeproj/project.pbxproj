@@ -96,8 +96,8 @@
 		0DEA27BC2C31F55F00F1802F /* TagsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BB2C31F55F00F1802F /* TagsPickerView.swift */; platformFilters = (macos, ); };
 		0DEA27C02C31F89100F1802F /* CollectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27BF2C31F89100F1802F /* CollectionFormView.swift */; platformFilters = (macos, ); };
 		0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C32C320D9A00F1802F /* LinkItem.swift */; platformFilters = (macos, ); };
-		0DEA27C62C32118B00F1802F /* LinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C52C32118B00F1802F /* LinksView.swift */; };
-		0DEA27C82C32133800F1802F /* CollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C72C32133800F1802F /* CollectionItem.swift */; };
+		0DEA27C62C32118B00F1802F /* LinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C52C32118B00F1802F /* LinksView.swift */; platformFilters = (macos, ); };
+		0DEA27C82C32133800F1802F /* CollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27C72C32133800F1802F /* CollectionItem.swift */; platformFilters = (macos, ); };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
