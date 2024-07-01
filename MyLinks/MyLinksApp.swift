@@ -38,6 +38,7 @@ struct MyLinksApp: App {
                     }
                 }
         }
+        .defaultSize(width: 1200, height: 700)
         .commands {
             CommandGroup(replacing: .undoRedo) { }
             CommandGroup(replacing: .saveItem) { }

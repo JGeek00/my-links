@@ -15,7 +15,7 @@ class StatusBarController {
         
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "link", accessibilityDescription: "Add link to MyLinks")
+            button.image = NSImage(systemSymbolName: "link", accessibilityDescription: "Create a link on MyLinks")
             button.action = #selector(showApp(sender:))
             button.target = self
         }

@@ -9,14 +9,25 @@ struct PopoverView: View {
     @Environment(\.openWindow) private var openWindow
     @EnvironmentObject private var popoverState: PopoverState
     
+    @State private var text = ""
+    @FocusState private var focused: Bool
+    
     var body: some View {
         if popoverState.isPopoverOpen == true {
             PopoverContent()
                 .environmentObject(MenuBarFormViewModel())
+                .frame(width: 400, height: 400)
         }
         else {
-            VStack {}
-                .frame(width: 400, height: 400)
+            VStack {
+                TextField("", text: $text)
+                    .focused($focused)
+                    .opacity(0)
+            }
+            .frame(width: 400, height: 400)
+            .onAppear {
+                focused = true
+            }
         }
     }
 }
@@ -136,7 +147,6 @@ struct PopoverContent: View {
                     ContentUnavailableView("Server unavailable", systemImage: "server.rack", description: Text("Open the app to create a connection to a server."))
                 }
             }
-            .frame(width: 400, height: 400)
             .navigationDestination(for: PopoverNavigation.self) { _ in
                 TagsList {
                     path.removeLast()
