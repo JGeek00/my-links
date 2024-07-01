@@ -1159,7 +1159,14 @@
       }
     },
     "Sort" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordenar"
+          }
+        }
+      }
     },
     "System defined" : {
       "localizations" : {
