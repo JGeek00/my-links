@@ -77,7 +77,6 @@
 		0D55C5692C2312E7002CE99A /* LinksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5682C2312E7002CE99A /* LinksViewModel.swift */; };
 		0D55C56D2C2314EB002CE99A /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C56C2C2314EB002CE99A /* CollectionsView.swift */; platformFilter = ios; };
 		0D55C5742C2315F0002CE99A /* CollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5732C2315F0002CE99A /* CollectionItem.swift */; platformFilter = ios; };
-		0D55C5782C233A0A002CE99A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 0D55C5772C233A0A002CE99A /* Sentry */; };
 		0D55C57A2C236C72002CE99A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C5792C236C72002CE99A /* Localizable.xcstrings */; };
 		0D55C57F2C23904A002CE99A /* CustomAlert in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 0D55C57E2C23904A002CE99A /* CustomAlert */; };
 		0D55C5832C23A117002CE99A /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5822C23A117002CE99A /* TagsView.swift */; platformFilter = ios; };
@@ -105,6 +104,8 @@
 		0DEA27D82C32FC8700F1802F /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D72C32FC8700F1802F /* PopoverView.swift */; platformFilters = (macos, ); };
 		0DEA27DA2C32FCAC00F1802F /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D92C32FCAC00F1802F /* StatusBarController.swift */; platformFilters = (macos, ); };
 		0DEA27DC2C32FE0000F1802F /* MenuBarFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */; platformFilters = (macos, ); };
+		0DEA27E02C332FA200F1802F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0DEA27DF2C332FA200F1802F /* Info.plist */; };
+		0DEA27E62C33325900F1802F /* SentrySwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0DEA27E52C33325900F1802F /* SentrySwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +206,7 @@
 		0DEA27D72C32FC8700F1802F /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		0DEA27D92C32FCAC00F1802F /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarFormViewModel.swift; sourceTree = "<group>"; };
+		0DEA27DF2C332FA200F1802F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,8 +215,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D083C962C264E8300F0EB3B /* AlertToast in Frameworks */,
+				0DEA27E62C33325900F1802F /* SentrySwiftUI in Frameworks */,
 				0D55C57F2C23904A002CE99A /* CustomAlert in Frameworks */,
-				0D55C5782C233A0A002CE99A /* Sentry in Frameworks */,
 				0D083CA82C26804100F0EB3B /* RichText in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				0D55C5752C23366A002CE99A /* PrivacyInfo.xcprivacy */,
+				0DEA27DF2C332FA200F1802F /* Info.plist */,
 				0D55C4F12C219E14002CE99A /* MyLinks.entitlements */,
 				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
 				0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */,
@@ -606,10 +609,10 @@
 			);
 			name = MyLinks;
 			packageProductDependencies = (
-				0D55C5772C233A0A002CE99A /* Sentry */,
 				0D55C57E2C23904A002CE99A /* CustomAlert */,
 				0D083C952C264E8300F0EB3B /* AlertToast */,
 				0D083CA72C26804100F0EB3B /* RichText */,
+				0DEA27E52C33325900F1802F /* SentrySwiftUI */,
 			);
 			productName = MyLinks;
 			productReference = 0D55C4E32C219E13002CE99A /* MyLinks.app */;
@@ -641,10 +644,10 @@
 			);
 			mainGroup = 0D55C4DA2C219E12002CE99A;
 			packageReferences = (
-				0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				0D55C57D2C23904A002CE99A /* XCRemoteSwiftPackageReference "CustomAlert" */,
 				0D083C942C264E8300F0EB3B /* XCRemoteSwiftPackageReference "AlertToast" */,
 				0D083CA62C26804100F0EB3B /* XCRemoteSwiftPackageReference "RichText" */,
+				0DEA27E42C33325900F1802F /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = 0D55C4E42C219E13002CE99A /* Products */;
 			projectDirPath = "";
@@ -660,6 +663,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DEA27E02C332FA200F1802F /* Info.plist in Resources */,
 				0D55C4F42C219E14002CE99A /* Preview Assets.xcassets in Resources */,
 				0D55C4F02C219E14002CE99A /* Assets.xcassets in Resources */,
 				0D55C57A2C236C72002CE99A /* Localizable.xcstrings in Resources */,
@@ -1005,20 +1009,20 @@
 				minimumVersion = 2.4.1;
 			};
 		};
-		0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.29.1;
-			};
-		};
 		0D55C57D2C23904A002CE99A /* XCRemoteSwiftPackageReference "CustomAlert" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/divadretlaw/CustomAlert.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.6.1;
+			};
+		};
+		0DEA27E42C33325900F1802F /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.30.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1034,15 +1038,15 @@
 			package = 0D083CA62C26804100F0EB3B /* XCRemoteSwiftPackageReference "RichText" */;
 			productName = RichText;
 		};
-		0D55C5772C233A0A002CE99A /* Sentry */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0D55C5762C233A0A002CE99A /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
-			productName = Sentry;
-		};
 		0D55C57E2C23904A002CE99A /* CustomAlert */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0D55C57D2C23904A002CE99A /* XCRemoteSwiftPackageReference "CustomAlert" */;
 			productName = CustomAlert;
+		};
+		0DEA27E52C33325900F1802F /* SentrySwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0DEA27E42C33325900F1802F /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = SentrySwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 
