@@ -1,0 +1,1422 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "1. Log in into your Linkwarden account." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Inicia sesión en tu cuenta de Linkwarden."
+          }
+        }
+      }
+    },
+    "2. Click on your profile picture and then on Settings." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Haz click en tu foto de perfil, y después en Ajustes."
+          }
+        }
+      }
+    },
+    "3. Go to the Access tokens section." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Ve a la sección de tokens de acceso."
+          }
+        }
+      }
+    },
+    "4. Create a new access token, set a name and set no expiration date." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Crea un nuevo token de acceso, dale un nombre, y elige sin fecha de expiración."
+          }
+        }
+      }
+    },
+    "5. Copy the generated API token and paste it into the token field of MyLinks." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5. Copia el token generado y pégalo en el campo token de MyLinks."
+          }
+        }
+      }
+    },
+    "404" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "404"
+          }
+        }
+      }
+    },
+    "About the app" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre la app"
+          }
+        }
+      }
+    },
+    "Add tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir etiqueta"
+          }
+        }
+      }
+    },
+    "Add tags to links to see them here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade tags a enlaces para verlos aquí."
+          }
+        }
+      }
+    },
+    "An error occured when loading the dashboard data. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar los datos del dashboard. Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
+    },
+    "An error occured when loading the image. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar la imagen. Comprueba tu conexión a internet y prueba más tarde."
+          }
+        }
+      }
+    },
+    "An error occured when loading the links data. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar los enlaces. Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
+    },
+    "An error occured when loading the PDF. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar el PDF. Comprueba tu conexión a internet y prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
+    "An error occured when loading the reader view. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar la vista de lectura. Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
+    },
+    "An error occured when saving the file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al guardar el fichero"
+          }
+        }
+      }
+    },
+    "App version" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión de la app"
+          }
+        }
+      }
+    },
+    "Authentication" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autenticación"
+          }
+        }
+      }
+    },
+    "Authentication error. Check your authentication token." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de autenticación. Comprueba tu token de autenticación."
+          }
+        }
+      }
+    },
+    "Authentication token is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El token de autenticación es requerido."
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "Cannot connect to the server" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede conectar al servidor"
+          }
+        }
+      }
+    },
+    "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede establecer una conexión con el servidor. Si estás usando HTTPS, comprueba que tu certificado sea válido."
+          }
+        }
+      }
+    },
+    "Cannot reach the server. Check your Internet connection." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede alcanzar el servidor. Comprueba tu conexión."
+          }
+        }
+      }
+    },
+    "Change the search term to see some collections." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia el término de búsqueda para ver algunas colecciones."
+          }
+        }
+      }
+    },
+    "Change the search term to see some tags." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia el término de búsqueda para ver algunas colecciones."
+          }
+        }
+      }
+    },
+    "Check your internet connection and try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        }
+      }
+    },
+    "Cloud" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nube"
+          }
+        }
+      }
+    },
+    "Collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colección"
+          }
+        }
+      }
+    },
+    "Collections" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colecciones"
+          }
+        }
+      }
+    },
+    "Color" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
+    },
+    "Connect" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar"
+          }
+        }
+      }
+    },
+    "Connection error" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de conexión"
+          }
+        }
+      }
+    },
+    "Connection method" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Método de conexión"
+          }
+        }
+      }
+    },
+    "Contact the developer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactar con el desarrollador"
+          }
+        }
+      }
+    },
+    "Create" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear"
+          }
+        }
+      }
+    },
+    "Create some collections on Linkwarden to see them here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea algunas colecciones en Linkwarden para verlas aquí."
+          }
+        }
+      }
+    },
+    "Created at" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creado"
+          }
+        }
+      }
+    },
+    "Created on 🇪🇸 by JGeek00" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creado en 🇪🇸 por JGeek00"
+          }
+        }
+      }
+    },
+    "Dark" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscuro"
+          }
+        }
+      }
+    },
+    "Dashboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tablero"
+          }
+        }
+      }
+    },
+    "Date (newest first)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha (nuevos primero)"
+          }
+        }
+      }
+    },
+    "Date (oldest first)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha (antiguos primero)"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        }
+      }
+    },
+    "Delete collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar colección"
+          }
+        }
+      }
+    },
+    "Delete link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar enlace"
+          }
+        }
+      }
+    },
+    "Description" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción"
+          }
+        }
+      }
+    },
+    "Description (A-Z)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción (A-Z)"
+          }
+        }
+      }
+    },
+    "Description (Z-A)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción (Z-A)"
+          }
+        }
+      }
+    },
+    "Disconnect" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar"
+          }
+        }
+      }
+    },
+    "Disconnect from server" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar del servidor"
+          }
+        }
+      }
+    },
+    "Download" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargar"
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        }
+      }
+    },
+    "Edit collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar colección"
+          }
+        }
+      }
+    },
+    "Edit link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar enlace"
+          }
+        }
+      }
+    },
+    "Edit subcollection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar subcolección"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
+    "Error %lld." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error %lld."
+          }
+        }
+      }
+    },
+    "Get started" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar"
+          }
+        }
+      }
+    },
+    "How to get an API token" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cómo obtener un token de API"
+          }
+        }
+      }
+    },
+    "HTTP" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTP"
+          }
+        }
+      }
+    },
+    "HTTPS" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTPS"
+          }
+        }
+      }
+    },
+    "If your data is stored on Linkwarden's servers" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si tus datos están almacenados en los servidores de Linkwarden"
+          }
+        }
+      }
+    },
+    "If your data is stored on your own server" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si tus datos están almacenados en tu propio servidor"
+          }
+        }
+      }
+    },
+    "Image unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imagen no disponible"
+          }
+        }
+      }
+    },
+    "Invalid data" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos no válidos"
+          }
+        }
+      }
+    },
+    "Invalid IP or domain." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección IP o dominio no válido."
+          }
+        }
+      }
+    },
+    "Invalid path." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruta no válida."
+          }
+        }
+      }
+    },
+    "Invalid port." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puerto no válido."
+          }
+        }
+      }
+    },
+    "Invalid values" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valores no válidos"
+          }
+        }
+      }
+    },
+    "IP address or domain" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección IP o dominio"
+          }
+        }
+      }
+    },
+    "Light" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
+          }
+        }
+      }
+    },
+    "Link created successfully." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link created successfully."
+          }
+        }
+      }
+    },
+    "Link details" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles del enlace"
+          }
+        }
+      }
+    },
+    "Link pinned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace fijado"
+          }
+        }
+      }
+    },
+    "Link unpinned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace desfijado"
+          }
+        }
+      }
+    },
+    "Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces"
+          }
+        }
+      }
+    },
+    "Linkwarden" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linkwarden"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "Name (A-Z)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre (A-Z)"
+          }
+        }
+      }
+    },
+    "Name (Z-A)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre (Z-A)"
+          }
+        }
+      }
+    },
+    "Name field is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El campo nombre es requerido."
+          }
+        }
+      }
+    },
+    "New collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva colección"
+          }
+        }
+      }
+    },
+    "New link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo enlace"
+          }
+        }
+      }
+    },
+    "New subcollection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva subcolección"
+          }
+        }
+      }
+    },
+    "No collections added" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay colecciones añadidas"
+          }
+        }
+      }
+    },
+    "No collections found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado colecciones"
+          }
+        }
+      }
+    },
+    "No description" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin descripción"
+          }
+        }
+      }
+    },
+    "No links added" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay enlaces añadidos"
+          }
+        }
+      }
+    },
+    "No name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin nombre"
+          }
+        }
+      }
+    },
+    "No tags created" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay tags creados"
+          }
+        }
+      }
+    },
+    "No tags found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado etiquetas"
+          }
+        }
+      }
+    },
+    "Open MyLinks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir MyLinks"
+          }
+        }
+      }
+    },
+    "Open the app to create a connection to a server." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre la app para crear una conexión al servidor."
+          }
+        }
+      }
+    },
+    "Path" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruta"
+          }
+        }
+      }
+    },
+    "PDF unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF no disponible"
+          }
+        }
+      }
+    },
+    "Pin to the dashboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fijar en el tablero"
+          }
+        }
+      }
+    },
+    "Pinned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fijados"
+          }
+        }
+      }
+    },
+    "Port" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puerto"
+          }
+        }
+      }
+    },
+    "Recent" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recientes"
+          }
+        }
+      }
+    },
+    "Repository" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repositorio"
+          }
+        }
+      }
+    },
+    "Requested links not found." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los enlaces solicitados no se han encontrado."
+          }
+        }
+      }
+    },
+    "Retry" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        }
+      }
+    },
+    "Save some links on Linkwarden to see them here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda algunos enlaces en Linkwarden para verlos aquí."
+          }
+        }
+      }
+    },
+    "Self hosted" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoalojado"
+          }
+        }
+      }
+    },
+    "Server" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servidor"
+          }
+        }
+      }
+    },
+    "Server route" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruta del servidor"
+          }
+        }
+      }
+    },
+    "Server unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servidor no disponible"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        }
+      }
+    },
+    "Setup the server connection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurar la conexión al servidor"
+          }
+        }
+      }
+    },
+    "Share" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir"
+          }
+        }
+      }
+    },
+    "Sort" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordenar"
+          }
+        }
+      }
+    },
+    "Success" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfactorio"
+          }
+        }
+      }
+    },
+    "System defined" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definido por el sistema"
+          }
+        }
+      }
+    },
+    "Tag name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la etiqueta"
+          }
+        }
+      }
+    },
+    "Tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas"
+          }
+        }
+      }
+    },
+    "The collection could not be deleted due to an error." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La colección no pudo ser eliminada debido a un error."
+          }
+        }
+      }
+    },
+    "The image of the link is not available." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La imagen del enlace no está disponible."
+          }
+        }
+      }
+    },
+    "The link could not be deleted due to an error." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser eliminado debido a un error."
+          }
+        }
+      }
+    },
+    "The link could not be pinned due to an error." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser fijado debido a un error."
+          }
+        }
+      }
+    },
+    "The link could not be unpinned due to an error." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser desfijado debido a un error."
+          }
+        }
+      }
+    },
+    "The PDF document of the link is not available." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El documento PDF del enlace no está disponible."
+          }
+        }
+      }
+    },
+    "Theme" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tema"
+          }
+        }
+      }
+    },
+    "This collection and all it's links will be deleted. This action is not reversible." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta colección  y todos sus enlaces se eliminará. Esta acción no es reversible."
+          }
+        }
+      }
+    },
+    "This link has no tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este enlace no tiene etiquetas"
+          }
+        }
+      }
+    },
+    "This link will be deleted. This action is not reversible." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este enlace será eliminado. Esta acción no es reversible."
+          }
+        }
+      }
+    },
+    "To begin, select the place where your data is stored" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para empezar, elige el lugar donde tus datos están almacenados"
+          }
+        }
+      }
+    },
+    "Token" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token"
+          }
+        }
+      }
+    },
+    "Token instructions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instrucciones del token"
+          }
+        }
+      }
+    },
+    "Unorganized" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No categorizado"
+          }
+        }
+      }
+    },
+    "Unpin from the dashboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desfijar del tablero"
+          }
+        }
+      }
+    },
+    "Updated at" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizado"
+          }
+        }
+      }
+    },
+    "URL" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        }
+      }
+    },
+    "Validation error" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de validación "
+          }
+        }
+      }
+    },
+    "View all" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver todos"
+          }
+        }
+      }
+    },
+    "Website" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Página web"
+          }
+        }
+      }
+    },
+    "Welcome to MyLinks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenido a MyLinks"
+          }
+        }
+      }
+    },
+    "You will have to establish a connection again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendrás que establecer una conexión de nuevo."
+          }
+        }
+      }
+    },
+    "Your application to manage your Linkwarden links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu aplicación para manejar tus enlaces de Linkwarden"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

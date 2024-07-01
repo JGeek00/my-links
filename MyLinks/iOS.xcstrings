@@ -378,17 +378,6 @@
         }
       }
     },
-    "Copied to the clipboard" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copiado al portapapeles"
-          }
-        }
-      }
-    },
     "Create" : {
       "localizations" : {
         "es" : {
@@ -675,17 +664,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Si tus datos están almacenados en tu propio servidor"
-          }
-        }
-      }
-    },
-    "Image" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imagen"
           }
         }
       }
@@ -1000,17 +978,6 @@
         }
       }
     },
-    "PDF" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PDF"
-          }
-        }
-      }
-    },
     "PDF unavailable" : {
       "localizations" : {
         "es" : {
@@ -1051,17 +1018,6 @@
         }
       }
     },
-    "Preserved formats" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Formatos preservados"
-          }
-        }
-      }
-    },
     "Processing..." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1069,17 +1025,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Procesando..."
-          }
-        }
-      }
-    },
-    "Readable" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modo lectura"
           }
         }
       }
@@ -1170,16 +1115,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ruta del servidor"
-          }
-        }
-      }
-    },
-    "Server type" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tipo de servidor"
           }
         }
       }

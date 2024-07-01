@@ -223,6 +223,22 @@ struct DashboardView: View {
             .navigationDestination(for: LinksFilteredRequest.self) { value in
                 LinksFilteredView(input: value)
             }
+            .sheet(isPresented: $linkFormSheet, content: {
+                LinkFormView() {
+                    linkFormSheet = false
+                } onSuccess: { newLink, action in
+                    linkFormSheet = false
+                }
+                .environmentObject(LinkFormViewModel())
+            })
+            .sheet(isPresented: $collectionFormSheet, content: {
+                CollectionFormView {
+                    collectionFormSheet = false
+                } onSuccess: { item, action in
+                    collectionFormSheet = false
+                }
+                .environmentObject(CollectionFormViewModel())
+            })
         }
         .onAppear(perform: {
             if dashboardViewModel.data.isEmpty {
