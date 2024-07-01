@@ -1126,7 +1126,14 @@
       }
     },
     "Server type" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de servidor"
+          }
+        }
+      }
     },
     "Settings" : {
       "localizations" : {

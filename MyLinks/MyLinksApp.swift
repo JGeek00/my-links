@@ -24,6 +24,27 @@ struct MyLinksApp: App {
                 .environmentObject(OnboardingViewModel.shared)
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkManagerProvider.shared)
+                .onAppear {
+                    NSWindow.allowsAutomaticWindowTabbing = false
+                }
+        }
+        .commands {
+            CommandGroup(replacing: .undoRedo) { }
+            CommandGroup(replacing: .saveItem) { }
+            CommandGroup(replacing: .help) { }
+            CommandGroup(replacing: .systemServices) { }
+            CommandGroup(replacing: .windowList) { }
+            CommandGroup(replacing: .windowArrangement) { }
+            CommandGroup(replacing: .pasteboard) { }
+            CommandGroup(replacing: .newItem) { }
+        }
+        Settings {
+            SettingsView()
+                .frame(width: 600, height: 600)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(OnboardingViewModel.shared)
+                .environmentObject(ApiClientProvider.shared)
+                .environmentObject(LinkManagerProvider.shared)
         }
         #else
         WindowGroup {

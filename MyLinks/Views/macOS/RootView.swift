@@ -44,10 +44,6 @@ struct RootView: View {
                     Text(linkManagerProvider.errorMessage)
                 }
             }
-            else {
-                ConnectionForm()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
         }
         .fontDesign(.rounded)
         .preferredColorScheme(getColorScheme(theme: theme))
@@ -56,6 +52,9 @@ struct RootView: View {
             #if os(iOS)
             requestAppReview()
             #endif
+        })
+        .sheet(isPresented: $onboardingViewModel.showOnboarding, content: {
+            ConnectionForm()
         })
         .onChange(of: onboardingViewModel.showOnboarding) {
             onboardingViewModel.reset()
