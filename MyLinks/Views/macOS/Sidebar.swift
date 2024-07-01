@@ -5,7 +5,7 @@ struct Sidebar: View {
     @EnvironmentObject private var tagsProvider: TagsProvider
     
     var body: some View {
-        let collections = collectionsProvider.data.filter() { $0.parent == nil }
+        let collections = collectionsProvider.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
         VStack(alignment :.leading) {
             Group {
                 HStack(spacing: 6) {

@@ -38,7 +38,7 @@ struct CollectionsView: View {
                         }
                     }
                     else {
-                        let notChildCollections = collectionsProvider.data.filter() { $0.parent == nil }
+                        let notChildCollections = collectionsProvider.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
                         let searched = searchText != "" ? notChildCollections.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : notChildCollections
                         if !searched.isEmpty {
                             ScrollView {

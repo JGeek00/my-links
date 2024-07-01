@@ -51,6 +51,12 @@ struct CollectionFormView: View {
                     }
                     .disabled(collectionFormViewModel.saving)
                 }
+                if collectionFormViewModel.saving {
+                    ToolbarItem(placement: .destructiveAction) {
+                        ProgressView()
+                            .controlSize(.small)
+                    }
+                }
             }
             .alert("Invalid data", isPresented: $collectionFormViewModel.nameRequiredAlert) {
                 Button {

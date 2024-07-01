@@ -75,14 +75,15 @@ struct LinkFormView: View {
                             onSuccess(newLink, linkFormViewModel.editingLink != nil ? .edit : .create)
                         }
                     } label: {
-                        if linkFormViewModel.saving == true {
-                            ProgressView()
-                        }
-                        else {
-                            Text("Save")
-                        }
+                        Text("Save")
                     }
                     .disabled(linkFormViewModel.saving)
+                }
+                if linkFormViewModel.saving {
+                    ToolbarItem(placement: .destructiveAction) {
+                        ProgressView()
+                            .controlSize(.small)
+                    }
                 }
             }
             .alert("Validation error", isPresented: $linkFormViewModel.validationErrorAlert) {
