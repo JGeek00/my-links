@@ -104,7 +104,7 @@
 		0DEA27D82C32FC8700F1802F /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D72C32FC8700F1802F /* PopoverView.swift */; platformFilters = (macos, ); };
 		0DEA27DA2C32FCAC00F1802F /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D92C32FCAC00F1802F /* StatusBarController.swift */; platformFilters = (macos, ); };
 		0DEA27DC2C32FE0000F1802F /* MenuBarFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */; platformFilters = (macos, ); };
-		0DEA27E02C332FA200F1802F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0DEA27DF2C332FA200F1802F /* Info.plist */; };
+		0DEA27E02C332FA200F1802F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0DEA27DF2C332FA200F1802F /* Info.plist */; platformFilters = (macos, ); };
 		0DEA27E62C33325900F1802F /* SentrySwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0DEA27E52C33325900F1802F /* SentrySwiftUI */; };
 		0DEA27E82C33360C00F1802F /* WindowIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27E72C33360C00F1802F /* WindowIds.swift */; };
 /* End PBXBuildFile section */
