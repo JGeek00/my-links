@@ -3,6 +3,10 @@ import Sentry
 
 @main
 struct MyLinksApp: App {
+    #if os(macOS)
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    #endif
+    
     let persistenceController = PersistenceController.shared
     
     init() {
@@ -13,6 +17,7 @@ struct MyLinksApp: App {
             options.enableTracing = false
         }
         #endif
+        UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
     }
 
     var body: some Scene {
@@ -26,6 +31,11 @@ struct MyLinksApp: App {
                 .environmentObject(LinkManagerProvider.shared)
                 .onAppear {
                     NSWindow.allowsAutomaticWindowTabbing = false
+                    DispatchQueue.main.async {
+                        NSApplication.shared.windows.forEach { window in
+                            window.standardWindowButton(.zoomButton)?.isEnabled = false
+                        }
+                    }
                 }
         }
         .commands {

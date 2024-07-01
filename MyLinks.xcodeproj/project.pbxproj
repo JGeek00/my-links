@@ -101,6 +101,10 @@
 		0DEA27CF2C32EA9000F1802F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27CE2C32EA9000F1802F /* SettingsView.swift */; platformFilters = (macos, ); };
 		0DEA27D12C32EC8A00F1802F /* ListRowWithIconEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D02C32EC8A00F1802F /* ListRowWithIconEntry.swift */; platformFilters = (macos, ); };
 		0DEA27D32C32F45400F1802F /* TokenInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D22C32F45400F1802F /* TokenInstructions.swift */; platformFilters = (macos, ); };
+		0DEA27D62C32FC7100F1802F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D52C32FC7100F1802F /* AppDelegate.swift */; platformFilters = (macos, ); };
+		0DEA27D82C32FC8700F1802F /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D72C32FC8700F1802F /* PopoverView.swift */; platformFilters = (macos, ); };
+		0DEA27DA2C32FCAC00F1802F /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27D92C32FCAC00F1802F /* StatusBarController.swift */; platformFilters = (macos, ); };
+		0DEA27DC2C32FE0000F1802F /* MenuBarFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */; platformFilters = (macos, ); };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -197,6 +201,10 @@
 		0DEA27CE2C32EA9000F1802F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0DEA27D02C32EC8A00F1802F /* ListRowWithIconEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowWithIconEntry.swift; sourceTree = "<group>"; };
 		0DEA27D22C32F45400F1802F /* TokenInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInstructions.swift; sourceTree = "<group>"; };
+		0DEA27D52C32FC7100F1802F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		0DEA27D72C32FC8700F1802F /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
+		0DEA27D92C32FCAC00F1802F /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarFormViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +256,7 @@
 				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
 				0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */,
 				0D55C5792C236C72002CE99A /* Localizable.xcstrings */,
+				0DEA27D42C32FC6500F1802F /* MenuBar */,
 				0D55C5362C220E2C002CE99A /* Extensions */,
 				0D55C4FD2C219F2F002CE99A /* Constants */,
 				0D55C5082C21ACA0002CE99A /* Models */,
@@ -569,6 +578,17 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		0DEA27D42C32FC6500F1802F /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				0DEA27D52C32FC7100F1802F /* AppDelegate.swift */,
+				0DEA27D72C32FC8700F1802F /* PopoverView.swift */,
+				0DEA27D92C32FCAC00F1802F /* StatusBarController.swift */,
+				0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -653,6 +673,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DEA27D62C32FC7100F1802F /* AppDelegate.swift in Sources */,
 				0D55C5742C2315F0002CE99A /* CollectionItem.swift in Sources */,
 				0D55C5452C221215002CE99A /* ColorScheme.swift in Sources */,
 				0D55C51E2C21E6DC002CE99A /* Regexps.swift in Sources */,
@@ -665,6 +686,7 @@
 				0D55C5542C225768002CE99A /* LinkCreationRequest.swift in Sources */,
 				0D55C5352C220A3A002CE99A /* SafariView.swift in Sources */,
 				0DEA27C62C32118B00F1802F /* LinksView.swift in Sources */,
+				0DEA27DA2C32FCAC00F1802F /* StatusBarController.swift in Sources */,
 				0DEA27B02C31EDDA00F1802F /* Sidebar.swift in Sources */,
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0DEA27D32C32F45400F1802F /* TokenInstructions.swift in Sources */,
@@ -689,6 +711,7 @@
 				0D55C55F2C230369002CE99A /* CollectionCreationRequest.swift in Sources */,
 				0D55C5162C21B45F002CE99A /* ServerSelection.swift in Sources */,
 				0D55C51C2C21BBE9002CE99A /* Enums.swift in Sources */,
+				0DEA27D82C32FC8700F1802F /* PopoverView.swift in Sources */,
 				0D55C5582C22674F002CE99A /* ArrayExtension.swift in Sources */,
 				0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */,
 				0D55C5522C224F07002CE99A /* TagsPickerView.swift in Sources */,
@@ -727,6 +750,7 @@
 				0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */,
 				0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */,
 				0DEA27D12C32EC8A00F1802F /* ListRowWithIconEntry.swift in Sources */,
+				0DEA27DC2C32FE0000F1802F /* MenuBarFormViewModel.swift in Sources */,
 				0D55C50F2C21AE31002CE99A /* OnboardingView.swift in Sources */,
 				0D55C5202C21EABF002CE99A /* ServerUrl.swift in Sources */,
 				0D083C9A2C26595400F0EB3B /* Dates.swift in Sources */,

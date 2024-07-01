@@ -239,6 +239,9 @@
         }
       }
     },
+    "Cannot connect to the server" : {
+
+    },
     "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid." : {
       "localizations" : {
         "es" : {
@@ -278,6 +281,9 @@
           }
         }
       }
+    },
+    "Check your internet connection and try again." : {
+
     },
     "Close" : {
       "localizations" : {
@@ -379,6 +385,9 @@
           }
         }
       }
+    },
+    "Create" : {
+
     },
     "Create some collections on Linkwarden to see them here." : {
       "localizations" : {
@@ -751,6 +760,9 @@
         }
       }
     },
+    "Link created successfully." : {
+
+    },
     "Link details" : {
       "localizations" : {
         "es" : {
@@ -940,6 +952,9 @@
           }
         }
       }
+    },
+    "Open the app to create a connection to a server." : {
+
     },
     "Path" : {
       "localizations" : {
@@ -1135,6 +1150,9 @@
         }
       }
     },
+    "Server unavailable" : {
+
+    },
     "Settings" : {
       "localizations" : {
         "es" : {
@@ -1174,6 +1192,9 @@
           }
         }
       }
+    },
+    "Success" : {
+
     },
     "System defined" : {
       "localizations" : {
