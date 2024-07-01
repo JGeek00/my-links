@@ -1,13 +1,11 @@
 import SwiftUI
 
-struct Sidebar: View {
-    var onSelect: (Enums.DashboardView) -> Void
-        
-    init(onSelect: @escaping (Enums.DashboardView) -> Void) {
-        self.onSelect = onSelect
-    }
+struct Sidebar: View {    
+    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @EnvironmentObject private var tagsProvider: TagsProvider
     
     var body: some View {
+        let collections = collectionsProvider.data.filter() { $0.parent == nil }
         ScrollView {
             Group {
                 HStack(spacing: 6) {
@@ -22,6 +20,65 @@ struct Sidebar: View {
                 }
             }
             .padding(6)
+            if !collections.isEmpty {
+                LazyVStack(alignment: .leading) {
+                    Text("Collections")
+                        .fontWeight(.semibold)
+                        .padding(.horizontal,6)
+                    ForEach(collections, id: \.self) { item in
+                        NavigationLink {
+                            LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                        } label: {
+                            HStack {
+                                Image(systemName: "folder.fill")
+                                    .foregroundStyle(Color(hex: item.color!))
+                                Spacer()
+                                    .frame(width: 6)
+                                Text(item.name!)
+                                Spacer()
+                                if let count = item._count?.links {
+                                    Text(String(count))
+                                }
+                            }
+                            .padding(6)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .cornerRadius(6)
+                    }
+                }
+                .padding(.horizontal, 6)
+                .padding(.top, 6)
+            }
+            if !tagsProvider.data.isEmpty {
+                LazyVStack(alignment: .leading) {
+                    Text("Tags")
+                        .fontWeight(.semibold)
+                        .padding(.horizontal,6)
+                    ForEach(tagsProvider.data, id: \.self) { item in
+                        NavigationLink {
+                            LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
+                        } label: {
+                            HStack {
+                                Image(systemName: "tag.fill")
+                                Spacer()
+                                    .frame(width: 6)
+                                Text(item.name!)
+                                Spacer()
+                                if let count = item._count?.links {
+                                    Text(String(count))
+                                }
+                            }
+                            .padding(6)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .cornerRadius(6)
+                    }
+                }
+                .padding(.horizontal, 6)
+                .padding(.top, 6)
+            }
         }
     }
 }

@@ -277,12 +277,7 @@ private struct DetailsItem: View {
                 .frame(height: 12)
             Text(value)
                 .font(.system(size: 12))
-                .onTapGesture {
-                    let attributedString = NSAttributedString(string: value)
-                    let plainString = attributedString.string
-//                    UIPasteboard.general.string = plainString
-                    showCopiedClipboard()
-                }
+                .textSelection(.enabled)
         }
     }
 }

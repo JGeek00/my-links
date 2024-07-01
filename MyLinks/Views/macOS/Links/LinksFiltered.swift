@@ -168,5 +168,10 @@ struct LinksFilteredView: View {
                 Task { await linksFilteredViewModel.loadData() }
             }
         })
+        .onChange(of: input) {
+            linksFilteredViewModel.loading = true
+            linksFilteredViewModel.input = input
+            Task { await linksFilteredViewModel.loadData() }
+        }
     }
 }

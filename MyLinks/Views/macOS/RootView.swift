@@ -16,17 +16,13 @@ struct RootView: View {
         entity: ServerInstance.entity(),
         sortDescriptors: []
     ) private var instances: FetchedResults<ServerInstance>
-    
-    @State private var selectedView = Enums.DashboardView.dashboard    
-    
+        
     var body: some View {
         Group {
             if !instances.isEmpty && apiClientProvider.instance != nil {
                 NavigationSplitView {
-                    Sidebar() { selection in
-                        selectedView = selection
-                    }
-                    .navigationSplitViewColumnWidth(min: 250, ideal: 250, max: 300)
+                    Sidebar()
+                        .navigationSplitViewColumnWidth(min: 250, ideal: 250, max: 300)
                     
                 } detail: {
                     DashboardView()
