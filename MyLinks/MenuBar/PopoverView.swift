@@ -35,8 +35,15 @@ struct PopoverView: View {
 struct PopoverContent: View {
     @EnvironmentObject private var menuBarFormViewModel: MenuBarFormViewModel
     @EnvironmentObject private var popoverState: PopoverState
+    
+    @Environment(\.openWindow) private var openWindow
 
     @State private var path = NavigationPath()
+    
+    func openMainWindow() {
+        openWindow(id: WindowIds.main)
+        NSApp.activate(ignoringOtherApps: true)
+    }
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -47,12 +54,32 @@ struct PopoverContent: View {
                     }
                     else if menuBarFormViewModel.error == true {
                         ContentUnavailableView("Cannot connect to the server", systemImage: "exclamationmark.circle", description: Text("Check your internet connection and try again."))
+                        Spacer()
+                            .frame(height: 30)
+                        Button {
+                            openMainWindow()
+                        } label: {
+                            Text("Open MyLinks")
+                                .font(.system(size: 16))
+                                .fontWeight(.medium)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                        }
                     }
                     else {
-                        Text("New link")
-                            .fontWeight(.semibold)
-                            .font(.system(size: 20))
-                            .padding(.top, 30)
+                        HStack {
+                            Text("New link")
+                                .fontWeight(.semibold)
+                                .font(.system(size: 20))
+                            Spacer()
+                            Button {
+                                openMainWindow()
+                            } label: {
+                                Text("Open MyLinks")
+                            }
+                        }
+                        .padding(.top, 30)
+                        .padding(.horizontal, 24)
                         Form {
                             Section {
                                 TextField("URL", text: $menuBarFormViewModel.url)

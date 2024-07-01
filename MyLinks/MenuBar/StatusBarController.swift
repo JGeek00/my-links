@@ -30,11 +30,9 @@ class StatusBarController {
         if popover.isShown {
             popover.performClose(nil)
             NSApp.setActivationPolicy(.regular)
-            
         } else {
             guard let button = statusItem.button else { return }
             popover.show(relativeTo: statusItem.button!.bounds, of: button, preferredEdge: .maxY)
-            
         }
     }
     

@@ -970,6 +970,16 @@
         }
       }
     },
+    "Open MyLinks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir MyLinks"
+          }
+        }
+      }
+    },
     "Open the app to create a connection to a server." : {
       "localizations" : {
         "es" : {

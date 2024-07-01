@@ -22,7 +22,7 @@ struct MyLinksApp: App {
 
     var body: some Scene {
         #if os(macOS)
-        WindowGroup {
+        WindowGroup(id: WindowIds.main) {
             RootView()
                 .frame(minWidth: 800, idealWidth: 1000, maxWidth: .infinity, minHeight: 500, idealHeight: 700, maxHeight: .infinity)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
@@ -30,12 +30,16 @@ struct MyLinksApp: App {
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkManagerProvider.shared)
                 .onAppear {
+                    NSApp.setActivationPolicy(.regular)
                     NSWindow.allowsAutomaticWindowTabbing = false
                     DispatchQueue.main.async {
                         NSApplication.shared.windows.forEach { window in
                             window.standardWindowButton(.zoomButton)?.isEnabled = false
                         }
                     }
+                }
+                .onDisappear {
+                    NSApp.setActivationPolicy(.accessory)
                 }
         }
         .defaultSize(width: 1200, height: 700)

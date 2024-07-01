@@ -16,10 +16,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Self.popover.contentSize = NSSize(width: 400, height: 400)
         statusBar = StatusBarController(Self.popover, popoverState: popoverState)
     }
-
-    func applicationDidHide(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
-    }
 }
 
 class PopoverState: ObservableObject {

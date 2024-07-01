@@ -106,6 +106,7 @@
 		0DEA27DC2C32FE0000F1802F /* MenuBarFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */; platformFilters = (macos, ); };
 		0DEA27E02C332FA200F1802F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0DEA27DF2C332FA200F1802F /* Info.plist */; };
 		0DEA27E62C33325900F1802F /* SentrySwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0DEA27E52C33325900F1802F /* SentrySwiftUI */; };
+		0DEA27E82C33360C00F1802F /* WindowIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27E72C33360C00F1802F /* WindowIds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -207,6 +208,7 @@
 		0DEA27D92C32FCAC00F1802F /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		0DEA27DB2C32FE0000F1802F /* MenuBarFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarFormViewModel.swift; sourceTree = "<group>"; };
 		0DEA27DF2C332FA200F1802F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DEA27E72C33360C00F1802F /* WindowIds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowIds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,6 +327,7 @@
 				0D55C51D2C21E6DC002CE99A /* Regexps.swift */,
 				0D55C53C2C221130002CE99A /* StorageKeys.swift */,
 				0D55C5402C221171002CE99A /* Urls.swift */,
+				0DEA27E72C33360C00F1802F /* WindowIds.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -731,6 +734,7 @@
 				0D083C9F2C26639800F0EB3B /* ReaderView.swift in Sources */,
 				0DEA27BA2C31F54700F1802F /* LinkFormView.swift in Sources */,
 				0D55C5232C21F1CE002CE99A /* ApiClientProvider.swift in Sources */,
+				0DEA27E82C33360C00F1802F /* WindowIds.swift in Sources */,
 				0D55C5692C2312E7002CE99A /* LinksViewModel.swift in Sources */,
 				0D55C5832C23A117002CE99A /* TagsView.swift in Sources */,
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
