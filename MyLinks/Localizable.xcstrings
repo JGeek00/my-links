@@ -218,17 +218,6 @@
         }
       }
     },
-    "Back to hosting mode selection" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Volver a la selección de alojamiento"
-          }
-        }
-      }
-    },
     "Cancel" : {
       "localizations" : {
         "es" : {
@@ -240,7 +229,14 @@
       }
     },
     "Cannot connect to the server" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede conectar al servidor"
+          }
+        }
+      }
     },
     "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid." : {
       "localizations" : {
@@ -283,7 +279,14 @@
       }
     },
     "Check your internet connection and try again." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
     },
     "Close" : {
       "localizations" : {
@@ -387,7 +390,14 @@
       }
     },
     "Create" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear"
+          }
+        }
+      }
     },
     "Create some collections on Linkwarden to see them here." : {
       "localizations" : {
@@ -761,7 +771,14 @@
       }
     },
     "Link created successfully." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link created successfully."
+          }
+        }
+      }
     },
     "Link details" : {
       "localizations" : {
@@ -954,7 +971,14 @@
       }
     },
     "Open the app to create a connection to a server." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre la app para crear una conexión al servidor."
+          }
+        }
+      }
     },
     "Path" : {
       "localizations" : {
@@ -1029,7 +1053,6 @@
       }
     },
     "Processing..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1151,7 +1174,14 @@
       }
     },
     "Server unavailable" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servidor no disponible"
+          }
+        }
+      }
     },
     "Settings" : {
       "localizations" : {
@@ -1194,7 +1224,14 @@
       }
     },
     "Success" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfactorio"
+          }
+        }
+      }
     },
     "System defined" : {
       "localizations" : {
