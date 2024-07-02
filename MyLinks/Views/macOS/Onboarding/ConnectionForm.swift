@@ -102,7 +102,7 @@ struct ConnectionForm: View {
         }
         .disabled(onboardingViewModel.connecting)
         .formStyle(.grouped)
-        .frame(minWidth: 500, idealWidth: 600, maxWidth: 1000, minHeight: 500, idealHeight: 600, maxHeight: 1000)
+        .frame(minWidth: 500, idealWidth: 650, maxWidth: 1000, minHeight: 500, idealHeight: 650, maxHeight: 1000)
         .alert("Invalid values", isPresented: $onboardingViewModel.invalidValuesAlert, actions: {
             Button {
                 onboardingViewModel.invalidValuesAlert.toggle()

@@ -169,7 +169,9 @@ class OnboardingViewModel: ObservableObject {
             }
         }
         
-        self.connecting = true
+        DispatchQueue.main.async {
+            self.connecting = true
+        }
         Task {
             var thisToken = token
             if authMethod == .userPass {
