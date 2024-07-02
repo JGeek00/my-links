@@ -29,7 +29,7 @@ func getDeviceInfo() -> String {
     
     let osVersion = ProcessInfo.processInfo.operatingSystemVersion
     
-    return "\(device) - macOS \(osVersion)"
+    return "\(device) - macOS \(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
     
     #endif
 }

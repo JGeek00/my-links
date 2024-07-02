@@ -48,16 +48,32 @@ struct ConnectionForm: View {
                 }
             }
             Section {
-                SecureField("Token", text: $onboardingViewModel.token)
-                    .autocorrectionDisabled()
+                Picker("Method", selection: $onboardingViewModel.authMethod) {
+                    Text("Username and password")
+                        .tag(Enums.AuthMethod.userPass)
+                    Text("Access token")
+                        .tag(Enums.AuthMethod.token)
+                }
+                switch onboardingViewModel.authMethod {
+                case .userPass:
+                    TextField("Username", text: $onboardingViewModel.username)
+                        .autocorrectionDisabled()
+                    SecureField("Password", text: $onboardingViewModel.password)
+                        .autocorrectionDisabled()
+                case .token:
+                    SecureField("Token", text: $onboardingViewModel.token)
+                        .autocorrectionDisabled()
+                }
             } header: {
                 Text("Authentication")
             } footer: {
-                Button("How to get an API token") {
-                    tokenInstructionsSheet = true
+                if onboardingViewModel.authMethod == .token {
+                    Button("How to get an API token") {
+                        tokenInstructionsSheet = true
+                    }
+                    .font(.system(size: 12))
+                    .buttonStyle(LinkButtonStyle())
                 }
-                .font(.system(size: 12))
-                .buttonStyle(LinkButtonStyle())
             }
             Section {
                 Button {
