@@ -46,26 +46,44 @@ struct ConnectionForm: View {
                 }
             }
             Section {
-                HStack {
-                    SecureField("Token", text: $onboardingViewModel.token)
+                Picker("Method", selection: $onboardingViewModel.authMethod) {
+                    Text("Username and password")
+                        .tag(Enums.AuthMethod.userPass)
+                    Text("Access token")
+                        .tag(Enums.AuthMethod.token)
+                }
+                switch onboardingViewModel.authMethod {
+                case .userPass:
+                    TextField("Username", text: $onboardingViewModel.username)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
-                    Button {
-                        if let clipboardText = UIPasteboard.general.string {
-                            onboardingViewModel.token = clipboardText
+                    SecureField("Password", text: $onboardingViewModel.password)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                case .token:
+                    HStack {
+                        SecureField("Token", text: $onboardingViewModel.token)
+                            .autocorrectionDisabled()
+                            .textInputAutocapitalization(.never)
+                        Button {
+                            if let clipboardText = UIPasteboard.general.string {
+                                onboardingViewModel.token = clipboardText
+                            }
+                        } label: {
+                            Image(systemName: "doc.on.clipboard")
                         }
-                    } label: {
-                        Image(systemName: "doc.on.clipboard")
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
             } header: {
                 Text("Authentication")
             } footer: {
-                Button("How to get an API token") {
-                    tokenInstructionsSheet = true
+                if onboardingViewModel.authMethod == .token {
+                    Button("How to get an API token") {
+                        tokenInstructionsSheet = true
+                    }
+                    .font(.system(size: 12))
                 }
-                .font(.system(size: 12))
             }
             Section {
                 Button {

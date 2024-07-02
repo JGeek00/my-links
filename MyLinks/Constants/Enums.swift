@@ -11,6 +11,11 @@ class Enums {
         case https
     }
     
+    enum AuthMethod: String {
+        case userPass
+        case token
+    }
+    
     public enum Theme: String {
         case system
         case light

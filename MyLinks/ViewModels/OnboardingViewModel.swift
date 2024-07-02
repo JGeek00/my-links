@@ -10,11 +10,15 @@ class OnboardingViewModel: ObservableObject {
     @Published var selectedTab = 0
     @Published var hostingMode: Enums.Hosting = .cloud
     
-    @Published var token = ""
     @Published var connectionMethod = Enums.ConnectionMethod.http
     @Published var ipDomain = ""
     @Published var port = ""
     @Published var path = ""
+    
+    @Published var authMethod = Enums.AuthMethod.userPass
+    @Published var username = ""
+    @Published var password = ""
+    @Published var token = ""
     
     @Published var invalidValuesAlert = false
     @Published var invalidValuesMessage = ""
@@ -150,15 +154,61 @@ class OnboardingViewModel: ObservableObject {
             }
         }
         
-        if token == "" {
-            invalidValuesMessage = String(localized: "Authentication token is required.")
-            invalidValuesAlert.toggle()
-            return
+        if authMethod == .userPass {
+            if username == "" || password == "" {
+                invalidValuesMessage = String(localized: "Username and password are required.")
+                invalidValuesAlert.toggle()
+                return
+            }
+        }
+        else if authMethod == .token {
+            if token == "" {
+                invalidValuesMessage = String(localized: "Authentication token is required.")
+                invalidValuesAlert.toggle()
+                return
+            }
         }
         
         self.connecting = true
         Task {
-            let instance = hostingMode == .selfhosted ? ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: token) : ApiClient(url: Config.linkwardenCloudUrl, token: token)
+            var thisToken = token
+            if authMethod == .userPass {
+                let reqBody = SessionTokenRequest(username: username, password: password, sessionName: getDeviceInfo())
+                let tokenResponse = await getSessionToken(baseUrl: hostingMode == .selfhosted ? serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil) : Config.linkwardenCloudUrl, body: reqBody)
+                if tokenResponse.successful == true {
+                    if let t = tokenResponse.data?.response?.token {
+                        thisToken = t
+                    }
+                    else {
+                        DispatchQueue.main.async {
+                            self.connecting = false
+                            self.connectionErrorMessage = String(localized: "Server failed to return the access token.")
+                            self.connectionErrorAlert.toggle()
+                        }
+                        return
+                    }
+                }
+                else {
+                    if tokenResponse.statusCode != nil {
+                        DispatchQueue.main.async {
+                            self.connecting = false
+                            self.connectionErrorMessage = String(localized: "Authentication error. Invalid username or password.")
+                            self.connectionErrorAlert.toggle()
+                        }
+                        return
+                    }
+                    else {
+                        DispatchQueue.main.async {
+                            self.connecting = false
+                            self.connectionErrorMessage = String(localized: "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid.")
+                            self.connectionErrorAlert.toggle()
+                        }
+                        return
+                    }
+                }
+            }
+
+            let instance = hostingMode == .selfhosted ? ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: token) : ApiClient(url: Config.linkwardenCloudUrl, token: thisToken)
             let result = await instance.fetchDashboard()
             DispatchQueue.main.async {
                 self.connecting = false

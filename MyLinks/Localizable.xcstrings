@@ -87,6 +87,16 @@
         }
       }
     },
+    "Access token" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token de acceso"
+          }
+        }
+      }
+    },
     "Add tag" : {
       "localizations" : {
         "es" : {
@@ -197,6 +207,16 @@
         }
       }
     },
+    "Authentication error. Invalid username or password." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de autenticación. Usuario o contraseña no válidos."
+          }
+        }
+      }
+    },
     "Authentication token is required." : {
       "localizations" : {
         "es" : {
@@ -208,7 +228,6 @@
       }
     },
     "Back" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -374,6 +393,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contactar con el desarrollador"
+          }
+        }
+      }
+    },
+    "Copied to the clipboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiado al portapapeles."
           }
         }
       }
@@ -668,6 +697,16 @@
         }
       }
     },
+    "Image" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image"
+          }
+        }
+      }
+    },
     "Image unavailable" : {
       "localizations" : {
         "es" : {
@@ -804,6 +843,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Linkwarden"
+          }
+        }
+      }
+    },
+    "Method" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Método"
           }
         }
       }
@@ -968,12 +1017,32 @@
         }
       }
     },
+    "Password" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña"
+          }
+        }
+      }
+    },
     "Path" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ruta"
+          }
+        }
+      }
+    },
+    "PDF" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF"
           }
         }
       }
@@ -1018,13 +1087,32 @@
         }
       }
     },
+    "Preserved formats" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatos preservados"
+          }
+        }
+      }
+    },
     "Processing..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Procesando..."
+          }
+        }
+      }
+    },
+    "Readable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leíble"
           }
         }
       }
@@ -1105,6 +1193,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Servidor"
+          }
+        }
+      }
+    },
+    "Server failed to return the access token." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor falló al devolver el token de acceso."
           }
         }
       }
@@ -1375,6 +1473,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL"
+          }
+        }
+      }
+    },
+    "Username" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de usuario"
+          }
+        }
+      }
+    },
+    "Username and password" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de usuario y contraseña"
+          }
+        }
+      }
+    },
+    "Username and password are required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de usuario y contraseña son requeridos."
           }
         }
       }
