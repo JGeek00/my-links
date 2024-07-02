@@ -88,6 +88,9 @@ class OnboardingViewModel: ObservableObject {
         connectionErrorAlert = false
         connectionErrorMessage = ""
         connecting = false
+        username = ""
+        password = ""
+        authMethod = .userPass
     }
     
     func validateIpDomain(value: String) -> Bool {
@@ -210,7 +213,7 @@ class OnboardingViewModel: ObservableObject {
                 }
             }
 
-            let instance = hostingMode == .selfhosted ? ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: token) : ApiClient(url: Config.linkwardenCloudUrl, token: thisToken)
+            let instance = hostingMode == .selfhosted ? ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: thisToken) : ApiClient(url: Config.linkwardenCloudUrl, token: thisToken)
             let result = await instance.fetchDashboard()
             DispatchQueue.main.async {
                 self.connecting = false
@@ -224,7 +227,7 @@ class OnboardingViewModel: ObservableObject {
             }
             if statusCode < 300 {
                 // success
-                let saved = self.saveInstance()
+                let saved = self.saveInstance(token: thisToken)
                 if saved == true {
                     DispatchQueue.main.async {
                         ApiClientProvider.shared.initialice(instance: instance)
@@ -247,7 +250,7 @@ class OnboardingViewModel: ObservableObject {
         }
     }
     
-    func saveInstance() -> Bool {
+    func saveInstance(token: String? = nil) -> Bool {
         let managedContext = PersistenceController.shared.container.viewContext
         let newInstance = ServerInstance(context: managedContext)
         newInstance.id = UUID()
@@ -255,7 +258,7 @@ class OnboardingViewModel: ObservableObject {
         newInstance.domain = ipDomain
         newInstance.port = port != "" ? port : nil
         newInstance.path = path != "" ? path : nil
-        newInstance.token = token
+        newInstance.token = token ?? self.token
         newInstance.isSelfHosted = hostingMode == .selfhosted
         
         do {

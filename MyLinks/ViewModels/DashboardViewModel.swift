@@ -9,7 +9,9 @@ class DashboardViewModel: ObservableObject {
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            self.loading = true
+            DispatchQueue.main.sync {
+                self.loading = true
+            }
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let dashboardResult = await instance.fetchDashboard()
