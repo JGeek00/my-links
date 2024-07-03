@@ -1,11 +1,30 @@
 import SwiftUI
 
+private struct SidebarCollection: Identifiable, Hashable {
+    var id: Int
+    var name: String
+    var color: String
+    var count: Int
+    var subCollections: [SidebarCollection]
+}
+
+private func sidebarCollections(data: [Collection]) -> [SidebarCollection] {
+    func findChildren(parent: Collection) -> SidebarCollection {
+        let children = data.filter() { $0.parent?.id == parent.id }
+        return SidebarCollection(id: parent.id!, name: parent.name!, color: parent.color!, count: parent._count?.links ?? 0, subCollections: children.map() { findChildren(parent: $0) })
+    }
+    
+    let hasParent = (data.filter() { $0.parent?.id != nil }).map() { $0.id }
+    let result = data.map() { findChildren(parent: $0) }
+    return result.filter() { !hasParent.contains($0.id) }
+}
+
 struct Sidebar: View {    
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var tagsProvider: TagsProvider
     
     var body: some View {
-        let collections = collectionsProvider.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
+        let collections = sidebarCollections(data: collectionsProvider.data)
         VStack(alignment :.leading) {
             Group {
                 HStack(spacing: 6) {
@@ -24,22 +43,7 @@ struct Sidebar: View {
                 if !collections.isEmpty {
                     Section("Collections") {
                         ForEach(collections, id: \.self) { item in
-                            NavigationLink {
-                                LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                            } label: {
-                                HStack {
-                                    Image(systemName: "folder.fill")
-                                        .foregroundStyle(Color(hex: item.color!))
-                                    Spacer()
-                                        .frame(width: 6)
-                                    Text(item.name!)
-                                    Spacer()
-                                    if let count = item._count?.links {
-                                        Text(String(count))
-                                    }
-                                }
-                                .contentShape(Rectangle())
-                            }
+                            CollectionItem(item: item)
                         }
                     }
                     .collapsible(true)
@@ -119,3 +123,57 @@ private struct SidebarButton: View {
         .cornerRadius(12)
     }
 }
+
+private struct CollectionItem: View {
+    var item: SidebarCollection
+    
+    init(item: SidebarCollection) {
+        self.item = item
+    }
+    
+    var body: some View {
+        if item.subCollections.isEmpty {
+            NavigationLink {
+                LinksFilteredView(input: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
+            } label: {
+                HStack {
+                    Image(systemName: "folder.fill")
+                        .foregroundStyle(Color(hex: item.color))
+                    Spacer()
+                        .frame(width: 6)
+                    Text(item.name)
+                    Spacer()
+                    Text(String(item.count))
+                }
+                .contentShape(Rectangle())
+            }
+        }
+        else {
+            DisclosureGroup {
+                ForEach(item.subCollections, id: \.self) { item in
+                    CollectionItem(item: item)
+                }
+            } label: {
+                NavigationLink {
+                    LinksFilteredView(input: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
+                } label: {
+                    HStack {
+                        if !item.subCollections.isEmpty {
+                            Spacer()
+                                .frame(width: 6)
+                        }
+                        Image(systemName: "folder.fill")
+                            .foregroundStyle(Color(hex: item.color))
+                        Spacer()
+                            .frame(width: 6)
+                        Text(item.name)
+                        Spacer()
+                        Text(String(item.count))
+                    }
+                    .contentShape(Rectangle())
+                }
+            }
+        }
+    }
+}
+
