@@ -24,7 +24,7 @@ struct LinkItemComponent: View {
     var body: some View {
         let urlHost = getUrlHost(item.url!)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
-        let readerUrl = item.readable != nil &&item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
+        let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
         Button {
             onTap()
         } label: {
