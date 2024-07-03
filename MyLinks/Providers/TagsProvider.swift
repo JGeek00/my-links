@@ -11,7 +11,9 @@ class TagsProvider: ObservableObject {
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            self.loading = true
+            DispatchQueue.main.sync {
+                self.loading = true
+            }
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.fetchTags()
@@ -29,6 +31,10 @@ class TagsProvider: ObservableObject {
             }
         }
         else {
+            if result.statusCode == 401 {
+                ApiClientProvider.shared.destroy()
+                return
+            }
             DispatchQueue.main.async {
                 self.loading = false
                 self.error = true

@@ -67,6 +67,10 @@ class CollectionFormViewModel: ObservableObject {
                     }
                     return
                 }
+                if statusCode == 401 {
+                    ApiClientProvider.shared.destroy()
+                    return
+                }
                 DispatchQueue.main.async {
                     self.saving = false
                     self.savingErrorMessage = "Error \(statusCode)."
@@ -98,6 +102,10 @@ class CollectionFormViewModel: ObservableObject {
                         self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
                         self.savingErrorAlert = true
                     }
+                    return
+                }
+                if statusCode == 401 {
+                    ApiClientProvider.shared.destroy()
                     return
                 }
                 DispatchQueue.main.async {

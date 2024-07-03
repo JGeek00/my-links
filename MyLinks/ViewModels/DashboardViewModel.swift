@@ -23,6 +23,10 @@ class DashboardViewModel: ObservableObject {
             }
         }
         else {
+            if dashboardResult.statusCode == 401 {
+                ApiClientProvider.shared.destroy()
+                return
+            }
             DispatchQueue.main.async {
                 self.loading = false
                 self.error = true

@@ -6,13 +6,4 @@ class SettingsViewModel: ObservableObject {
     @Published var showBuildNumber = false
     @Published var linkwardenSiteOpen = false
     @Published var linkwardenRepoOpen = false
-    
-    func disconnectServer() {
-        OnboardingViewModel.shared.showOnboarding = true
-        ApiClientProvider.shared.instance = nil
-        clearInstances()
-        TagsProvider.shared = TagsProvider()
-        CollectionsProvider.shared = CollectionsProvider()
-        LinksViewModel.shared = LinksViewModel()
-    }
 }

@@ -51,9 +51,6 @@ struct RootView: View {
                         Task { await tagsProvider.loadData() }
                     }
                 })
-                .toast(isPresenting: $toastProvider.presenting, duration: 2, tapToDismiss: true) {
-                    toastProvider.toast ?? AlertToast(type: .regular)
-                }
                 .customAlert(isPresented: $linkManagerProvider.processing, content: {
                     HStack {
                         ProgressView()
@@ -75,6 +72,9 @@ struct RootView: View {
                     Text(linkManagerProvider.errorMessage)
                 }
             }
+        }
+        .toast(isPresenting: $toastProvider.presenting, duration: 2, tapToDismiss: true) {
+            toastProvider.toast ?? AlertToast(type: .regular)
         }
         .fontDesign(.rounded)
         .preferredColorScheme(getColorScheme(theme: theme))

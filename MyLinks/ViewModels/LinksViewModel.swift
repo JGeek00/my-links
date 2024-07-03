@@ -31,20 +31,24 @@ class LinksViewModel: ObservableObject {
             }
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let dashboardResult = await instance.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
-        if dashboardResult.successful == true {
+        let result = await instance.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
+        if result.successful == true {
             DispatchQueue.main.async {
                 if loadMore == true {
-                    self.data = self.data + (dashboardResult.data?.response ?? [])
+                    self.data = self.data + (result.data?.response ?? [])
                 }
                 else {
-                    self.data = dashboardResult.data?.response ?? []
+                    self.data = result.data?.response ?? []
                 }
                 self.loading = false
                 self.error = false
             }
         }
         else {
+            if result.statusCode == 401 {
+                ApiClientProvider.shared.destroy()
+                return
+            }
             DispatchQueue.main.async {
                 self.loading = false
                 if setError == true {

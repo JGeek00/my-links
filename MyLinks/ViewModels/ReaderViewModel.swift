@@ -25,6 +25,10 @@ class ReaderViewModel: ObservableObject {
             }
         }
         else {
+            if result.statusCode == 401 {
+                ApiClientProvider.shared.destroy()
+                return
+            }
             DispatchQueue.main.async {
                 self.error = true
                 self.loading = false

@@ -25,6 +25,10 @@ class LinkManagerProvider: ObservableObject {
                 onSuccess(result.data!.response!)
             }
             else {
+                if result.statusCode == 401 {
+                    ApiClientProvider.shared.destroy()
+                    return
+                }
                 onError(result.statusCode)
             }
         }
@@ -44,6 +48,10 @@ class LinkManagerProvider: ObservableObject {
                 onSuccess(result.data!.response!)
             }
             else {
+                if result.statusCode == 401 {
+                    ApiClientProvider.shared.destroy()
+                    return
+                }
                 onError(result.statusCode)
             }
         }
@@ -70,6 +78,10 @@ class LinkManagerProvider: ObservableObject {
             }
         }
         else {
+            if result.statusCode == 401 {
+                ApiClientProvider.shared.destroy()
+                return
+            }
             DispatchQueue.main.async {
                 self.processing = false
                 self.errorMessage = String(localized: "The link could not be deleted due to an error.")
@@ -115,6 +127,10 @@ class LinkManagerProvider: ObservableObject {
             }
         }
         else {
+            if result.statusCode == 401 {
+                ApiClientProvider.shared.destroy()
+                return
+            }
             DispatchQueue.main.async {
                 self.processing = false
                 if link.pinnedBy!.isEmpty {

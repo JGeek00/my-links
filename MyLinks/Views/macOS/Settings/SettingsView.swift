@@ -36,7 +36,7 @@ struct SettingsView: View {
                             disconnectAlert.toggle()
                         }
                         Button("Disconnect", role: .destructive) {
-                            settingsViewModel.disconnectServer()
+                            ApiClientProvider.shared.destroy()
                         }
                     } message: {
                         Text("You will have to establish a connection again.")
