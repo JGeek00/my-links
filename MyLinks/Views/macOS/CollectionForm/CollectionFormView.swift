@@ -42,12 +42,7 @@ struct CollectionFormView: View {
                             }
                         }
                     } label: {
-                        if collectionFormViewModel.saving == true {
-                            ProgressView()
-                        }
-                        else {
-                            Text("Save")
-                        }
+                        Text("Save")
                     }
                     .disabled(collectionFormViewModel.saving)
                 }

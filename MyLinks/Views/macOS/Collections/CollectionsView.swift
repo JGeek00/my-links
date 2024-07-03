@@ -9,7 +9,7 @@ struct CollectionsView: View {
     @State private var collectionFormSheet = false
     
     var body: some View {
-        NavigationStack(path: $collectionsProvider.navigationPath) {
+        NavigationStack {
             Group {
                 if collectionsProvider.loading == true {
                     Group {
@@ -44,12 +44,15 @@ struct CollectionsView: View {
                             ScrollView {
                                 LazyVGrid(columns: Config.gridColumns) {
                                     ForEach(searched, id: \.self) { item in
-                                        CollectionItemComponent(collection: item) {
-                                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                        } onDelete: {
-                                            collectionsProvider.deleteCollection(id: item.id!)
+                                        NavigationLink {
+                                            LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                        } label: {
+                                            CollectionItemComponent(collection: item) {
+                                                collectionsProvider.deleteCollection(id: item.id!)
+                                            }
+                                            .padding(6)
                                         }
-                                        .padding(6)
+                                        .buttonStyle(PlainButtonStyle())
                                     }
                                 }
                                 .padding(12)
@@ -97,9 +100,6 @@ struct CollectionsView: View {
                 }
             } message: {
                 Text("The collection could not be deleted due to an error.")
-            }
-            .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView(input: value)
             }
         }
     }

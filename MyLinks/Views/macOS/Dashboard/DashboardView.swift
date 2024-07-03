@@ -9,153 +9,155 @@ struct DashboardView: View {
     @State private var collectionFormSheet = false
 
     var body: some View {
-        Group {
-            if dashboardViewModel.loading == true {
-                Group {
-                    ProgressView()
+        NavigationStack {
+            Group {
+                if dashboardViewModel.loading == true {
+                    Group {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                else if dashboardViewModel.error == true {
+                    ContentUnavailableView {
+                        Label("Error", systemImage: "exclamationmark.circle")
+                    } description: {
+                        Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
+                        Button {
+                            Task { await dashboardViewModel.loadData(setLoading: true) }
+                        } label: {
+                            Label("Retry", systemImage: "arrow.counterclockwise")
+                        }
+                    }
+                }
+                else {
+                    let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                    let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
+                    
+                    ScrollView {
+                        Section {
+                            HStack {
+                                SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
+                                Divider()
+                                SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
+                                Divider()
+                                SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
+                            }
+                            .padding()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(.gray.opacity(0.2), lineWidth: 1)
+                            )
+                        }
+                        .padding(16)
+                        if !filtered.isEmpty {
+                            VStack {
+                                HStack {
+                                    Text("Recent")
+                                        .font(.system(size: 16))
+                                        .fontWeight(.semibold)
+                                    Spacer()
+                                    NavigationLink {
+                                        LinksFilteredView(input: LinksFilteredRequest(name: "Recent", mode: .recent, id: nil))
+                                    } label: {
+                                        Text("View all")
+                                        Image(systemName: "chevron.right")
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
+                                }
+                                .padding(.horizontal, 8)
+                                Spacer()
+                                    .frame(height: 16)
+                                LazyVGrid(columns: Config.gridColumns) {
+                                    ForEach(filtered.uniqued(), id: \.self) { item in
+                                        LinkItemComponent(item: item) { link, action in
+                                            dashboardViewModel.reload()
+                                        }
+                                        .padding(6)
+                                    }
+                                }
+                            }
+                            .padding(8)
+                        }
+                        if !pinned.isEmpty {
+                            VStack {
+                                HStack {
+                                    Text("Pinned")
+                                        .font(.system(size: 16))
+                                        .fontWeight(.semibold)
+                                    Spacer()
+                                    NavigationLink {
+                                        LinksFilteredView(input: LinksFilteredRequest(name: "Pinned", mode: .pinned, id: nil))
+                                    } label: {
+                                        Text("View all")
+                                        Image(systemName: "chevron.right")
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
+                                }
+                                .padding(.horizontal, 8)
+                                Spacer()
+                                    .frame(height: 16)
+                                LazyVGrid(columns: Config.gridColumns) {
+                                    ForEach(pinned.uniqued(), id: \.self) { item in
+                                        LinkItemComponent(item: item) { link, action in
+                                            dashboardViewModel.reload()
+                                        }
+                                        .padding(6)
+                                    }
+                                }
+                            }
+                            .padding(8)
+                        }
+                    }
+                }
             }
-            else if dashboardViewModel.error == true {
-                ContentUnavailableView {
-                    Label("Error", systemImage: "exclamationmark.circle")
-                } description: {
-                    Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
+            .navigationTitle("Dashboard")
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
                     Button {
                         Task { await dashboardViewModel.loadData(setLoading: true) }
                     } label: {
-                        Label("Retry", systemImage: "arrow.counterclockwise")
+                        Image(systemName: "arrow.counterclockwise")
                     }
                 }
-            }
-            else {
-                let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
-                let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
-                
-                ScrollView {
-                    Section {
-                        HStack {
-                            SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                            Divider()
-                            SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                            Divider()
-                            SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
+                ToolbarItem(placement: .automatic) {
+                    Menu {
+                        Button {
+                            linkFormSheet.toggle()
+                        } label: {
+                            Label("New link", systemImage: "link")
                         }
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.gray.opacity(0.2), lineWidth: 1)
-                        )
-                    }
-                    .padding(16)
-                    if !filtered.isEmpty {
-                        VStack {
-                            HStack {
-                                Text("Recent")
-                                    .font(.system(size: 16))
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                NavigationLink {
-                                    LinksFilteredView(input: LinksFilteredRequest(name: "Recent", mode: .recent, id: nil))
-                                } label: {
-                                    Text("View all")
-                                    Image(systemName: "chevron.right")
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
-                            }
-                            .padding(.horizontal, 8)
-                            Spacer()
-                                .frame(height: 16)
-                            LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(filtered.uniqued(), id: \.self) { item in
-                                    LinkItemComponent(item: item) { link, action in
-                                        dashboardViewModel.reload()
-                                    }
-                                    .padding(6)
-                                }
-                            }
+                        Button {
+                            collectionFormSheet = true
+                        } label: {
+                            Label("New collection", systemImage: "folder")
                         }
-                        .padding(8)
-                    }
-                    if !pinned.isEmpty {
-                        VStack {
-                            HStack {
-                                Text("Pinned")
-                                    .font(.system(size: 16))
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                NavigationLink {
-                                    LinksFilteredView(input: LinksFilteredRequest(name: "Pinned", mode: .pinned, id: nil))
-                                } label: {
-                                    Text("View all")
-                                    Image(systemName: "chevron.right")
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
-                            }
-                            .padding(.horizontal, 8)
-                            Spacer()
-                                .frame(height: 16)
-                            LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(pinned.uniqued(), id: \.self) { item in
-                                    LinkItemComponent(item: item) { link, action in
-                                        dashboardViewModel.reload()
-                                    }
-                                    .padding(6)
-                                }
-                            }
-                        }
-                        .padding(8)
-                    }
-                }
-            }
-        }
-        .navigationTitle("Dashboard")
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button {
-                    Task { await dashboardViewModel.loadData(setLoading: true) }
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
-                }
-            }
-            ToolbarItem(placement: .automatic) {
-                Menu {
-                    Button {
-                        linkFormSheet.toggle()
                     } label: {
-                        Label("New link", systemImage: "link")
+                        Image(systemName: "plus")
                     }
-                    Button {
-                        collectionFormSheet = true
-                    } label: {
-                        Label("New collection", systemImage: "folder")
-                    }
-                } label: {
-                    Image(systemName: "plus")
                 }
             }
+            .sheet(isPresented: $linkFormSheet, content: {
+                LinkFormView() {
+                    linkFormSheet = false
+                } onSuccess: { newLink, action in
+                    linkFormSheet = false
+                }
+                .environmentObject(LinkFormViewModel())
+            })
+            .sheet(isPresented: $collectionFormSheet, content: {
+                CollectionFormView() {
+                    collectionFormSheet = false
+                } onSuccess: { item, action in
+                    collectionFormSheet = false
+                }
+                .environmentObject(CollectionFormViewModel())
+            })
+            .onAppear(perform: {
+                if dashboardViewModel.data.isEmpty {
+                    Task { await dashboardViewModel.loadData() }
+                }
+            })
         }
-        .sheet(isPresented: $linkFormSheet, content: {
-            LinkFormView() {
-                linkFormSheet = false
-            } onSuccess: { newLink, action in
-                linkFormSheet = false
-            }
-            .environmentObject(LinkFormViewModel())
-        })
-        .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView() {
-                collectionFormSheet = false
-            } onSuccess: { item, action in
-                collectionFormSheet = false
-            }
-            .environmentObject(CollectionFormViewModel())
-        })
-        .onAppear(perform: {
-            if dashboardViewModel.data.isEmpty {
-                Task { await dashboardViewModel.loadData() }
-            }
-        })
     }
 }
 
