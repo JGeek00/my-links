@@ -108,30 +108,35 @@ struct LinksFilteredView: View {
         .navigationTitle(input.name)
         .toolbar {
             ToolbarItem(placement: .automatic) {
-                Picker("Sort", systemImage: "arrow.up.arrow.down", selection: $linksFilteredViewModel.sortingSelected) {
-                    Text("Date (newest first)")
-                        .tag(Enums.SortingOptions.dateNewestFirst)
-                    Text("Date (oldest first)")
-                        .tag(Enums.SortingOptions.dateOldestFirst)
-                    Text("Name (A-Z)")
-                        .tag(Enums.SortingOptions.nameAZ)
-                    Text("Name (Z-A)")
-                        .tag(Enums.SortingOptions.nameZA)
-                    Text("Description (A-Z)")
-                        .tag(Enums.SortingOptions.descriptionAZ)
-                    Text("Description (Z-A)")
-                        .tag(Enums.SortingOptions.descriptionZA)
-                }
-                .onChange(of: linksFilteredViewModel.sortingSelected, initial: false) {
-                    Task { await linksFilteredViewModel.loadData(setLoading: true) }
-                }
-                .disabled(linksFilteredViewModel.loading)
-            }
-            ToolbarItem(placement: .automatic) {
-                Button {
-                    collectionFormSheet = true
-                } label: {
-                    Image(systemName: "plus")
+                HStack {
+                    Button {
+                        Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
+                    Button {
+                        collectionFormSheet = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    Picker("Sort", systemImage: "arrow.up.arrow.down", selection: $linksFilteredViewModel.sortingSelected) {
+                        Text("Date (newest first)")
+                            .tag(Enums.SortingOptions.dateNewestFirst)
+                        Text("Date (oldest first)")
+                            .tag(Enums.SortingOptions.dateOldestFirst)
+                        Text("Name (A-Z)")
+                            .tag(Enums.SortingOptions.nameAZ)
+                        Text("Name (Z-A)")
+                            .tag(Enums.SortingOptions.nameZA)
+                        Text("Description (A-Z)")
+                            .tag(Enums.SortingOptions.descriptionAZ)
+                        Text("Description (Z-A)")
+                            .tag(Enums.SortingOptions.descriptionZA)
+                    }
+                    .onChange(of: linksFilteredViewModel.sortingSelected, initial: false) {
+                        Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                    }
+                    .disabled(linksFilteredViewModel.loading)
                 }
             }
         }

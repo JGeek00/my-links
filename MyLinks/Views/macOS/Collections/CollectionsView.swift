@@ -66,16 +66,20 @@ struct CollectionsView: View {
                 }
             }
             .navigationTitle("Collections")
-            .refreshable {
-                await collectionsProvider.loadData()
-            }
             .searchable(text: $searchText)
             .toolbar {
                 ToolbarItem(placement: .automatic) {
-                    Button {
-                        collectionFormSheet = true
-                    } label: {
-                        Image(systemName: "plus")
+                    HStack {
+                        Button {
+                            Task { await collectionsProvider.loadData(setLoading: true) }
+                        } label: {
+                            Image(systemName: "arrow.counterclockwise")
+                        }
+                        Button {
+                            collectionFormSheet = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }

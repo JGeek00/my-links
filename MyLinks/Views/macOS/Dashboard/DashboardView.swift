@@ -112,6 +112,13 @@ struct DashboardView: View {
         .navigationTitle("Dashboard")
         .toolbar {
             ToolbarItem(placement: .automatic) {
+                Button {
+                    Task { await dashboardViewModel.loadData(setLoading: true) }
+                } label: {
+                    Image(systemName: "arrow.counterclockwise")
+                }
+            }
+            ToolbarItem(placement: .automatic) {
                 Menu {
                     Button {
                         linkFormSheet.toggle()

@@ -57,41 +57,41 @@ struct LinksView: View {
         .navigationTitle("Links")
         .toolbar {
             ToolbarItem(placement: .automatic) {
-                Picker("Sort", systemImage: "arrow.up.arrow.down", selection: $linksViewModel.sortingSelected) {
-                    Text("Date (newest first)")
-                        .tag(Enums.SortingOptions.dateNewestFirst)
-                    Text("Date (oldest first)")
-                        .tag(Enums.SortingOptions.dateOldestFirst)
-                    Text("Name (A-Z)")
-                        .tag(Enums.SortingOptions.nameAZ)
-                    Text("Name (Z-A)")
-                        .tag(Enums.SortingOptions.nameZA)
-                    Text("Description (A-Z)")
-                        .tag(Enums.SortingOptions.descriptionAZ)
-                    Text("Description (Z-A)")
-                        .tag(Enums.SortingOptions.descriptionZA)
+                HStack {
+                    Button {
+                        Task { await linksViewModel.loadData(setLoading: true) }
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
+                    Button {
+                        linkFormSheet = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    Picker("Sort", systemImage: "arrow.up.arrow.down", selection: $linksViewModel.sortingSelected) {
+                        Text("Date (newest first)")
+                            .tag(Enums.SortingOptions.dateNewestFirst)
+                        Text("Date (oldest first)")
+                            .tag(Enums.SortingOptions.dateOldestFirst)
+                        Text("Name (A-Z)")
+                            .tag(Enums.SortingOptions.nameAZ)
+                        Text("Name (Z-A)")
+                            .tag(Enums.SortingOptions.nameZA)
+                        Text("Description (A-Z)")
+                            .tag(Enums.SortingOptions.descriptionAZ)
+                        Text("Description (Z-A)")
+                            .tag(Enums.SortingOptions.descriptionZA)
+                    }
+                    .onChange(of: linksViewModel.sortingSelected, initial: false) {
+                        Task { await linksViewModel.loadData(setLoading: true) }
+                    }
+                    .disabled(linksViewModel.loading)
                 }
-                .onChange(of: linksViewModel.sortingSelected, initial: false) {
-                    Task { await linksViewModel.loadData(setLoading: true) }
-                }
-                .disabled(linksViewModel.loading)
             }
-        }
-        .refreshable {
-            await linksViewModel.loadData()
         }
         .searchable(text: $linksViewModel.searchFieldValue, isPresented: $linksViewModel.searchPresented)
         .onSubmit(of: .search) {
             linksViewModel.search()
-        }
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button {
-                    linkFormSheet = true
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
         }
         .sheet(isPresented: $linkFormSheet, content: {
             LinkFormView() {
