@@ -29,6 +29,7 @@ struct MyLinksApp: App {
                 .environmentObject(OnboardingViewModel.shared)
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkManagerProvider.shared)
+                .environmentObject(ToastProvider.shared)
                 .onAppear {
                     NSApp.setActivationPolicy(.regular)
                     NSWindow.allowsAutomaticWindowTabbing = false

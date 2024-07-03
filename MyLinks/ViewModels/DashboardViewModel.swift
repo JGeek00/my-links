@@ -43,6 +43,6 @@ class DashboardViewModel: ObservableObject {
     }
     
     func reloadAll() async {
-        let res = await (loadData(setLoading: true), LinksViewModel.shared.loadData(), LinksViewModel.shared.scrollTopList.toggle(), CollectionsProvider.shared.loadData(), TagsProvider.shared.loadData())
+        _ = await (loadData(setLoading: true), LinksViewModel.shared.loadData(), LinksViewModel.shared.scrollTopList.toggle(), CollectionsProvider.shared.loadData(), TagsProvider.shared.loadData())
     }
 }

@@ -1,9 +1,11 @@
 import SwiftUI
+import AlertToast
 
 struct RootView: View {
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
+    @EnvironmentObject private var toastProvider: ToastProvider
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -49,10 +51,10 @@ struct RootView: View {
         .preferredColorScheme(getColorScheme(theme: theme))
         .onAppear(perform: {
             onboardingViewModel.checkInstance()
-            #if os(iOS)
-            requestAppReview()
-            #endif
         })
+        .toast(isPresenting: $toastProvider.presenting, duration: 2, tapToDismiss: true) {
+            toastProvider.toast ?? AlertToast(type: .regular)
+        }
         .sheet(isPresented: $onboardingViewModel.showOnboarding, content: {
             ConnectionForm()
                 .interactiveDismissDisabled()

@@ -8,6 +8,10 @@ class LinkManagerProvider: ObservableObject {
     @Published var errorAlert = false
     @Published var errorMessage = ""
     
+    #if os(macOS)
+    @Published var linkPinnedToast = false
+    #endif
+    
     func createLink(link: LinkCreationRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
@@ -116,14 +120,12 @@ class LinkManagerProvider: ObservableObject {
                 }
                 LinksViewModel.shared.updateLinkData(link: result.data!.response!)
                 onCompleted(result.data!.response!)
-                #if os(iOS)
                 if link.pinnedBy!.isEmpty {
                     ToastProvider.shared.showToast(icon: "pin.fill", title: "Link pinned")
                 }
                 else {
                     ToastProvider.shared.showToast(icon: "pin.slash.fill", title: "Link unpinned")
                 }
-                #endif
             }
         }
         else {

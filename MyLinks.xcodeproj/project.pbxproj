@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		0D083C812C25E9F300F0EB3B /* SquareIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C802C25E9F300F0EB3B /* SquareIcon.swift */; };
 		0D083C832C25EAD300F0EB3B /* ListRowWithIconEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */; platformFilter = ios; };
-		0D083C962C264E8300F0EB3B /* AlertToast in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 0D083C952C264E8300F0EB3B /* AlertToast */; };
-		0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C972C264E9800F0EB3B /* ToastProvider.swift */; platformFilter = ios; };
+		0D083C962C264E8300F0EB3B /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 0D083C952C264E8300F0EB3B /* AlertToast */; };
+		0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C972C264E9800F0EB3B /* ToastProvider.swift */; };
 		0D083C9A2C26595400F0EB3B /* Dates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C992C26595400F0EB3B /* Dates.swift */; };
 		0D083C9F2C26639800F0EB3B /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C9E2C26639800F0EB3B /* ReaderView.swift */; platformFilter = ios; };
 		0D083CA12C2663B200F0EB3B /* ReaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CA02C2663B200F0EB3B /* ReaderViewModel.swift */; };
