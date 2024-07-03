@@ -20,6 +20,7 @@ struct LinkItemComponent: View {
     
     var body: some View {
         let urlHost = getUrlHost(item.url!)
+        let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
         Button {
             openURL(URL(string: item.url!)!)
@@ -77,8 +78,8 @@ struct LinkItemComponent: View {
                 } label: {
                     Label("Link details", systemImage: "info.circle")
                 }
-//                if readerUrl != nil || item.pdf != nil || item.image != nil {
-//                    Menu("Preserved formats", systemImage: "doc.viewfinder") {
+                if readerUrl != nil || item.pdf != nil || item.image != nil {
+                    Menu("Preserved formats", systemImage: "doc.viewfinder") {
 //                        if readerUrl != nil {
 //                            Button {
 //                                readerModeSheet.toggle()
@@ -86,22 +87,22 @@ struct LinkItemComponent: View {
 //                                Label("Readable", systemImage: "textformat")
 //                            }
 //                        }
-//                        if item.pdf != nil {
-//                            Button {
-//                                pdfViewerSheet.toggle()
-//                            } label: {
-//                                Label("PDF", systemImage: "doc")
-//                            }
-//                        }
-//                        if item.image != nil {
-//                            Button {
-//                                imageViewerSheet.toggle()
-//                            } label: {
-//                                Label("Image", systemImage: "photo")
-//                            }
-//                        }
-//                    }
-//                }
+                        if item.pdf != nil {
+                            Button {
+                                pdfViewerSheet.toggle()
+                            } label: {
+                                Label("Download PDF file", systemImage: "doc")
+                            }
+                        }
+                        if item.image != nil {
+                            Button {
+                                imageViewerSheet.toggle()
+                            } label: {
+                                Label("Download image file", systemImage: "photo")
+                            }
+                        }
+                    }
+                }
             }
             Section {
                 if item.pinnedBy!.isEmpty {
@@ -159,6 +160,18 @@ struct LinkItemComponent: View {
             LinkDetailsSheet(link: item) {
                 showDetailsSheet.toggle()
             }
+        })
+        .sheet(isPresented: $pdfViewerSheet, content: {
+            DocumentDownloaderView(linkId: item.id!, documentType: .pdf) {
+                pdfViewerSheet = false
+            }
+            .interactiveDismissDisabled()
+        })
+        .sheet(isPresented: $imageViewerSheet, content: {
+            DocumentDownloaderView(linkId: item.id!, documentType: .image) {
+                imageViewerSheet = false
+            }
+            .interactiveDismissDisabled()
         })
     }
 }

@@ -75,4 +75,9 @@ class Enums {
         case pinned
         case collections
     }
+    
+    enum DownloadDocumentType: String {
+        case pdf
+        case image
+    }
 }

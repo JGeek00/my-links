@@ -238,6 +238,7 @@
       }
     },
     "Back" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -313,6 +314,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
+    },
+    "Choose a folder and a name to store the image." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una carpeta y un nombre para guardar la imagen"
+          }
+        }
+      }
+    },
+    "Choose a folder and a name to store the PDF." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una carpeta y un nombre para guardar el PDF"
           }
         }
       }
@@ -408,6 +429,7 @@
       }
     },
     "Copied to the clipboard" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -587,6 +609,46 @@
         }
       }
     },
+    "Download image file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargar fichero de imagen"
+          }
+        }
+      }
+    },
+    "Download PDF file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargar fichero PDF"
+          }
+        }
+      }
+    },
+    "Downloading image..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargando imagen..."
+          }
+        }
+      }
+    },
+    "Downloading PDF..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargando PDF..."
+          }
+        }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "es" : {
@@ -643,6 +705,37 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error %lld."
+          }
+        }
+      }
+    },
+    "Error when saving PDF file" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al guardar el fichero PDF"
+          }
+        }
+      }
+    },
+    "Error when saving the image" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al guardar la imagen"
+          }
+        }
+      }
+    },
+    "Error when saving the PDF file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al guardar el fichero PDF"
           }
         }
       }
@@ -708,11 +801,22 @@
       }
     },
     "Image" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Image"
+          }
+        }
+      }
+    },
+    "Image saved" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imagen guardada"
           }
         }
       }
@@ -917,6 +1021,16 @@
         }
       }
     },
+    "Name:" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre:"
+          }
+        }
+      }
+    },
     "New collection" : {
       "localizations" : {
         "es" : {
@@ -1058,11 +1172,22 @@
       }
     },
     "PDF" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "PDF"
+          }
+        }
+      }
+    },
+    "PDF file saved" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fichero PDF guardado"
           }
         }
       }
@@ -1118,6 +1243,7 @@
       }
     },
     "Processing..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1128,6 +1254,7 @@
       }
     },
     "Readable" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1193,6 +1320,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Guarda algunos enlaces en Linkwarden para verlos aquí."
+          }
+        }
+      }
+    },
+    "Save the image" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda la imagen"
+          }
+        }
+      }
+    },
+    "Save the PDF document" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda el documento PDF"
           }
         }
       }
