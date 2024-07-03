@@ -24,7 +24,7 @@ struct LinkItemComponent: View {
     var body: some View {
         let urlHost = getUrlHost(item.url!)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
-        let readerUrl = item.readable != nil && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
+        let readerUrl = item.readable != nil &&item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
         Button {
             onTap()
         } label: {
@@ -76,7 +76,7 @@ struct LinkItemComponent: View {
                 } label: {
                     Label("Link details", systemImage: "info.circle")
                 }
-                if readerUrl != nil || item.pdf != nil || item.image != nil {
+                if readerUrl != nil || (item.pdf != nil && item.pdf != "unavailable") || (item.image != nil && item.image != "unavailable") {
                     Menu("Preserved formats", systemImage: "doc.viewfinder") {
                         if readerUrl != nil {
                             Button {
@@ -85,14 +85,14 @@ struct LinkItemComponent: View {
                                 Label("Readable", systemImage: "textformat")
                             }
                         }
-                        if item.pdf != nil {
+                        if item.pdf != nil && item.pdf != "unavailable" {
                             Button {
                                 pdfViewerSheet.toggle()
                             } label: {
                                 Label("PDF", systemImage: "doc")
                             }
                         }
-                        if item.image != nil {
+                        if item.image != nil && item.image != "unavailable" {
                             Button {
                                 imageViewerSheet.toggle()
                             } label: {
