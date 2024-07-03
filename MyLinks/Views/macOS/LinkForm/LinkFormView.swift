@@ -27,16 +27,12 @@ struct LinkFormView: View {
                 }
                 Section {
                     let filtered = collectionsProvider.data.filter() { $0.name != nil && $0.id != nil }
-                    Picker("Collection", selection: $linkFormViewModel.collection) {
-                        if !filtered.isEmpty {
+                    if !filtered.isEmpty {
+                        Picker("Collection", selection: $linkFormViewModel.collection) {
                             ForEach(filtered, id: \.self) { item in
                                 Text(item.name!)
                                     .tag(item.id!)
                             }
-                        }
-                        else {
-                            Text("Unorganized")
-                                .tag(0)
                         }
                     }
                     NavigationLink {

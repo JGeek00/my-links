@@ -55,6 +55,7 @@ struct RootView: View {
         })
         .sheet(isPresented: $onboardingViewModel.showOnboarding, content: {
             ConnectionForm()
+                .interactiveDismissDisabled()
         })
         .onChange(of: onboardingViewModel.showOnboarding) {
             onboardingViewModel.reset()

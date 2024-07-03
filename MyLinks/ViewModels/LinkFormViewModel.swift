@@ -6,7 +6,7 @@ class LinkFormViewModel: ObservableObject {
     
     @Published var url = ""
     @Published var name = ""
-    @Published var collection = 0
+    @Published var collection: Int? = nil
     @Published var description = ""
     @Published var selectedTags: [String] = []
     @Published var localTags: [String] = []
@@ -20,7 +20,7 @@ class LinkFormViewModel: ObservableObject {
     
     init(link: Link? = nil) {
         let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
-        collection = link?.collection?.id ?? filtered.first?.id ?? 0
+        collection = link?.collection?.id ?? filtered.first?.id
         
         guard let link = link else { return }
         editingLink = link
@@ -46,7 +46,7 @@ class LinkFormViewModel: ObservableObject {
             name: name,
             description: description,
             tags: selectedTags.map() { TagCreation(name: $0) },
-            collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : Config.defaultCollection,
+            collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
             pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequest(id: $0.id!) } : []
         )
     

@@ -7,7 +7,7 @@ struct SettingsView: View {
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
     @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.openURL) var openURL
+    @Environment(\.openURL) private var openURL
     
     @State var disconnectAlert = false
     
