@@ -44,13 +44,11 @@ struct MyLinksApp: App {
         }
         .defaultSize(width: 1200, height: 700)
         .commands {
-            CommandGroup(replacing: .undoRedo) { }
             CommandGroup(replacing: .saveItem) { }
             CommandGroup(replacing: .help) { }
             CommandGroup(replacing: .systemServices) { }
             CommandGroup(replacing: .windowList) { }
             CommandGroup(replacing: .windowArrangement) { }
-            CommandGroup(replacing: .pasteboard) { }
             CommandGroup(replacing: .newItem) { }
         }
         Settings {

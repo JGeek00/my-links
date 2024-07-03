@@ -30,6 +30,22 @@ struct ConnectionForm: View {
                         .tag(Enums.Hosting.selfhosted)
                 }
                 .pickerStyle(SegmentedPickerStyle())
+                if onboardingViewModel.hostingMode == .selfhosted {
+                    VStack(alignment: .leading) {
+                        Text("⚠️ Warning")
+                            .fontWeight(.semibold)
+                            .padding(.bottom, 6)
+                        Text("MyLinks is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server.")
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color.yellow.opacity(0.2))
+                    .cornerRadius(6)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(.yellow, lineWidth: 2)
+                    )
+                }
             }
             if onboardingViewModel.hostingMode == .selfhosted {
                 Section("Server route") {
@@ -73,11 +89,6 @@ struct ConnectionForm: View {
                     }
                     .font(.system(size: 12))
                     .buttonStyle(LinkButtonStyle())
-                }
-                else if onboardingViewModel.authMethod == .userPass {
-                    Text("WARNING\nThe login with username and password is only available on Linkwarden 2.6.0 and greater.")
-                        .font(.system(size: 12))
-                        .multilineTextAlignment(.trailing)
                 }
             }
             Section {

@@ -17,6 +17,16 @@
         }
       }
     },
+    "⚠️ Warning" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⚠️ Aviso"
+          }
+        }
+      }
+    },
     "1. Log in into your Linkwarden account." : {
       "localizations" : {
         "es" : {
@@ -228,6 +238,7 @@
       }
     },
     "Back" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -398,6 +409,7 @@
       }
     },
     "Copied to the clipboard" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -698,6 +710,7 @@
       }
     },
     "Image" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -853,6 +866,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Método"
+          }
+        }
+      }
+    },
+    "MyLinks is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MyLinks está diseñado para Linkwarden v2.6.0 o superior. Algunas funciones pueden no funcionar en versiones antiguas del servidor."
           }
         }
       }
@@ -1038,6 +1061,7 @@
       }
     },
     "PDF" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1088,6 +1112,7 @@
       }
     },
     "Preserved formats" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1098,6 +1123,7 @@
       }
     },
     "Processing..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1108,6 +1134,7 @@
       }
     },
     "Readable" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1218,7 +1245,6 @@
       }
     },
     "Server type" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1545,16 +1571,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver todos"
-          }
-        }
-      }
-    },
-    "WARNING\nThe login with username and password is only available on Linkwarden 2.6.0 and greater." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AVISO El inicio de sesión con usuario y contraseña sólo está disponible en Linkwarden 2.6.0 o superior."
           }
         }
       }

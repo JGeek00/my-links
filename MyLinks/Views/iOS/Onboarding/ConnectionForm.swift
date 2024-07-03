@@ -24,6 +24,23 @@ struct ConnectionForm: View {
             .listRowBackground(Color.clear)
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             if onboardingViewModel.hostingMode == .selfhosted {
+                Section {
+                    VStack(alignment: .leading) {
+                        Text("⚠️ Warning")
+                            .fontWeight(.semibold)
+                            .padding(.bottom, 6)
+                        Text("MyLinks is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server.")
+                    }
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                }
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.yellow.opacity(0.2))
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(.yellow, lineWidth: 2)
+                )
                 Section("Server route") {
                     Picker("Connection method", selection: $onboardingViewModel.connectionMethod) {
                         Text("HTTP")
@@ -83,9 +100,6 @@ struct ConnectionForm: View {
                         tokenInstructionsSheet = true
                     }
                     .font(.system(size: 12))
-                }
-                else if onboardingViewModel.authMethod == .userPass {
-                    Text("WARNING\nThe login with username and password is only available on Linkwarden 2.6.0 and greater.")
                 }
             }
             Section {
