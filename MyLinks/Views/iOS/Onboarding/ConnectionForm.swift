@@ -84,6 +84,9 @@ struct ConnectionForm: View {
                     }
                     .font(.system(size: 12))
                 }
+                else if onboardingViewModel.authMethod == .userPass {
+                    Text("WARNING\nThe login with username and password is only available on Linkwarden 2.6.0 and greater.")
+                }
             }
             Section {
                 Button {

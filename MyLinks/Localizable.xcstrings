@@ -1555,6 +1555,16 @@
         }
       }
     },
+    "WARNING\nThe login with username and password is only available on Linkwarden 2.6.0 and greater." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AVISO El inicio de sesión con usuario y contraseña sólo está disponible en Linkwarden 2.6.0 o superior."
+          }
+        }
+      }
+    },
     "Website" : {
       "localizations" : {
         "es" : {
