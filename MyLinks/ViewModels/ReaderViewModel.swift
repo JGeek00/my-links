@@ -5,10 +5,6 @@ class ReaderViewModel: ObservableObject {
     @Published var loading = true
     @Published var error = false
     
-    init(link: Link) {
-        Task { await loadData(linkId: link.id!) }
-    }
-    
     func loadData(linkId: Int, setLoading: Bool = false) async {
         if setLoading == true {
             DispatchQueue.main.sync {

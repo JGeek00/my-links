@@ -15,7 +15,7 @@
 		0D083C9F2C26639800F0EB3B /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C9E2C26639800F0EB3B /* ReaderView.swift */; platformFilter = ios; };
 		0D083CA12C2663B200F0EB3B /* ReaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CA02C2663B200F0EB3B /* ReaderViewModel.swift */; };
 		0D083CA32C26642D00F0EB3B /* ReaderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CA22C26642D00F0EB3B /* ReaderResponse.swift */; };
-		0D083CA82C26804100F0EB3B /* RichText in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 0D083CA72C26804100F0EB3B /* RichText */; };
+		0D083CA82C26804100F0EB3B /* RichText in Frameworks */ = {isa = PBXBuildFile; productRef = 0D083CA72C26804100F0EB3B /* RichText */; };
 		0D083CAD2C27291800F0EB3B /* PdfViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CAC2C27291800F0EB3B /* PdfViewerViewModel.swift */; platformFilter = ios; };
 		0D083CB02C272A1300F0EB3B /* PdfViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CAF2C272A1300F0EB3B /* PdfViewerView.swift */; platformFilter = ios; };
 		0D083CB22C27366700F0EB3B /* PdfViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CB12C27366700F0EB3B /* PdfViewer.swift */; platformFilter = ios; };
@@ -25,6 +25,7 @@
 		0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBE2C27648700F0EB3B /* ImageViewer.swift */; platformFilter = ios; };
 		0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */; };
 		0D083CC52C2DEEBB00F0EB3B /* TokenInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */; platformFilter = ios; };
+		0D238CCB2C35EFA9007DACF0 /* ReaderModeViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CCA2C35EFA9007DACF0 /* ReaderModeViewer.swift */; platformFilters = (macos, ); };
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
 		0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */; };
@@ -129,6 +130,7 @@
 		0D083CBE2C27648700F0EB3B /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentExtension.swift; sourceTree = "<group>"; };
 		0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInstructions.swift; sourceTree = "<group>"; };
+		0D238CCA2C35EFA9007DACF0 /* ReaderModeViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderModeViewer.swift; sourceTree = "<group>"; };
 		0D55C4E32C219E13002CE99A /* MyLinks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLinks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 			isa = PBXGroup;
 			children = (
 				0DEA27F22C35E6C300F1802F /* DocumentDownloaderView.swift */,
+				0D238CCA2C35EFA9007DACF0 /* ReaderModeViewer.swift */,
 			);
 			path = FilesViewers;
 			sourceTree = "<group>";
@@ -756,6 +759,7 @@
 				0D55C5692C2312E7002CE99A /* LinksViewModel.swift in Sources */,
 				0D55C5832C23A117002CE99A /* TagsView.swift in Sources */,
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
+				0D238CCB2C35EFA9007DACF0 /* ReaderModeViewer.swift in Sources */,
 				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
 				0D55C5272C21FA6E002CE99A /* Collections.swift in Sources */,
 				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,

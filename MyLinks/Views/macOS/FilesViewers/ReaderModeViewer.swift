@@ -1,7 +1,7 @@
 import SwiftUI
 import RichText
 
-struct ReaderView: View {
+struct ReaderModeViewer: View {
     var link: Link
     var onClose: () -> Void
     
@@ -39,27 +39,22 @@ struct ReaderView: View {
                         .padding()
                 }
             }
-            .background(Color.listBackground)
             .navigationTitle(link.name! != "" ? link.name! : link.description! != "" ? link.description! : link.url!)
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .cancellationAction) {
                     Button {
                         onClose()
                     } label: {
-                        Image(systemName: "xmark")
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.foreground.opacity(0.5))
+                        Text("Close")
                     }
-                    .buttonStyle(BorderedButtonStyle())
-                    .clipShape(Circle())
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .destructiveAction) {
                     Button {
                         Task { await readerViewModel.loadData(linkId: link.id!, setLoading: true) }
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }
+                    .buttonStyle(PlainButtonStyle())
                     .disabled(readerViewModel.data == nil || readerViewModel.loading == true)
                 }
             }

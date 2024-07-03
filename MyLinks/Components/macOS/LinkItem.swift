@@ -80,13 +80,13 @@ struct LinkItemComponent: View {
                 }
                 if readerUrl != nil || item.pdf != nil || item.image != nil {
                     Menu("Preserved formats", systemImage: "doc.viewfinder") {
-//                        if readerUrl != nil {
-//                            Button {
-//                                readerModeSheet.toggle()
-//                            } label: {
-//                                Label("Readable", systemImage: "textformat")
-//                            }
-//                        }
+                        if readerUrl != nil {
+                            Button {
+                                readerModeSheet.toggle()
+                            } label: {
+                                Label("Reader mode", systemImage: "textformat")
+                            }
+                        }
                         if item.pdf != nil {
                             Button {
                                 pdfViewerSheet.toggle()
@@ -172,6 +172,13 @@ struct LinkItemComponent: View {
                 imageViewerSheet = false
             }
             .interactiveDismissDisabled()
+        })
+        .sheet(isPresented: $readerModeSheet, content: {
+            ReaderModeViewer(link: item) {
+                readerModeSheet = false
+            }
+            .interactiveDismissDisabled()
+            .frame(minWidth: 300, idealWidth: 800, maxWidth: 1000, minHeight: 300, idealHeight: 600, maxHeight: 1000)
         })
     }
 }
