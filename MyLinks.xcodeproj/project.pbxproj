@@ -191,7 +191,7 @@
 		0D238CDF2C370B8A007DACF0 /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		0D238CE12C370CE5007DACF0 /* ShareExtensionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionViewModel.swift; sourceTree = "<group>"; };
 		0D238CFC2C371304007DACF0 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
-		0D55C4E32C219E13002CE99A /* MyLinks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLinks.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D55C4E32C219E13002CE99A /* My Links.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Links.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		0D55C4EB2C219E13002CE99A /* MyLinks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyLinks.xcdatamodel; sourceTree = "<group>"; };
@@ -335,7 +335,7 @@
 		0D55C4E42C219E13002CE99A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0D55C4E32C219E13002CE99A /* MyLinks.app */,
+				0D55C4E32C219E13002CE99A /* My Links.app */,
 				0D238CD02C370953007DACF0 /* ShareExtension.appex */,
 			);
 			name = Products;
@@ -738,7 +738,7 @@
 				0DEA27E52C33325900F1802F /* SentrySwiftUI */,
 			);
 			productName = MyLinks;
-			productReference = 0D55C4E32C219E13002CE99A /* MyLinks.app */;
+			productReference = 0D55C4E32C219E13002CE99A /* My Links.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1174,7 +1174,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1216,7 +1216,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
