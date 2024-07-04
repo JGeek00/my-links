@@ -23,6 +23,7 @@ struct RootView: View {
             if !instances.isEmpty && apiClientProvider.instance != nil {
                 TabView {
                     DashboardView()
+                        .environmentObject(DashboardViewModel.shared)
                         .tabItem {
                             Label("Dashboard", systemImage: "house.fill")
                         }
