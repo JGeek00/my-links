@@ -114,7 +114,7 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .automatic) {
                     Button {
-                        Task { await dashboardViewModel.reloadAll() }
+                        Task { await dashboardViewModel.reloadAll(setLoading: true) }
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }

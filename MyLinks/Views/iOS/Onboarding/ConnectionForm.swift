@@ -71,7 +71,7 @@ struct ConnectionForm: View {
                 }
                 switch onboardingViewModel.authMethod {
                 case .userPass:
-                    TextField("Username", text: $onboardingViewModel.username)
+                    TextField("Username or email", text: $onboardingViewModel.username)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                     SecureField("Password", text: $onboardingViewModel.password)
