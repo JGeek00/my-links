@@ -1,11 +1,20 @@
 import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
+import Sentry
 
 class ShareViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        #if RELEASE
+        SentrySDK.start { options in
+            options.dsn = Config.sentryDsn
+            options.debug = false
+            options.enableTracing = false
+        }
+        #endif
 
         // Ensure access to extensionItem and itemProvider
         guard

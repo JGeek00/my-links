@@ -95,7 +95,7 @@ struct ShareExtensionView: View {
                             Text("Save")
                         }
                     }
-                    .disabled(shareExtensionViewModel.saving)
+                    .disabled(shareExtensionViewModel.saving || shareExtensionViewModel.loadError == true || shareExtensionViewModel.loadError == true || shareExtensionViewModel.apiClient == nil)
                 }
             }
             .alert("Discard changes", isPresented: $discardAlert) {
