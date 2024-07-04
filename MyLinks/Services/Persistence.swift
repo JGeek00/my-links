@@ -31,4 +31,15 @@ struct PersistenceController {
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
+    
+    func fetchInstances() -> [ServerInstance] {
+        var data: [ServerInstance] = []
+        let fetchRequest: NSFetchRequest<ServerInstance> = ServerInstance.fetchRequest()
+        do {
+            data = try container.viewContext.fetch(fetchRequest)
+        } catch {
+            print("Error fetching data: \(error.localizedDescription)")
+        }
+        return data
+    }
 }

@@ -60,7 +60,7 @@ class ApiClient {
             else {
                 return StatusResponse<LinksResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let error {
+        } catch {
             return defaultErrorResponse
         }
     }

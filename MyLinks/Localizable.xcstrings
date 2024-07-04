@@ -187,12 +187,32 @@
         }
       }
     },
+    "An error occured when saving the link." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al guardar el link"
+          }
+        }
+      }
+    },
     "App version" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versión de la app"
+          }
+        }
+      }
+    },
+    "Are you sure you want to discard the changes? This action cannot be reverted." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Estás seguro de que deseas descartar los cambios? Esta acción no se puede deshacer."
           }
         }
       }
@@ -447,6 +467,16 @@
         }
       }
     },
+    "Create new link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear nuevo link"
+          }
+        }
+      }
+    },
     "Create some collections on Linkwarden to see them here." : {
       "localizations" : {
         "es" : {
@@ -573,6 +603,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descripción (Z-A)"
+          }
+        }
+      }
+    },
+    "Discard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar"
+          }
+        }
+      }
+    },
+    "Discard changes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar cambios"
           }
         }
       }
@@ -848,6 +898,17 @@
         }
       }
     },
+    "Invalid link" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link no válido"
+          }
+        }
+      }
+    },
     "Invalid path." : {
       "localizations" : {
         "es" : {
@@ -864,6 +925,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Puerto no válido."
+          }
+        }
+      }
+    },
+    "Invalid URL" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL inválida"
           }
         }
       }
@@ -1389,6 +1460,7 @@
       }
     },
     "Server type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1544,6 +1616,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El documento PDF del enlace no está disponible."
+          }
+        }
+      }
+    },
+    "The provided URL is not valid" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La URL proveída no es válida"
           }
         }
       }
