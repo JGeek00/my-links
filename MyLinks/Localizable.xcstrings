@@ -67,12 +67,12 @@
         }
       }
     },
-    "5. Copy the generated API token and paste it into the token field of MyLinks." : {
+    "5. Copy the generated API token and paste it into the token field of My Links." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "5. Copia el token generado y pégalo en el campo token de MyLinks."
+            "value" : "5. Copia el token generado y pégalo en el campo token de My Links."
           }
         }
       }
@@ -238,7 +238,6 @@
       }
     },
     "Back" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -429,7 +428,6 @@
       }
     },
     "Copied to the clipboard" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -801,7 +799,6 @@
       }
     },
     "Image" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -971,12 +968,12 @@
         }
       }
     },
-    "MyLinks is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server." : {
+    "My Links is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MyLinks está diseñado para Linkwarden v2.6.0 o superior. Algunas funciones pueden no funcionar en versiones antiguas del servidor."
+            "value" : "My Links está diseñado para Linkwarden v2.6.0 o superior. Algunas funciones pueden no funcionar en versiones antiguas del servidor."
           }
         }
       }
@@ -1131,12 +1128,12 @@
         }
       }
     },
-    "Open MyLinks" : {
+    "Open My Links" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abrir MyLinks"
+            "value" : "Abrir My Links"
           }
         }
       }
@@ -1172,7 +1169,6 @@
       }
     },
     "PDF" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1243,7 +1239,6 @@
       }
     },
     "Processing..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1254,7 +1249,6 @@
       }
     },
     "Readable" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1735,12 +1729,12 @@
         }
       }
     },
-    "Welcome to MyLinks" : {
+    "Welcome to My Links" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenido a MyLinks"
+            "value" : "Bienvenido a My Links"
           }
         }
       }

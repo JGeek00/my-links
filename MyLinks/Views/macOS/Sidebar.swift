@@ -96,7 +96,7 @@ private struct SidebarButton: View {
             case .links:
                 LinksView()
             case .pinned:
-                LinksFilteredView(input: LinksFilteredRequest(name: "Pinned", mode: .pinned, id: nil))
+                LinksFilteredView(input: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
             case .collections:
                 CollectionsView()
             }
@@ -106,7 +106,7 @@ private struct SidebarButton: View {
                     Image(systemName: image)
                         .frame(width: 28, height: 28)
                         .background(color)
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(Color.background)
                         .clipShape(Circle())
                     Spacer()
                         .frame(height: 12)

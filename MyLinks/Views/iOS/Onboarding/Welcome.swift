@@ -15,7 +15,7 @@ struct Welcome: View {
                     .shadow(radius: 10)
                 Spacer()
                     .frame(height: 24)
-                Text("Welcome to MyLinks")
+                Text("Welcome to My Links")
                     .font(.system(size: verticalSizeClass == .regular ? 40 : 36))
                     .fontWeight(.bold)
                     .padding(.bottom, 12)

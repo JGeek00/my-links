@@ -35,7 +35,7 @@ struct ConnectionForm: View {
                         Text("⚠️ Warning")
                             .fontWeight(.semibold)
                             .padding(.bottom, 6)
-                        Text("MyLinks is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server.")
+                        Text("My Links is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server.")
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                     .padding()

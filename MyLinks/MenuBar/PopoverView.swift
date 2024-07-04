@@ -59,7 +59,7 @@ struct PopoverContent: View {
                         Button {
                             openMainWindow()
                         } label: {
-                            Text("Open MyLinks")
+                            Text("Open My Links")
                                 .font(.system(size: 16))
                                 .fontWeight(.medium)
                                 .padding(.horizontal, 12)
@@ -75,7 +75,7 @@ struct PopoverContent: View {
                             Button {
                                 openMainWindow()
                             } label: {
-                                Text("Open MyLinks")
+                                Text("Open My Links")
                             }
                         }
                         .padding(.top, 30)

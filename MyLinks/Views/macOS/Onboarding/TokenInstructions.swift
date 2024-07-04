@@ -15,7 +15,7 @@ struct TokenInstructions: View {
                     Text("2. Click on your profile picture and then on Settings.")
                     Text("3. Go to the Access tokens section.")
                     Text("4. Create a new access token, set a name and set no expiration date.")
-                    Text("5. Copy the generated API token and paste it into the token field of MyLinks.")
+                    Text("5. Copy the generated API token and paste it into the token field of My Links.")
                 }
                 .font(.system(size: 14))
                 .fontWeight(.medium)

@@ -50,7 +50,6 @@ struct MyLinksApp: App {
             CommandGroup(replacing: .systemServices) { }
             CommandGroup(replacing: .windowList) { }
             CommandGroup(replacing: .windowArrangement) { }
-            CommandGroup(replacing: .newItem) { }
         }
         Settings {
             SettingsView()
