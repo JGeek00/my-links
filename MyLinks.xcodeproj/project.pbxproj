@@ -27,7 +27,7 @@
 		0D083CC52C2DEEBB00F0EB3B /* TokenInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */; platformFilter = ios; };
 		0D238CCB2C35EFA9007DACF0 /* ReaderModeViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CCA2C35EFA9007DACF0 /* ReaderModeViewer.swift */; platformFilters = (macos, ); };
 		0D238CD32C370953007DACF0 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CD22C370953007DACF0 /* ShareViewController.swift */; };
-		0D238CDA2C370953007DACF0 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0D238CD02C370953007DACF0 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0D238CDA2C370953007DACF0 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0D238CD02C370953007DACF0 /* ShareExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0D238CE02C370B8A007DACF0 /* ShareExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CDF2C370B8A007DACF0 /* ShareExtensionView.swift */; };
 		0D238CE22C370CE5007DACF0 /* ShareExtensionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CE12C370CE5007DACF0 /* ShareExtensionViewModel.swift */; };
 		0D238CE32C370D28007DACF0 /* MyLinks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4EA2C219E13002CE99A /* MyLinks.xcdatamodeld */; };
@@ -951,6 +951,7 @@
 /* Begin PBXTargetDependency section */
 		0D238CD92C370953007DACF0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 0D238CCF2C370953007DACF0 /* ShareExtension */;
 			targetProxy = 0D238CD82C370953007DACF0 /* PBXContainerItemProxy */;
 		};
@@ -979,6 +980,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1007,6 +1012,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
