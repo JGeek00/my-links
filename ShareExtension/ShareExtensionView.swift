@@ -82,20 +82,22 @@ struct ShareExtensionView: View {
                     .buttonStyle(BorderedButtonStyle())
                     .clipShape(Circle())
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        shareExtensionViewModel.onSave {
-                            onClose()
+                if shareExtensionViewModel.apiClient != nil {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            shareExtensionViewModel.onSave {
+                                onClose()
+                            }
+                        } label: {
+                            if shareExtensionViewModel.saving == true {
+                                ProgressView()
+                            }
+                            else {
+                                Text("Save")
+                            }
                         }
-                    } label: {
-                        if shareExtensionViewModel.saving == true {
-                            ProgressView()
-                        }
-                        else {
-                            Text("Save")
-                        }
+                        .disabled(shareExtensionViewModel.saving || shareExtensionViewModel.loadError == true || shareExtensionViewModel.loadError == true)
                     }
-                    .disabled(shareExtensionViewModel.saving || shareExtensionViewModel.loadError == true || shareExtensionViewModel.loadError == true || shareExtensionViewModel.apiClient == nil)
                 }
             }
             .alert("Discard changes", isPresented: $discardAlert) {
