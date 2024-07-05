@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 class ShareExtensionViewModel: ObservableObject {
-    @Published var apiClient: ApiClient?
+    @Published var apiClient: ApiClient? = nil
     
     @Published var invalidUrl = false
     
