@@ -96,7 +96,7 @@ struct ShareExtensionView: View {
                                 Text("Save")
                             }
                         }
-                        .disabled(shareExtensionViewModel.saving || shareExtensionViewModel.loadError == true || shareExtensionViewModel.loadError == true)
+                        .disabled(shareExtensionViewModel.saving || shareExtensionViewModel.loading == true || shareExtensionViewModel.loadError == true)
                     }
                 }
             }
