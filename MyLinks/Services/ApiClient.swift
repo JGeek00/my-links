@@ -27,7 +27,7 @@ func getSessionToken(baseUrl: String, body: SessionTokenRequest) async -> Status
     }
 }
 
-class ApiClient {
+struct ApiClient: Equatable {
     var url: String
     var token: String
     

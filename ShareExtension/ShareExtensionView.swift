@@ -126,7 +126,7 @@ struct ShareExtensionView: View {
             }
         }
         .fontDesign(.rounded)
-        .onAppear {
+        .onChange(of: shareExtensionViewModel.apiClient, initial: true) {
             if shareExtensionViewModel.apiClient != nil {
                 Task { await shareExtensionViewModel.loadData() }
             }

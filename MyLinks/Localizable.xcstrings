@@ -1711,6 +1711,17 @@
         }
       }
     },
+    "Unknown error" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error desconocido"
+          }
+        }
+      }
+    },
     "Unorganized" : {
       "localizations" : {
         "es" : {
