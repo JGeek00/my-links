@@ -58,6 +58,7 @@ struct MyLinksApp: App {
                 .environmentObject(OnboardingViewModel.shared)
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkManagerProvider.shared)
+                .environmentObject(TipsViewModel())
         }
         #else
         WindowGroup {
@@ -67,6 +68,7 @@ struct MyLinksApp: App {
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkManagerProvider.shared)
                 .environmentObject(ToastProvider.shared)
+                .environmentObject(TipsViewModel())
         }
         #endif
     }

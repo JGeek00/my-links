@@ -116,6 +116,10 @@
 		0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */; };
 		0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */; };
 		0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */; };
+		0D8A90912C3C62E600EB9DF1 /* TipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90902C3C62E600EB9DF1 /* TipsView.swift */; platformFilter = ios; };
+		0D8A90932C3C62F900EB9DF1 /* TipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90922C3C62F900EB9DF1 /* TipsView.swift */; platformFilters = (macos, ); };
+		0D8A90952C3C631300EB9DF1 /* TipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90942C3C631300EB9DF1 /* TipsViewModel.swift */; };
+		0D8A90972C3C633700EB9DF1 /* ContributionProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90962C3C633700EB9DF1 /* ContributionProduct.swift */; };
 		0DEA27A22C31E44800F1802F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27A12C31E44800F1802F /* RootView.swift */; platformFilters = (macos, ); };
 		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; platformFilters = (macos, ); };
 		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; platformFilters = (macos, ); };
@@ -253,6 +257,11 @@
 		0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredRequest.swift; sourceTree = "<group>"; };
 		0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredViewModel.swift; sourceTree = "<group>"; };
 		0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkManagerProvider.swift; sourceTree = "<group>"; };
+		0D8A90902C3C62E600EB9DF1 /* TipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsView.swift; sourceTree = "<group>"; };
+		0D8A90922C3C62F900EB9DF1 /* TipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsView.swift; sourceTree = "<group>"; };
+		0D8A90942C3C631300EB9DF1 /* TipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsViewModel.swift; sourceTree = "<group>"; };
+		0D8A90962C3C633700EB9DF1 /* ContributionProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionProduct.swift; sourceTree = "<group>"; };
+		0D8A90982C3C657100EB9DF1 /* My Links.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "My Links.storekit"; sourceTree = "<group>"; };
 		0DEA27A12C31E44800F1802F /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionForm.swift; sourceTree = "<group>"; };
 		0DEA27AD2C31ED7900F1802F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -345,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				0D55C5752C23366A002CE99A /* PrivacyInfo.xcprivacy */,
+				0D8A90982C3C657100EB9DF1 /* My Links.storekit */,
 				0DEA27DF2C332FA200F1802F /* Info.plist */,
 				0D55C4F12C219E14002CE99A /* MyLinks.entitlements */,
 				0D55C4EF2C219E14002CE99A /* Assets.xcassets */,
@@ -434,6 +444,7 @@
 			isa = PBXGroup;
 			children = (
 				0D55C5042C21A094002CE99A /* SettingsView.swift */,
+				0D8A90902C3C62E600EB9DF1 /* TipsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -450,6 +461,7 @@
 				0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */,
 				0D083CA22C26642D00F0EB3B /* ReaderResponse.swift */,
 				0DEA27EB2C347B5500F1802F /* SessionToken.swift */,
+				0D8A90962C3C633700EB9DF1 /* ContributionProduct.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -479,6 +491,7 @@
 				0D083CA02C2663B200F0EB3B /* ReaderViewModel.swift */,
 				0D083CAC2C27291800F0EB3B /* PdfViewerViewModel.swift */,
 				0D083CBA2C2758A900F0EB3B /* ImageViewerViewModel.swift */,
+				0D8A90942C3C631300EB9DF1 /* TipsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -672,6 +685,7 @@
 			isa = PBXGroup;
 			children = (
 				0DEA27CE2C32EA9000F1802F /* SettingsView.swift */,
+				0D8A90922C3C62F900EB9DF1 /* TipsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -865,6 +879,7 @@
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0DEA27D32C32F45400F1802F /* TokenInstructions.swift in Sources */,
 				0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */,
+				0D8A90932C3C62F900EB9DF1 /* TipsView.swift in Sources */,
 				0DEA27F32C35E6C300F1802F /* DocumentDownloaderView.swift in Sources */,
 				0DEA27C82C32133800F1802F /* CollectionItem.swift in Sources */,
 				0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */,
@@ -911,7 +926,9 @@
 				0D55C5272C21FA6E002CE99A /* Collections.swift in Sources */,
 				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,
 				0D55C5142C21B420002CE99A /* Welcome.swift in Sources */,
+				0D8A90972C3C633700EB9DF1 /* ContributionProduct.swift in Sources */,
 				0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */,
+				0D8A90912C3C62E600EB9DF1 /* TipsView.swift in Sources */,
 				0DEA27A22C31E44800F1802F /* RootView.swift in Sources */,
 				0D55C5072C21AC0C002CE99A /* ApiClient.swift in Sources */,
 				0D083C812C25E9F300F0EB3B /* SquareIcon.swift in Sources */,
@@ -933,6 +950,7 @@
 				0D55C50F2C21AE31002CE99A /* OnboardingView.swift in Sources */,
 				0D55C5202C21EABF002CE99A /* ServerUrl.swift in Sources */,
 				0D083C9A2C26595400F0EB3B /* Dates.swift in Sources */,
+				0D8A90952C3C631300EB9DF1 /* TipsViewModel.swift in Sources */,
 				0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */,
 				0DEA27BC2C31F55F00F1802F /* TagsPickerView.swift in Sources */,
 				0D55C5852C23A1F1002CE99A /* TagItem.swift in Sources */,
@@ -1149,7 +1167,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MyLinks/MyLinks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MyLinks/Preview Content\"";
 				DEVELOPMENT_TEAM = 38Z3B9TJTR;
@@ -1172,7 +1190,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.12.2;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;
@@ -1191,7 +1209,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MyLinks/MyLinks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MyLinks/Preview Content\"";
 				DEVELOPMENT_TEAM = 38Z3B9TJTR;
@@ -1214,7 +1232,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.12.2;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;

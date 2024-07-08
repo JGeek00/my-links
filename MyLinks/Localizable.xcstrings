@@ -507,6 +507,16 @@
         }
       }
     },
+    "Currently there are no options available" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualmente no hay opciones disponibles"
+          }
+        }
+      }
+    },
     "Dark" : {
       "localizations" : {
         "es" : {
@@ -794,6 +804,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Empezar"
+          }
+        }
+      }
+    },
+    "Give a tip to the developer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Darle una propina al desarrollador"
+          }
+        }
+      }
+    },
+    "Hi! I'm the developer of My Links.\nMy Links is free and I want it to remain free, but by offering this application on the App Store I run into some costs, such as Apple's developer license. I would appreciate a lot every donation to help me paying this costs.\nThank you." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Hola! Soy el desarrollador de My Links. My Links es gratuito y quiero que así lo siga siendo, pero al ofrecer la aplicación en la App Store tengo algunos costes, como la licencia de desarrollador de Apple. Aprecio cualquier donación que me ayude a pagar estos costes."
           }
         }
       }
@@ -1319,6 +1349,26 @@
         }
       }
     },
+    "Purchase completed successfully" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compra completada correctamente"
+          }
+        }
+      }
+    },
+    "Purchase failed or cancelled" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compra cancelada o fallida"
+          }
+        }
+      }
+    },
     "Readable" : {
       "localizations" : {
         "es" : {
@@ -1460,7 +1510,6 @@
       }
     },
     "Server type" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1630,6 +1679,26 @@
         }
       }
     },
+    "The purchase could not be completed. An error occured on the process or it has been cancelled by the user." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La compra no se pudo completar. Ocurrió un error o ha sido cancelada por el usuario."
+          }
+        }
+      }
+    },
+    "The purchase has been completed. Thank you for contributing with the development and mantenience of this application." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La compra se ha completado. Gracias por contribuir al desarrollo y mantenimiento de la aplicación."
+          }
+        }
+      }
+    },
     "The session has expired. Please log in again." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1677,6 +1746,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este enlace será eliminado. Esta acción no es reversible."
+          }
+        }
+      }
+    },
+    "Tips" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propinas"
           }
         }
       }

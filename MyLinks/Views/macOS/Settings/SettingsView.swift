@@ -55,11 +55,11 @@ struct SettingsView: View {
                     }
                 }
                 Section {
-//                    NavigationLink {
-//                        TipsView()
-//                    } label: {
-//                        Text("Give a tip to the developer")
-//                    }
+                    NavigationLink {
+                        TipsView()
+                    } label: {
+                        ListRowWithIconEntry(systemIcon: "dollarsign.circle.fill", iconColor: .green, label: "Give a tip to the developer")
+                    }
                     Button {
                         openURL(URL(string: Urls.appSupport)!)
                     } label: {

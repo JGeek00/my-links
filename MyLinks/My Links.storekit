@@ -1,0 +1,163 @@
+{
+  "identifier" : "982E559D",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "7.99",
+      "familyShareable" : false,
+      "internalID" : "6526396133",
+      "localizations" : [
+        {
+          "description" : "Give a big tip to the developer",
+          "displayName" : "Big tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.jgeek00.MyLinks.BigTip",
+      "referenceName" : "Big tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "19.99",
+      "familyShareable" : false,
+      "internalID" : "6526444792",
+      "localizations" : [
+        {
+          "description" : "Darle una propina gloriosa al desarrollador",
+          "displayName" : "Propina gloriosa",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "Give a glorious tip to the developer",
+          "displayName" : "Glorious tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.jgeek00.MyLinks.GloriousTip",
+      "referenceName" : "Glorious tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "6526370752",
+      "localizations" : [
+        {
+          "description" : "Give a medium tip to the developer",
+          "displayName" : "Medium tip",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Darle una propina mediana al desarrollador",
+          "displayName" : "Propina mediana",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "com.jgeek00.MyLinks.MediumTip",
+      "referenceName" : "Medium tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6526347448",
+      "localizations" : [
+        {
+          "description" : "Give a small tip to the developer",
+          "displayName" : "Small tip",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Darle una propina pequeña al desarrollador",
+          "displayName" : "Propina pequeña",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "com.jgeek00.MyLinks.SmallTip",
+      "referenceName" : "Small tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "12.99",
+      "familyShareable" : false,
+      "internalID" : "6526416279",
+      "localizations" : [
+        {
+          "description" : "Give a very big tip to the developer",
+          "displayName" : "Very big tip",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Darle una propina muy grande al desarrollador",
+          "displayName" : "Propina muy grande",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "com.jgeek00.MyLinks.VeryBigTip",
+      "referenceName" : "Very big tip",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6504573402",
+    "_developerTeamID" : "38Z3B9TJTR",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 742156208.73912704,
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
