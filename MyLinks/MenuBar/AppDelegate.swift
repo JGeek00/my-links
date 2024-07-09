@@ -5,8 +5,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBar: StatusBarController?
     
     private var popoverState = PopoverState()
-
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if let items = NSApp.mainMenu?.items {
+            items.suffix(from: 1).forEach { item in
+                NSApp.mainMenu?.removeItem(item)
+            }
+        }
+        
         Self.popover.contentViewController = NSHostingController(
             rootView: PopoverView()
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)

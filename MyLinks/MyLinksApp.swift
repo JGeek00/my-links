@@ -44,13 +44,6 @@ struct MyLinksApp: App {
                 }
         }
         .defaultSize(width: 1200, height: 700)
-        .commands {
-            CommandGroup(replacing: .saveItem) { }
-            CommandGroup(replacing: .help) { }
-            CommandGroup(replacing: .systemServices) { }
-            CommandGroup(replacing: .windowList) { }
-            CommandGroup(replacing: .windowArrangement) { }
-        }
         Settings {
             SettingsView()
                 .frame(width: 600, height: 600)

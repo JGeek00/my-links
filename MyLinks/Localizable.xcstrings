@@ -1344,6 +1344,7 @@
       }
     },
     "Processing..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
