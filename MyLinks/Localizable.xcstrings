@@ -1079,6 +1079,16 @@
         }
       }
     },
+    "N/A" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N/A"
+          }
+        }
+      }
+    },
     "Name" : {
       "localizations" : {
         "es" : {

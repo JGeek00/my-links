@@ -5,6 +5,7 @@ class DashboardViewModel: ObservableObject {
     static var shared = DashboardViewModel()
     
     @Published var data: [Link] = []
+    @Published var pinnedLinks: Int? = nil
     @Published var loading = true
     @Published var error = false
     
@@ -20,10 +21,11 @@ class DashboardViewModel: ObservableObject {
             }
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchDashboard()
+        let result = await instance.fetchDashboardV2()
         if result.successful == true {
             DispatchQueue.main.async {
-                self.data = result.data?.response ?? []
+                self.data = result.data?.data?.links ?? []
+                self.pinnedLinks = result.data?.data?.numberOfPinnedLinks
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     self.loading = false
                     self.error = false
@@ -35,9 +37,29 @@ class DashboardViewModel: ObservableObject {
                 ApiClientProvider.shared.destroy()
                 return
             }
-            DispatchQueue.main.async {
-                self.loading = false
-                self.error = true
+            else if result.statusCode != nil {
+                let result2 = await instance.fetchDashboard()
+                if result2.successful == true {
+                    DispatchQueue.main.async {
+                        self.data = result2.data?.response ?? []
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            self.loading = false
+                            self.error = false
+                        }
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        self.loading = false
+                        self.error = true
+                    }
+                }
+            }
+            else {
+                DispatchQueue.main.async {
+                    self.loading = false
+                    self.error = true
+                }
             }
         }
     }
@@ -60,5 +82,6 @@ class DashboardViewModel: ObservableObject {
         self.loading = true
         self.error = false
         self.path = NavigationPath()
+        self.pinnedLinks = nil
     }
 }

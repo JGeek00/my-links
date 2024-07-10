@@ -240,6 +240,7 @@ private struct Header: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @EnvironmentObject private var tagsProvider: TagsProvider
+    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
     var body: some View {
@@ -247,7 +248,7 @@ private struct Header: View {
             Section {
                 HStack(spacing: 16) {
                     SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                    SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardData.filter() { $0.pinnedBy!.isEmpty == false }.count, color: Color.orange, status: .loaded)
+                    SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardViewModel.pinnedLinks, color: Color.orange, status: .loaded)
                     SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
                     SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
                 }
@@ -261,7 +262,7 @@ private struct Header: View {
                 VStack(spacing: 12) {
                     HStack(spacing: 12) {
                         SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                        SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardData.filter() { $0.pinnedBy!.isEmpty == false }.count, color: Color.orange, status: .loaded)
+                        SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardViewModel.pinnedLinks, color: Color.orange, status: .loaded)
                     }
                     HStack(spacing: 12) {
                         SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
@@ -279,11 +280,11 @@ private struct Header: View {
 private struct SummaryEntry: View {
     var icon: String
     var label: String
-    var value: Int
+    var value: Int?
     var color: Color
     var status: Enums.Status
     
-    init(icon: String, label: String, value: Int, color: Color, status: Enums.Status) {
+    init(icon: String, label: String, value: Int?, color: Color, status: Enums.Status) {
         self.icon = icon
         self.label = label
         self.value = value
@@ -316,7 +317,12 @@ private struct SummaryEntry: View {
                         Image(systemName: "exclamationmark.circle")
                     }
                     else {
-                        Text(String(value))
+                        if let value = value {
+                            Text(String(value))
+                        }
+                        else {
+                            Text("N/A")
+                        }
                     }
                 }
                 .fontWeight(.bold)
