@@ -2,13 +2,15 @@ import Foundation
 import SwiftUI
 
 class DashboardViewModel: ObservableObject { 
-    static let shared = DashboardViewModel()
+    static var shared = DashboardViewModel()
     
     @Published var data: [Link] = []
     @Published var loading = true
     @Published var error = false
     
     @Published var path = NavigationPath()
+    
+    init() {}
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
@@ -51,5 +53,12 @@ class DashboardViewModel: ObservableObject {
     func reloadAll(setLoading: Bool = false) async {
         await loadData(setLoading: setLoading)
         _ = await (LinksViewModel.shared.loadData(), LinksViewModel.shared.scrollTopList.toggle(), CollectionsProvider.shared.loadData(), TagsProvider.shared.loadData())
+    }
+    
+    func reset() {
+        self.data = []
+        self.loading = true
+        self.error = false
+        self.path = NavigationPath()
     }
 }

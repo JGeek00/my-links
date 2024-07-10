@@ -145,6 +145,8 @@
 		0DEA27EC2C347B5500F1802F /* SessionToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27EB2C347B5500F1802F /* SessionToken.swift */; };
 		0DEA27EE2C34805100F1802F /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27ED2C34805100F1802F /* DeviceInfo.swift */; };
 		0DEA27F32C35E6C300F1802F /* DocumentDownloaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27F22C35E6C300F1802F /* DocumentDownloaderView.swift */; platformFilters = (macos, ); };
+		0DF548F52C3ED6A100D5C257 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF548F42C3ED6A100D5C257 /* Dashboard.swift */; };
+		0DF548F62C3ED70700D5C257 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF548F42C3ED6A100D5C257 /* Dashboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -286,6 +288,7 @@
 		0DEA27EB2C347B5500F1802F /* SessionToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionToken.swift; sourceTree = "<group>"; };
 		0DEA27ED2C34805100F1802F /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		0DEA27F22C35E6C300F1802F /* DocumentDownloaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentDownloaderView.swift; sourceTree = "<group>"; };
+		0DF548F42C3ED6A100D5C257 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -462,6 +465,7 @@
 				0D083CA22C26642D00F0EB3B /* ReaderResponse.swift */,
 				0DEA27EB2C347B5500F1802F /* SessionToken.swift */,
 				0D8A90962C3C633700EB9DF1 /* ContributionProduct.swift */,
+				0DF548F42C3ED6A100D5C257 /* Dashboard.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -853,6 +857,7 @@
 				0D238CE72C370E55007DACF0 /* ApiClientProvider.swift in Sources */,
 				0D238CEC2C370FB4007DACF0 /* StatusResponse.swift in Sources */,
 				0D238CE52C370DD8007DACF0 /* ApiClient.swift in Sources */,
+				0DF548F62C3ED70700D5C257 /* Dashboard.swift in Sources */,
 				0D238CEA2C370FAC007DACF0 /* Collections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -866,6 +871,7 @@
 				0D55C5452C221215002CE99A /* ColorScheme.swift in Sources */,
 				0D55C51E2C21E6DC002CE99A /* Regexps.swift in Sources */,
 				0D55C5672C231199002CE99A /* LinkItem.swift in Sources */,
+				0DF548F52C3ED6A100D5C257 /* Dashboard.swift in Sources */,
 				0D55C53D2C221130002CE99A /* StorageKeys.swift in Sources */,
 				0DEA27CF2C32EA9000F1802F /* SettingsView.swift in Sources */,
 				0D55C53F2C221144002CE99A /* UserDefaultsExtension.swift in Sources */,

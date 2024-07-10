@@ -19,6 +19,8 @@ class LinksViewModel: ObservableObject {
     // Flag to triger onChange
     @Published var scrollTopList = false
     
+    init() {}
+    
     func loadData(
         cursor: Int? = nil,
         setLoading: Bool = false,
@@ -111,5 +113,17 @@ class LinksViewModel: ObservableObject {
     func reload() {
         Task { await loadData() }
         Task { await DashboardViewModel.shared.loadData() }
+    }
+    
+    func reset() {
+        self.data = []
+        self.loading = true
+        self.error = false
+        self.searchFieldValue = ""
+        self.searchPresented = false
+        self.searchQueryValue = nil
+        self.previousSearch = nil
+        self.loadingMore = false
+        self.sortingSelected = .dateNewestFirst
     }
 }

@@ -94,10 +94,11 @@ class CollectionsProvider: ObservableObject {
     }
     
     func reset() {
-        data = []
-        loading = true
-        error = false
-        deleting = false
-        deleteError = false
+        self.navigationPath = NavigationPath()
+        self.data = []
+        self.loading = true
+        self.error = false
+        self.deleting = false
+        self.deleteError = false
     }
 }

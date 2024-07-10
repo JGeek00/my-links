@@ -14,11 +14,12 @@ class ApiClientProvider: ObservableObject {
     func destroy(sessionExpired: Bool? = nil) {
         DispatchQueue.main.async {
             OnboardingViewModel.shared.showOnboarding = true
+            DashboardViewModel.shared.reset()
+            TagsProvider.shared.reset()
+            CollectionsProvider.shared.reset()
+            LinksViewModel.shared.reset()
             ApiClientProvider.shared.instance = nil
             clearInstances()
-            TagsProvider.shared = TagsProvider()
-            CollectionsProvider.shared = CollectionsProvider()
-            LinksViewModel.shared = LinksViewModel()
         }
     }
 }

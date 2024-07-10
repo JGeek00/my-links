@@ -7,7 +7,11 @@ class TagsProvider: ObservableObject {
     @Published var loading = true
     @Published var error = false
     
-    init() {}
+    init() {
+        self.data = []
+        self.loading = true
+        self.error = false
+    }
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {

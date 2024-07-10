@@ -36,6 +36,35 @@ struct ApiClient: Equatable {
         self.token = token
     }
     
+    func fetchDashboardV2() async -> StatusResponse<DashboardV2Response> {
+        let defaultErrorResponse = StatusResponse<DashboardV2Response>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v2/dashboard") else { return defaultErrorResponse }
+        do {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            components.queryItems = [
+              URLQueryItem(name: "pinnedOnly", value: "true"),
+              URLQueryItem(name: "sort", value: "0"),
+            ]
+            
+            var request = URLRequest(url: components.url!)
+            
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(DashboardV2Response.self, from: data)
+                return StatusResponse<DashboardV2Response>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<DashboardV2Response>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+    
     func fetchDashboard() async -> StatusResponse<LinksResponse> {
         let defaultErrorResponse = StatusResponse<LinksResponse>(successful: false, statusCode: nil, data: nil)
         
