@@ -6,7 +6,7 @@ class LinkFormViewModel: ObservableObject {
     
     @Published var url = ""
     @Published var name = ""
-    @Published var collection: Int? = nil
+    @Published var collection = 0
     @Published var description = ""
     @Published var selectedTags: [String] = []
     @Published var localTags: [String] = []
@@ -20,7 +20,7 @@ class LinkFormViewModel: ObservableObject {
     
     init(link: Link? = nil) {
         let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
-        collection = link?.collection?.id ?? filtered.first?.id
+        collection = link?.collection?.id ?? filtered.first?.id ?? 0
         
         guard let link = link else { return }
         editingLink = link
