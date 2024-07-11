@@ -29,17 +29,52 @@ struct LinkItemComponent: View {
                 Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
                     .lineLimit(1)
                     .fontWeight(.medium)
-                if let urlHost = urlHost {
-                    Spacer()
-                        .frame(height: 4)
-                    HStack {
-                        Image(systemName: "link")
-                            .font(.system(size: 10))
-                        Text(urlHost)
-                            .font(.system(size: 14))
+                HStack(alignment: .center) {
+                    if let urlHost = urlHost {
+                        HStack {
+                            Image(systemName: "link")
+                                .font(.system(size: 10))
+                            Text(urlHost)
+                                .font(.system(size: 14))
+                        }
                     }
-                    .foregroundStyle(Color.gray)
+                    else {
+                        Spacer()
+                    }
+                    Spacer()
+                    if readerUrl != nil || item.pdf != nil || item.image != nil {
+                        Group {
+                            if readerUrl != nil {
+                                Button {
+                                    readerModeSheet.toggle()
+                                } label: {
+                                    Label("Reader mode", systemImage: "textformat")
+                                }
+                            }
+                            if item.pdf != nil {
+                                Button {
+                                    pdfViewerSheet.toggle()
+                                } label: {
+                                    Label("Download PDF file", systemImage: "doc")
+                                }
+                            }
+                            if item.image != nil {
+                                Button {
+                                    imageViewerSheet.toggle()
+                                } label: {
+                                    Label("Download image file", systemImage: "photo")
+                                }
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .labelStyle(.iconOnly)
+                    }
+                    else {
+                        Spacer()
+                    }
                 }
+                .foregroundStyle(Color.gray)
+                .padding(.vertical, 4)
                 if dateFormatted != nil || (item.collection?.name != nil) {
                     Spacer()
                         .frame(height: 4)
