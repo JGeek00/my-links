@@ -40,7 +40,9 @@ struct MyLinksApp: App {
                     }
                 }
                 .onDisappear {
-                    NSApp.setActivationPolicy(.accessory)
+                    if NSApplication.shared.windows.count <= 1 {
+                        NSApp.setActivationPolicy(.accessory)
+                    }
                 }
         }
         .defaultSize(width: 1200, height: 700)

@@ -8,7 +8,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         if let items = NSApp.mainMenu?.items {
-            items.suffix(from: 1).forEach { item in
+            items.suffix(from: 3).forEach { item in
                 NSApp.mainMenu?.removeItem(item)
             }
         }
