@@ -30,7 +30,7 @@ struct DashboardView: View {
                     }
                 }
                 else {
-                    let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                    let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
                     let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
                     
                     ScrollView {
@@ -57,7 +57,7 @@ struct DashboardView: View {
                                         .fontWeight(.semibold)
                                     Spacer()
                                     NavigationLink {
-                                        LinksFilteredView(input: LinksFilteredRequest(name: "Recent", mode: .recent, id: nil))
+                                        LinksFilteredView(input: LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil))
                                     } label: {
                                         Text("View all")
                                         Image(systemName: "chevron.right")
@@ -86,7 +86,7 @@ struct DashboardView: View {
                                         .fontWeight(.semibold)
                                     Spacer()
                                     NavigationLink {
-                                        LinksFilteredView(input: LinksFilteredRequest(name: "Pinned", mode: .pinned, id: nil))
+                                        LinksFilteredView(input: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
                                     } label: {
                                         Text("View all")
                                         Image(systemName: "chevron.right")

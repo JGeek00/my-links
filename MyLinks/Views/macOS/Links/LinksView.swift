@@ -26,7 +26,7 @@ struct LinksView: View {
                 }
             }
             else {
-                let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
                 if !filtered.isEmpty {
                     ScrollViewReader(content: { scrollView in
                         ScrollView {

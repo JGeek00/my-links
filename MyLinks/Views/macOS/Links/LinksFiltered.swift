@@ -36,7 +36,7 @@ struct LinksFilteredView: View {
                 }
             }
             else {
-                let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
                 let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && input.id != nil && $0.parent!.id! == input.id! }
                 ScrollViewReader(content: { scrollView in
                     ScrollView {

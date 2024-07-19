@@ -17,29 +17,56 @@ struct LinkItemComponent: View {
     @State private var readerModeSheet = false
     @State private var pdfViewerSheet = false
     @State private var imageViewerSheet = false
+    @State private var linkContentUnavailable = false
     
     var body: some View {
-        let urlHost = getUrlHost(item.url!)
+        let urlHost = getUrlHost(item.url)
         let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
         Button {
-            openURL(URL(string: item.url!)!)
+            switch item.type {
+            case .url:
+                if let url = item.url {
+                    openURL(URL(string: url)!)
+                } else {
+                    linkContentUnavailable = true
+                }
+            case .image:
+                imageViewerSheet.toggle()
+            case .pdf:
+                pdfViewerSheet.toggle()
+            case .none:
+                linkContentUnavailable = true
+            }
+           
         } label: {
             VStack(alignment: .leading) {
                 Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
                     .lineLimit(1)
                     .fontWeight(.medium)
                 HStack(alignment: .center) {
-                    if let urlHost = urlHost {
-                        HStack {
-                            Image(systemName: "link")
+                    HStack {
+                        switch item.type {
+                        case .url:
+                            if let urlHost = urlHost {
+                                Image(systemName: "link")
+                                    .font(.system(size: 10))
+                                Text(urlHost)
+                                    .font(.system(size: 14))
+                            }
+                        case .pdf:
+                            Image(systemName: "doc")
                                 .font(.system(size: 10))
-                            Text(urlHost)
+                            Text("PDF")
                                 .font(.system(size: 14))
+                        case .image:
+                            Image(systemName: "photo")
+                                .font(.system(size: 10))
+                            Text("Image")
+                                .font(.system(size: 14))
+                        case .none:
+                            Spacer().frame(width: 0, height: 0)
                         }
-                    }
-                    else {
-                        Spacer()
                     }
                     Spacer()
                     if readerUrl != nil || item.pdf != nil || item.image != nil {
@@ -215,6 +242,11 @@ struct LinkItemComponent: View {
             .interactiveDismissDisabled()
             .frame(minWidth: 300, idealWidth: 800, maxWidth: 1000, minHeight: 300, idealHeight: 600, maxHeight: 1000)
         })
+        .alert("Link content unavailable", isPresented: $linkContentUnavailable) {
+            Button("Close", role: .cancel) {
+                linkContentUnavailable = false
+            }
+        }
     }
 }
 

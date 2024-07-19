@@ -100,7 +100,7 @@ class LinkManagerProvider: ObservableObject {
             self.processing = true
         }
         let body = LinkCreationRequest(
-            url: link.url!,
+            url: link.url,
             name: link.name!,
             description: link.description!,
             tags: link.tags!.map() { TagCreation(name: $0.name!) },
