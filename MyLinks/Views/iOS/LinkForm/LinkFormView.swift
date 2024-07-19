@@ -34,17 +34,52 @@ struct LinkFormView: View {
                 case .file:
                     if linkFormViewModel.editingLink == nil {
                         Section {
-                            Button {
-                                showFilePicker = true
-                            } label: {
-                                Group {
-                                    if let file = linkFormViewModel.selectedFileUrl {
-                                        Label(file.lastPathComponent, systemImage: "doc")
+                            HStack {
+                                Spacer()
+                                VStack(alignment: .center) {
+                                    Image(systemName: linkFormViewModel.selectedFileUrl != nil ? "doc.fill" : "folder.fill")
+                                        .font(.system(size: 24))
+                                        .foregroundStyle(Color.white)
+                                        .frame(width: 50, height: 50)
+                                        .background(.gray)
+                                        .cornerRadius(6)
+                                    Spacer()
+                                        .frame(height: 24)
+                                    Text(linkFormViewModel.selectedFileUrl != nil ? linkFormViewModel.selectedFileUrl!.lastPathComponent : String(localized: "No file selected"))
+                                        .font(.system(size: 22))
+                                        .fontWeight(.medium)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundStyle(Color.foreground)
+                                        .animation(.easeOut, value: linkFormViewModel.selectedFileUrl)
+                                    Group {
+                                        if linkFormViewModel.selectedFileUrl != nil {
+                                            Spacer()
+                                                .frame(height: 12)
+                                            Text(linkFormViewModel.selectedFileUrl!.fileSizeString)
+                                                .font(.system(size: 14))
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(Color.listItemValue)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 4)
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 20)
+                                                        .stroke(Color.listItemValue, lineWidth: 1)
+                                                )
+                                                .animation(.easeOut, value: linkFormViewModel.selectedFileUrl)
+                                            Spacer()
+                                                .frame(height: 12)
+                                        }
                                     }
-                                    else {
-                                        Label("Pick a file (up to 10 MB)", systemImage: "folder")
+                                    Spacer()
+                                        .frame(height: 12)
+                                    Button {
+                                        showFilePicker = true
+                                    } label: {
+                                        Text(linkFormViewModel.selectedFileUrl != nil ? "Replace selected file (up to 10 MB)" : "Pick a file (up to 10 MB)")
                                     }
                                 }
+                                .padding()
+                                Spacer()
                             }
                             .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.pdf, .jpeg, .png], allowsMultipleSelection: false, onCompletion: { results in
                                 switch results {
@@ -61,10 +96,6 @@ struct LinkFormView: View {
                                     selectFileError = true
                                 }
                             })
-                        } footer: {
-                            if let file = linkFormViewModel.selectedFileUrl {
-                                Text("File size: \(file.fileSizeString)")
-                            }
                         }
                     }
                 }

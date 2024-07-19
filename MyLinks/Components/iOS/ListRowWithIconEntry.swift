@@ -27,7 +27,6 @@ struct ListRowWithIconEntry: View {
         HStack {
             if systemIcon != nil {
                 Image(systemName: systemIcon!)
-                
                     .foregroundStyle(Color.white)
                     .frame(width: 28, height: 28)
                     .background(iconColor)

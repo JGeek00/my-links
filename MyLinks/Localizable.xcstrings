@@ -809,6 +809,7 @@
       }
     },
     "File size: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1239,6 +1240,16 @@
         }
       }
     },
+    "No file selected" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay fichero seleccionado"
+          }
+        }
+      }
+    },
     "No file selected." : {
       "localizations" : {
         "es" : {
@@ -1465,6 +1476,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recientes"
+          }
+        }
+      }
+    },
+    "Replace selected file (up to 10 MB)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reemplazar fichero seleccionado (hasta 10 MB)"
           }
         }
       }
