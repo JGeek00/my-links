@@ -202,7 +202,6 @@ struct LinkFormView: View {
             } message: {
                 Text("The selected file cannot be loaded on the app.")
             }
-
         }
     }
 }

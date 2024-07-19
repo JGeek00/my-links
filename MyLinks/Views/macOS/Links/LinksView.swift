@@ -3,7 +3,8 @@ import SwiftUI
 struct LinksView: View {
     @StateObject private var linksViewModel = LinksViewModel.shared
 
-    @State private var linkFormSheet = false
+    @State private var linkFormUrlSheet = false
+    @State private var linkFormFileSheet = false
     
     var body: some View {
         Group {
@@ -63,10 +64,17 @@ struct LinksView: View {
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }
-                    Button {
-                        linkFormSheet = true
-                    } label: {
-                        Image(systemName: "plus")
+                    Menu("Add", systemImage: "plus") {
+                        Button {
+                            linkFormUrlSheet = true
+                        } label: {
+                            Label("New link", systemImage: "link")
+                        }
+                        Button {
+                            linkFormFileSheet = true
+                        } label: {
+                            Label("Upload file", systemImage: "doc")
+                        }
                     }
                     Picker("Sort", systemImage: "arrow.up.arrow.down", selection: $linksViewModel.sortingSelected) {
                         Text("Date (newest first)")
@@ -93,11 +101,19 @@ struct LinksView: View {
         .onSubmit(of: .search) {
             linksViewModel.search()
         }
-        .sheet(isPresented: $linkFormSheet, content: {
-            LinkFormView() {
-                linkFormSheet = false
+        .sheet(isPresented: $linkFormUrlSheet, content: {
+            LinkFormView(mode: .url) {
+                linkFormUrlSheet = false
             } onSuccess: { newLink, action in
-                linkFormSheet = false
+                linkFormUrlSheet = false
+            }
+            .environmentObject(LinkFormViewModel())
+        })
+        .sheet(isPresented: $linkFormFileSheet, content: {
+            LinkFormView(mode: .file) {
+                linkFormFileSheet = false
+            } onSuccess: { newLink, action in
+                linkFormFileSheet = false
             }
             .environmentObject(LinkFormViewModel())
         })

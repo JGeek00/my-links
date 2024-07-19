@@ -210,7 +210,7 @@ struct LinkItemComponent: View {
             Text("This link will be deleted. This action is not reversible.")
         }
         .sheet(isPresented: $linkFormOpen, content: {
-            LinkFormView {
+            LinkFormView(mode: item.type == .url ? .url : .file) {
                 linkFormOpen = false
             } onSuccess: { resultLink, action in
                 linkFormOpen = false

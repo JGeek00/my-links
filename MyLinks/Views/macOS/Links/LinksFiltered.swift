@@ -12,7 +12,6 @@ struct LinksFilteredView: View {
         _linksFilteredViewModel = StateObject(wrappedValue: LinksFilteredViewModel(input: input))
     }
     
-    @State private var linkFormSheet = false
     @State private var collectionFormSheet = false
     
     var body: some View {
@@ -141,14 +140,6 @@ struct LinksFilteredView: View {
         .onSubmit(of: .search) {
             linksFilteredViewModel.search()
         }
-        .sheet(isPresented: $linkFormSheet, content: {
-            LinkFormView() {
-                linkFormSheet = false
-            } onSuccess: { newLink, action in
-                linkFormSheet = false
-            }
-            .environmentObject(LinkFormViewModel())
-        })
         .sheet(isPresented: $collectionFormSheet, content: {
             CollectionFormView(parentCollection: input.mode == .collection && input.id != nil ? collectionsProvider.data.first() { $0.id == input.id! } : nil) {
                 collectionFormSheet = false

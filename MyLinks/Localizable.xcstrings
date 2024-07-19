@@ -1601,7 +1601,6 @@
       }
     },
     "Server type" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
