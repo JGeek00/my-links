@@ -107,9 +107,6 @@
         }
       }
     },
-    "Add" : {
-
-    },
     "Add tag" : {
       "localizations" : {
         "es" : {
@@ -261,7 +258,6 @@
       }
     },
     "Back" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -452,7 +448,6 @@
       }
     },
     "Copied to the clipboard" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1456,7 +1451,6 @@
       }
     },
     "Readable" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1607,6 +1601,7 @@
       }
     },
     "Server type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
