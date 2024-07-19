@@ -85,12 +85,14 @@ struct LinkFormView: View {
                                 switch results {
                                 case .success(let success):
                                     if let file = success.first {
-                                        // 10 MB on bytes
-                                        if file.fileSize > 10485760 {
-                                            fileTooBigAlert = true
-                                            return
+                                        if file.startAccessingSecurityScopedResource() {
+                                            // 10 MB on bytes
+                                            if file.fileSize > 10485760 {
+                                                fileTooBigAlert = true
+                                                return
+                                            }
+                                            linkFormViewModel.setSelectedFileUrl(fileUrl: file)
                                         }
-                                        linkFormViewModel.setSelectedFileUrl(fileUrl: file)
                                     }
                                 case .failure:
                                     selectFileError = true
