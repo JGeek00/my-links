@@ -11,7 +11,8 @@ struct DashboardView: View {
     init() {}
     
     @State private var navigationPath = NavigationPath()
-    @State private var linkFormSheet = false
+    @State private var linkFormUrlSheet = false
+    @State private var linkFormFileSheet = false
     @State private var collectionFormSheet = false
     
     var body: some View {
@@ -28,10 +29,17 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Button {
-                            linkFormSheet.toggle()
-                        } label: {
-                            Label("New link", systemImage: "link")
+                        Section {
+                            Button {
+                                linkFormUrlSheet.toggle()
+                            } label: {
+                                Label("New link", systemImage: "link")
+                            }
+                            Button {
+                                linkFormFileSheet.toggle()
+                            } label: {
+                                Label("Upload file", systemImage: "doc")
+                            }
                         }
                         Button {
                             collectionFormSheet = true
@@ -48,11 +56,19 @@ struct DashboardView: View {
             .navigationDestination(for: LinksFilteredRequest.self) { value in
                 LinksFilteredView(input: value)
             }
-            .sheet(isPresented: $linkFormSheet, content: {
-                LinkFormView() {
-                    linkFormSheet = false
+            .sheet(isPresented: $linkFormUrlSheet, content: {
+                LinkFormView(mode: .url) {
+                    linkFormUrlSheet = false
                 } onSuccess: { newLink, action in
-                    linkFormSheet = false
+                    linkFormUrlSheet = false
+                }
+                .environmentObject(LinkFormViewModel())
+            })
+            .sheet(isPresented: $linkFormFileSheet, content: {
+                LinkFormView(mode: .file) {
+                    linkFormFileSheet = false
+                } onSuccess: { newLink, action in
+                    linkFormFileSheet = false
                 }
                 .environmentObject(LinkFormViewModel())
             })

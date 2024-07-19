@@ -171,6 +171,68 @@ struct ApiClient: Equatable {
         }
     }
     
+    func uploadLinkFile(linkId: Int, fileUrl: URL, fileType: Enums.DownloadDocumentType) async -> StatusResponse<FileDataResponse> {
+        func fileFormatNumber() -> String {
+            switch fileType {
+            case .pdf:
+                return "1"
+            case .image:
+                return "0"
+            }
+        }
+        
+        func getContentType() -> String {
+            if fileUrl.pathExtension == "PDF" {
+                return "application/pdf"
+            }
+            else if fileUrl.pathExtension == "PNG" {
+                return "image/png"
+            }
+            else if fileUrl.pathExtension == "JPG" || fileUrl.pathExtension == "JPEG" {
+                return "image/jpeg"
+            }
+            else {
+                return ""
+            }
+        }
+        
+        let defaultErrorResponse = StatusResponse<FileDataResponse>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/archives/\(linkId)?format=\(fileFormatNumber())") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            let boundary = UUID().uuidString
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "POST"
+            request.addValue("multipart/form-data: boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+                        
+            let fileData = try! Data(contentsOf: fileUrl)
+
+            var body = Data()
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileUrl.lastPathComponent)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: \(getContentType())\r\n\r\n".data(using: .utf8)!)
+            body.append(fileData)
+            body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+            request.httpBody = body
+
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(FileDataResponse.self, from: data)
+                return StatusResponse<FileDataResponse>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<FileDataResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+    
     func editLink(linkId: Int, body: LinkCreationRequest) async -> StatusResponse<LinkResponse> {
         let defaultErrorResponse = StatusResponse<LinkResponse>(successful: false, statusCode: nil, data: nil)
         

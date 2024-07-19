@@ -8,7 +8,8 @@ struct LinksView: View {
     
     init() {}
     
-    @State private var linkFormSheet = false
+    @State private var linkFormUrlSheet = false
+    @State private var linkFormFileSheet = false
     
     var body: some View {
         NavigationStack {
@@ -105,8 +106,17 @@ struct LinksView: View {
                             Image(systemName: "arrow.up.arrow.down")
                         }
                         .disabled(linksViewModel.loading)
-                        Button {
-                            linkFormSheet.toggle()
+                        Menu {
+                            Button {
+                                linkFormUrlSheet.toggle()
+                            } label: {
+                                Label("New link", systemImage: "link")
+                            }
+                            Button {
+                                linkFormFileSheet.toggle()
+                            } label: {
+                                Label("Upload file", systemImage: "doc")
+                            }
                         } label: {
                             Image(systemName: "plus")
                         }
@@ -120,11 +130,19 @@ struct LinksView: View {
             .onSubmit(of: .search) {
                 linksViewModel.search()
             }
-            .sheet(isPresented: $linkFormSheet, content: {
-                LinkFormView() {
-                    linkFormSheet = false
+            .sheet(isPresented: $linkFormUrlSheet, content: {
+                LinkFormView(mode: .url) {
+                    linkFormUrlSheet = false
                 } onSuccess: { newLink, action in
-                    linkFormSheet = false
+                    linkFormUrlSheet = false
+                }
+                .environmentObject(LinkFormViewModel())
+            })
+            .sheet(isPresented: $linkFormFileSheet, content: {
+                LinkFormView(mode: .file) {
+                    linkFormFileSheet = false
+                } onSuccess: { newLink, action in
+                    linkFormFileSheet = false
                 }
                 .environmentObject(LinkFormViewModel())
             })

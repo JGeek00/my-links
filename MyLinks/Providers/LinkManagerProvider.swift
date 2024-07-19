@@ -17,15 +17,23 @@ class LinkManagerProvider: ObservableObject {
         Task {
             let result = await instance.createLink(link)
             if result.successful == true {
-                DispatchQueue.main.async {
-                    Task { await TagsProvider.shared.loadData() }
-                    Task { await CollectionsProvider.shared.loadData() }
-                    Task { await DashboardViewModel.shared.loadData() }
-                    Task {
-                        await LinksViewModel.shared.loadData()
-                        LinksViewModel.shared.scrollTopList.toggle()
-                    }
+                onSuccess(result.data!.response!)
+            }
+            else {
+                if result.statusCode == 401 {
+                    ApiClientProvider.shared.destroy()
+                    return
                 }
+                onError(result.statusCode)
+            }
+        }
+    }
+    
+    func uploadLinkFile(linkId: Int, fileUrl: URL, fileType: Enums.DownloadDocumentType, onSuccess: @escaping (FileResponse) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
+        guard let instance = ApiClientProvider.shared.instance else { return }
+        Task {
+            let result = await instance.uploadLinkFile(linkId: linkId, fileUrl: fileUrl, fileType: fileType)
+            if result.successful == true {
                 onSuccess(result.data!.response!)
             }
             else {

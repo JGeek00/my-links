@@ -798,6 +798,36 @@
         }
       }
     },
+    "Failed to load file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al cargar el fichero"
+          }
+        }
+      }
+    },
+    "File size: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamaño del fichero: %@"
+          }
+        }
+      }
+    },
+    "File too big" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El fichero es muy grande"
+          }
+        }
+      }
+    },
     "Get started" : {
       "localizations" : {
         "es" : {
@@ -1209,6 +1239,16 @@
         }
       }
     },
+    "No file selected." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ningún fichero seleccionado."
+          }
+        }
+      }
+    },
     "No links added" : {
       "localizations" : {
         "es" : {
@@ -1315,6 +1355,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PDF no disponible"
+          }
+        }
+      }
+    },
+    "Pick a file (up to 10 MB)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un fichero (hasta 10 MB)"
           }
         }
       }
@@ -1530,6 +1580,7 @@
       }
     },
     "Server type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1649,6 +1700,16 @@
         }
       }
     },
+    "The introduced URL is not valid." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La URL introducida no es válida."
+          }
+        }
+      }
+    },
     "The link could not be deleted due to an error." : {
       "localizations" : {
         "es" : {
@@ -1715,6 +1776,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La compra se ha completado. Gracias por contribuir al desarrollo y mantenimiento de la aplicación."
+          }
+        }
+      }
+    },
+    "The selected file cannot be loaded on the app." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El fichero seleccionado no se puede cargar en la aplicación."
+          }
+        }
+      }
+    },
+    "The selected file could not be uploaded." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El fichero seleccionado no pudo ser subido."
+          }
+        }
+      }
+    },
+    "The selected file has an unsupported format" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El fichero seleccionado tiene un formato no soportado."
+          }
+        }
+      }
+    },
+    "The selected file is too big. The file size must be below 10 MB." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El fichero seleccionado es muy grande. El tamaño del fichero debe ser inferior a 10 MB."
           }
         }
       }
@@ -1847,6 +1948,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Actualizado"
+          }
+        }
+      }
+    },
+    "Upload file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subir fichero"
           }
         }
       }

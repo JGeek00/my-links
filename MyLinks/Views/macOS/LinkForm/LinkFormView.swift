@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct LinkFormView: View {
+    var mode: Enums.LinkFormItem
     var onClose: () -> Void
     var onSuccess: (Link, Enums.LinkTaskCompleted) -> Void
     
-    init(onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+    init(mode: Enums.LinkFormItem, onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+        self.mode = mode
         self.onClose = onClose
         self.onSuccess = onSuccess
     }

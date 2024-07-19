@@ -80,4 +80,9 @@ class Enums {
         case pdf
         case image
     }
+    
+    enum LinkFormItem: String {
+        case url
+        case file
+    }
 }

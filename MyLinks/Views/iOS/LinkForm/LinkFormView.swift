@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct LinkFormView: View {
+    var mode: Enums.LinkFormItem
     var onClose: () -> Void
     var onSuccess: (Link, Enums.LinkTaskCompleted) -> Void
     
-    init(onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+    init(mode: Enums.LinkFormItem, onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+        self.mode = mode
         self.onClose = onClose
         self.onSuccess = onSuccess
     }
@@ -13,15 +15,58 @@ struct LinkFormView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var tagsProvider: TagsProvider
     
+    @State private var showFilePicker = false
+    @State private var fileTooBigAlert = false
+    @State private var selectFileError = false
+    
     var body: some View {
         NavigationStack {
             Form {
-                Section {
-                    TextField("URL", text: $linkFormViewModel.url)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                        .keyboardType(.URL)
-                        .disabled(linkFormViewModel.editingLink != nil)
+                switch mode {
+                case .url:
+                    Section {
+                        TextField("URL", text: $linkFormViewModel.url)
+                            .autocorrectionDisabled()
+                            .textInputAutocapitalization(.never)
+                            .keyboardType(.URL)
+                            .disabled(linkFormViewModel.editingLink != nil)
+                    }
+                case .file:
+                    if linkFormViewModel.editingLink == nil {
+                        Section {
+                            Button {
+                                showFilePicker = true
+                            } label: {
+                                Group {
+                                    if let file = linkFormViewModel.selectedFileUrl {
+                                        Label(file.lastPathComponent, systemImage: "doc")
+                                    }
+                                    else {
+                                        Label("Pick a file (up to 10 MB)", systemImage: "folder")
+                                    }
+                                }
+                            }
+                            .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.pdf, .jpeg, .png], allowsMultipleSelection: false, onCompletion: { results in
+                                switch results {
+                                case .success(let success):
+                                    if let file = success.first {
+                                        // 10 MB on bytes
+                                        if file.fileSize > 10485760 {
+                                            fileTooBigAlert = true
+                                            return
+                                        }
+                                        linkFormViewModel.setSelectedFileUrl(fileUrl: file)
+                                    }
+                                case .failure:
+                                    selectFileError = true
+                                }
+                            })
+                        } footer: {
+                            if let file = linkFormViewModel.selectedFileUrl {
+                                Text("File size: \(file.fileSizeString)")
+                            }
+                        }
+                    }
                 }
                 Section {
                     TextField("Name", text: $linkFormViewModel.name)
@@ -76,7 +121,7 @@ struct LinkFormView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        linkFormViewModel.onSave() { newLink in
+                        linkFormViewModel.onSave(mode: mode) { newLink in
                             onSuccess(newLink, linkFormViewModel.editingLink != nil ? .edit : .create)
                         }
                     } label: {
@@ -108,6 +153,25 @@ struct LinkFormView: View {
             } message: {
                 Text(linkFormViewModel.savingErrorMessage)
             }
+            .alert("File too big", isPresented: $fileTooBigAlert) {
+                Button {
+                    fileTooBigAlert = false
+                } label: {
+                    Text("Close")
+                }
+            } message: {
+                Text("The selected file is too big. The file size must be below 10 MB.")
+            }
+            .alert("Failed to load file", isPresented: $selectFileError) {
+                Button {
+                    selectFileError = false
+                } label: {
+                    Text("Close")
+                }
+            } message: {
+                Text("The selected file cannot be loaded on the app.")
+            }
+
         }
     }
 }

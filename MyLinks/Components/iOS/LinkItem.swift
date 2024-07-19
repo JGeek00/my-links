@@ -41,7 +41,7 @@ struct LinkItemComponent: View {
             }
         } label: {
             VStack(alignment: .leading) {
-                Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
+                Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url ?? "")
                     .lineLimit(1)
                     .fontWeight(.medium)
                 Spacer()
@@ -173,7 +173,7 @@ struct LinkItemComponent: View {
             Text("This link will be deleted. This action is not reversible.")
         }
         .sheet(isPresented: $linkFormOpen, content: {
-            LinkFormView {
+            LinkFormView(mode: item.type == .url ? .url : .file) {
                 linkFormOpen = false
             } onSuccess: { resultLink, action in
                 linkFormOpen = false
