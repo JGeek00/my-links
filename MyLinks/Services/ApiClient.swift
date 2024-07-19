@@ -175,20 +175,20 @@ struct ApiClient: Equatable {
         func fileFormatNumber() -> String {
             switch fileType {
             case .pdf:
-                return "1"
+                return "2"
             case .image:
                 return "0"
             }
         }
         
         func getContentType() -> String {
-            if fileUrl.pathExtension == "PDF" {
+            if fileUrl.pathExtension.lowercased() == "pdf" {
                 return "application/pdf"
             }
-            else if fileUrl.pathExtension == "PNG" {
+            else if fileUrl.pathExtension.lowercased() == "png" {
                 return "image/png"
             }
-            else if fileUrl.pathExtension == "JPG" || fileUrl.pathExtension == "JPEG" {
+            else if fileUrl.pathExtension.lowercased() == "jpg" || fileUrl.pathExtension.lowercased() == "jpeg" {
                 return "image/jpeg"
             }
             else {
@@ -206,19 +206,22 @@ struct ApiClient: Equatable {
             
             var request = URLRequest(url: components.url!)
             request.httpMethod = "POST"
-            request.addValue("multipart/form-data: boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
-                        
-            let fileData = try! Data(contentsOf: fileUrl)
-
+                    
             var body = Data()
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileUrl.lastPathComponent)\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: \(getContentType())\r\n\r\n".data(using: .utf8)!)
-            body.append(fileData)
-            body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+            body += Data("--\(boundary)\r\n".utf8)
+            body += Data("Content-Disposition: form-data; name=\"file\"".utf8)
+            if let fileContent = try? Data(contentsOf: fileUrl) {
+                body += Data("; filename=\"\(fileUrl.lastPathComponent)\"\r\n".utf8)
+                body += Data("Content-Type: \(getContentType())\r\n".utf8)
+                body += Data("\r\n".utf8)
+                body += fileContent
+                body += Data("\r\n".utf8)
+            }
+            body += Data("--\(boundary)--\r\n".utf8);
             request.httpBody = body
-
+                        
             let (data, r) = try await URLSession.shared.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
