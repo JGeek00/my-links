@@ -77,7 +77,7 @@ private struct RegularView: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
-        let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+        let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
         let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
         ScrollView {
             Header(dashboardData: dashboardViewModel.data)
@@ -102,9 +102,7 @@ private struct RegularView: View {
                         .frame(height: 16)
                     LazyVGrid(columns: Config.gridColumns) {
                         ForEach(filtered.uniqued(), id: \.self) { item in
-                            LinkItemComponent(item: item) {
-                                openSafariView(item.url!)
-                            } onTaskCompleted: { link, action in
+                            LinkItemComponent(item: item) { link, action in
                                 dashboardViewModel.reload()
                             }
                             .padding(6)
@@ -134,9 +132,7 @@ private struct RegularView: View {
                         .frame(height: 16)
                     LazyVGrid(columns: Config.gridColumns) {
                         ForEach(pinned.uniqued(), id: \.self) { item in
-                            LinkItemComponent(item: item) {
-                                openSafariView(item.url!)
-                            } onTaskCompleted: { link, action in
+                            LinkItemComponent(item: item) { link, action in
                                 dashboardViewModel.reload()
                             }
                             .padding(6)
@@ -159,16 +155,14 @@ struct CompactView: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
-        let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+        let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
         let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
         List {
             Header(dashboardData: dashboardViewModel.data)
             if !filtered.isEmpty {
                 Section {
                     ForEach(filtered.uniqued(), id: \.self) { item in
-                        LinkItemComponent(item: item) {
-                            openSafariView(item.url!)
-                        } onTaskCompleted: { link, action in
+                        LinkItemComponent(item: item) { link, action in
                             dashboardViewModel.reload()
                         }
                     }
@@ -189,9 +183,7 @@ struct CompactView: View {
                 if !pinned.isEmpty {
                     Section {
                         ForEach(pinned.uniqued(), id: \.self) { item in
-                            LinkItemComponent(item: item) {
-                                openSafariView(item.url!)
-                            } onTaskCompleted: { link, action in
+                            LinkItemComponent(item: item) { link, action in
                                 dashboardViewModel.reload()
                             }
                         }
@@ -339,20 +331,16 @@ private struct SummaryEntry: View {
 
 private struct TabletListEntry: View {
     var item: Link
-    var onTap: () -> Void
     var onTaskCompleted: (Link, Enums.LinkTaskCompleted) -> Void
     
-    init(item: Link, onTap: @escaping () -> Void, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+    init(item: Link, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
         self.item = item
-        self.onTap = onTap
         self.onTaskCompleted = onTaskCompleted
     }
     
     var body: some View {
         Group {
-            LinkItemComponent(item: item) {
-                onTap()
-            } onTaskCompleted: { link, action in
+            LinkItemComponent(item: item) { link, action in
                 onTaskCompleted(link, action)
             }
         }

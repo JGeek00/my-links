@@ -13,7 +13,8 @@ struct LinkResponse: Codable {
 // MARK: - Link
 struct Link: Codable, Hashable {
     let id: Int?
-    let name, type, description: String?
+    let type: LinkType?
+    let name, description: String?
     let collectionID: Int?
     let url: String?
     let textContent, preview, image, pdf: String?
@@ -46,4 +47,10 @@ struct TagInfo: Codable, Hashable {
     let name: String?
     let ownerID: String?
     let createdAt, updatedAt: String?
+}
+
+enum LinkType: String, Codable, Hashable {
+    case url
+    case pdf
+    case image
 }

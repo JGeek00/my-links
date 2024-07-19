@@ -32,16 +32,14 @@ struct LinksView: View {
                     }
                 }
                 else {
-                    let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                    let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
                     if !filtered.isEmpty {
                         if horizontalSizeClass == .regular {
                             ScrollViewReader(content: { scrollView in
                                 ScrollView {
                                     LazyVGrid(columns: Config.gridColumns) {
                                         ForEach(filtered, id: \.self) { item in
-                                            LinkItemComponent(item: item) {
-                                                openSafariView(item.url!)
-                                            } onTaskCompleted: { _, _ in }
+                                            LinkItemComponent(item: item) { _, _ in }
                                             .onAppear {
                                                 if item == filtered.last {
                                                     linksViewModel.loadMore()
@@ -57,9 +55,7 @@ struct LinksView: View {
                         else {
                             ScrollViewReader { scrollView in
                                 List(filtered, id: \.self) { item in
-                                    LinkItemComponent(item: item) {
-                                        openSafariView(item.url!)
-                                    } onTaskCompleted: { _, _ in }
+                                    LinkItemComponent(item: item) { _, _ in }
                                     .onAppear {
                                         if item == filtered.last {
                                             linksViewModel.loadMore()

@@ -3,12 +3,10 @@ import AlertToast
 
 struct LinkItemComponent: View {
     var item: Link
-    var onTap: () -> Void
     var onTaskCompleted: (Link, Enums.LinkTaskCompleted) -> Void
     
-    init(item: Link, onTap: @escaping () -> Void, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+    init(item: Link, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
         self.item = item
-        self.onTap = onTap
         self.onTaskCompleted = onTaskCompleted
     }
     
@@ -20,29 +18,58 @@ struct LinkItemComponent: View {
     @State private var readerModeSheet = false
     @State private var pdfViewerSheet = false
     @State private var imageViewerSheet = false
+    @State private var linkContentUnavailable = false
         
     var body: some View {
-        let urlHost = getUrlHost(item.url!)
+        let urlHost = getUrlHost(item.url)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
         let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
         Button {
-            onTap()
+            switch item.type {
+            case .url:
+                if let url = item.url {
+                    openSafariView(url)
+                } else {
+                    linkContentUnavailable = true
+                }
+            case .image:
+                imageViewerSheet = true
+            case .pdf:
+                pdfViewerSheet = true
+            case .none:
+                linkContentUnavailable = true
+            }
         } label: {
             VStack(alignment: .leading) {
                 Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
                     .lineLimit(1)
                     .fontWeight(.medium)
-                if let urlHost = urlHost {
-                    Spacer()
-                        .frame(height: 4)
-                    HStack {
-                        Image(systemName: "link")
+                Spacer()
+                    .frame(height: 4)
+                HStack {
+                    switch item.type {
+                    case .url:
+                        if let urlHost = urlHost {
+                            Image(systemName: "link")
+                                .font(.system(size: 10))
+                            Text(urlHost)
+                                .font(.system(size: 14))
+                        }
+                    case .pdf:
+                        Image(systemName: "doc")
                             .font(.system(size: 10))
-                        Text(urlHost)
+                        Text("PDF")
                             .font(.system(size: 14))
+                    case .image:
+                        Image(systemName: "photo")
+                            .font(.system(size: 10))
+                        Text("Image")
+                            .font(.system(size: 14))
+                    case .none:
+                        Spacer().frame(width: 0, height: 0)
                     }
-                    .foregroundStyle(Color.gray)
                 }
+                .foregroundStyle(Color.gray)
                 if dateFormatted != nil || (item.collection?.name != nil) {
                     Spacer()
                         .frame(height: 4)
@@ -174,6 +201,11 @@ struct LinkItemComponent: View {
                 imageViewerSheet.toggle()
             }
         })
+        .alert("Link content unavailable", isPresented: $linkContentUnavailable) {
+            Button("Close", role: .cancel) {
+                linkContentUnavailable = false
+            }
+        }
     }
 }
 

@@ -44,7 +44,7 @@ struct LinksFilteredView: View {
                 }
             }
             else {
-                let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.url != nil && $0.tags != nil && $0.collection?.id != nil }
+                let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
                 let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && input.id != nil && $0.parent!.id! == input.id! }
                 if horizontalSizeClass == .regular {
                     ScrollViewReader(content: { scrollView in
@@ -79,9 +79,7 @@ struct LinksFilteredView: View {
                                     }
                                     LazyVGrid(columns: Config.gridColumns) {
                                         ForEach(filtered, id: \.self) { item in
-                                            LinkItemComponent(item: item) {
-                                                openSafariView(item.url!)
-                                            } onTaskCompleted: { link, action in
+                                            LinkItemComponent(item: item) { link, action in
                                                 linksFilteredViewModel.onTaskCompleted(link: link, action: action)
                                             }
                                             .onAppear {
@@ -124,9 +122,7 @@ struct LinksFilteredView: View {
                                 if input.mode == .collection && !subCollections.isEmpty {
                                     Section("Links") {
                                         ForEach(filtered, id: \.self) { item in
-                                            LinkItemComponent(item: item) {
-                                                openSafariView(item.url!)
-                                            } onTaskCompleted: { link, action in
+                                            LinkItemComponent(item: item) { link, action in
                                                 linksFilteredViewModel.onTaskCompleted(link: link, action: action)
                                             }
                                             .onAppear {
@@ -139,9 +135,7 @@ struct LinksFilteredView: View {
                                 }
                                 else {
                                     ForEach(filtered, id: \.self) { item in
-                                        LinkItemComponent(item: item) {
-                                            openSafariView(item.url!)
-                                        } onTaskCompleted: { link, action in
+                                        LinkItemComponent(item: item) { link, action in
                                             linksFilteredViewModel.onTaskCompleted(link: link, action: action)
                                         }
                                         .onAppear {

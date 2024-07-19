@@ -1,6 +1,8 @@
 import Foundation
 
-func getUrlHost(_ urlString: String) -> String? {
+func getUrlHost(_ urlString: String?) -> String? {
+    guard let urlString = urlString else { return nil }
+    
     guard let url = URL(string: urlString) else {
         return nil
     }
