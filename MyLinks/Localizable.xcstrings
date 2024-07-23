@@ -108,7 +108,14 @@
       }
     },
     "Add" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir"
+          }
+        }
+      }
     },
     "Add tag" : {
       "localizations" : {
