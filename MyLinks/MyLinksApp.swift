@@ -40,7 +40,15 @@ struct MyLinksApp: App {
                     }
                 }
                 .onDisappear {
-                    if NSApplication.shared.windows.count <= 1 {
+                    guard let windows = NSApplication.shared.windows as [NSWindow]? else { return }
+                    for window in windows {
+                        if window.identifier?.rawValue == "com_apple_SwiftUI_Settings_window" {
+                            window.close()
+                            break
+                        }
+                    }
+                    let filtered = NSApplication.shared.windows.filter() { $0.identifier?.rawValue != nil && $0.identifier?.rawValue != "com_apple_SwiftUI_Settings_window" }
+                    if filtered.count == 0 {
                         NSApp.setActivationPolicy(.accessory)
                     }
                 }
