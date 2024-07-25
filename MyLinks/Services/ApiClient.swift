@@ -454,6 +454,31 @@ struct ApiClient: Equatable {
         }
     }
     
+    func fetchWebpageHtml(linkId: Int) async -> StatusResponse<String> {
+        let defaultErrorResponse = StatusResponse<String>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/archives/\(linkId)?format=4") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "GET"
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            
+            let (data, r) = try await URLSession.shared.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                return StatusResponse<String>(successful: true, statusCode: response.statusCode, data: String(decoding: data, as: UTF8.self))
+            }
+            else {
+                return StatusResponse<String>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch let e {
+            print(e.localizedDescription)
+            return defaultErrorResponse
+        }
+    }
+    
     func fetchPdf(linkId: Int) async -> StatusResponse<Data> {
         let defaultErrorResponse = StatusResponse<Data>(successful: false, statusCode: nil, data: nil)
         

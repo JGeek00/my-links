@@ -17,7 +17,7 @@ struct Link: Codable, Hashable {
     let name, description: String?
     let collectionID: Int?
     let url: String?
-    let textContent, preview, image, pdf: String?
+    let textContent, preview, image, pdf, monolith: String?
     let readable, lastPreserved: String?
     let importDate: String?
     let createdAt, updatedAt: String?

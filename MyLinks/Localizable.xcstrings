@@ -138,6 +138,16 @@
         }
       }
     },
+    "An error occured when loading the content. Check your Internet connection and try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar el contenido. Comprueba tu conexión a internet y prueba de nuevo mas tarde."
+          }
+        }
+      }
+    },
     "An error occured when loading the dashboard data. Check your Internet connection and try again later." : {
       "localizations" : {
         "es" : {
@@ -454,6 +464,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contactar con el desarrollador"
+          }
+        }
+      }
+    },
+    "Content not available. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contenido no disponible. Prueba de nuevo mas tarde."
           }
         }
       }
@@ -2050,6 +2070,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver todos"
+          }
+        }
+      }
+    },
+    "Webpage" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Página web"
           }
         }
       }

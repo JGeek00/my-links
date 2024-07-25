@@ -12,8 +12,8 @@
 		0D083C962C264E8300F0EB3B /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 0D083C952C264E8300F0EB3B /* AlertToast */; };
 		0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C972C264E9800F0EB3B /* ToastProvider.swift */; };
 		0D083C9A2C26595400F0EB3B /* Dates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C992C26595400F0EB3B /* Dates.swift */; };
-		0D083C9F2C26639800F0EB3B /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C9E2C26639800F0EB3B /* ReaderView.swift */; platformFilter = ios; };
-		0D083CA12C2663B200F0EB3B /* ReaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CA02C2663B200F0EB3B /* ReaderViewModel.swift */; };
+		0D083C9F2C26639800F0EB3B /* HtmlViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083C9E2C26639800F0EB3B /* HtmlViewer.swift */; platformFilter = ios; };
+		0D083CA12C2663B200F0EB3B /* HtmlViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CA02C2663B200F0EB3B /* HtmlViewerViewModel.swift */; };
 		0D083CA32C26642D00F0EB3B /* ReaderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CA22C26642D00F0EB3B /* ReaderResponse.swift */; };
 		0D083CA82C26804100F0EB3B /* RichText in Frameworks */ = {isa = PBXBuildFile; productRef = 0D083CA72C26804100F0EB3B /* RichText */; };
 		0D083CAD2C27291800F0EB3B /* PdfViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CAC2C27291800F0EB3B /* PdfViewerViewModel.swift */; platformFilter = ios; };
@@ -181,8 +181,8 @@
 		0D083C822C25EAD300F0EB3B /* ListRowWithIconEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowWithIconEntry.swift; sourceTree = "<group>"; };
 		0D083C972C264E9800F0EB3B /* ToastProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastProvider.swift; sourceTree = "<group>"; };
 		0D083C992C26595400F0EB3B /* Dates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dates.swift; sourceTree = "<group>"; };
-		0D083C9E2C26639800F0EB3B /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderView.swift; sourceTree = "<group>"; };
-		0D083CA02C2663B200F0EB3B /* ReaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderViewModel.swift; sourceTree = "<group>"; };
+		0D083C9E2C26639800F0EB3B /* HtmlViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewer.swift; sourceTree = "<group>"; };
+		0D083CA02C2663B200F0EB3B /* HtmlViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewerViewModel.swift; sourceTree = "<group>"; };
 		0D083CA22C26642D00F0EB3B /* ReaderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderResponse.swift; sourceTree = "<group>"; };
 		0D083CAC2C27291800F0EB3B /* PdfViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfViewerViewModel.swift; sourceTree = "<group>"; };
 		0D083CAF2C272A1300F0EB3B /* PdfViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfViewerView.swift; sourceTree = "<group>"; };
@@ -322,7 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				0D083CAF2C272A1300F0EB3B /* PdfViewerView.swift */,
-				0D083C9E2C26639800F0EB3B /* ReaderView.swift */,
+				0D083C9E2C26639800F0EB3B /* HtmlViewer.swift */,
 				0D083CB82C27588700F0EB3B /* ImageViewerView.swift */,
 			);
 			path = ContentViewers;
@@ -498,7 +498,7 @@
 				0D55C55C2C22FDFE002CE99A /* CollectionFormViewModel.swift */,
 				0D55C5682C2312E7002CE99A /* LinksViewModel.swift */,
 				0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */,
-				0D083CA02C2663B200F0EB3B /* ReaderViewModel.swift */,
+				0D083CA02C2663B200F0EB3B /* HtmlViewerViewModel.swift */,
 				0D083CAC2C27291800F0EB3B /* PdfViewerViewModel.swift */,
 				0D083CBA2C2758A900F0EB3B /* ImageViewerViewModel.swift */,
 				0D8A90942C3C631300EB9DF1 /* TipsViewModel.swift */,
@@ -929,7 +929,7 @@
 				0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */,
 				0D55C50A2C21ACAB002CE99A /* Links.swift in Sources */,
 				0D55C54E2C2248E7002CE99A /* LinkFormView.swift in Sources */,
-				0D083C9F2C26639800F0EB3B /* ReaderView.swift in Sources */,
+				0D083C9F2C26639800F0EB3B /* HtmlViewer.swift in Sources */,
 				0DEA27BA2C31F54700F1802F /* LinkFormView.swift in Sources */,
 				0D55C5232C21F1CE002CE99A /* ApiClientProvider.swift in Sources */,
 				0DEA27E82C33360C00F1802F /* WindowIds.swift in Sources */,
@@ -973,7 +973,7 @@
 				0D55C5612C230439002CE99A /* ColorExtension.swift in Sources */,
 				0D55C5382C220E40002CE99A /* UIApplicationExtension.swift in Sources */,
 				0D55C52B2C22012E002CE99A /* GetUrlHost.swift in Sources */,
-				0D083CA12C2663B200F0EB3B /* ReaderViewModel.swift in Sources */,
+				0D083CA12C2663B200F0EB3B /* HtmlViewerViewModel.swift in Sources */,
 				0D55C5492C2241DF002CE99A /* CollectionsProvider.swift in Sources */,
 				0D55C55B2C22FDE6002CE99A /* CollectionFormView.swift in Sources */,
 				0D55C53B2C221106002CE99A /* SettingsViewModel.swift in Sources */,

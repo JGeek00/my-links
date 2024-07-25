@@ -11,10 +11,12 @@ struct LinkItemComponent: View {
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @State private var linkFormOpen = false
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
+    @State private var websiteViewerSheet = false
     @State private var readerModeSheet = false
     @State private var pdfViewerSheet = false
     @State private var imageViewerSheet = false
@@ -105,6 +107,13 @@ struct LinkItemComponent: View {
                 }
                 if readerUrl != nil || (item.pdf != nil && item.pdf != "unavailable") || (item.image != nil && item.image != "unavailable") {
                     Menu("Preserved formats", systemImage: "doc.viewfinder") {
+                        if item.monolith != nil && item.monolith != "unavailable" {
+                            Button {
+                                websiteViewerSheet.toggle()
+                            } label: {
+                                Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
+                            }
+                        }
                         if readerUrl != nil {
                             Button {
                                 readerModeSheet.toggle()
@@ -186,8 +195,13 @@ struct LinkItemComponent: View {
                 showDetailsSheet.toggle()
             }
         })
+        .sheet(isPresented: $websiteViewerSheet, content: {
+            HTMLViewer(link: item, mode: .webpage) {
+                websiteViewerSheet.toggle()
+            }
+        })
         .sheet(isPresented: $readerModeSheet, content: {
-            ReaderView(link: item) {
+            HTMLViewer(link: item, mode: .reader) {
                 readerModeSheet.toggle()
             }
         })

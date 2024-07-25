@@ -85,4 +85,9 @@ class Enums {
         case url
         case file
     }
+    
+    enum HTMLViewerMode: String {
+        case reader
+        case webpage
+    }
 }
