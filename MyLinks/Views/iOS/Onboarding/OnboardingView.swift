@@ -56,6 +56,7 @@ struct OnboardingView: View {
             .background(colorScheme == .dark ? LinearGradient(gradient: Gradient(colors: [Color.init(hex: "156487"), Color.init(hex: "0A3345")]), startPoint: .top, endPoint: .bottom) : LinearGradient(gradient: Gradient(colors: [Color.init(hex: "38BDF7"), Color.init(hex: "277A9F")]), startPoint: .top, endPoint: .bottom))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea()
+            .shadow(radius: 20)
         }
     }
 }

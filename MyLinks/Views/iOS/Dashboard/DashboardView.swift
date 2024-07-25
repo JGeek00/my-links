@@ -176,57 +176,57 @@ struct DashboardCompactView: View {
         let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
         List {
             Header(dashboardData: dashboardViewModel.data)
-            if !filtered.isEmpty {
+            Section {
+                ForEach(filtered.uniqued(), id: \.self) { item in
+                    LinkItemComponent(item: item) { link, action in
+                        dashboardViewModel.reload()
+                    }
+                }
+                .overlay(alignment: .center) {
+                    if filtered.isEmpty {
+                        ContentUnavailableView {
+                            Label("No links added", systemImage: "link")
+                        } description: {
+                            Text("Save some links on Linkwarden to see them here.")
+                        }
+                        .listRowBackground(Color.clear)
+                    }
+                }
+            } header: {
+                HStack {
+                    Text("Recent")
+                    Spacer()
+                    Button {
+                        let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
+                        dashboardViewModel.path.append(request)
+                    } label: {
+                        Text("View all")
+                        Image(systemName: "chevron.right")
+                    }
+                    .font(.system(size: 12))
+                }
+            }
+            if !pinned.isEmpty {
                 Section {
-                    ForEach(filtered.uniqued(), id: \.self) { item in
+                    ForEach(pinned.uniqued(), id: \.self) { item in
                         LinkItemComponent(item: item) { link, action in
                             dashboardViewModel.reload()
                         }
                     }
                 } header: {
                     HStack {
-                        Text("Recent")
+                        Text("Pinned")
                         Spacer()
                         Button {
-                            let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
+                            let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
                             dashboardViewModel.path.append(request)
                         } label: {
                             Text("View all")
                             Image(systemName: "chevron.right")
                         }
-                        .font(.system(size: 12))
                     }
+                    .font(.system(size: 12))
                 }
-                if !pinned.isEmpty {
-                    Section {
-                        ForEach(pinned.uniqued(), id: \.self) { item in
-                            LinkItemComponent(item: item) { link, action in
-                                dashboardViewModel.reload()
-                            }
-                        }
-                    } header: {
-                        HStack {
-                            Text("Pinned")
-                            Spacer()
-                            Button {
-                                let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
-                                dashboardViewModel.path.append(request)
-                            } label: {
-                                Text("View all")
-                                Image(systemName: "chevron.right")
-                            }
-                        }
-                        .font(.system(size: 12))
-                    }
-                }
-            }
-            else {
-                ContentUnavailableView {
-                    Label("No links added", systemImage: "link")
-                } description: {
-                    Text("Save some links on Linkwarden to see them here.")
-                }
-                .listRowBackground(Color.clear)
             }
         }
         .animation(.default, value: dashboardViewModel.data)
