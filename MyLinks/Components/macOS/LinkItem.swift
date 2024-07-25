@@ -10,10 +10,12 @@ struct LinkItemComponent: View {
     }
     
     @Environment(\.openURL) var openURL
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @State private var linkFormOpen = false
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
+    @State private var websiteViewerSheet = false
     @State private var readerModeSheet = false
     @State private var pdfViewerSheet = false
     @State private var imageViewerSheet = false
@@ -71,6 +73,15 @@ struct LinkItemComponent: View {
                     Spacer()
                     if readerUrl != nil || item.pdf != nil || item.image != nil {
                         Group {
+                            if item.monolith != nil && item.monolith != "unavailable" {
+                                Button {
+                                    websiteViewerSheet.toggle()
+                                } label: {
+                                    Image("htmltag-gray")
+                                        .resizable()
+                                        .frame(width: 12, height: 12)
+                                }
+                            }
                             if readerUrl != nil {
                                 Button {
                                     readerModeSheet.toggle()
@@ -142,6 +153,13 @@ struct LinkItemComponent: View {
                 }
                 if readerUrl != nil || item.pdf != nil || item.image != nil {
                     Menu("Preserved formats", systemImage: "doc.viewfinder") {
+                        if item.monolith != nil && item.monolith != "unavailable" {
+                            Button {
+                                websiteViewerSheet.toggle()
+                            } label: {
+                                Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
+                            }
+                        }
                         if readerUrl != nil {
                             Button {
                                 readerModeSheet.toggle()
@@ -235,8 +253,13 @@ struct LinkItemComponent: View {
             }
             .interactiveDismissDisabled()
         })
+        .sheet(isPresented: $websiteViewerSheet, content: {
+            HTMLViewer(link: item, mode: .webpage) {
+                websiteViewerSheet.toggle()
+            }
+        })
         .sheet(isPresented: $readerModeSheet, content: {
-            ReaderModeViewer(link: item) {
+            HTMLViewer(link: item, mode: .reader) {
                 readerModeSheet = false
             }
             .interactiveDismissDisabled()

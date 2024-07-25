@@ -25,7 +25,7 @@
 		0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBE2C27648700F0EB3B /* ImageViewer.swift */; platformFilter = ios; };
 		0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */; };
 		0D083CC52C2DEEBB00F0EB3B /* TokenInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */; platformFilter = ios; };
-		0D238CCB2C35EFA9007DACF0 /* ReaderModeViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CCA2C35EFA9007DACF0 /* ReaderModeViewer.swift */; platformFilters = (macos, ); };
+		0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CCA2C35EFA9007DACF0 /* HtmlViewer.swift */; platformFilters = (macos, ); };
 		0D238CD32C370953007DACF0 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CD22C370953007DACF0 /* ShareViewController.swift */; };
 		0D238CDA2C370953007DACF0 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0D238CD02C370953007DACF0 /* ShareExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0D238CE02C370B8A007DACF0 /* ShareExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CDF2C370B8A007DACF0 /* ShareExtensionView.swift */; };
@@ -193,7 +193,7 @@
 		0D083CBE2C27648700F0EB3B /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentExtension.swift; sourceTree = "<group>"; };
 		0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInstructions.swift; sourceTree = "<group>"; };
-		0D238CCA2C35EFA9007DACF0 /* ReaderModeViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderModeViewer.swift; sourceTree = "<group>"; };
+		0D238CCA2C35EFA9007DACF0 /* HtmlViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewer.swift; sourceTree = "<group>"; };
 		0D238CD02C370953007DACF0 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D238CD22C370953007DACF0 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		0D238CD72C370953007DACF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -716,7 +716,7 @@
 			isa = PBXGroup;
 			children = (
 				0DEA27F22C35E6C300F1802F /* DocumentDownloaderView.swift */,
-				0D238CCA2C35EFA9007DACF0 /* ReaderModeViewer.swift */,
+				0D238CCA2C35EFA9007DACF0 /* HtmlViewer.swift */,
 			);
 			path = FilesViewers;
 			sourceTree = "<group>";
@@ -936,7 +936,7 @@
 				0D55C5692C2312E7002CE99A /* LinksViewModel.swift in Sources */,
 				0D55C5832C23A117002CE99A /* TagsView.swift in Sources */,
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
-				0D238CCB2C35EFA9007DACF0 /* ReaderModeViewer.swift in Sources */,
+				0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */,
 				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
 				0D55C5272C21FA6E002CE99A /* Collections.swift in Sources */,
 				0DA868052C4AE2130084FC20 /* FileDataResponse.swift in Sources */,
