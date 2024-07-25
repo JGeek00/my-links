@@ -12,65 +12,63 @@ struct CollectionsView: View {
     @State private var collectionFormSheet = false
     
     var body: some View {
+        let notChildCollections = collectionsProvider.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
+        let searched = searchText != "" ? notChildCollections.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : notChildCollections
         NavigationStack(path: $collectionsProvider.navigationPath) {
             Group {
-                if collectionsProvider.loading == true {
-                    Group {
-                        ProgressView()
+                if horizontalSizeClass == .regular {
+                    ScrollView {
+                        LazyVGrid(columns: Config.gridColumns) {
+                            ForEach(searched, id: \.self) { item in
+                                CollectionItemComponent(collection: item) {
+                                    collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                } onDelete: {
+                                    collectionsProvider.deleteCollection(id: item.id!)
+                                }
+                                .padding(6)
+                            }
+                        }
+                        .padding(.horizontal, 12)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                else if collectionsProvider.error == true {
-                    ContentUnavailableView {
-                        Label("Error", systemImage: "exclamationmark.circle")
-                    } description: {
-                        Text("An error occured when loading the links data. Check your Internet connection and try again later.")
-                        Button {
-                            Task { await collectionsProvider.loadData(setLoading: true) }
-                        } label: {
-                            Label("Retry", systemImage: "arrow.counterclockwise")
+                    .overlay(alignment: .center) {
+                        if collectionsProvider.data.isEmpty {
+                            ContentUnavailableView {
+                                Label("No collections added", systemImage: "folder")
+                            } description: {
+                                Text("Create some collections on Linkwarden to see them here.")
+                            }
+                        }
+                    }
+                    .overlay(alignment: .center) {
+                        if searched.isEmpty {
+                            ContentUnavailableView {
+                                Label("No collections found", systemImage: "folder")
+                            } description: {
+                                Text("Change the search term to see some collections.")
+                            }
                         }
                     }
                 }
                 else {
-                    if collectionsProvider.data.isEmpty {
-                        ContentUnavailableView {
-                            Label("No collections added", systemImage: "folder")
-                        } description: {
-                            Text("Create some collections on Linkwarden to see them here.")
+                    List(searched, id: \.self) { item in
+                        CollectionItemComponent(collection: item) {
+                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                        } onDelete: {
+                            collectionsProvider.deleteCollection(id: item.id!)
                         }
                     }
-                    else {
-                        let notChildCollections = collectionsProvider.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
-                        let searched = searchText != "" ? notChildCollections.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : notChildCollections
-                        if !searched.isEmpty {
-                            if horizontalSizeClass == .regular {
-                                ScrollView {
-                                    LazyVGrid(columns: Config.gridColumns) {
-                                        ForEach(searched, id: \.self) { item in
-                                            CollectionItemComponent(collection: item) {
-                                                collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                            } onDelete: {
-                                                collectionsProvider.deleteCollection(id: item.id!)
-                                            }
-                                            .padding(6)
-                                        }
-                                    }
-                                    .padding(.horizontal, 12)
-                                }
-                            }
-                            else {
-                                List(searched, id: \.self) { item in
-                                    CollectionItemComponent(collection: item) {
-                                        collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                    } onDelete: {
-                                        collectionsProvider.deleteCollection(id: item.id!)
-                                    }
-                                }
-                                .animation(.default, value: searched)
+                    .animation(.default, value: searched)
+                    .overlay(alignment: .center) {
+                        if collectionsProvider.data.isEmpty {
+                            ContentUnavailableView {
+                                Label("No collections added", systemImage: "folder")
+                            } description: {
+                                Text("Create some collections on Linkwarden to see them here.")
                             }
                         }
-                        else {
+                    }
+                    .overlay(alignment: .center) {
+                        if searched.isEmpty {
                             ContentUnavailableView {
                                 Label("No collections found", systemImage: "folder")
                             } description: {
@@ -94,6 +92,9 @@ struct CollectionsView: View {
                 await collectionsProvider.loadData()
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .overlay(alignment: .center) {
+                CollectionsIndicators()
+            }
             .background(Color.listBackground)
             .customAlert(isPresented: $collectionsProvider.deleting, content: {
                 ProgressView()
@@ -114,8 +115,42 @@ struct CollectionsView: View {
                 Text("The collection could not be deleted due to an error.")
             }
             .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView(input: value)
+                LinksFilteredView()
+                    .environmentObject(LinksFilteredViewModel(input: value))
             }
+        }
+    }
+}
+
+private struct CollectionsIndicators: View {
+    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    
+    init() {}
+    
+    var body: some View {
+        if collectionsProvider.loading == true || collectionsProvider.error == true {
+            Group {
+                if collectionsProvider.loading == true {
+                    Group {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                else if collectionsProvider.error == true {
+                    ContentUnavailableView {
+                        Label("Error", systemImage: "exclamationmark.circle")
+                    } description: {
+                        Text("An error occured when loading the links data. Check your Internet connection and try again later.")
+                        Button {
+                            Task { await collectionsProvider.loadData(setLoading: true) }
+                        } label: {
+                            Label("Retry", systemImage: "arrow.counterclockwise")
+                        }
+                    }
+                }
+            }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+            .background(Color.listBackground)
         }
     }
 }

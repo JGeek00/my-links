@@ -28,6 +28,7 @@ struct RootView: View {
                             Label("Dashboard", systemImage: "house.fill")
                         }
                     LinksView()
+                        .environmentObject(LinksViewModel.shared)
                         .tabItem {
                             Label("Links", systemImage: "link")
                         }

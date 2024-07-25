@@ -19,10 +19,10 @@ struct DashboardView: View {
         NavigationStack(path: $dashboardViewModel.path) {
             Group {
                 if horizontalSizeClass == .regular {
-                    RegularView()
+                    DashboardRegularView()
                 }
                 else {
-                    CompactView()
+                    DashboardCompactView()
                 }
             }
             .navigationTitle("Dashboard")
@@ -54,7 +54,8 @@ struct DashboardView: View {
             }
             .background(Color.listBackground)
             .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView(input: value)
+                LinksFilteredView()
+                    .environmentObject(LinksFilteredViewModel(input: value))
             }
             .sheet(isPresented: $linkFormUrlSheet, content: {
                 LinkFormView(mode: .url) {
@@ -89,7 +90,7 @@ struct DashboardView: View {
     }
 }
 
-private struct RegularView: View {
+private struct DashboardRegularView: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
@@ -162,12 +163,12 @@ private struct RegularView: View {
             await dashboardViewModel.loadData()
         }
         .overlay(alignment: .center) {
-            StautsIndicators()
+            DashboardIndicators()
         }
     }
 }
 
-struct CompactView: View {
+struct DashboardCompactView: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
@@ -233,7 +234,7 @@ struct CompactView: View {
             await dashboardViewModel.loadData()
         }
         .overlay(alignment: .center) {
-            StautsIndicators()
+            DashboardIndicators()
         }
     }
 }
@@ -364,7 +365,7 @@ private struct TabletListEntry: View {
     }
 }
 
-private struct StautsIndicators: View {
+private struct DashboardIndicators: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
