@@ -108,6 +108,7 @@
       }
     },
     "Add" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -138,7 +139,6 @@
       }
     },
     "An error occured when loading the content. Check your Internet connection and try again later." : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -279,7 +279,6 @@
       }
     },
     "Back" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -480,12 +479,21 @@
       }
     },
     "Copied to the clipboard" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copiado al portapapeles."
+          }
+        }
+      }
+    },
+    "Copy link URL" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar URL del enlace"
           }
         }
       }
@@ -1113,6 +1121,16 @@
         }
       }
     },
+    "Link URL copied to the clipboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL del enlace copiada al portapapeles"
+          }
+        }
+      }
+    },
     "Links" : {
       "localizations" : {
         "es" : {
@@ -1454,7 +1472,6 @@
       }
     },
     "Processing..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1485,7 +1502,6 @@
       }
     },
     "Readable" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

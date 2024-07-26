@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import AlertToast
 
 struct LinkItemComponent: View {
@@ -13,6 +14,7 @@ struct LinkItemComponent: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
+    @EnvironmentObject private var toastProvider: ToastProvider
     @State private var linkFormOpen = false
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
@@ -105,7 +107,13 @@ struct LinkItemComponent: View {
                 } label: {
                     Label("Link details", systemImage: "info.circle")
                 }
-                if readerUrl != nil || (item.pdf != nil && item.pdf != "unavailable") || (item.image != nil && item.image != "unavailable") {
+                Button {
+                    UIPasteboard.general.string = item.url!
+                    toastProvider.showToast(icon: "doc.on.doc", title: String(localized: "Link URL copied to the clipboard"))
+                } label: {
+                    Label("Copy link URL", systemImage: "doc.on.doc")
+                }
+                if (item.monolith != nil && item.monolith != "unavailable") || readerUrl != nil || (item.pdf != nil && item.pdf != "unavailable") || (item.image != nil && item.image != "unavailable") {
                     Menu("Preserved formats", systemImage: "doc.viewfinder") {
                         if item.monolith != nil && item.monolith != "unavailable" {
                             Button {

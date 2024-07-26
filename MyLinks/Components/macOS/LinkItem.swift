@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 struct LinkItemComponent: View {
     var item: Link
@@ -12,6 +13,7 @@ struct LinkItemComponent: View {
     @Environment(\.openURL) var openURL
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
+    @EnvironmentObject private var toastProvider: ToastProvider
     @State private var linkFormOpen = false
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
@@ -150,6 +152,13 @@ struct LinkItemComponent: View {
                     showDetailsSheet.toggle()
                 } label: {
                     Label("Link details", systemImage: "info.circle")
+                }
+                Button {
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(item.url!, forType: .string)
+                    toastProvider.showToast(icon: "doc.on.doc", title: String(localized: "Link URL copied to the clipboard"))
+                } label: {
+                    Label("Copy link URL", systemImage: "doc.on.doc")
                 }
                 if readerUrl != nil || item.pdf != nil || item.image != nil {
                     Menu("Preserved formats", systemImage: "doc.viewfinder") {
