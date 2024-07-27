@@ -507,7 +507,7 @@ struct ApiClient: Equatable {
     func fetchImage(linkId: Int) async -> StatusResponse<Data> {
         let defaultErrorResponse = StatusResponse<Data>(successful: false, statusCode: nil, data: nil)
         
-        guard let url = URL(string: "\(self.url)/api/v1/archives/\(linkId)?format=0") else { return defaultErrorResponse }
+        guard let url = URL(string: "\(self.url)/api/v1/archives/\(linkId)?format=1") else { return defaultErrorResponse }
         do {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             
