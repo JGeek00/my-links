@@ -23,6 +23,9 @@ struct OnboardingView: View {
             .fontDesign(.rounded)
             .tabViewStyle(.page(indexDisplayMode: .never))
             .contentShape(Rectangle()).simultaneousGesture(DragGesture())
+            .onAppear {
+                  UIScrollView.appearance().isScrollEnabled = false
+            }
         }
         else {
             VStack {
