@@ -137,8 +137,17 @@
         }
       }
     },
+    "Advanced settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes avanzados"
+          }
+        }
+      }
+    },
     "An error occured when loading the content. Check your Internet connection and try again later." : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -279,7 +288,6 @@
       }
     },
     "Back" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -480,7 +488,6 @@
       }
     },
     "Copied to the clipboard" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1504,7 +1511,6 @@
       }
     },
     "Readable" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1540,6 +1546,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reemplazar fichero seleccionado (hasta 10 MB)"
+          }
+        }
+      }
+    },
+    "Replaces the top navigation tab bar introduced on iOS 18 with the previous one. This only affects to iPadOS." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reemplaza la barra de navegación de pestañas superior introducida en iOS 18 con la existente anteriormente. Esto solo afecta a iPadOS."
           }
         }
       }
@@ -2042,6 +2058,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL"
+          }
+        }
+      }
+    },
+    "Use old navigation tab bar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar barra de pestañas de navegación antigua"
           }
         }
       }

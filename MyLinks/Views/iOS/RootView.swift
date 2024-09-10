@@ -12,11 +12,14 @@ struct RootView: View {
     let tagsProvider = TagsProvider.shared
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
+    @AppStorage(StorageKeys.useOldTabBar, store: UserDefaults.shared) private var useOldTabBar: Bool = false
     
     @FetchRequest(
         entity: ServerInstance.entity(),
         sortDescriptors: []
     ) private var instances: FetchedResults<ServerInstance>
+    
+    @Environment(\.horizontalSizeClass) var currentHorizontalSizeClass
     
     var body: some View {
         Group {
@@ -27,24 +30,30 @@ struct RootView: View {
                         .tabItem {
                             Label("Dashboard", systemImage: "house.fill")
                         }
+                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                     LinksView()
                         .environmentObject(LinksViewModel.shared)
                         .tabItem {
                             Label("Links", systemImage: "link")
                         }
+                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                     CollectionsView()
                         .tabItem {
                             Label("Collections", systemImage: "folder")
                         }
+                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                     TagsView()
                         .tabItem {
                             Label("Tags", systemImage: "tag")
                         }
+                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                     SettingsView()
                         .tabItem {
                             Label("Settings", systemImage: "gear")
                         }
+                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                 }
+                .environment(\.horizontalSizeClass, useOldTabBar == true ? .compact : currentHorizontalSizeClass)
                 .onAppear(perform: {
                     if collectionsProvider.data.isEmpty {
                         Task { await collectionsProvider.loadData() }

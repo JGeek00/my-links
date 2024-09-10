@@ -41,6 +41,15 @@ struct SettingsView: View {
                         Text("You will have to establish a connection again.")
                     }
                 }
+                if #available(iOS 18, *) {
+                    Section {
+                        NavigationLink {
+                            AdvancedSettings()
+                        } label: {
+                            ListRowWithIconEntry(systemIcon: "gear", iconColor: .gray, label: "Advanced settings")
+                        }
+                    }
+                }
                 Section("Linkwarden") {
                     Button {
                         settingsViewModel.linkwardenSiteOpen.toggle()
