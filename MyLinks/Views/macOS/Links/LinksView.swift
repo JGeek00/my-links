@@ -123,9 +123,7 @@ struct LinksView: View {
             }
         })
         .onAppear(perform: {
-            if linksViewModel.data.isEmpty {
-                Task { await linksViewModel.loadData() }
-            }
+            Task { await linksViewModel.loadData() }
         })
     }
 }

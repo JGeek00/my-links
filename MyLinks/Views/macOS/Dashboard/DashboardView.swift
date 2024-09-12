@@ -169,9 +169,7 @@ struct DashboardView: View {
                 .environmentObject(CollectionFormViewModel())
             })
             .onAppear(perform: {
-                if dashboardViewModel.data.isEmpty {
-                    Task { await dashboardViewModel.loadData() }
-                }
+                Task { await dashboardViewModel.loadData() }
             })
         }
     }

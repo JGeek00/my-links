@@ -31,12 +31,8 @@ struct RootView: View {
                         .navigationTitle("Dashboard")
                 }
                 .onAppear(perform: {
-                    if collectionsProvider.data.isEmpty {
-                        Task { await collectionsProvider.loadData() }
-                    }
-                    if tagsProvider.data.isEmpty {
-                        Task { await tagsProvider.loadData() }
-                    }
+                    Task { await collectionsProvider.loadData() }
+                    Task { await tagsProvider.loadData() }
                 })
                 .alert("Error", isPresented: $linkManagerProvider.errorAlert) {
                     Button("Close", role: .cancel) {
