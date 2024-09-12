@@ -54,6 +54,9 @@ class LinksFilteredViewModel: ObservableObject {
                 else {
                     self.data = result.data?.response ?? []
                 }
+            }
+            // The duration of the list animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
                 self.loading = false
                 self.error = false
             }

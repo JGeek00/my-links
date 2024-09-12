@@ -21,6 +21,7 @@ struct LinksFilteredView: View {
             }
         }
         .navigationTitle(linksFilteredViewModel.input.name)
+        .navigationBarTitleDisplayMode(.inline)
         .refreshable {
             await linksFilteredViewModel.loadData()
         }
@@ -147,9 +148,9 @@ private struct LinksFilteredRegularView: View {
                 }
                 else {
                     ContentUnavailableView {
-                        Label("No links added", systemImage: "link")
+                        Label("No links added to this collection", systemImage: "link")
                     } description: {
-                        Text("Save some links on Linkwarden to see them here.")
+                        Text("Add some links to this collection to see them here.")
                     }
                 }
             }
@@ -167,58 +168,58 @@ private struct LinksFilteredCompactView: View {
     var body: some View {
         let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
         let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
-        ScrollViewReader { scrollView in
-            List {
-                if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
-                    Section("Collections") {
-                        ForEach(subCollections, id: \.self) { item in
-                            CollectionItemComponent(collection: item) {
-                                collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                            } onDelete: {
-                                collectionsProvider.deleteCollection(id: item.id!)
+        
+        if filtered.isEmpty && subCollections.isEmpty {
+            // Show when no links and no subcategories
+            ContentUnavailableView {
+                Label("No links added to this collection", systemImage: "link")
+            } description: {
+                Text("Add some links to this collection to see them here.")
+            }
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+        }
+        else {
+            ScrollViewReader { scrollView in
+                List {
+                    if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
+                        Section("Collections") {
+                            ForEach(subCollections, id: \.self) { item in
+                                CollectionItemComponent(collection: item) {
+                                    collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                } onDelete: {
+                                    collectionsProvider.deleteCollection(id: item.id!)
+                                }
                             }
                         }
                     }
-                }
-                if linksFilteredViewModel.input.mode == .collection && !subCollections.isEmpty {
-                    Section("Links") {
-                        ForEach(filtered, id: \.self) { item in
-                            LinkItemComponent(item: item) { link, action in
-                                linksFilteredViewModel.onTaskCompleted(link: link, action: action)
-                            }
-                            .onAppear {
-                                if item == filtered.last {
-                                    linksFilteredViewModel.loadMore()
+                    if filtered.isEmpty {
+                        // Show when subcategories but no links
+                        ContentUnavailableView {
+                            Label("No links added to this collection", systemImage: "link")
+                        } description: {
+                            Text("Add some links to this collection to see them here.")
+                        }
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    }
+                    else {
+                        Section("Links") {
+                            ForEach(filtered, id: \.self) { item in
+                                LinkItemComponent(item: item) { link, action in
+                                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                }
+                                .onAppear {
+                                    if item == filtered.last {
+                                        linksFilteredViewModel.loadMore()
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                else {
-                    ForEach(filtered, id: \.self) { item in
-                        LinkItemComponent(item: item) { link, action in
-                            linksFilteredViewModel.onTaskCompleted(link: link, action: action)
-                        }
-                        .onAppear {
-                            if item == filtered.last {
-                                linksFilteredViewModel.loadMore()
-                            }
-                        }
-                    }
-                }
-            }
-            .animation(.default, value: filtered)
-            .animation(.default, value: subCollections)
-            .overlay(alignment: .center) {
-                if filtered.isEmpty {
-                    ContentUnavailableView {
-                        Label("No links added", systemImage: "link")
-                    } description: {
-                        Text("Save some links on Linkwarden to see them here.")
-                    }
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                }
+                .animation(.default, value: filtered)
+                .animation(.default, value: subCollections)
             }
         }
     }

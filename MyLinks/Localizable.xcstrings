@@ -117,6 +117,16 @@
         }
       }
     },
+    "Add some links to this collection to see them here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade algunos enlaces a esta colección para verlos aquí."
+          }
+        }
+      }
+    },
     "Add tag" : {
       "localizations" : {
         "es" : {
@@ -1326,6 +1336,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay enlaces añadidos"
+          }
+        }
+      }
+    },
+    "No links added to this collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay enlaces añadidos a esta colección"
           }
         }
       }
