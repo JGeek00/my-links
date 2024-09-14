@@ -8,8 +8,6 @@ struct SettingsView: View {
     
     @Environment(\.colorScheme) private var colorScheme
     
-    @State var disconnectAlert = false
-    
     var body: some View {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
         let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
@@ -24,32 +22,23 @@ struct SettingsView: View {
                         .tag(Enums.Theme.dark)
                 }
                 .pickerStyle(.inline)
-                Section("Server") {
-                    Button {
-                        disconnectAlert.toggle()
+                
+               
+                Section("App settings") {
+                    NavigationLink {
+                        GeneralSettings()
                     } label: {
-                        ListRowWithIconEntry(systemIcon: "xmark", iconColor: .red, textColor: .red, label: "Disconnect from server")
+                        ListRowWithIconEntry(systemIcon: "gear", iconColor: .gray, label: "General settings")
                     }
-                    .alert("Disconnect from server", isPresented: $disconnectAlert) {
-                        Button("Cancel", role: .cancel) {
-                            disconnectAlert.toggle()
-                        }
-                        Button("Disconnect", role: .destructive) {
-                            ApiClientProvider.shared.destroy()
-                        }
-                    } message: {
-                        Text("You will have to establish a connection again.")
-                    }
-                }
-                if #available(iOS 18, *) {
-                    Section {
+                    if #available(iOS 18, *) {
                         NavigationLink {
                             AdvancedSettings()
                         } label: {
-                            ListRowWithIconEntry(systemIcon: "gear", iconColor: .gray, label: "Advanced settings")
+                            ListRowWithIconEntry(systemIcon: "gear", iconColor: .red, label: "Advanced settings")
                         }
                     }
                 }
+                
                 Section("Linkwarden") {
                     Button {
                         settingsViewModel.linkwardenSiteOpen.toggle()

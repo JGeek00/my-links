@@ -10,6 +10,9 @@ struct LinksFilteredView: View {
     init() {}
     
     @State private var collectionFormSheet = false
+    @State private var listMode: Enums.CollectionListMode = .links
+    
+    @AppStorage(StorageKeys.collectionViewMode, store: UserDefaults.shared) private var collectionViewMode: Enums.CollectionViewMode = .list
     
     var body: some View {
         Group {
@@ -64,6 +67,15 @@ struct LinksFilteredView: View {
                             Image(systemName: "plus")
                         }
                     }
+                }
+            }
+            if collectionViewMode == .tabs {
+                ToolbarItem(placement: .bottomBar) {
+                    Picker("", selection: $listMode) {
+                        Text("Links").tag(Enums.CollectionListMode.links)
+                        Text("Subcollections").tag(Enums.CollectionListMode.subcollections)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
                 }
             }
         }

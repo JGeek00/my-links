@@ -90,4 +90,14 @@ class Enums {
         case reader
         case webpage
     }
+    
+    enum CollectionListMode: String {
+        case links
+        case subcollections
+    }
+    
+    enum CollectionViewMode: String {
+        case list
+        case tabs
+    }
 }

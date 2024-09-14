@@ -116,6 +116,8 @@
 		0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */; };
 		0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */; };
 		0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */; };
+		0D820C4A2C95EC3A008CD802 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D820C492C95EC3A008CD802 /* GeneralSettings.swift */; };
+		0D820C4C2C95F058008CD802 /* CollectionViewModeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D820C4B2C95F058008CD802 /* CollectionViewModeSheet.swift */; };
 		0D8A90912C3C62E600EB9DF1 /* TipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90902C3C62E600EB9DF1 /* TipsView.swift */; platformFilter = ios; };
 		0D8A90932C3C62F900EB9DF1 /* TipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90922C3C62F900EB9DF1 /* TipsView.swift */; platformFilters = (macos, ); };
 		0D8A90952C3C631300EB9DF1 /* TipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90942C3C631300EB9DF1 /* TipsViewModel.swift */; };
@@ -263,6 +265,8 @@
 		0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredRequest.swift; sourceTree = "<group>"; };
 		0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredViewModel.swift; sourceTree = "<group>"; };
 		0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkManagerProvider.swift; sourceTree = "<group>"; };
+		0D820C492C95EC3A008CD802 /* GeneralSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
+		0D820C4B2C95F058008CD802 /* CollectionViewModeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModeSheet.swift; sourceTree = "<group>"; };
 		0D8A90902C3C62E600EB9DF1 /* TipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsView.swift; sourceTree = "<group>"; };
 		0D8A90922C3C62F900EB9DF1 /* TipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsView.swift; sourceTree = "<group>"; };
 		0D8A90942C3C631300EB9DF1 /* TipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsViewModel.swift; sourceTree = "<group>"; };
@@ -456,6 +460,8 @@
 				0D55C5042C21A094002CE99A /* SettingsView.swift */,
 				0DD8D3222C90B2F800CE1419 /* AdvancedSettings.swift */,
 				0D8A90902C3C62E600EB9DF1 /* TipsView.swift */,
+				0D820C492C95EC3A008CD802 /* GeneralSettings.swift */,
+				0D820C4B2C95F058008CD802 /* CollectionViewModeSheet.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -896,6 +902,7 @@
 				0D55C5052C21A094002CE99A /* SettingsView.swift in Sources */,
 				0DEA27D32C32F45400F1802F /* TokenInstructions.swift in Sources */,
 				0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */,
+				0D820C4A2C95EC3A008CD802 /* GeneralSettings.swift in Sources */,
 				0D8A90932C3C62F900EB9DF1 /* TipsView.swift in Sources */,
 				0DEA27F32C35E6C300F1802F /* DocumentDownloaderView.swift in Sources */,
 				0DEA27C82C32133800F1802F /* CollectionItem.swift in Sources */,
@@ -907,6 +914,7 @@
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
 				0D55C5472C22140D002CE99A /* ServerInstances.swift in Sources */,
 				0DA868032C4AD8560084FC20 /* URLExtension.swift in Sources */,
+				0D820C4C2C95F058008CD802 /* CollectionViewModeSheet.swift in Sources */,
 				0D55C54B2C22423C002CE99A /* TagsProvider.swift in Sources */,
 				0D083CB92C27588700F0EB3B /* ImageViewerView.swift in Sources */,
 				0D55C55D2C22FDFE002CE99A /* CollectionFormViewModel.swift in Sources */,

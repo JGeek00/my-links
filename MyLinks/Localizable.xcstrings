@@ -237,6 +237,16 @@
         }
       }
     },
+    "App settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes de la app"
+          }
+        }
+      }
+    },
     "App version" : {
       "localizations" : {
         "es" : {
@@ -433,6 +443,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Colecciones"
+          }
+        }
+      }
+    },
+    "Collections view mode" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualización de colecciones"
           }
         }
       }
@@ -889,6 +909,16 @@
         }
       }
     },
+    "General settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes generales"
+          }
+        }
+      }
+    },
     "Get started" : {
       "localizations" : {
         "es" : {
@@ -1166,6 +1196,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Linkwarden"
+          }
+        }
+      }
+    },
+    "List view" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista de lista"
           }
         }
       }
@@ -1750,6 +1790,16 @@
         }
       }
     },
+    "Subcollections" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subcolecciones"
+          }
+        }
+      }
+    },
     "Success" : {
       "localizations" : {
         "es" : {
@@ -1766,6 +1816,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Definido por el sistema"
+          }
+        }
+      }
+    },
+    "Tabs view" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista de pestañas"
           }
         }
       }
@@ -1937,6 +1997,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La sesión ha caducado. Inicia sesión de nuevo."
+          }
+        }
+      }
+    },
+    "The subcategories and the links are displayed on a single list, with the subcategories at the top and the links under them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las subcategorías y los enlaces se muestran en una sola lista, con las subcategorías al principio, y los enlaces debajo."
+          }
+        }
+      }
+    },
+    "The subcategories and the links are displayed on two different lists, with a tab system to switch between them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las subcategorías y los enlaces se muestran en dos listas diferentes, con un sistema de pestañas para cambiar entre ellas."
           }
         }
       }
