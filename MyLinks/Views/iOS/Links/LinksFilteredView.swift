@@ -1,15 +1,17 @@
 import SwiftUI
 
 struct LinksFilteredView: View {
+    
+    init() {}
+    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
-    init() {}
-    
     @State private var collectionFormSheet = false
+    @State private var listModeSelector: Enums.CollectionListMode = .links
     @State private var listMode: Enums.CollectionListMode = .links
     
     @AppStorage(StorageKeys.collectionViewMode, store: UserDefaults.shared) private var collectionViewMode: Enums.CollectionViewMode = .list
@@ -17,14 +19,14 @@ struct LinksFilteredView: View {
     var body: some View {
         Group {
             if horizontalSizeClass == .regular {
-                LinksFilteredRegularView()
+                LinksFilteredRegularView(listMode: listMode)
             }
             else {
-                LinksFilteredCompactView()
+                LinksFilteredCompactView(listMode: listMode)
             }
         }
         .navigationTitle(linksFilteredViewModel.input.name)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(horizontalSizeClass == .regular ? .inline : .automatic)
         .refreshable {
             await linksFilteredViewModel.loadData()
         }
@@ -69,14 +71,20 @@ struct LinksFilteredView: View {
                     }
                 }
             }
-            if collectionViewMode == .tabs {
+            if collectionViewMode == .tabs && linksFilteredViewModel.input.mode == .collection {
                 ToolbarItem(placement: .bottomBar) {
-                    Picker("", selection: $listMode) {
+                    Picker("", selection: $listModeSelector) {
                         Text("Links").tag(Enums.CollectionListMode.links)
                         Text("Subcollections").tag(Enums.CollectionListMode.subcollections)
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    .onChange(of: listModeSelector) { _, new in
+                        withAnimation(.default) {
+                            listMode = new
+                        }
+                    }
                 }
+               
             }
         }
         .background(Color.listBackground)
@@ -102,136 +110,270 @@ struct LinksFilteredView: View {
 }
 
 private struct LinksFilteredRegularView: View {
+    var listMode: Enums.CollectionListMode
+    
+    init(listMode: Enums.CollectionListMode) {
+        self.listMode = listMode
+    }
+    
     @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
-    init() {}
+    @AppStorage(StorageKeys.collectionViewMode, store: UserDefaults.shared) private var collectionViewMode: Enums.CollectionViewMode = .list
     
     var body: some View {
         let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
         let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
         ScrollViewReader(content: { scrollView in
-            ScrollView {
-                if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
-                    VStack(alignment: .leading) {
-                        Text("Collections")
-                            .font(.system(size: 16))
-                            .fontWeight(.semibold)
-                            .padding(.leading, 8)
-                        LazyVGrid(columns: Config.gridColumns) {
-                            ForEach(subCollections, id: \.self) { item in
-                                CollectionItemComponent(collection: item) {
-                                    collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                } onDelete: {
-                                    collectionsProvider.deleteCollection(id: item.id!)
-                                }
-                                .padding(6)
-                            }
-                        }
-                    }
-                    .padding(.top, 16)
-                    .padding(.horizontal, 14)
-                }
-                if !filtered.isEmpty {
-                    VStack(alignment: .leading) {
-                        if linksFilteredViewModel.input.mode == .collection {
-                            Text("Links")
+            switch collectionViewMode {
+            case .list:
+                ScrollView {
+                    if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Collections")
                                 .font(.system(size: 16))
                                 .fontWeight(.semibold)
                                 .padding(.leading, 8)
-                        }
-                        LazyVGrid(columns: Config.gridColumns) {
-                            ForEach(filtered, id: \.self) { item in
-                                LinkItemComponent(item: item) { link, action in
-                                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
-                                }
-                                .onAppear {
-                                    if item == filtered.last {
-                                        linksFilteredViewModel.loadMore()
+                            LazyVGrid(columns: Config.gridColumns) {
+                                ForEach(subCollections, id: \.self) { item in
+                                    CollectionItemComponent(collection: item) {
+                                        collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                    } onDelete: {
+                                        collectionsProvider.deleteCollection(id: item.id!)
                                     }
-                                }
-                                .padding(6)
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 14)
-                    .padding(.top, 16)
-                }
-                else {
-                    ContentUnavailableView {
-                        Label("No links added to this collection", systemImage: "link")
-                    } description: {
-                        Text("Add some links to this collection to see them here.")
-                    }
-                }
-            }
-        })
-    }
-}
-
-private struct LinksFilteredCompactView: View {
-    @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
-    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    
-    init() {}
-   
-    var body: some View {
-        let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-        let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
-        
-        if filtered.isEmpty && subCollections.isEmpty {
-            // Show when no links and no subcategories
-            ContentUnavailableView {
-                Label("No links added to this collection", systemImage: "link")
-            } description: {
-                Text("Add some links to this collection to see them here.")
-            }
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-        }
-        else {
-            ScrollViewReader { scrollView in
-                List {
-                    if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
-                        Section("Collections") {
-                            ForEach(subCollections, id: \.self) { item in
-                                CollectionItemComponent(collection: item) {
-                                    collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                } onDelete: {
-                                    collectionsProvider.deleteCollection(id: item.id!)
+                                    .padding(6)
                                 }
                             }
                         }
+                        .padding(.top, 16)
+                        .padding(.horizontal, 14)
                     }
-                    if filtered.isEmpty {
-                        // Show when subcategories but no links
+                    if !filtered.isEmpty {
+                        VStack(alignment: .leading) {
+                            if linksFilteredViewModel.input.mode == .collection {
+                                Text("Links")
+                                    .font(.system(size: 16))
+                                    .fontWeight(.semibold)
+                                    .padding(.leading, 8)
+                            }
+                            LazyVGrid(columns: Config.gridColumns) {
+                                ForEach(filtered, id: \.self) { item in
+                                    LinkItemComponent(item: item) { link, action in
+                                        linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                    }
+                                    .onAppear {
+                                        if item == filtered.last {
+                                            linksFilteredViewModel.loadMore()
+                                        }
+                                    }
+                                    .padding(6)
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.top, 16)
+                    }
+                    else {
                         ContentUnavailableView {
                             Label("No links added to this collection", systemImage: "link")
                         } description: {
                             Text("Add some links to this collection to see them here.")
                         }
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     }
-                    else {
-                        Section("Links") {
-                            ForEach(filtered, id: \.self) { item in
-                                LinkItemComponent(item: item) { link, action in
-                                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                }
+            case .tabs:
+                switch listMode {
+                case .links:
+                    LinksList(links: filtered)
+                        .transition(.opacity)
+                case .subcollections:
+                    SubcollectionsList(subcollections: subCollections)
+                        .transition(.opacity)
+                }
+            }
+        })
+    }
+    
+    @ViewBuilder
+    func LinksList(links: [Link]) -> some View {
+        if links.isEmpty {
+            ContentUnavailableView {
+                Label("No links added to this collection", systemImage: "link")
+            } description: {
+                Text("Add some links to this collection to see them here.")
+            }
+        }
+        else {
+            ScrollView {
+                LazyVGrid(columns: Config.gridColumns) {
+                    ForEach(links, id: \.id) { item in
+                        LinkItemComponent(item: item) { link, action in
+                            linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                        }
+                        .onAppear {
+                            if item == links.last {
+                                linksFilteredViewModel.loadMore()
+                            }
+                        }
+                        .padding(6)
+                    }
+                }
+                .padding(.horizontal, 14)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func SubcollectionsList(subcollections: [Collection]) -> some View {
+        if subcollections.isEmpty {
+            ContentUnavailableView {
+                Label("No subcollections on this collection", systemImage: "folder")
+            } description: {
+                Text("Add some subcollections to this collection to see them here.")
+            }
+        }
+        else {
+            ScrollView {
+                LazyVGrid(columns: Config.gridColumns) {
+                    ForEach(subcollections, id: \.id) { item in
+                        CollectionItemComponent(collection: item) {
+                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                        } onDelete: {
+                            collectionsProvider.deleteCollection(id: item.id!)
+                        }
+                        .padding(6)
+                    }
+                }
+                .padding(.horizontal, 14)
+            }
+        }
+    }
+}
+
+private struct LinksFilteredCompactView: View {
+    var listMode: Enums.CollectionListMode
+    
+    init(listMode: Enums.CollectionListMode) {
+        self.listMode = listMode
+    }
+    
+    @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
+    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
+    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    
+    @AppStorage(StorageKeys.collectionViewMode, store: UserDefaults.shared) private var collectionViewMode: Enums.CollectionViewMode = .list
+   
+    var body: some View {
+        let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
+        let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
+        
+        ScrollViewReader { scrollView in
+            switch collectionViewMode {
+            case .list:
+                if filtered.isEmpty && subCollections.isEmpty {
+                    // Show when no links and no subcategories
+                    ContentUnavailableView {
+                        Label("No links added to this collection", systemImage: "link")
+                    } description: {
+                        Text("Add some links to this collection to see them here.")
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                }
+                else {
+                    List {
+                        if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
+                            Section("Subcollections") {
+                                ForEach(subCollections, id: \.self) { item in
+                                    CollectionItemComponent(collection: item) {
+                                        collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                    } onDelete: {
+                                        collectionsProvider.deleteCollection(id: item.id!)
+                                    }
                                 }
-                                .onAppear {
-                                    if item == filtered.last {
-                                        linksFilteredViewModel.loadMore()
+                            }
+                        }
+                        if filtered.isEmpty {
+                            // Show when subcategories but no links
+                            ContentUnavailableView {
+                                Label("No links added to this collection", systemImage: "link")
+                            } description: {
+                                Text("Add some links to this collection to see them here.")
+                            }
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        }
+                        else {
+                            Section("Links") {
+                                ForEach(filtered, id: \.self) { item in
+                                    LinkItemComponent(item: item) { link, action in
+                                        linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                    }
+                                    .onAppear {
+                                        if item == filtered.last {
+                                            linksFilteredViewModel.loadMore()
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    .animation(.default, value: filtered)
+                    .animation(.default, value: subCollections)
                 }
-                .animation(.default, value: filtered)
-                .animation(.default, value: subCollections)
+            case .tabs:
+                switch listMode {
+                case .links:
+                    LinksList(links: filtered)
+                        .transition(.opacity)
+                case .subcollections:
+                    SubcollectionsList(subcollections: subCollections)
+                        .transition(.opacity)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func LinksList(links: [Link]) -> some View {
+        if links.isEmpty {
+            ContentUnavailableView {
+                Label("No links added to this collection", systemImage: "link")
+            } description: {
+                Text("Add some links to this collection to see them here.")
+            }
+        }
+        else {
+            List(links, id: \.id) { item in
+                LinkItemComponent(item: item) { link, action in
+                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                }
+                .onAppear {
+                    if item == links.last {
+                        linksFilteredViewModel.loadMore()
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func SubcollectionsList(subcollections: [Collection]) -> some View {
+        if subcollections.isEmpty {
+            ContentUnavailableView {
+                Label("No subcollections on this collection", systemImage: "folder")
+            } description: {
+                Text("Add some subcollections to this collection to see them here.")
+            }
+        }
+        else {
+            List(subcollections, id: \.id) { item in
+                CollectionItemComponent(collection: item) {
+                    collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                } onDelete: {
+                    collectionsProvider.deleteCollection(id: item.id!)
+                }
             }
         }
     }
