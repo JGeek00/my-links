@@ -2,11 +2,13 @@ import SwiftUI
 import CustomAlert
 
 struct CollectionsView: View {
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     init() {}
+    
+    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @EnvironmentObject private var apiClientProvider: ApiClientProvider
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @State private var searchText = ""
     @State private var collectionFormSheet = false
@@ -107,6 +109,14 @@ struct CollectionsView: View {
                 }
                 .environmentObject(CollectionFormViewModel())
             })
+            .onOpenURL { url in
+                if apiClientProvider.instance == nil {
+                    return
+                }
+                if url.scheme == DeepLinks.urlScheme && url.host == DeepLinks.newCollection {
+                    collectionFormSheet = true
+                }
+            }
             .alert("Error", isPresented: $collectionsProvider.deleteError) {
                 Button("Close", role: .cancel) {
                     collectionsProvider.deleteError.toggle()

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,9 @@
 		0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBE2C27648700F0EB3B /* ImageViewer.swift */; platformFilter = ios; };
 		0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */; };
 		0D083CC52C2DEEBB00F0EB3B /* TokenInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */; platformFilter = ios; };
+		0D117FE02C98A9D3006299C5 /* DeepLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */; };
+		0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */; };
+		0D117FE22C98A9D3006299C5 /* DeepLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */; };
 		0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CCA2C35EFA9007DACF0 /* HtmlViewer.swift */; platformFilters = (macos, ); };
 		0D238CD32C370953007DACF0 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CD22C370953007DACF0 /* ShareViewController.swift */; };
 		0D238CDA2C370953007DACF0 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0D238CD02C370953007DACF0 /* ShareExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -55,6 +58,9 @@
 		0D238CF92C37123E007DACF0 /* Regexps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C51D2C21E6DC002CE99A /* Regexps.swift */; };
 		0D238CFA2C37124B007DACF0 /* JsonEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5552C225F3F002CE99A /* JsonEncoder.swift */; };
 		0D238CFB2C371262007DACF0 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27ED2C34805100F1802F /* DeviceInfo.swift */; };
+		0D40136E2C9894DF0059D459 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D40136D2C9894DF0059D459 /* WidgetKit.framework */; };
+		0D4013702C9894DF0059D459 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D40136F2C9894DF0059D459 /* SwiftUI.framework */; };
+		0D40137D2C9894E00059D459 /* AddButtonWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0D40136B2C9894DF0059D459 /* AddButtonWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0D4E07742C371F0100AE1C2E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C5792C236C72002CE99A /* Localizable.xcstrings */; };
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
@@ -163,6 +169,13 @@
 			remoteGlobalIDString = 0D238CCF2C370953007DACF0;
 			remoteInfo = ShareExtension;
 		};
+		0D40137B2C9894E00059D459 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0D55C4DB2C219E12002CE99A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0D40136A2C9894DF0059D459;
+			remoteInfo = AddButtonWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -172,6 +185,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				0D40137D2C9894E00059D459 /* AddButtonWidgetExtension.appex in Embed Foundation Extensions */,
 				0D238CDA2C370953007DACF0 /* ShareExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -196,6 +210,7 @@
 		0D083CBE2C27648700F0EB3B /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentExtension.swift; sourceTree = "<group>"; };
 		0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInstructions.swift; sourceTree = "<group>"; };
+		0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinks.swift; sourceTree = "<group>"; };
 		0D238CCA2C35EFA9007DACF0 /* HtmlViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewer.swift; sourceTree = "<group>"; };
 		0D238CD02C370953007DACF0 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D238CD22C370953007DACF0 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +218,9 @@
 		0D238CDF2C370B8A007DACF0 /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		0D238CE12C370CE5007DACF0 /* ShareExtensionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionViewModel.swift; sourceTree = "<group>"; };
 		0D238CFC2C371304007DACF0 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		0D40136B2C9894DF0059D459 /* AddButtonWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AddButtonWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D40136D2C9894DF0059D459 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		0D40136F2C9894DF0059D459 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		0D55C4E32C219E13002CE99A /* My Links.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Links.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -302,11 +320,34 @@
 		0DF548F42C3ED6A100D5C257 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0D4013802C9894E00059D459 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0D40136A2C9894DF0059D459 /* AddButtonWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		0D4013712C9894DF0059D459 /* AddButtonWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0D4013802C9894E00059D459 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AddButtonWidget; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		0D238CCD2C370953007DACF0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0D4013682C9894DF0059D459 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D4013702C9894DF0059D459 /* SwiftUI.framework in Frameworks */,
+				0D40136E2C9894DF0059D459 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,11 +387,22 @@
 			path = ShareExtension;
 			sourceTree = "<group>";
 		};
+		0D40136C2C9894DF0059D459 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0D40136D2C9894DF0059D459 /* WidgetKit.framework */,
+				0D40136F2C9894DF0059D459 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0D55C4DA2C219E12002CE99A = {
 			isa = PBXGroup;
 			children = (
 				0D55C4E52C219E13002CE99A /* MyLinks */,
 				0D238CD12C370953007DACF0 /* ShareExtension */,
+				0D4013712C9894DF0059D459 /* AddButtonWidget */,
+				0D40136C2C9894DF0059D459 /* Frameworks */,
 				0D55C4E42C219E13002CE99A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -360,6 +412,7 @@
 			children = (
 				0D55C4E32C219E13002CE99A /* My Links.app */,
 				0D238CD02C370953007DACF0 /* ShareExtension.appex */,
+				0D40136B2C9894DF0059D459 /* AddButtonWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -442,6 +495,7 @@
 				0D55C53C2C221130002CE99A /* StorageKeys.swift */,
 				0D55C5402C221171002CE99A /* Urls.swift */,
 				0DEA27E72C33360C00F1802F /* WindowIds.swift */,
+				0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -750,6 +804,28 @@
 			productReference = 0D238CD02C370953007DACF0 /* ShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		0D40136A2C9894DF0059D459 /* AddButtonWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0D4013812C9894E00059D459 /* Build configuration list for PBXNativeTarget "AddButtonWidgetExtension" */;
+			buildPhases = (
+				0D4013672C9894DF0059D459 /* Sources */,
+				0D4013682C9894DF0059D459 /* Frameworks */,
+				0D4013692C9894DF0059D459 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0D4013712C9894DF0059D459 /* AddButtonWidget */,
+			);
+			name = AddButtonWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = AddButtonWidgetExtension;
+			productReference = 0D40136B2C9894DF0059D459 /* AddButtonWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		0D55C4E22C219E13002CE99A /* MyLinks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0D55C4F72C219E14002CE99A /* Build configuration list for PBXNativeTarget "MyLinks" */;
@@ -763,6 +839,7 @@
 			);
 			dependencies = (
 				0D238CD92C370953007DACF0 /* PBXTargetDependency */,
+				0D40137C2C9894E00059D459 /* PBXTargetDependency */,
 			);
 			name = MyLinks;
 			packageProductDependencies = (
@@ -782,11 +859,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					0D238CCF2C370953007DACF0 = {
 						CreatedOnToolsVersion = 15.4;
+					};
+					0D40136A2C9894DF0059D459 = {
+						CreatedOnToolsVersion = 16.0;
 					};
 					0D55C4E22C219E13002CE99A = {
 						CreatedOnToolsVersion = 15.4;
@@ -815,6 +895,7 @@
 			targets = (
 				0D55C4E22C219E13002CE99A /* MyLinks */,
 				0D238CCF2C370953007DACF0 /* ShareExtension */,
+				0D40136A2C9894DF0059D459 /* AddButtonWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -826,6 +907,13 @@
 			files = (
 				0D4E07742C371F0100AE1C2E /* Localizable.xcstrings in Resources */,
 				0D238CED2C371194007DACF0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0D4013692C9894DF0059D459 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -872,10 +960,19 @@
 				0D238CEB2C370FAF007DACF0 /* Tags.swift in Sources */,
 				0D238CEF2C3711D7007DACF0 /* Links.swift in Sources */,
 				0D238CE72C370E55007DACF0 /* ApiClientProvider.swift in Sources */,
+				0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */,
 				0D238CEC2C370FB4007DACF0 /* StatusResponse.swift in Sources */,
 				0D238CE52C370DD8007DACF0 /* ApiClient.swift in Sources */,
 				0DF548F62C3ED70700D5C257 /* Dashboard.swift in Sources */,
 				0D238CEA2C370FAC007DACF0 /* Collections.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0D4013672C9894DF0059D459 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D117FE22C98A9D3006299C5 /* DeepLinks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -949,6 +1046,7 @@
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
 				0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */,
 				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
+				0D117FE02C98A9D3006299C5 /* DeepLinks.swift in Sources */,
 				0D55C5272C21FA6E002CE99A /* Collections.swift in Sources */,
 				0DA868052C4AE2130084FC20 /* FileDataResponse.swift in Sources */,
 				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,
@@ -1000,6 +1098,11 @@
 			platformFilter = ios;
 			target = 0D238CCF2C370953007DACF0 /* ShareExtension */;
 			targetProxy = 0D238CD82C370953007DACF0 /* PBXContainerItemProxy */;
+		};
+		0D40137C2C9894E00059D459 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0D40136A2C9894DF0059D459 /* AddButtonWidgetExtension */;
+			targetProxy = 0D40137B2C9894E00059D459 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1062,6 +1165,65 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0D40137E2C9894E00059D459 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 38Z3B9TJTR;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AddButtonWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AddButtonWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks.AddButtonWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0D40137F2C9894E00059D459 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 38Z3B9TJTR;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AddButtonWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AddButtonWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks.AddButtonWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1203,6 +1365,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyLinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Links";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -1244,6 +1407,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyLinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Links";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -1280,6 +1444,15 @@
 			buildConfigurations = (
 				0D238CDC2C370953007DACF0 /* Debug */,
 				0D238CDD2C370953007DACF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0D4013812C9894E00059D459 /* Build configuration list for PBXNativeTarget "AddButtonWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D40137E2C9894E00059D459 /* Debug */,
+				0D40137F2C9894E00059D459 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
