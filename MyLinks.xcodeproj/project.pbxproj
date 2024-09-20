@@ -120,8 +120,8 @@
 		0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */; };
 		0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */; };
 		0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */; };
-		0D820C4A2C95EC3A008CD802 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D820C492C95EC3A008CD802 /* GeneralSettings.swift */; };
-		0D820C4C2C95F058008CD802 /* CollectionViewModeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D820C4B2C95F058008CD802 /* CollectionViewModeSheet.swift */; };
+		0D820C4A2C95EC3A008CD802 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D820C492C95EC3A008CD802 /* GeneralSettings.swift */; platformFilter = ios; };
+		0D820C4C2C95F058008CD802 /* CollectionViewModeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D820C4B2C95F058008CD802 /* CollectionViewModeSheet.swift */; platformFilter = ios; };
 		0D8A90912C3C62E600EB9DF1 /* TipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90902C3C62E600EB9DF1 /* TipsView.swift */; platformFilter = ios; };
 		0D8A90932C3C62F900EB9DF1 /* TipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90922C3C62F900EB9DF1 /* TipsView.swift */; platformFilters = (macos, ); };
 		0D8A90952C3C631300EB9DF1 /* TipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A90942C3C631300EB9DF1 /* TipsViewModel.swift */; };
@@ -1220,7 +1220,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MyLinks/MyLinks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MyLinks/Preview Content\"";
 				DEVELOPMENT_TEAM = 38Z3B9TJTR;
@@ -1244,7 +1244,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;
@@ -1262,7 +1262,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MyLinks/MyLinks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MyLinks/Preview Content\"";
 				DEVELOPMENT_TEAM = 38Z3B9TJTR;
@@ -1286,7 +1286,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;
