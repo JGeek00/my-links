@@ -13,7 +13,10 @@ func getSessionToken(baseUrl: String, body: SessionTokenRequest) async -> Status
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try CustomJSONEncoder().encode(body)
         
-        let (data, r) = try await URLSession.shared.data(for: request)
+        let sessionConfig = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+        
+        let (data, r) = try await session.data(for: request)
         guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
         if response.statusCode < 400 {
             let formatted = try JSONDecoder().decode(SessionToken.self, from: data)
@@ -51,7 +54,10 @@ struct ApiClient: Equatable {
             
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
 
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(DashboardV2Response.self, from: data)
@@ -80,7 +86,10 @@ struct ApiClient: Equatable {
             
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
 
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(LinksResponse.self, from: data)
@@ -105,7 +114,10 @@ struct ApiClient: Equatable {
             
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(CollectionsResponse.self, from: data)
@@ -130,7 +142,10 @@ struct ApiClient: Equatable {
             
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(TagsResponse.self, from: data)
@@ -157,7 +172,10 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             request.httpBody = try CustomJSONEncoder().encode(body)
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(LinkResponse.self, from: data)
@@ -222,7 +240,10 @@ struct ApiClient: Equatable {
             body += Data("--\(boundary)--\r\n".utf8);
             request.httpBody = body
                         
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(FileDataResponse.self, from: data)
@@ -249,7 +270,10 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             request.httpBody = try CustomJSONEncoder().encode(body)
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(LinkResponse.self, from: data)
@@ -276,7 +300,10 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             request.httpBody = try CustomJSONEncoder().encode(body)
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(CollectionResponse.self, from: data)
@@ -303,7 +330,10 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             request.httpBody = try CustomJSONEncoder().encode(body)
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(CollectionResponse.self, from: data)
@@ -363,7 +393,10 @@ struct ApiClient: Equatable {
             
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
 
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(LinksResponse.self, from: data)
@@ -389,7 +422,10 @@ struct ApiClient: Equatable {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(LinkResponse.self, from: data)
@@ -415,7 +451,10 @@ struct ApiClient: Equatable {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 return StatusResponse<Bool>(successful: true, statusCode: response.statusCode, data: true)
@@ -440,7 +479,10 @@ struct ApiClient: Equatable {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 let formatted = try JSONDecoder().decode(ReaderResponse.self, from: data)
@@ -465,7 +507,10 @@ struct ApiClient: Equatable {
             request.httpMethod = "GET"
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 return StatusResponse<String>(successful: true, statusCode: response.statusCode, data: String(decoding: data, as: UTF8.self))
@@ -491,7 +536,10 @@ struct ApiClient: Equatable {
             request.addValue("application/pdf", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 return StatusResponse<Data>(successful: true, statusCode: response.statusCode, data: data)
@@ -516,7 +564,10 @@ struct ApiClient: Equatable {
             request.addValue("application/png", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
-            let (data, r) = try await URLSession.shared.data(for: request)
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
                 return StatusResponse<Data>(successful: true, statusCode: response.statusCode, data: data)

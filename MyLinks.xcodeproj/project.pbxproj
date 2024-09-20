@@ -25,6 +25,8 @@
 		0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CBE2C27648700F0EB3B /* ImageViewer.swift */; platformFilter = ios; };
 		0D083CC12C2A31BA00F0EB3B /* PDFDocumentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */; };
 		0D083CC52C2DEEBB00F0EB3B /* TokenInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */; platformFilter = ios; };
+		0D117FE02C98A9D3006299C5 /* DeepLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */; };
+		0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */; };
 		0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CCA2C35EFA9007DACF0 /* HtmlViewer.swift */; platformFilters = (macos, ); };
 		0D238CD32C370953007DACF0 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D238CD22C370953007DACF0 /* ShareViewController.swift */; };
 		0D238CDA2C370953007DACF0 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0D238CD02C370953007DACF0 /* ShareExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -55,6 +57,8 @@
 		0D238CF92C37123E007DACF0 /* Regexps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C51D2C21E6DC002CE99A /* Regexps.swift */; };
 		0D238CFA2C37124B007DACF0 /* JsonEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5552C225F3F002CE99A /* JsonEncoder.swift */; };
 		0D238CFB2C371262007DACF0 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27ED2C34805100F1802F /* DeviceInfo.swift */; };
+		0D31309F2C9D0AF50028BFDA /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
+		0D36C5342C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
 		0D4E07742C371F0100AE1C2E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C5792C236C72002CE99A /* Localizable.xcstrings */; };
 		0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E62C219E13002CE99A /* MyLinksApp.swift */; };
 		0D55C4E92C219E13002CE99A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C4E82C219E13002CE99A /* Persistence.swift */; };
@@ -196,6 +200,7 @@
 		0D083CBE2C27648700F0EB3B /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDocumentExtension.swift; sourceTree = "<group>"; };
 		0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInstructions.swift; sourceTree = "<group>"; };
+		0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinks.swift; sourceTree = "<group>"; };
 		0D238CCA2C35EFA9007DACF0 /* HtmlViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlViewer.swift; sourceTree = "<group>"; };
 		0D238CD02C370953007DACF0 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D238CD22C370953007DACF0 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +208,9 @@
 		0D238CDF2C370B8A007DACF0 /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		0D238CE12C370CE5007DACF0 /* ShareExtensionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionViewModel.swift; sourceTree = "<group>"; };
 		0D238CFC2C371304007DACF0 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLIgnoringDelegate.swift; sourceTree = "<group>"; };
+		0D40136D2C9894DF0059D459 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		0D40136F2C9894DF0059D459 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		0D55C4E32C219E13002CE99A /* My Links.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Links.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D55C4E62C219E13002CE99A /* MyLinksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLinksApp.swift; sourceTree = "<group>"; };
 		0D55C4E82C219E13002CE99A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -346,11 +354,21 @@
 			path = ShareExtension;
 			sourceTree = "<group>";
 		};
+		0D40136C2C9894DF0059D459 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0D40136D2C9894DF0059D459 /* WidgetKit.framework */,
+				0D40136F2C9894DF0059D459 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0D55C4DA2C219E12002CE99A = {
 			isa = PBXGroup;
 			children = (
 				0D55C4E52C219E13002CE99A /* MyLinks */,
 				0D238CD12C370953007DACF0 /* ShareExtension */,
+				0D40136C2C9894DF0059D459 /* Frameworks */,
 				0D55C4E42C219E13002CE99A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -420,6 +438,7 @@
 				0D55C5552C225F3F002CE99A /* JsonEncoder.swift */,
 				0D083C992C26595400F0EB3B /* Dates.swift */,
 				0DEA27ED2C34805100F1802F /* DeviceInfo.swift */,
+				0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -442,6 +461,7 @@
 				0D55C53C2C221130002CE99A /* StorageKeys.swift */,
 				0D55C5402C221171002CE99A /* Urls.swift */,
 				0DEA27E72C33360C00F1802F /* WindowIds.swift */,
+				0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -782,7 +802,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					0D238CCF2C370953007DACF0 = {
@@ -871,7 +891,9 @@
 				0D238CF32C37120E007DACF0 /* OnboardingViewModel.swift in Sources */,
 				0D238CEB2C370FAF007DACF0 /* Tags.swift in Sources */,
 				0D238CEF2C3711D7007DACF0 /* Links.swift in Sources */,
+				0D31309F2C9D0AF50028BFDA /* SSLIgnoringDelegate.swift in Sources */,
 				0D238CE72C370E55007DACF0 /* ApiClientProvider.swift in Sources */,
+				0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */,
 				0D238CEC2C370FB4007DACF0 /* StatusResponse.swift in Sources */,
 				0D238CE52C370DD8007DACF0 /* ApiClient.swift in Sources */,
 				0DF548F62C3ED70700D5C257 /* Dashboard.swift in Sources */,
@@ -949,6 +971,7 @@
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
 				0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */,
 				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
+				0D117FE02C98A9D3006299C5 /* DeepLinks.swift in Sources */,
 				0D55C5272C21FA6E002CE99A /* Collections.swift in Sources */,
 				0DA868052C4AE2130084FC20 /* FileDataResponse.swift in Sources */,
 				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,
@@ -956,6 +979,7 @@
 				0D8A90972C3C633700EB9DF1 /* ContributionProduct.swift in Sources */,
 				0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */,
 				0D8A90912C3C62E600EB9DF1 /* TipsView.swift in Sources */,
+				0D36C5342C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift in Sources */,
 				0DEA27A22C31E44800F1802F /* RootView.swift in Sources */,
 				0D55C5072C21AC0C002CE99A /* ApiClient.swift in Sources */,
 				0D083C812C25E9F300F0EB3B /* SquareIcon.swift in Sources */,
@@ -1203,6 +1227,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyLinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Links";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -1244,6 +1269,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyLinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Links";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
