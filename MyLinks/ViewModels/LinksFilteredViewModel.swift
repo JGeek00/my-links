@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 @MainActor
 class LinksFilteredViewModel: ObservableObject {
@@ -56,8 +57,10 @@ class LinksFilteredViewModel: ObservableObject {
             }
             // The duration of the list animation
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
-                self.loading = false
-                self.error = false
+                withAnimation(.default) {
+                    self.loading = false
+                    self.error = false
+                }
             }
         }
         else {
@@ -66,9 +69,11 @@ class LinksFilteredViewModel: ObservableObject {
                 return
             }
             DispatchQueue.main.async {
-                self.loading = false
-                if setError == true {
-                    self.error = true
+                withAnimation(.default) {
+                    self.loading = false
+                    if setError == true {
+                        self.error = true
+                    }
                 }
             }
         }

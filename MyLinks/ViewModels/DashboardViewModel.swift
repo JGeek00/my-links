@@ -26,8 +26,10 @@ class DashboardViewModel: ObservableObject {
                 self.data = result.data?.data?.links ?? []
                 self.pinnedLinks = result.data?.data?.numberOfPinnedLinks
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.loading = false
-                    self.error = false
+                    withAnimation(.default) {
+                        self.loading = false
+                        self.error = false
+                    }
                 }
             }
         }
@@ -42,22 +44,28 @@ class DashboardViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.data = result2.data?.response ?? []
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            self.loading = false
-                            self.error = false
+                            withAnimation(.default) {
+                                self.loading = false
+                                self.error = false
+                            }
                         }
                     }
                 }
                 else {
                     DispatchQueue.main.async {
-                        self.loading = false
-                        self.error = true
+                        withAnimation(.default) {
+                            self.loading = false
+                            self.error = true
+                        }
                     }
                 }
             }
             else {
                 DispatchQueue.main.async {
-                    self.loading = false
-                    self.error = true
+                    withAnimation(.default) {
+                        self.loading = false
+                        self.error = true
+                    }
                 }
             }
         }

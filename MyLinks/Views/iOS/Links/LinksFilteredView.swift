@@ -36,6 +36,7 @@ struct LinksFilteredView: View {
         }
         .overlay(alignment: .center) {
             LinksFilteredIndicators()
+                .transition(.opacity)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

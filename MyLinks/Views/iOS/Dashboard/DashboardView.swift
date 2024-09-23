@@ -245,6 +245,7 @@ struct DashboardCompactView: View {
         }
         .overlay(alignment: .center) {
             DashboardIndicators()
+                .transition(.opacity)
         }
     }
 }
