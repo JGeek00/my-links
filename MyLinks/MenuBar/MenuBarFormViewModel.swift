@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@MainActor
 class MenuBarFormViewModel: ObservableObject {
     @Published var apiClient: ApiClient? = nil
     

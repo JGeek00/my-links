@@ -1,6 +1,6 @@
 import Foundation
 
-class StatusResponse<T> {
+struct StatusResponse<T: Sendable>: Sendable {
     let successful: Bool
     let statusCode: Int?
     let data: T?

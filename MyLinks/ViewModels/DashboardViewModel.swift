@@ -1,8 +1,9 @@
 import Foundation
 import SwiftUI
 
-class DashboardViewModel: ObservableObject { 
-    static var shared = DashboardViewModel()
+@MainActor
+class DashboardViewModel: ObservableObject {
+    static let shared = DashboardViewModel()
     
     @Published var data: [Link] = []
     @Published var pinnedLinks: Int? = nil
@@ -15,10 +16,8 @@ class DashboardViewModel: ObservableObject {
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            DispatchQueue.main.sync {
-                self.loading = true
-                self.data = []
-            }
+            self.loading = true
+            self.data = []
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.fetchDashboardV2()

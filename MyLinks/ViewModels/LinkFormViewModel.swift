@@ -1,7 +1,8 @@
 import Foundation
 import SwiftUI
 
-class LinkFormViewModel: ObservableObject {    
+@MainActor
+class LinkFormViewModel: ObservableObject {
     @Published var editingLink: Link? = nil
     
     @Published var url = ""

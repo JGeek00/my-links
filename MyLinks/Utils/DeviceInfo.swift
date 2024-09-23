@@ -3,6 +3,7 @@ import Foundation
 import UIKit
 #endif
 
+@MainActor
 func getDeviceInfo() -> String {
     #if os(iOS)
     

@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class HTMLViewerViewModel: ObservableObject {
     let link: Link
     let mode: Enums.HTMLViewerMode
@@ -16,9 +17,7 @@ class HTMLViewerViewModel: ObservableObject {
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            DispatchQueue.main.sync {
-                self.loading = true
-            }
+            self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         switch mode {

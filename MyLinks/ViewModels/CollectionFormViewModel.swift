@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 class CollectionFormViewModel: ObservableObject {
     @Published var editingCollection: Collection? = nil
     @Published var name = ""
@@ -25,17 +26,13 @@ class CollectionFormViewModel: ObservableObject {
     
     func onSave(parentId: Int? = nil, onCompleted: @escaping (Collection) -> Void) async {
         if name == "" {
-            DispatchQueue.main.sync {
-                self.nameRequiredAlert = true
-            }
+            self.nameRequiredAlert = true
             return
         }
         
         guard let instance = ApiClientProvider.shared.instance else { return }
         
-        DispatchQueue.main.sync {
-            self.saving = true
-        }
+        self.saving = true
         
         if let editingCollection = editingCollection {
             let data = CollectionCreationRequest(

@@ -1,6 +1,7 @@
 import Foundation
 import StoreKit
 
+@MainActor
 func requestAppReview() {
     let firstLaunchDate: Double? = UserDefaults.shared.double(forKey: StorageKeys.appFirstLaunch)
     let hasRequestedReview: Bool? = UserDefaults.shared.bool(forKey: StorageKeys.hasRequestedReview)

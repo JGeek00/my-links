@@ -1,17 +1,17 @@
 import Foundation
 
 // MARK: - Collections
-struct CollectionsResponse: Codable {
+struct CollectionsResponse: Codable, Sendable {
     let response: [Collection]?
 }
 
 // MARK: - CollectionResponse
-struct CollectionResponse: Codable {
+struct CollectionResponse: Codable, Sendable {
     let response: Collection?
 }
 
 // MARK: - Collection
-struct Collection: Codable, Hashable {
+struct Collection: Codable, Hashable, Sendable {
     let id: Int?
     let name, description, color: String?
     var parentID: Int?
@@ -23,12 +23,12 @@ struct Collection: Codable, Hashable {
 }
 
 // MARK: - CollectionCount
-struct CollectionCount: Codable, Hashable {
+struct CollectionCount: Codable, Hashable, Sendable {
     let links: Int?
 }
 
 // MARK: - Parent
-struct Parent: Codable, Hashable {
+struct Parent: Codable, Hashable, Sendable {
     let id: Int?
     let name: String?
 }

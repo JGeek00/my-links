@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class LinksFilteredViewModel: ObservableObject {
     @Published var input: LinksFilteredRequest
     
@@ -31,9 +32,7 @@ class LinksFilteredViewModel: ObservableObject {
         }
         
         if setLoading == true {
-            DispatchQueue.main.sync {
-                self.loading = true
-            }
+            self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.fetchLinks(

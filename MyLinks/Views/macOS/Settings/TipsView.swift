@@ -1,11 +1,12 @@
 import SwiftUI
+import StoreKit
 
 struct TipsView: View {
-    @EnvironmentObject private var tipsModel: TipsViewModel
+    @EnvironmentObject private var iapManager: IAPManager
     
     var body: some View {
         Group {
-            if tipsModel.allProducts.isEmpty {
+            if iapManager.products.isEmpty {
                 VStack {
                     ContentUnavailableView("Currently there are no options available", systemImage: "nosign")
                 }
@@ -13,11 +14,9 @@ struct TipsView: View {
             else {
                 Form {
                     Section {
-                        ForEach($tipsModel.allProducts, id: \.self) { item in
-                            TipItem(contributionProduct: item.wrappedValue) {
-                                if let product = tipsModel.product(for: item.wrappedValue.id) {
-                                    tipsModel.purchaseProduct(product: product)
-                                }
+                        ForEach($iapManager.products, id: \.self) { item in
+                            Item(product: item.wrappedValue) {
+                                iapManager.purchase(product: item.wrappedValue)
                             }
                         }
                     } header: {
@@ -32,42 +31,45 @@ struct TipsView: View {
         .navigationTitle("Tips")
         .toolbar {
             ToolbarItem(placement: .secondaryAction) {
-                if tipsModel.purchaseInProgress {
+                if iapManager.purchaseInProgress {
                     ProgressView()
                         .controlSize(.small)
                 }
             }
         }
-        .alert("Purchase failed or cancelled", isPresented: $tipsModel.failedPurchase) {} message: {
+        .alert("Purchase failed or cancelled", isPresented: $iapManager.failedPurchase) {} message: {
             Text("The purchase could not be completed. An error occured on the process or it has been cancelled by the user.")
-        }.alert("Purchase completed successfully", isPresented: $tipsModel.successfulPurchase) {} message: {
+        }.alert("Purchase completed successfully", isPresented: $iapManager.successfulPurchase) {} message: {
             Text("The purchase has been completed. Thank you for contributing with the development and mantenience of this application.")
         }
         .background(Color.listBackground)
     }
 }
 
-private struct TipItem: View {
-    let contributionProduct: ContributionProduct
+fileprivate struct Item: View {
+    let product: SKProduct
     let action: () -> Void
     
-    @EnvironmentObject private var tipsModel: TipsViewModel
+    @EnvironmentObject private var iapManager: IAPManager
     
     var body: some View {
         Button {
             action()
         } label: {
             HStack {
-                Text(contributionProduct.title)
+                Text(product.localizedTitle)
                     .foregroundColor(.foreground)
                 Spacer()
-                if let price = contributionProduct.price {
-                    Text(price)
+                if let currency = product.priceLocale.currency?.identifier {
+                    Text(product.price.doubleValue, format: .currency(code: currency))
+                }
+                else {
+                    Text(String(describing: "N/A"))
                 }
             }
             .contentShape(Rectangle())
         }
-        .disabled(tipsModel.purchaseInProgress)
+        .disabled(iapManager.purchaseInProgress)
         .buttonStyle(PlainButtonStyle())
     }
 }

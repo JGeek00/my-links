@@ -14,7 +14,7 @@ func getSessionToken(baseUrl: String, body: SessionTokenRequest) async -> Status
         request.httpBody = try CustomJSONEncoder().encode(body)
         
         let sessionConfig = URLSessionConfiguration.default
-        let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+        let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
         
         let (data, r) = try await session.data(for: request)
         guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -55,7 +55,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
 
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -87,7 +87,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
 
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -115,7 +115,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -143,7 +143,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -173,7 +173,7 @@ struct ApiClient: Equatable {
             request.httpBody = try CustomJSONEncoder().encode(body)
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -241,7 +241,7 @@ struct ApiClient: Equatable {
             request.httpBody = body
                         
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -271,7 +271,7 @@ struct ApiClient: Equatable {
             request.httpBody = try CustomJSONEncoder().encode(body)
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -301,7 +301,7 @@ struct ApiClient: Equatable {
             request.httpBody = try CustomJSONEncoder().encode(body)
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -331,7 +331,7 @@ struct ApiClient: Equatable {
             request.httpBody = try CustomJSONEncoder().encode(body)
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -394,7 +394,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
 
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -423,7 +423,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -452,7 +452,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -480,7 +480,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -508,7 +508,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -537,7 +537,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -565,7 +565,7 @@ struct ApiClient: Equatable {
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
             
             let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }

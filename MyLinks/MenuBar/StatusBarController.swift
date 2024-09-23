@@ -1,10 +1,11 @@
 import AppKit
 import SwiftUI
 
+@MainActor
 class StatusBarController {
     private var statusBar: NSStatusBar
-    private (set) var statusItem: NSStatusItem
-    private (set) var popover: NSPopover
+    private(set) var statusItem: NSStatusItem
+    private(set) var popover: NSPopover
     
     @ObservedObject var popoverState: PopoverState
     

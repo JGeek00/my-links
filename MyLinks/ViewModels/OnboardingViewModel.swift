@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import SwiftUI
 
+@MainActor
 class OnboardingViewModel: ObservableObject {
     static let shared = OnboardingViewModel()
     

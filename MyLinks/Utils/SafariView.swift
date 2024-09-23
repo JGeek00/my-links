@@ -1,6 +1,7 @@
 import SwiftUI
 import SafariServices
 
+@MainActor
 struct SFSafariViewWrapper: UIViewControllerRepresentable {
     let url: URL
     
@@ -13,6 +14,7 @@ struct SFSafariViewWrapper: UIViewControllerRepresentable {
     }
 }
 
+@MainActor
 func openSafariView(_ url: String) {
     let vc = SFSafariViewController(url: URL(string: url)!)
     UIApplication.shared.firstKeyWindow?.rootViewController?.present(vc, animated: true)

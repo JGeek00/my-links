@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 class LinkManagerProvider: ObservableObject {
     static let shared = LinkManagerProvider()
     

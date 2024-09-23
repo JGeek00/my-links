@@ -1,7 +1,8 @@
 import Foundation
 
+@MainActor
 class LinksViewModel: ObservableObject {
-    static var shared = LinksViewModel()
+    static let shared = LinksViewModel()
     
     @Published var data: [Link] = []
     @Published var loading = true
@@ -28,9 +29,7 @@ class LinksViewModel: ObservableObject {
         loadMore: Bool = false
     ) async {
         if setLoading == true {
-            DispatchQueue.main.sync {
-                self.loading = true
-            }
+            self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)

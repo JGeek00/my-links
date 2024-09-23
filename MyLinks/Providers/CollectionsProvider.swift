@@ -1,8 +1,9 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 class CollectionsProvider: ObservableObject {
-    static var shared = CollectionsProvider()
+    static let shared = CollectionsProvider()
     
     @Published var navigationPath = NavigationPath()
     
@@ -17,9 +18,7 @@ class CollectionsProvider: ObservableObject {
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            DispatchQueue.main.sync {
-                self.loading = true
-            }
+            self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.fetchCollections()

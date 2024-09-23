@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class ApiClientProvider: ObservableObject {
     static let shared = ApiClientProvider()
     

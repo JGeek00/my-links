@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class TagsProvider: ObservableObject {
     static var shared = TagsProvider()
     
@@ -15,9 +16,7 @@ class TagsProvider: ObservableObject {
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            DispatchQueue.main.sync {
-                self.loading = true
-            }
+            self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.fetchTags()

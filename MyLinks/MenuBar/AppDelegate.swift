@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 class AppDelegate: NSObject, NSApplicationDelegate {
     static var popover = NSPopover()
     var statusBar: StatusBarController?

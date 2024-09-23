@@ -1,6 +1,7 @@
 import Foundation
 import AlertToast
 
+@MainActor
 class ToastProvider: ObservableObject {
     static let shared = ToastProvider()
     

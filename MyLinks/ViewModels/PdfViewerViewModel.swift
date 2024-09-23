@@ -1,6 +1,7 @@
 import Foundation
 import PDFKit
 
+@MainActor
 class PdfViewerViewModel: ObservableObject {
     @Published var pdfData: PDFDocument? = nil
     @Published var data: Data? = nil
@@ -19,9 +20,7 @@ class PdfViewerViewModel: ObservableObject {
     
     func loadData(linkId: Int, setLoading: Bool = false) async {
         if setLoading == true {
-            DispatchQueue.main.sync {
-                self.loading = true
-            }
+            self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.fetchPdf(linkId: linkId)

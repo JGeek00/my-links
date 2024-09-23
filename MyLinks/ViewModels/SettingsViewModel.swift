@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class SettingsViewModel: ObservableObject {
     @Published var contactDeveloperSafariOpen = false
     @Published var dataSourceSafariOpen = false

@@ -58,29 +58,27 @@ struct DocumentDownloaderView: View {
     }
     
     private func getSaveDir() -> URL? {
-        DispatchQueue.main.sync {
-            let savePanel = NSSavePanel()
-            switch documentType {
-            case .pdf:
-                savePanel.allowedContentTypes = [.pdf]
-            case .image:
-                savePanel.allowedContentTypes = [.png]
-            }
-            savePanel.canCreateDirectories = true
-            savePanel.isExtensionHidden = false
-            switch documentType {
-            case .pdf:
-                savePanel.title = String(localized: "Save the PDF document")
-                savePanel.message = String(localized: "Choose a folder and a name to store the PDF.")
-            case .image:
-                savePanel.title = String(localized: "Save the image")
-                savePanel.message = String(localized: "Choose a folder and a name to store the image.")
-            }
-            savePanel.nameFieldLabel = String(localized: "Name:")
-            
-            let response = savePanel.runModal()
-            return response == .OK ? savePanel.url : nil
+        let savePanel = NSSavePanel()
+        switch documentType {
+        case .pdf:
+            savePanel.allowedContentTypes = [.pdf]
+        case .image:
+            savePanel.allowedContentTypes = [.png]
         }
+        savePanel.canCreateDirectories = true
+        savePanel.isExtensionHidden = false
+        switch documentType {
+        case .pdf:
+            savePanel.title = String(localized: "Save the PDF document")
+            savePanel.message = String(localized: "Choose a folder and a name to store the PDF.")
+        case .image:
+            savePanel.title = String(localized: "Save the image")
+            savePanel.message = String(localized: "Choose a folder and a name to store the image.")
+        }
+        savePanel.nameFieldLabel = String(localized: "Name:")
+        
+        let response = savePanel.runModal()
+        return response == .OK ? savePanel.url : nil
     }
     
     var body: some View {
