@@ -14,7 +14,6 @@ class LinksFilteredViewModel: ObservableObject {
     @Published var error = false
     
     @Published var searchFieldValue = ""
-    @Published var searchQueryValue: String? = nil
     @Published var searchPresented = false
     var previousSearch: String? = nil
     
@@ -26,7 +25,8 @@ class LinksFilteredViewModel: ObservableObject {
         cursor: Int? = nil,
         setLoading: Bool = false,
         setError: Bool = true,
-        loadMore: Bool = false
+        loadMore: Bool = false,
+        searchTerm: String? = nil
     ) async {
         if (input.mode == .collection || input.mode == .tag) && input.id == nil {
             return
@@ -42,8 +42,8 @@ class LinksFilteredViewModel: ObservableObject {
             tagId: input.mode == .tag ? input.id! : nil,
             pinnedOnly: input.mode == .pinned ? true : nil,
             recentOnly: input.mode == .recent ? true : nil,
-            searchQueryString: searchQueryValue,
-            searchByName: searchQueryValue != nil ? true : nil,
+            searchQueryString: searchTerm,
+            searchByName: searchTerm != nil ? true : nil,
             sort: sortingSelected.rawValue
         )
         if result.successful == true {
@@ -93,18 +93,16 @@ class LinksFilteredViewModel: ObservableObject {
     }
     
     func search() {
-        self.searchQueryValue = searchFieldValue
         Task {
-            await loadData(setLoading: true)
+            await loadData(setLoading: true, searchTerm: searchFieldValue)
             self.previousSearch = searchFieldValue
         }
     }
     
     func clearSearch() {
-        self.searchQueryValue = nil
         if previousSearch != nil {
             Task {
-                await loadData(setLoading: true)
+                await loadData(setLoading: true, searchTerm: nil)
                 self.previousSearch = nil
             }
         }

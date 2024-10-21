@@ -100,7 +100,7 @@ struct DashboardView: View {
     }
 }
 
-private struct DashboardRegularView: View {
+fileprivate struct DashboardRegularView: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
@@ -178,7 +178,7 @@ private struct DashboardRegularView: View {
     }
 }
 
-struct DashboardCompactView: View {
+fileprivate struct DashboardCompactView: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
@@ -250,7 +250,7 @@ struct DashboardCompactView: View {
     }
 }
 
-private struct Header: View {
+fileprivate struct Header: View {
     var dashboardData: [Link]
     
     init(dashboardData: [Link]) {
@@ -297,7 +297,7 @@ private struct Header: View {
     }
 }
 
-private struct SummaryEntry: View {
+fileprivate struct SummaryEntry: View {
     var icon: String
     var label: String
     var value: Int?
@@ -357,7 +357,7 @@ private struct SummaryEntry: View {
     }
 }
 
-private struct TabletListEntry: View {
+fileprivate struct TabletListEntry: View {
     var item: Link
     var onTaskCompleted: (Link, Enums.LinkTaskCompleted) -> Void
     
@@ -376,7 +376,7 @@ private struct TabletListEntry: View {
     }
 }
 
-private struct DashboardIndicators: View {
+fileprivate struct DashboardIndicators: View {
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     
     var body: some View {
@@ -387,6 +387,7 @@ private struct DashboardIndicators: View {
                         ProgressView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
                 }
                 else if dashboardViewModel.error == true {
                     ContentUnavailableView {
@@ -399,6 +400,7 @@ private struct DashboardIndicators: View {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
                     }
+                    .transition(.opacity)
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)

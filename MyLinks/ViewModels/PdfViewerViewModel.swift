@@ -1,5 +1,6 @@
 import Foundation
 import PDFKit
+import SwiftUI
 
 @MainActor
 class PdfViewerViewModel: ObservableObject {
@@ -26,10 +27,12 @@ class PdfViewerViewModel: ObservableObject {
         let result = await instance.fetchPdf(linkId: linkId)
         if result.successful == true {
             DispatchQueue.main.async {
-                self.data = result.data!
-                self.pdfData = PDFDocument(data: result.data!)
-                self.loading = false
-                self.error = false
+                withAnimation(.default) {
+                    self.data = result.data!
+                    self.pdfData = PDFDocument(data: result.data!)
+                    self.loading = false
+                    self.error = false
+                }
             }
         }
         else {
@@ -38,8 +41,10 @@ class PdfViewerViewModel: ObservableObject {
                 return
             }
             DispatchQueue.main.async {
-                self.error = true
-                self.loading = false
+                withAnimation(.default) {
+                    self.error = true
+                    self.loading = false
+                }
             }
         }
     }

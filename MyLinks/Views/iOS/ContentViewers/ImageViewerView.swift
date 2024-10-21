@@ -21,6 +21,7 @@ struct ImageViewerView: View {
                         ProgressView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
                 }
                 else if imageViewerViewModel.error == true {
                     ContentUnavailableView {
@@ -33,9 +34,11 @@ struct ImageViewerView: View {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
                     }
+                    .transition(.opacity)
                 }
                 else if imageViewerViewModel.imageData != nil {
                     ImageViewer(image: imageViewerViewModel.imageData!)
+                        .transition(.opacity)
                 }
                 else {
                     ContentUnavailableView(
@@ -43,6 +46,7 @@ struct ImageViewerView: View {
                         systemImage: "photo",
                         description: Text("The image of the link is not available.")
                     )
+                    .transition(.opacity)
                 }
             }
             .overlay(alignment: .topLeading) {

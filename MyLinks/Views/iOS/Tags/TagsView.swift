@@ -90,7 +90,7 @@ struct TagsView: View {
     }
 }
 
-private struct TagsIndicators: View {
+fileprivate struct TagsIndicators: View {
     @EnvironmentObject private var tagsProvider: TagsProvider
     
     init() {}

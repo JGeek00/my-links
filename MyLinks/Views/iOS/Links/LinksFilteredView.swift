@@ -18,11 +18,43 @@ struct LinksFilteredView: View {
     
     var body: some View {
         Group {
-            if horizontalSizeClass == .regular {
-                LinksFilteredRegularView(listMode: listMode)
+            if (linksFilteredViewModel.input.mode == .collection || linksFilteredViewModel.input.mode == .tag) && linksFilteredViewModel.input.id == nil  {
+                ContentUnavailableView {
+                    Label("404", systemImage: "exclamationmark.circle")
+                } description: {
+                    Text("Requested links not found.")
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .transition(.opacity)
             }
             else {
-                LinksFilteredCompactView(listMode: listMode)
+                if linksFilteredViewModel.loading == true {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        .transition(.opacity)
+                }
+                else if linksFilteredViewModel.error == true {
+                    ContentUnavailableView {
+                        Label("Error", systemImage: "exclamationmark.circle")
+                    } description: {
+                        Text("An error occured when loading the links data. Check your Internet connection and try again later.")
+                        Button {
+                            Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                        } label: {
+                            Label("Retry", systemImage: "arrow.counterclockwise")
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .transition(.opacity)
+                }
+                else {
+                    if horizontalSizeClass == .regular {
+                        LinksFilteredRegularView(listMode: listMode)
+                    }
+                    else {
+                        LinksFilteredCompactView(listMode: listMode)
+                    }
+                }
             }
         }
         .navigationTitle(linksFilteredViewModel.input.name)
@@ -33,10 +65,6 @@ struct LinksFilteredView: View {
         .searchable(text: $linksFilteredViewModel.searchFieldValue, isPresented: $linksFilteredViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
         .onSubmit(of: .search) {
             linksFilteredViewModel.search()
-        }
-        .overlay(alignment: .center) {
-            LinksFilteredIndicators()
-                .transition(.opacity)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -110,7 +138,7 @@ struct LinksFilteredView: View {
     }
 }
 
-private struct LinksFilteredRegularView: View {
+fileprivate struct LinksFilteredRegularView: View {
     var listMode: Enums.CollectionListMode
     
     init(listMode: Enums.CollectionListMode) {
@@ -181,16 +209,16 @@ private struct LinksFilteredRegularView: View {
                         } description: {
                             Text("Add some links to this collection to see them here.")
                         }
+                        .transition(.opacity)
                     }
                 }
+                .transition(.opacity)
             case .tabs:
                 switch listMode {
                 case .links:
                     LinksList(links: filtered)
-                        .transition(.opacity)
                 case .subcollections:
                     SubcollectionsList(subcollections: subCollections)
-                        .transition(.opacity)
                 }
             }
         })
@@ -204,6 +232,7 @@ private struct LinksFilteredRegularView: View {
             } description: {
                 Text("Add some links to this collection to see them here.")
             }
+            .transition(.opacity)
         }
         else {
             ScrollView {
@@ -222,6 +251,7 @@ private struct LinksFilteredRegularView: View {
                 }
                 .padding(.horizontal, 14)
             }
+            .transition(.opacity)
         }
     }
     
@@ -233,6 +263,7 @@ private struct LinksFilteredRegularView: View {
             } description: {
                 Text("Add some subcollections to this collection to see them here.")
             }
+            .transition(.opacity)
         }
         else {
             ScrollView {
@@ -248,11 +279,12 @@ private struct LinksFilteredRegularView: View {
                 }
                 .padding(.horizontal, 14)
             }
+            .transition(.opacity)
         }
     }
 }
 
-private struct LinksFilteredCompactView: View {
+fileprivate struct LinksFilteredCompactView: View {
     var listMode: Enums.CollectionListMode
     
     init(listMode: Enums.CollectionListMode) {
@@ -327,10 +359,8 @@ private struct LinksFilteredCompactView: View {
                 switch listMode {
                 case .links:
                     LinksList(links: filtered)
-                        .transition(.opacity)
                 case .subcollections:
                     SubcollectionsList(subcollections: subCollections)
-                        .transition(.opacity)
                 }
             }
         }
@@ -344,6 +374,7 @@ private struct LinksFilteredCompactView: View {
             } description: {
                 Text("Add some links to this collection to see them here.")
             }
+            .transition(.opacity)
         }
         else {
             List(links, id: \.id) { item in
@@ -356,6 +387,7 @@ private struct LinksFilteredCompactView: View {
                     }
                 }
             }
+            .transition(.opacity)
         }
     }
     
@@ -367,6 +399,7 @@ private struct LinksFilteredCompactView: View {
             } description: {
                 Text("Add some subcollections to this collection to see them here.")
             }
+            .transition(.opacity)
         }
         else {
             List(subcollections, id: \.id) { item in
@@ -376,46 +409,7 @@ private struct LinksFilteredCompactView: View {
                     collectionsProvider.deleteCollection(id: item.id!)
                 }
             }
-        }
-    }
-}
-
-private struct LinksFilteredIndicators: View {
-    @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
-    
-    init() {}
-    
-    var body: some View {
-        if (linksFilteredViewModel.input.mode == .collection || linksFilteredViewModel.input.mode == .tag) && linksFilteredViewModel.input.id == nil {
-            ContentUnavailableView {
-                Label("404", systemImage: "exclamationmark.circle")
-            } description: {
-                Text("Requested links not found.")
-            }
-        }
-        else if linksFilteredViewModel.loading == true || linksFilteredViewModel.error == true {
-            Group {
-                if linksFilteredViewModel.loading == true {
-                    Group {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                else if linksFilteredViewModel.error == true {
-                    ContentUnavailableView {
-                        Label("Error", systemImage: "exclamationmark.circle")
-                    } description: {
-                        Text("An error occured when loading the links data. Check your Internet connection and try again later.")
-                        Button {
-                            Task { await linksFilteredViewModel.loadData(setLoading: true) }
-                        } label: {
-                            Label("Retry", systemImage: "arrow.counterclockwise")
-                        }
-                    }
-                }
-            }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
-            .background(Color.listBackground)
+            .transition(.opacity)
         }
     }
 }

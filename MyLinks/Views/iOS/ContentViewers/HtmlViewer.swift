@@ -23,6 +23,7 @@ struct HTMLViewer: View {
                         ProgressView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
                 }
                 else if htmlViewerViewModel.error == true {
                     ContentUnavailableView {
@@ -35,6 +36,7 @@ struct HTMLViewer: View {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
                     }
+                    .transition(.opacity)
                 }
                 else {
                     switch mode {
@@ -52,6 +54,7 @@ struct HTMLViewer: View {
                             } description: {
                                 Text("Content not available. Try again later.")
                             }
+                            .transition(.opacity)
                         }
                     case .webpage:
                         if let content = htmlViewerViewModel.htmlData {
@@ -66,6 +69,7 @@ struct HTMLViewer: View {
                             } description: {
                                 Text("Content not available. Try again later.")
                             }
+                            .transition(.opacity)
                         }
                     }
                 }

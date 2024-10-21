@@ -132,7 +132,7 @@ struct CollectionsView: View {
     }
 }
 
-private struct CollectionsIndicators: View {
+fileprivate struct CollectionsIndicators: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
     init() {}

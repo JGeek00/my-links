@@ -23,6 +23,7 @@ struct PDFViewerView: View {
                         ProgressView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
                 }
                 else if pdfViewerViewModel.error == true {
                     ContentUnavailableView {
@@ -35,9 +36,11 @@ struct PDFViewerView: View {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
                     }
+                    .transition(.opacity)
                 }
                 else if pdfViewerViewModel.pdfData != nil {
                     PDFKitView(showing: pdfViewerViewModel.pdfData!)
+                        .transition(.opacity)
                 }
                 else {
                     ContentUnavailableView(
@@ -45,6 +48,7 @@ struct PDFViewerView: View {
                         systemImage: "doc",
                         description: Text("The PDF document of the link is not available.")
                     )
+                    .transition(.opacity)
                 }
             }
             .navigationTitle(name)

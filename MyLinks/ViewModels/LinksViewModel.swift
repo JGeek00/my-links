@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 @MainActor
 class LinksViewModel: ObservableObject {
@@ -41,8 +42,10 @@ class LinksViewModel: ObservableObject {
                 else {
                     self.data = result.data?.response ?? []
                 }
-                self.loading = false
-                self.error = false
+                withAnimation(.default) {
+                    self.loading = false
+                    self.error = false
+                }
             }
         }
         else {
@@ -51,9 +54,11 @@ class LinksViewModel: ObservableObject {
                 return
             }
             DispatchQueue.main.async {
-                self.loading = false
-                if setError == true {
-                    self.error = true
+                withAnimation(.default) {
+                    self.loading = false
+                    if setError == true {
+                        self.error = true
+                    }
                 }
             }
         }

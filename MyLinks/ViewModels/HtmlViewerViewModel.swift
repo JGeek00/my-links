@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 @MainActor
 class HTMLViewerViewModel: ObservableObject {
@@ -25,9 +26,11 @@ class HTMLViewerViewModel: ObservableObject {
             let result = await instance.fetchReader(linkId: link.id!)
             if result.successful == true {
                 DispatchQueue.main.async {
-                    self.readerData = result.data!
-                    self.loading = false
-                    self.error = false
+                    withAnimation(.default) {
+                        self.readerData = result.data!
+                        self.loading = false
+                        self.error = false
+                    }
                 }
             }
             else {
@@ -36,17 +39,21 @@ class HTMLViewerViewModel: ObservableObject {
                     return
                 }
                 DispatchQueue.main.async {
-                    self.error = true
-                    self.loading = false
+                    withAnimation(.default) {
+                        self.error = true
+                        self.loading = false
+                    }
                 }
             }
         case .webpage:
             let result = await instance.fetchWebpageHtml(linkId: link.id!)
             if result.successful == true {
                 DispatchQueue.main.async {
-                    self.htmlData = result.data!
-                    self.loading = false
-                    self.error = false
+                    withAnimation(.default) {
+                        self.htmlData = result.data!
+                        self.loading = false
+                        self.error = false
+                    }
                 }
             }
             else {
@@ -55,8 +62,10 @@ class HTMLViewerViewModel: ObservableObject {
                     return
                 }
                 DispatchQueue.main.async {
-                    self.error = true
-                    self.loading = false
+                    withAnimation(.default) {
+                        self.error = true
+                        self.loading = false
+                    }
                 }
             }
         }

@@ -26,10 +26,12 @@ class ImageViewerViewModel: ObservableObject {
         let result = await instance.fetchImage(linkId: linkId)
         if result.successful == true {
             DispatchQueue.main.async {
-                self.data = result.data!
-                self.imageData = UIImage(data: result.data!)
-                self.loading = false
-                self.error = false
+                withAnimation(.default) {
+                    self.data = result.data!
+                    self.imageData = UIImage(data: result.data!)
+                    self.loading = false
+                    self.error = false
+                }
             }
         }
         else {
@@ -38,8 +40,10 @@ class ImageViewerViewModel: ObservableObject {
                 return
             }
             DispatchQueue.main.async {
-                self.error = true
-                self.loading = false
+                withAnimation(.default) {
+                    self.error = true
+                    self.loading = false
+                }
             }
         }
     }
