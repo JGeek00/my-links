@@ -14,7 +14,10 @@ struct ShareExtensionView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if shareExtensionViewModel.apiClient == nil {
+                if shareExtensionViewModel.invalidUrl == true {
+                    ContentUnavailableView("Invalid URL", systemImage: "link", description: Text("The provided URL is not valid."))
+                }
+                else if shareExtensionViewModel.apiClient == nil {
                     ContentUnavailableView("Server unavailable", systemImage: "server.rack", description: Text("Open the app to create a connection to a server."))
                 }
                 else if shareExtensionViewModel.loading == true {
@@ -116,13 +119,6 @@ struct ShareExtensionView: View {
                 }
             } message: {
                 Text("An error occured when saving the link.")
-            }
-            .alert("Invalid URL", isPresented: $shareExtensionViewModel.invalidUrl) {
-                Button("Close", role: .cancel) {
-                    onClose()
-                }
-            } message: {
-                Text("The provided URL is not valid")
             }
         }
         .fontDesign(.rounded)

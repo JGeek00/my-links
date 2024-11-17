@@ -1059,17 +1059,6 @@
         }
       }
     },
-    "Invalid link" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Link no válido"
-          }
-        }
-      }
-    },
     "Invalid path." : {
       "localizations" : {
         "es" : {
@@ -1940,12 +1929,12 @@
         }
       }
     },
-    "The provided URL is not valid" : {
+    "The provided URL is not valid." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La URL proveída no es válida"
+            "value" : "La URL proveída no es válida."
           }
         }
       }
