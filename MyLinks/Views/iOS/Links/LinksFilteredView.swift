@@ -62,7 +62,7 @@ struct LinksFilteredView: View {
         .refreshable {
             await linksFilteredViewModel.loadData()
         }
-        .searchable(text: $linksFilteredViewModel.searchFieldValue, isPresented: $linksFilteredViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $linksFilteredViewModel.searchFieldValue, isPresented: $linksFilteredViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search links")
         .onSubmit(of: .search) {
             linksFilteredViewModel.search()
         }

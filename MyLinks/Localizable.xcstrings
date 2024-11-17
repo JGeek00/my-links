@@ -1699,6 +1699,16 @@
         }
       }
     },
+    "Search links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar enlaces"
+          }
+        }
+      }
+    },
     "Self hosted" : {
       "localizations" : {
         "es" : {
