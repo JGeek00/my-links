@@ -48,7 +48,7 @@ struct MyLinksApp: App {
                         }
                     }
                     let filtered = NSApplication.shared.windows.filter() { $0.identifier?.rawValue != nil && $0.identifier?.rawValue != "com_apple_SwiftUI_Settings_window" }
-                    if filtered.count == 0 {
+                    if filtered.count < 2 {
                         NSApp.setActivationPolicy(.accessory)
                     }
                 }

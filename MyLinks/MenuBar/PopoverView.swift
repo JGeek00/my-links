@@ -43,6 +43,7 @@ struct PopoverContent: View {
     func openMainWindow() {
         openWindow(id: WindowIds.main)
         NSApp.activate(ignoringOtherApps: true)
+        NSApp.mainWindow?.makeKeyAndOrderFront(nil)
     }
     
     var body: some View {
