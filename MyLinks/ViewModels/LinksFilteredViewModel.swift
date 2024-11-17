@@ -85,7 +85,7 @@ class LinksFilteredViewModel: ObservableObject {
         }
         self.loadingMore = true
         Task {
-            await loadData(cursor: data.last!.id!, setError: false, loadMore: true)
+            await loadData(cursor: data.last!.id!, setError: false, loadMore: true, searchTerm: searchFieldValue)
             DispatchQueue.main.async {
                 self.loadingMore = false
             }
