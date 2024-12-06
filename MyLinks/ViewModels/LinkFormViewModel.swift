@@ -66,6 +66,7 @@ class LinkFormViewModel: ObservableObject {
         self.saving = true
         
         if editingLink != nil {
+            body.id = editingLink?.id
             LinkManagerProvider.shared.editLink(id: editingLink!.id!, body: body) { link in
                 DispatchQueue.main.async {
                     self.saving = false

@@ -2,6 +2,7 @@ import Foundation
 
 // MARK: - LinkCreationRequest
 struct LinkCreationRequest: Codable {
+    var id: Int? = nil
     let url: String?
     var name, description, type: String?
     let tags: [TagCreation]?
