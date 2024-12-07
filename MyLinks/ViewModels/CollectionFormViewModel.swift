@@ -36,6 +36,7 @@ class CollectionFormViewModel: ObservableObject {
         
         if let editingCollection = editingCollection {
             let data = CollectionCreationRequest(
+                id: editingCollection.id,
                 name: name,
                 description: description,
                 color: color.toHex(),
