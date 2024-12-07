@@ -40,23 +40,35 @@ struct LinksFilteredView: View {
                 ScrollViewReader(content: { scrollView in
                     ScrollView {
                         if input.mode == .collection && input.id != nil && !subCollections.isEmpty {
+                            let filteredCollections = linksFilteredViewModel.searchLinksValue != "" ? subCollections.filter() { $0.name!.lowercased().contains(linksFilteredViewModel.searchLinksValue.lowercased()) } : subCollections
                             VStack(alignment: .leading) {
-                                Text("Collections")
-                                    .font(.system(size: 16))
-                                    .fontWeight(.semibold)
-                                    .padding(.leading, 8)
-                                LazyVGrid(columns: Config.gridColumns) {
-                                    ForEach(subCollections, id: \.self) { item in
-                                        NavigationLink {
-                                            LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                        } label: {
-                                            CollectionItemComponent(collection: item) {
-                                                collectionsProvider.deleteCollection(id: item.id!)
-                                            }
-                                            .padding(6)
-                                        }
-                                        .buttonStyle(PlainButtonStyle())
+                                if filteredCollections.isEmpty {
+                                    ContentUnavailableView {
+                                        Label("No subcollections available.", systemImage: "magnifyingglass")
+                                    } description: {
+                                        Text("Change the inputted search term.")
                                     }
+                                    .transition(.opacity)
+                                }
+                                else {
+                                    Text("Collections")
+                                        .font(.system(size: 16))
+                                        .fontWeight(.semibold)
+                                        .padding(.leading, 8)
+                                    LazyVGrid(columns: Config.gridColumns) {
+                                        ForEach(filteredCollections, id: \.self) { item in
+                                            NavigationLink {
+                                                LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                            } label: {
+                                                CollectionItemComponent(collection: item) {
+                                                    collectionsProvider.deleteCollection(id: item.id!)
+                                                }
+                                                .padding(6)
+                                            }
+                                            .buttonStyle(PlainButtonStyle())
+                                        }
+                                    }
+                                    .transition(.opacity)
                                 }
                             }
                             .padding(.top, 16)
@@ -136,9 +148,9 @@ struct LinksFilteredView: View {
         .refreshable {
             await linksFilteredViewModel.loadData()
         }
-        .searchable(text: $linksFilteredViewModel.searchFieldValue, isPresented: $linksFilteredViewModel.searchPresented)
+        .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented)
         .onSubmit(of: .search) {
-            linksFilteredViewModel.search()
+            linksFilteredViewModel.searchLinks()
         }
         .sheet(isPresented: $collectionFormSheet, content: {
             CollectionFormView(parentCollection: input.mode == .collection && input.id != nil ? collectionsProvider.data.first() { $0.id == input.id! } : nil) {
@@ -148,9 +160,9 @@ struct LinksFilteredView: View {
             }
             .environmentObject(CollectionFormViewModel())
         })
-        .onChange(of: linksFilteredViewModel.searchPresented, { oldValue, newValue in
+        .onChange(of: linksFilteredViewModel.searchLinksPresented, { oldValue, newValue in
             if oldValue == true && newValue == false {
-                linksFilteredViewModel.clearSearch()
+                linksFilteredViewModel.clearLinksSearch()
             }
         })
         .onAppear(perform: {
