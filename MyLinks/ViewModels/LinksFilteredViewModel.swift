@@ -13,9 +13,11 @@ class LinksFilteredViewModel: ObservableObject {
     @Published var loading = true
     @Published var error = false
     
-    @Published var searchFieldValue = ""
-    @Published var searchPresented = false
-    var previousSearch: String? = nil
+    @Published var searchLinksValue = ""
+    @Published var searchLinksPresented = false
+    var previousLinksSearch: String? = nil
+    
+    @Published var searchCollectionsValue = ""
     
     @Published var loadingMore = false
     
@@ -85,25 +87,25 @@ class LinksFilteredViewModel: ObservableObject {
         }
         self.loadingMore = true
         Task {
-            await loadData(cursor: data.last!.id!, setError: false, loadMore: true, searchTerm: searchFieldValue)
+            await loadData(cursor: data.last!.id!, setError: false, loadMore: true, searchTerm: searchLinksValue)
             DispatchQueue.main.async {
                 self.loadingMore = false
             }
         }
     }
     
-    func search() {
+    func searchLinks() {
         Task {
-            await loadData(setLoading: true, searchTerm: searchFieldValue)
-            self.previousSearch = searchFieldValue
+            await loadData(setLoading: true, searchTerm: searchLinksValue)
+            self.previousLinksSearch = searchLinksValue
         }
     }
-    
-    func clearSearch() {
-        if previousSearch != nil {
+
+    func clearLinksSearch() {
+        if previousLinksSearch != nil {
             Task {
                 await loadData(setLoading: true, searchTerm: nil)
-                self.previousSearch = nil
+                self.previousLinksSearch = nil
             }
         }
     }

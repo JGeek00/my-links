@@ -28,31 +28,36 @@ struct LinksFilteredView: View {
                 .transition(.opacity)
             }
             else {
-                if linksFilteredViewModel.loading == true {
-                    ProgressView()
+                Group {
+                    if linksFilteredViewModel.error == true {
+                        ContentUnavailableView {
+                            Label("Error", systemImage: "exclamationmark.circle")
+                        } description: {
+                            Text("An error occured when loading the links data. Check your Internet connection and try again later.")
+                            Button {
+                                Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                            } label: {
+                                Label("Retry", systemImage: "arrow.counterclockwise")
+                            }
+                        }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                         .transition(.opacity)
-                }
-                else if linksFilteredViewModel.error == true {
-                    ContentUnavailableView {
-                        Label("Error", systemImage: "exclamationmark.circle")
-                    } description: {
-                        Text("An error occured when loading the links data. Check your Internet connection and try again later.")
-                        Button {
-                            Task { await linksFilteredViewModel.loadData(setLoading: true) }
-                        } label: {
-                            Label("Retry", systemImage: "arrow.counterclockwise")
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .transition(.opacity)
-                }
-                else {
-                    if horizontalSizeClass == .regular {
-                        LinksFilteredRegularView(listMode: listMode)
                     }
                     else {
-                        LinksFilteredCompactView(listMode: listMode)
+                        if horizontalSizeClass == .regular {
+                            LinksFilteredRegularView(listMode: listMode)
+                        }
+                        else {
+                            LinksFilteredCompactView(listMode: listMode)
+                        }
+                    }
+                }
+                .overlay {
+                    if linksFilteredViewModel.loading == true {
+                        ProgressView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                            .background(Color.listBackground)
+                            .transition(.opacity)
                     }
                 }
             }
@@ -61,10 +66,6 @@ struct LinksFilteredView: View {
         .navigationBarTitleDisplayMode(horizontalSizeClass == .regular ? .inline : .automatic)
         .refreshable {
             await linksFilteredViewModel.loadData()
-        }
-        .searchable(text: $linksFilteredViewModel.searchFieldValue, isPresented: $linksFilteredViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search links")
-        .onSubmit(of: .search) {
-            linksFilteredViewModel.search()
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -125,11 +126,6 @@ struct LinksFilteredView: View {
             }
             .environmentObject(CollectionFormViewModel())
         })
-        .onChange(of: linksFilteredViewModel.searchPresented, { oldValue, newValue in
-            if oldValue == true && newValue == false {
-                linksFilteredViewModel.clearSearch()
-            }
-        })
         .onAppear(perform: {
             if linksFilteredViewModel.data.isEmpty {
                 Task { await linksFilteredViewModel.loadData() }
@@ -159,20 +155,32 @@ fileprivate struct LinksFilteredRegularView: View {
             case .list:
                 ScrollView {
                     if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
+                        let filteredSubCollections = linksFilteredViewModel.searchLinksValue != "" ? subCollections.filter() { $0.name!.lowercased().contains(linksFilteredViewModel.searchLinksValue.lowercased())} : subCollections
                         VStack(alignment: .leading) {
                             Text("Collections")
                                 .font(.system(size: 16))
                                 .fontWeight(.semibold)
                                 .padding(.leading, 8)
-                            LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(subCollections, id: \.self) { item in
-                                    CollectionItemComponent(collection: item) {
-                                        collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                    } onDelete: {
-                                        collectionsProvider.deleteCollection(id: item.id!)
-                                    }
-                                    .padding(6)
+                            if filteredSubCollections.isEmpty {
+                                ContentUnavailableView {
+                                    Label("No subcollections available.", systemImage: "magnifyingglass")
+                                } description: {
+                                    Text("Change the inputted search term.")
                                 }
+                                .transition(.opacity)
+                            }
+                            else {
+                                LazyVGrid(columns: Config.gridColumns) {
+                                    ForEach(filteredSubCollections, id: \.self) { item in
+                                        CollectionItemComponent(collection: item) {
+                                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                        } onDelete: {
+                                            collectionsProvider.deleteCollection(id: item.id!)
+                                        }
+                                        .padding(6)
+                                    }
+                                }
+                                .transition(.opacity)
                             }
                         }
                         .padding(.top, 16)
@@ -213,12 +221,31 @@ fileprivate struct LinksFilteredRegularView: View {
                     }
                 }
                 .transition(.opacity)
+                .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
+                .onSubmit(of: .search) {
+                    linksFilteredViewModel.searchLinks()
+                }
+                .onChange(of: linksFilteredViewModel.searchLinksPresented, { oldValue, newValue in
+                    if oldValue == true && newValue == false {
+                        linksFilteredViewModel.clearLinksSearch()
+                    }
+                })
             case .tabs:
                 switch listMode {
                 case .links:
                     LinksList(links: filtered)
+                        .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search links")
+                        .onSubmit(of: .search) {
+                            linksFilteredViewModel.searchLinks()
+                        }
+                        .onChange(of: linksFilteredViewModel.searchLinksPresented, { oldValue, newValue in
+                            if oldValue == true && newValue == false {
+                                linksFilteredViewModel.clearLinksSearch()
+                            }
+                        })
                 case .subcollections:
                     SubcollectionsList(subcollections: subCollections)
+                        .searchable(text: $linksFilteredViewModel.searchCollectionsValue, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search subcollections")
                 }
             }
         })
@@ -257,6 +284,7 @@ fileprivate struct LinksFilteredRegularView: View {
     
     @ViewBuilder
     func SubcollectionsList(subcollections: [Collection]) -> some View {
+        let filtered = linksFilteredViewModel.searchCollectionsValue != "" ? subcollections.filter() { $0.name!.lowercased().contains(linksFilteredViewModel.searchCollectionsValue.lowercased()) } : subcollections
         if subcollections.isEmpty {
             ContentUnavailableView {
                 Label("No subcollections on this collection", systemImage: "folder")
@@ -266,20 +294,30 @@ fileprivate struct LinksFilteredRegularView: View {
             .transition(.opacity)
         }
         else {
-            ScrollView {
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(subcollections, id: \.id) { item in
-                        CollectionItemComponent(collection: item) {
-                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                        } onDelete: {
-                            collectionsProvider.deleteCollection(id: item.id!)
-                        }
-                        .padding(6)
-                    }
+            if filtered.isEmpty {
+                ContentUnavailableView {
+                    Label("No subcollections available.", systemImage: "magnifyingglass")
+                } description: {
+                    Text("Change the inputted search term.")
                 }
-                .padding(.horizontal, 14)
+                .transition(.opacity)
             }
-            .transition(.opacity)
+            else {
+                ScrollView {
+                    LazyVGrid(columns: Config.gridColumns) {
+                        ForEach(filtered, id: \.id) { item in
+                            CollectionItemComponent(collection: item) {
+                                collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                            } onDelete: {
+                                collectionsProvider.deleteCollection(id: item.id!)
+                            }
+                            .padding(6)
+                        }
+                    }
+                    .padding(.horizontal, 14)
+                }
+                .transition(.opacity)
+            }
         }
     }
 }
@@ -317,13 +355,25 @@ fileprivate struct LinksFilteredCompactView: View {
                 else {
                     List {
                         if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
+                            let filteredSubCollections = linksFilteredViewModel.searchLinksValue != "" ? subCollections.filter() { $0.name!.lowercased().contains(linksFilteredViewModel.searchLinksValue.lowercased())} : subCollections
                             Section("Subcollections") {
-                                ForEach(subCollections, id: \.self) { item in
-                                    CollectionItemComponent(collection: item) {
-                                        collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                    } onDelete: {
-                                        collectionsProvider.deleteCollection(id: item.id!)
+                                if filteredSubCollections.isEmpty {
+                                    ContentUnavailableView {
+                                        Label("No subcollections available.", systemImage: "magnifyingglass")
+                                    } description: {
+                                        Text("Change the inputted search term.")
                                     }
+                                    .transition(.opacity)
+                                }
+                                else {
+                                    ForEach(filteredSubCollections, id: \.self) { item in
+                                        CollectionItemComponent(collection: item) {
+                                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                        } onDelete: {
+                                            collectionsProvider.deleteCollection(id: item.id!)
+                                        }
+                                    }
+                                    .transition(.opacity)
                                 }
                             }
                         }
@@ -354,13 +404,32 @@ fileprivate struct LinksFilteredCompactView: View {
                     }
                     .animation(.default, value: filtered)
                     .animation(.default, value: subCollections)
+                    .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
+                    .onSubmit(of: .search) {
+                        linksFilteredViewModel.searchLinks()
+                    }
+                    .onChange(of: linksFilteredViewModel.searchLinksPresented, { oldValue, newValue in
+                        if oldValue == true && newValue == false {
+                            linksFilteredViewModel.clearLinksSearch()
+                        }
+                    })
                 }
             case .tabs:
                 switch listMode {
                 case .links:
                     LinksList(links: filtered)
+                        .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search links")
+                        .onSubmit(of: .search) {
+                            linksFilteredViewModel.searchLinks()
+                        }
+                        .onChange(of: linksFilteredViewModel.searchLinksPresented, { oldValue, newValue in
+                            if oldValue == true && newValue == false {
+                                linksFilteredViewModel.clearLinksSearch()
+                            }
+                        })
                 case .subcollections:
                     SubcollectionsList(subcollections: subCollections)
+                        .searchable(text: $linksFilteredViewModel.searchCollectionsValue, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search subcollections")
                 }
             }
         }
@@ -402,14 +471,26 @@ fileprivate struct LinksFilteredCompactView: View {
             .transition(.opacity)
         }
         else {
-            List(subcollections, id: \.id) { item in
-                CollectionItemComponent(collection: item) {
-                    collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                } onDelete: {
-                    collectionsProvider.deleteCollection(id: item.id!)
+            let filtered = linksFilteredViewModel.searchCollectionsValue != "" ? subcollections.filter() { $0.name!.lowercased().contains(linksFilteredViewModel.searchCollectionsValue.lowercased()) } : subcollections
+            if filtered.isEmpty {
+                ContentUnavailableView {
+                    Label("No subcollections available.", systemImage: "magnifyingglass")
+                } description: {
+                    Text("Change the inputted search term.")
                 }
+                .transition(.opacity)
             }
-            .transition(.opacity)
+            else {
+                List(filtered, id: \.id) { item in
+                    CollectionItemComponent(collection: item) {
+                        collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                    } onDelete: {
+                        collectionsProvider.deleteCollection(id: item.id!)
+                    }
+                }
+                .animation(.default, value: filtered)
+                .transition(.opacity)
+            }
         }
     }
 }

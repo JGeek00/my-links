@@ -367,6 +367,16 @@
         }
       }
     },
+    "Change the inputted search term." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia el término de búsqueda introducido."
+          }
+        }
+      }
+    },
     "Change the search term to see some collections." : {
       "localizations" : {
         "es" : {
@@ -1399,6 +1409,16 @@
         }
       }
     },
+    "No subcollections available." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay subcolecciones disponibles."
+          }
+        }
+      }
+    },
     "No subcollections on this collection" : {
       "localizations" : {
         "es" : {
@@ -1699,12 +1719,32 @@
         }
       }
     },
+    "Search" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar"
+          }
+        }
+      }
+    },
     "Search links" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buscar enlaces"
+          }
+        }
+      }
+    },
+    "Search subcollections" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar subcolecciones"
           }
         }
       }
