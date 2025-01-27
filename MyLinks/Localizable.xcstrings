@@ -1839,6 +1839,16 @@
         }
       }
     },
+    "Show favicons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar favicons"
+          }
+        }
+      }
+    },
     "Sort" : {
       "localizations" : {
         "es" : {

@@ -6,4 +6,5 @@ class StorageKeys {
     public static let hasRequestedReview = "HAS_REQUESTED_REVIEW"
     public static let useOldTabBar = "USE_OLD_TABBAR"
     public static let collectionViewMode = "COLLECTION_VIEW_MODE"
+    public static let showFavicons = "SHOW_FAVICONS"
 }

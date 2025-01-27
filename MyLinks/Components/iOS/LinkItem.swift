@@ -23,6 +23,8 @@ struct LinkItemComponent: View {
     @State private var pdfViewerSheet = false
     @State private var imageViewerSheet = false
     @State private var linkContentUnavailable = false
+    
+    @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
         
     var body: some View {
         let urlHost = getUrlHost(item.url)
@@ -46,7 +48,7 @@ struct LinkItemComponent: View {
         } label: {
             VStack(alignment: .leading) {
                 HStack {
-                    if let url = item.url {
+                    if showFavicons == true, let url = item.url {
                         FaviconImage(linkUrl: url)
                         Spacer()
                             .frame(width: 8)

@@ -6,10 +6,12 @@ struct GeneralSettings: View {
     @State var disconnectAlert = false
     @State var collectionsViewModeSheet = false
     
+    @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
+    
     var body: some View {
         NavigationStack {
             List {
-                Section {
+                Section("Collections") {
                     Button {
                         collectionsViewModeSheet = true
                     } label: {
@@ -23,6 +25,10 @@ struct GeneralSettings: View {
                                 .font(.system(size: 14))
                         }
                     }
+                }
+                
+                Section("Links") {
+                    Toggle("Show favicons", isOn: $showFavicons)
                 }
                 
                 Section("Server") {
