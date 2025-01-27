@@ -109,6 +109,7 @@ class LinkManagerProvider: ObservableObject {
             self.processing = true
         }
         let body = LinkCreationRequest(
+            id: link.id!,
             url: link.url,
             name: link.name!,
             description: link.description!,
