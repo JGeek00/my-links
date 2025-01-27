@@ -63,7 +63,7 @@ struct LinksFilteredView: View {
             }
         }
         .navigationTitle(linksFilteredViewModel.input.name)
-        .navigationBarTitleDisplayMode(horizontalSizeClass == .regular ? .inline : .automatic)
+        .navigationBarTitleDisplayMode(.inline)
         .refreshable {
             await linksFilteredViewModel.loadData()
         }
