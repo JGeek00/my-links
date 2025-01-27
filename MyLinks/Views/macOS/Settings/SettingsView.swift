@@ -11,6 +11,8 @@ struct SettingsView: View {
     
     @State var disconnectAlert = false
     
+    @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
+    
     var body: some View {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
         let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
@@ -25,6 +27,9 @@ struct SettingsView: View {
                         .tag(Enums.Theme.dark)
                 }
                 .pickerStyle(.radioGroup)
+                Section("Links") {
+                    Toggle("Show favicons", isOn: $showFavicons)
+                }
                 Section("Server") {
                     Button {
                         disconnectAlert.toggle()

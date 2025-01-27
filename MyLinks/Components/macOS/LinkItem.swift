@@ -23,6 +23,8 @@ struct LinkItemComponent: View {
     @State private var imageViewerSheet = false
     @State private var linkContentUnavailable = false
     
+    @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
+    
     var body: some View {
         let urlHost = getUrlHost(item.url)
         let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
@@ -45,9 +47,16 @@ struct LinkItemComponent: View {
            
         } label: {
             VStack(alignment: .leading) {
-                Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
-                    .lineLimit(1)
-                    .fontWeight(.medium)
+                HStack {
+                    if showFavicons == true, let url = item.url {
+                        FaviconImage(linkUrl: url)
+                        Spacer()
+                            .frame(width: 8)
+                    }
+                    Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
+                        .lineLimit(1)
+                        .fontWeight(.medium)
+                }
                 HStack(alignment: .center) {
                     HStack {
                         switch item.type {
