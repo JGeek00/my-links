@@ -121,6 +121,8 @@
 		0D55C58A2C23A6C1002CE99A /* LinksFilteredRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */; };
 		0D55C58C2C23A9CD002CE99A /* LinksFilteredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */; };
 		0D55C58E2C23AFF5002CE99A /* LinkManagerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */; };
+		0D5A042E2D47FC8E0029A5D4 /* FaviconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5A042D2D47FC8E0029A5D4 /* FaviconImage.swift */; };
+		0D5A04302D47FD5F0029A5D4 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5A042F2D47FD5F0029A5D4 /* ViewExtension.swift */; };
 		0D5F58662CA198DB00342D3F /* IAPsIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5F58652CA198DB00342D3F /* IAPsIds.swift */; };
 		0D5F58672CA198DB00342D3F /* IAPsIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5F58652CA198DB00342D3F /* IAPsIds.swift */; };
 		0D820C4A2C95EC3A008CD802 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D820C492C95EC3A008CD802 /* GeneralSettings.swift */; platformFilter = ios; };
@@ -277,6 +279,8 @@
 		0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredRequest.swift; sourceTree = "<group>"; };
 		0D55C58B2C23A9CD002CE99A /* LinksFilteredViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksFilteredViewModel.swift; sourceTree = "<group>"; };
 		0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkManagerProvider.swift; sourceTree = "<group>"; };
+		0D5A042D2D47FC8E0029A5D4 /* FaviconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconImage.swift; sourceTree = "<group>"; };
+		0D5A042F2D47FD5F0029A5D4 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		0D5F58652CA198DB00342D3F /* IAPsIds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPsIds.swift; sourceTree = "<group>"; };
 		0D820C492C95EC3A008CD802 /* GeneralSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
 		0D820C4B2C95F058008CD802 /* CollectionViewModeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModeSheet.swift; sourceTree = "<group>"; };
@@ -563,6 +567,7 @@
 				0D55C5602C230439002CE99A /* ColorExtension.swift */,
 				0D083CC02C2A31BA00F0EB3B /* PDFDocumentExtension.swift */,
 				0DA868022C4AD8560084FC20 /* URLExtension.swift */,
+				0D5A042F2D47FD5F0029A5D4 /* ViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -714,6 +719,7 @@
 				0D083CB12C27366700F0EB3B /* PdfViewer.swift */,
 				0D083CB32C27368C00F0EB3B /* DocumentPicker.swift */,
 				0D083CBE2C27648700F0EB3B /* ImageViewer.swift */,
+				0D5A042D2D47FC8E0029A5D4 /* FaviconImage.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -959,6 +965,7 @@
 				0D55C5162C21B45F002CE99A /* ServerSelection.swift in Sources */,
 				0D55C51C2C21BBE9002CE99A /* Enums.swift in Sources */,
 				0DEA27D82C32FC8700F1802F /* PopoverView.swift in Sources */,
+				0D5A04302D47FD5F0029A5D4 /* ViewExtension.swift in Sources */,
 				0D55C5582C22674F002CE99A /* ArrayExtension.swift in Sources */,
 				0D55C4E72C219E13002CE99A /* MyLinksApp.swift in Sources */,
 				0D55C5522C224F07002CE99A /* TagsPickerView.swift in Sources */,
@@ -986,6 +993,7 @@
 				0D55C4FF2C219F38002CE99A /* Config.swift in Sources */,
 				0D55C5142C21B420002CE99A /* Welcome.swift in Sources */,
 				0D5F58672CA198DB00342D3F /* IAPsIds.swift in Sources */,
+				0D5A042E2D47FC8E0029A5D4 /* FaviconImage.swift in Sources */,
 				0D8A90972C3C633700EB9DF1 /* ContributionProduct.swift in Sources */,
 				0D55C4EE2C219E13002CE99A /* RootView.swift in Sources */,
 				0D8A90912C3C62E600EB9DF1 /* TipsView.swift in Sources */,

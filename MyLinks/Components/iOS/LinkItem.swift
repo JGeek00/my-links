@@ -45,9 +45,16 @@ struct LinkItemComponent: View {
             }
         } label: {
             VStack(alignment: .leading) {
-                Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url ?? "")
-                    .lineLimit(1)
-                    .fontWeight(.medium)
+                HStack {
+                    if let url = item.url {
+                        FaviconImage(linkUrl: url)
+                        Spacer()
+                            .frame(width: 8)
+                    }
+                    Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url ?? "")
+                        .lineLimit(1)
+                        .fontWeight(.medium)
+                }
                 Spacer()
                     .frame(height: 4)
                 HStack {
