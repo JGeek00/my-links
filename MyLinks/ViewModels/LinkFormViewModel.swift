@@ -55,7 +55,7 @@ class LinkFormViewModel: ObservableObject {
         let col = collections.first(where: { $0.id == collection })
         
         var body = LinkCreationRequest(
-            url: url,
+            url: url != "" ? url : nil,
             name: name,
             description: description,
             tags: selectedTags.map() { TagCreation(name: $0) },
