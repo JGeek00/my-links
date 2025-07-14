@@ -53,19 +53,22 @@ class LinkFormViewModel: ObservableObject {
         }
         
         let col = collections.first(where: { $0.id == collection })
-        
-        var body = LinkCreationRequest(
-            url: url != "" ? url : nil,
-            name: name,
-            description: description,
-            tags: selectedTags.map() { TagCreation(name: $0) },
-            collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-            pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequest(id: $0.id!) } : []
-        )
     
         self.saving = true
         
         if editingLink != nil {
+            var body = LinkEditingRequest(
+                url: url != "" ? url : nil,
+                name: name,
+                description: description,
+                type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
+                tags: selectedTags.map() { TagCreation(name: $0) },
+                collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
+                pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequestEditing(id: $0.id!) } : [],
+                image: self.editingLink?.image,
+                pdf: self.editingLink?.pdf,
+            )
+            
             body.id = editingLink?.id
             LinkManagerProvider.shared.editLink(id: editingLink!.id!, body: body) { link in
                 DispatchQueue.main.async {
@@ -89,6 +92,18 @@ class LinkFormViewModel: ObservableObject {
             }
         }
         else {
+            var body = LinkCreationRequest(
+                url: url != "" ? url : nil,
+                name: name,
+                description: description,
+                type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
+                tags: selectedTags.map() { TagCreation(name: $0) },
+                collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
+                pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequest(id: $0.id!) } : [],
+                image: self.editingLink?.image,
+                pdf: self.editingLink?.pdf,
+            )
+            
             if mode == .file && selectedFileUrl == nil {
                 self.validationErrorMessage = String(localized: "No file selected.")
                 self.validationErrorAlert = true
@@ -107,9 +122,6 @@ class LinkFormViewModel: ObservableObject {
             if mode == .file && body.name == "" {
                 body.name = selectedFileUrl?.lastPathComponent
             }
-            
-            body.type = mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image"
-
             
             LinkManagerProvider.shared.createLink(link: body) { link in
                 if mode == .file {

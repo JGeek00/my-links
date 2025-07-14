@@ -112,7 +112,9 @@ class ShareExtensionViewModel: ObservableObject {
             description: description,
             tags: selectedTags.map() { TagCreation(name: $0) },
             collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-            pinnedBy: []
+            pinnedBy: [],
+            image: nil,
+            pdf: nil,
         )
         
         DispatchQueue.main.async {

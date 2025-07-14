@@ -1,5 +1,5 @@
 {
-  "originHash" : "ff7e0a8c8604444f2606612cf7cc13ad3c4a42db480ad14968883b536176fd0f",
+  "originHash" : "978e57db8b41b9b8c69a4d31d1464fdf542a6f136812eeda027abf91641a1f42",
   "pins" : [
     {
       "identity" : "alerttoast",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "ce671704a27e418f606ead1dfb25c622de98bd5b",
         "version" : "3.6.1"
+      }
+    },
+    {
+      "identity" : "nullcodable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/g-mark/NullCodable.git",
+      "state" : {
+        "revision" : "dcdda8a5b079827f65e283ab7c29d5caae4caf89",
+        "version" : "1.1.0"
       }
     },
     {

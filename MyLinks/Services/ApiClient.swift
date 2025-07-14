@@ -166,11 +166,13 @@ struct ApiClient: Equatable {
         do {            
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             
+            let body = try CustomJSONEncoder().encode(body)
+            
             var request = URLRequest(url: components.url!)
             request.httpMethod = "POST"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
-            request.httpBody = try CustomJSONEncoder().encode(body)
+            request.httpBody = body
             
             let sessionConfig = URLSessionConfiguration.default
             let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
@@ -257,22 +259,24 @@ struct ApiClient: Equatable {
         }
     }
     
-    func editLink(linkId: Int, body: LinkCreationRequest) async -> StatusResponse<LinkResponse> {
+    func editLink(linkId: Int, body: LinkEditingRequest) async -> StatusResponse<LinkResponse> {
         let defaultErrorResponse = StatusResponse<LinkResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/links/\(linkId)") else { return defaultErrorResponse }
         do {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             
+            let body = try CustomJSONEncoder().encode(body)
+            
             var request = URLRequest(url: components.url!)
             request.httpMethod = "PUT"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
-            request.httpBody = try CustomJSONEncoder().encode(body)
-            
+            request.httpBody = body
+
             let sessionConfig = URLSessionConfiguration.default
             let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
-            
+
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {

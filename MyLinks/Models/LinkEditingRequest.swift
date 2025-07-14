@@ -1,31 +1,31 @@
 import Foundation
 import NullCodable
 
-// MARK: - LinkCreationRequest
-struct LinkCreationRequest: Codable {
+// MARK: - LinkEditingRequest
+struct LinkEditingRequest: Codable {
     var id: Int? = nil
-    let url: String?
+    @NullCodable var url: String?
     var name, description, type: String?
     let tags: [TagCreation]?
     let collection: CollectionCreation?
-    let pinnedBy: [PinnedByRequest]?
+    let pinnedBy: [PinnedByRequestEditing]?
     let image: String?
     let pdf: String?
 }
 
 // MARK: - CollectionCreation
-struct CollectionCreation: Codable {
+struct CollectionEditing: Codable {
     let id: Int?
     let name: String?
     let ownerId: Int?
 }
 
 // MARK: - TagCreation
-struct TagCreation: Codable {
+struct TagEditing: Codable {
     let name: String?
 }
 
 // MARK: - PinnedByRequest
-struct PinnedByRequest: Codable, Hashable {
+struct PinnedByRequestEditing: Codable, Hashable {
     let id: Int?
 }

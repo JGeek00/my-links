@@ -47,7 +47,7 @@ class LinkManagerProvider: ObservableObject {
         }
     }
     
-    func editLink(id: Int, body: LinkCreationRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
+    func editLink(id: Int, body: LinkEditingRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
             let result = await instance.editLink(linkId: id, body: body)
@@ -108,14 +108,16 @@ class LinkManagerProvider: ObservableObject {
         DispatchQueue.main.async {
             self.processing = true
         }
-        let body = LinkCreationRequest(
+        let body = LinkEditingRequest(
             id: link.id!,
             url: link.url,
             name: link.name!,
             description: link.description!,
             tags: link.tags!.map() { TagCreation(name: $0.name!) },
             collection: CollectionCreation(id: link.collection!.id!, name: link.collection!.name!, ownerId: link.collection!.ownerId!),
-            pinnedBy: link.pinnedBy!.isEmpty ? [PinnedByRequest(id: 1)] : []
+            pinnedBy: link.pinnedBy!.isEmpty ? [PinnedByRequestEditing(id: 1)] : [],
+            image: link.image,
+            pdf: link.pdf,
         )
         let result = await instance.editLink(linkId: link.id!, body: body)
         if result.successful == true {
