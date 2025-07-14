@@ -70,7 +70,7 @@ struct CollectionsView: View {
                         }
                     }
                     .overlay(alignment: .center) {
-                        if searched.isEmpty {
+                        if searched.isEmpty && searchText != "" {
                             ContentUnavailableView {
                                 Label("No collections found", systemImage: "folder")
                             } description: {

@@ -76,6 +76,7 @@ struct LinkFormView: View {
                                         showFilePicker = true
                                     } label: {
                                         Text(linkFormViewModel.selectedFileUrl != nil ? "Replace selected file (up to 10 MB)" : "Pick a file (up to 10 MB)")
+                                            .multilineTextAlignment(.center)
                                     }
                                 }
                                 .padding()

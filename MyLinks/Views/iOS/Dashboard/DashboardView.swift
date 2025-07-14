@@ -185,35 +185,39 @@ fileprivate struct DashboardCompactView: View {
         let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
         let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
         List {
-            Header(dashboardData: dashboardViewModel.data)
-            Section {
-                ForEach(filtered.uniqued(), id: \.self) { item in
-                    LinkItemComponent(item: item) { link, action in
-                        dashboardViewModel.reload()
-                    }
-                }
-                .overlay(alignment: .center) {
-                    if filtered.isEmpty {
-                        ContentUnavailableView {
-                            Label("No links added", systemImage: "link")
-                        } description: {
-                            Text("Save some links on Linkwarden to see them here.")
+            Section {} header: {
+                Header(dashboardData: dashboardViewModel.data)
+            }
+            if !filtered.isEmpty {
+                Section {
+                    ForEach(filtered.uniqued(), id: \.self) { item in
+                        LinkItemComponent(item: item) { link, action in
+                            dashboardViewModel.reload()
                         }
-                        .listRowBackground(Color.clear)
                     }
-                }
-            } header: {
-                HStack {
-                    Text("Recent")
-                    Spacer()
-                    Button {
-                        let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
-                        dashboardViewModel.path.append(request)
-                    } label: {
-                        Text("View all")
-                        Image(systemName: "chevron.right")
+                    .overlay(alignment: .center) {
+                        if filtered.isEmpty {
+                            ContentUnavailableView {
+                                Label("No links added", systemImage: "link")
+                            } description: {
+                                Text("Save some links on Linkwarden to see them here.")
+                            }
+                            .listRowBackground(Color.clear)
+                        }
                     }
-                    .font(.system(size: 12))
+                } header: {
+                    HStack {
+                        Text("Recent")
+                        Spacer()
+                        Button {
+                            let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
+                            dashboardViewModel.path.append(request)
+                        } label: {
+                            Text("View all")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 12))
+                    }
                 }
             }
             if !pinned.isEmpty {
@@ -290,7 +294,6 @@ fileprivate struct Header: View {
                     }
                 }
             }
-            .listRowBackground(Color.clear)
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             .padding(.top, 16)
         }
@@ -324,7 +327,6 @@ fileprivate struct SummaryEntry: View {
                     .frame(height: 12)
                 Text(LocalizedStringKey(label))
                     .lineLimit(1)
-                    .foregroundStyle(Color.dashboardSummaryText)
                     .fontWeight(.semibold)
             }
             Spacer()
@@ -339,6 +341,7 @@ fileprivate struct SummaryEntry: View {
                     else {
                         if let value = value {
                             Text(String(value))
+                                .foregroundStyle(Color.foreground)
                         }
                         else {
                             Text("N/A")

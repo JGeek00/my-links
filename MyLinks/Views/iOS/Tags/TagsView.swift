@@ -63,7 +63,7 @@ struct TagsView: View {
                         }
                     }
                     .overlay(alignment: .center) {
-                        if searched.isEmpty {
+                        if searched.isEmpty && searchText != "" {
                             ContentUnavailableView {
                                 Label("No tags found", systemImage: "tag")
                             } description: {
