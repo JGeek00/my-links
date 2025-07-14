@@ -110,7 +110,7 @@ class MenuBarFormViewModel: ObservableObject {
         
         let c = collections.first() { $0.id == self.collection }
         let collectionCreation = c != nil ? CollectionCreation(id: c!.id!, name: c!.name!, ownerId: c!.ownerId!) : nil
-        let link = LinkCreationRequest(url: url, name: name, description: description, tags: selectedTags.map() { TagCreation(name: $0) }, collection: collectionCreation, pinnedBy: nil)
+        let link = LinkCreationRequest(url: url, name: name, description: description, tags: selectedTags.map() { TagCreation(name: $0) }, collection: collectionCreation, pinnedBy: nil, image: nil, pdf: nil)
         
         Task {
             DispatchQueue.main.sync {
