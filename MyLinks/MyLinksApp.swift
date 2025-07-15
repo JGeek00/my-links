@@ -72,6 +72,7 @@ struct MyLinksApp: App {
                 .environmentObject(LinkManagerProvider.shared)
                 .environmentObject(ToastProvider.shared)
                 .environmentObject(IAPManager())
+                .environmentObject(SearchViewModel())
         }
         #endif
     }

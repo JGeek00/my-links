@@ -4,9 +4,7 @@ import SwiftUI
 @MainActor
 class CollectionsProvider: ObservableObject {
     static let shared = CollectionsProvider()
-    
-    @Published var navigationPath = NavigationPath()
-    
+        
     @Published var data: [Collection] = []
     @Published var loading = true
     @Published var error = false
@@ -93,7 +91,6 @@ class CollectionsProvider: ObservableObject {
     }
     
     func reset() {
-        self.navigationPath = NavigationPath()
         self.data = []
         self.loading = true
         self.error = false

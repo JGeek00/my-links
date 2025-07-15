@@ -128,6 +128,7 @@
       }
     },
     "Add some subcollections to this collection to see them here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -847,6 +848,9 @@
         }
       }
     },
+    "Elements" : {
+
+    },
     "Error" : {
       "localizations" : {
         "es" : {
@@ -1048,6 +1052,12 @@
           }
         }
       }
+    },
+    "Input a search term to search links, categories and tags" : {
+
+    },
+    "Insert search term" : {
+
     },
     "Invalid data" : {
       "localizations" : {
@@ -1420,6 +1430,7 @@
       }
     },
     "No subcollections on this collection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1730,6 +1741,7 @@
       }
     },
     "Search links" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1740,6 +1752,7 @@
       }
     },
     "Search subcollections" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2290,6 +2303,9 @@
           }
         }
       }
+    },
+    "View more" : {
+
     },
     "Webpage" : {
       "localizations" : {

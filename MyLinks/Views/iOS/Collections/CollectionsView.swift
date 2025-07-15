@@ -2,11 +2,15 @@ import SwiftUI
 import CustomAlert
 
 struct CollectionsView: View {
+    var navigationFlow: Enums.NavigationFlow
     
-    init() {}
+    init(navigationFlow: Enums.NavigationFlow) {
+        self.navigationFlow = navigationFlow
+    }
     
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
+    @EnvironmentObject private var navigationProvider: NavigationProvider
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -16,118 +20,108 @@ struct CollectionsView: View {
     var body: some View {
         let notChildCollections = collectionsProvider.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
         let searched = searchText != "" ? notChildCollections.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : notChildCollections
-        NavigationStack(path: $collectionsProvider.navigationPath) {
-            Group {
-                if horizontalSizeClass == .regular {
-                    ScrollView {
-                        LazyVGrid(columns: Config.gridColumns) {
-                            ForEach(searched, id: \.self) { item in
-                                CollectionItemComponent(collection: item) {
-                                    collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                                } onDelete: {
-                                    collectionsProvider.deleteCollection(id: item.id!)
-                                }
-                                .padding(6)
+        
+        Group {
+            if horizontalSizeClass == .regular {
+                ScrollView {
+                    LazyVGrid(columns: Config.gridColumns) {
+                        ForEach(searched, id: \.self) { item in
+                            CollectionItemComponent(collection: item) {
+                                collectionsProvider.deleteCollection(id: item.id!)
                             }
-                        }
-                        .padding(.horizontal, 12)
-                    }
-                    .overlay(alignment: .center) {
-                        if collectionsProvider.data.isEmpty {
-                            ContentUnavailableView {
-                                Label("No collections added", systemImage: "folder")
-                            } description: {
-                                Text("Create some collections on Linkwarden to see them here.")
-                            }
+                            .padding(6)
                         }
                     }
-                    .overlay(alignment: .center) {
-                        if searched.isEmpty {
-                            ContentUnavailableView {
-                                Label("No collections found", systemImage: "folder")
-                            } description: {
-                                Text("Change the search term to see some collections.")
-                            }
+                    .padding(.horizontal, 12)
+                }
+                .overlay(alignment: .center) {
+                    if collectionsProvider.data.isEmpty {
+                        ContentUnavailableView {
+                            Label("No collections added", systemImage: "folder")
+                        } description: {
+                            Text("Create some collections on Linkwarden to see them here.")
                         }
                     }
                 }
-                else {
-                    List(searched, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            collectionsProvider.navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
-                        } onDelete: {
-                            collectionsProvider.deleteCollection(id: item.id!)
-                        }
-                    }
-                    .animation(.default, value: searched)
-                    .overlay(alignment: .center) {
-                        if collectionsProvider.data.isEmpty {
-                            ContentUnavailableView {
-                                Label("No collections added", systemImage: "folder")
-                            } description: {
-                                Text("Create some collections on Linkwarden to see them here.")
-                            }
-                        }
-                    }
-                    .overlay(alignment: .center) {
-                        if searched.isEmpty && searchText != "" {
-                            ContentUnavailableView {
-                                Label("No collections found", systemImage: "folder")
-                            } description: {
-                                Text("Change the search term to see some collections.")
-                            }
+                .overlay(alignment: .center) {
+                    if searched.isEmpty {
+                        ContentUnavailableView {
+                            Label("No collections found", systemImage: "folder")
+                        } description: {
+                            Text("Change the search term to see some collections.")
                         }
                     }
                 }
             }
-            .navigationTitle("Collections")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        collectionFormSheet = true
-                    } label: {
-                        Image(systemName: "plus")
+            else {
+                List(searched, id: \.self) { item in
+                    CollectionItemComponent(collection: item) {
+                        collectionsProvider.deleteCollection(id: item.id!)
+                    }
+                }
+                .animation(.default, value: searched)
+                .overlay(alignment: .center) {
+                    if collectionsProvider.data.isEmpty {
+                        ContentUnavailableView {
+                            Label("No collections added", systemImage: "folder")
+                        } description: {
+                            Text("Create some collections on Linkwarden to see them here.")
+                        }
+                    }
+                }
+                .overlay(alignment: .center) {
+                    if searched.isEmpty && searchText != "" {
+                        ContentUnavailableView {
+                            Label("No collections found", systemImage: "folder")
+                        } description: {
+                            Text("Change the search term to see some collections.")
+                        }
                     }
                 }
             }
-            .refreshable {
-                await collectionsProvider.loadData()
-            }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .overlay(alignment: .center) {
-                CollectionsIndicators()
-            }
-            .background(Color.listBackground)
-            .customAlert(isPresented: $collectionsProvider.deleting, content: {
-                ProgressView()
-            })
-            .sheet(isPresented: $collectionFormSheet, content: {
-                CollectionFormView {
-                    collectionFormSheet = false
-                } onSuccess: { item, action in
-                    collectionFormSheet = false
-                }
-                .environmentObject(CollectionFormViewModel())
-            })
-            .onOpenURL { url in
-                if apiClientProvider.instance == nil {
-                    return
-                }
-                if url.scheme == DeepLinks.urlScheme && url.host == DeepLinks.newCollection {
+        }
+        .navigationTitle("Collections")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
                     collectionFormSheet = true
+                } label: {
+                    Image(systemName: "plus")
                 }
             }
-            .alert("Error", isPresented: $collectionsProvider.deleteError) {
-                Button("Close", role: .cancel) {
-                    collectionsProvider.deleteError.toggle()
-                }
-            } message: {
-                Text("The collection could not be deleted due to an error.")
+        }
+        .refreshable {
+            await collectionsProvider.loadData()
+        }
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .overlay(alignment: .center) {
+            CollectionsIndicators()
+        }
+        .customAlert(isPresented: $collectionsProvider.deleting, content: {
+            ProgressView()
+        })
+        .sheet(isPresented: $collectionFormSheet, content: {
+            CollectionFormView {
+                collectionFormSheet = false
+            } onSuccess: { item, action in
+                collectionFormSheet = false
             }
-            .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView()
-                    .environmentObject(LinksFilteredViewModel(input: value))
+            .environmentObject(CollectionFormViewModel())
+        })
+        .onOpenURL { url in
+            if apiClientProvider.instance == nil {
+                return
             }
+            if url.scheme == DeepLinks.urlScheme && url.host == DeepLinks.newCollection {
+                collectionFormSheet = true
+            }
+        }
+        .alert("Error", isPresented: $collectionsProvider.deleteError) {
+            Button("Close", role: .cancel) {
+                collectionsProvider.deleteError.toggle()
+            }
+        } message: {
+            Text("The collection could not be deleted due to an error.")
         }
     }
 }

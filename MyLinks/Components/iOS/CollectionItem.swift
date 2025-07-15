@@ -2,12 +2,10 @@ import SwiftUI
 
 struct CollectionItemComponent: View {
     let collection: Collection
-    let onTap: () -> Void
     let onDelete: () -> Void
     
-    init(collection: Collection, onTap: @escaping () -> Void, onDelete: @escaping () -> Void) {
+    init(collection: Collection, onDelete: @escaping () -> Void) {
         self.collection = collection
-        self.onTap = onTap
         self.onDelete = onDelete
     }
     
@@ -18,8 +16,9 @@ struct CollectionItemComponent: View {
     
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
-        Button {
-            onTap()
+        NavigationLink {
+            LinksFilteredView(navigationFlow: .library)
+                .environmentObject(LinksFilteredViewModel(input: LinksFilteredRequest(name: collection.name!, mode: .collection, id: collection.id!)))
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -52,9 +51,9 @@ struct CollectionItemComponent: View {
                         Text(dateFormatted)
                             .font(.system(size: 14))
                         Spacer()
+                            .frame(width: 16)
                     }
                     if let linkCount = collection._count?.links {
-                        Spacer()
                         Image(systemName: "link")
                             .font(.system(size: 12))
                         Text(String(linkCount))

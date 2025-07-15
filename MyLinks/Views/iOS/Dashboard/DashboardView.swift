@@ -56,7 +56,7 @@ struct DashboardView: View {
             }
             .background(Color.listBackground)
             .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView()
+                LinksFilteredView(navigationFlow: .dashboard)
                     .environmentObject(LinksFilteredViewModel(input: value))
             }
             .sheet(isPresented: $linkFormUrlSheet, content: {

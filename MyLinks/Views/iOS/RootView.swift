@@ -7,6 +7,7 @@ struct RootView: View {
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var toastProvider: ToastProvider
+    @EnvironmentObject private var searchViewModel: SearchViewModel
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -24,34 +25,52 @@ struct RootView: View {
     var body: some View {
         Group {
             if !instances.isEmpty && apiClientProvider.instance != nil {
-                TabView {
-                    DashboardView()
-                        .environmentObject(DashboardViewModel.shared)
-                        .tabItem {
-                            Label("Dashboard", systemImage: "house.fill")
+                Group {
+                    if #available(iOS 26.0, *) {
+                        TabView {
+                            Tab("Dashboard", systemImage: "house.fill") {
+                                DashboardView()
+                                    .environmentObject(DashboardViewModel.shared)
+                                    .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
+                            }
+                            Tab("Elements", systemImage: "books.vertical.fill") {
+                               ElementsView()
+                                    .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
+                            }
+                            Tab("Search", systemImage: "magnifyingglass", role: .search) {
+                                SearchView()
+                            }
+                            Tab("Settings", systemImage: "gear") {
+                                SettingsView()
+                                    .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
+                            }
                         }
-                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
-                    LinksView()
-                        .environmentObject(LinksViewModel.shared)
-                        .tabItem {
-                            Label("Links", systemImage: "link")
+                        .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
+                        .onSubmit(of: .search) {
+                            searchViewModel.search()
                         }
-                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
-                    CollectionsView()
-                        .tabItem {
-                            Label("Collections", systemImage: "folder")
+                    }
+                    else {
+                        TabView {
+                            DashboardView()
+                                .environmentObject(DashboardViewModel.shared)
+                                .tabItem {
+                                    Label("Dashboard", systemImage: "house.fill")
+                                }
+                                .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
+
+                            ElementsView()
+                                .tabItem {
+                                    Label("Elements", systemImage: "books.vertical.fill")
+                                }
+                                .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
+                            SettingsView()
+                                .tabItem {
+                                    Label("Settings", systemImage: "gear")
+                                }
+                                .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                         }
-                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
-                    TagsView()
-                        .tabItem {
-                            Label("Tags", systemImage: "tag")
-                        }
-                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
-                    SettingsView()
-                        .tabItem {
-                            Label("Settings", systemImage: "gear")
-                        }
-                        .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
+                    }
                 }
                 .environment(\.horizontalSizeClass, useOldTabBar == true ? .compact : currentHorizontalSizeClass)
                 .onAppear(perform: {
@@ -101,5 +120,6 @@ struct RootView: View {
         }
         .environmentObject(collectionsProvider)
         .environmentObject(tagsProvider)
+        .environmentObject(NavigationProvider.shared)
     }
 }

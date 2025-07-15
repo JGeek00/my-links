@@ -100,4 +100,10 @@ class Enums {
         case list
         case tabs
     }
+    
+    enum NavigationFlow: String {
+        case library
+        case search
+        case dashboard
+    }
 }
