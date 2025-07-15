@@ -849,7 +849,14 @@
       }
     },
     "Elements" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elementos"
+          }
+        }
+      }
     },
     "Error" : {
       "localizations" : {
@@ -1054,10 +1061,24 @@
       }
     },
     "Input a search term to search links, categories and tags" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce un término de búsqueda para buscar enlaces, categorías y tags"
+          }
+        }
+      }
     },
     "Insert search term" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce término de búsqueda"
+          }
+        }
+      }
     },
     "Invalid data" : {
       "localizations" : {
@@ -2183,17 +2204,6 @@
         }
       }
     },
-    "Unknown error" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error desconocido"
-          }
-        }
-      }
-    },
     "Unorganized" : {
       "localizations" : {
         "es" : {
@@ -2305,7 +2315,14 @@
       }
     },
     "View more" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver mas"
+          }
+        }
+      }
     },
     "Webpage" : {
       "localizations" : {

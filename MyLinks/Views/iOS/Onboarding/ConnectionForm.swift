@@ -9,7 +9,7 @@ struct ConnectionForm: View {
     
     var body: some View {
         Form {
-            Section {
+            Section {} header: {
                 VStack(alignment: .leading) {
                     Image(systemName: "list.bullet")
                         .font(.system(size: 60))
@@ -19,28 +19,13 @@ struct ConnectionForm: View {
                         .fontWeight(.semibold)
                         .font(.system(size: 30))
                 }
+                .foregroundStyle(Color.foreground)
+                .padding(.vertical, 24)
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             if onboardingViewModel.hostingMode == .selfhosted {
-                Section {
-                    VStack(alignment: .leading) {
-                        Text("⚠️ Warning")
-                            .fontWeight(.semibold)
-                            .padding(.bottom, 6)
-                        Text("My Links is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server.")
-                    }
-                    .padding()
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.yellow.opacity(0.2))
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(.yellow, lineWidth: 2)
-                )
                 Section("Server route") {
                     Picker("Connection method", selection: $onboardingViewModel.connectionMethod) {
                         Text("HTTP")
@@ -95,51 +80,78 @@ struct ConnectionForm: View {
             } header: {
                 Text("Authentication")
             } footer: {
-                if onboardingViewModel.authMethod == .token {
-                    Button("How to get an API token") {
-                        tokenInstructionsSheet = true
-                    }
-                    .font(.system(size: 12))
-                }
-            }
-            Section {
-                Button {
-                    onboardingViewModel.onConnect()
-                } label: {
-                    Spacer()
-                    if onboardingViewModel.connecting == true {
-                        ProgressView()
-                    }
-                    else {
-                        Text("Connect")
-                            .fontWeight(.semibold)
-                            .font(.system(size: 18))
+                VStack {
+                    if onboardingViewModel.authMethod == .token {
+                        Button("How to get an API token") {
+                            tokenInstructionsSheet = true
+                        }
+                        .font(.system(size: 12))
                     }
                     Spacer()
-                }
-                .buttonStyle(BorderedProminentButtonStyle())
-                .padding(.vertical, 6)
-            }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-            Section {
-                Button {
-                    withAnimation(.default) {
-                        onboardingViewModel.selectedTab = 1
-                    }
-                } label: {
-                    HStack {
+                    let backContent = HStack {
                         Spacer()
                         Image(systemName: "chevron.left")
                         Text("Back")
                         Spacer()
                     }
+                    .fontWeight(.semibold)
+
+                    let connectContent = Group {
+                        Spacer()
+                        if onboardingViewModel.connecting == true {
+                            ProgressView()
+                        }
+                        else {
+                            Text("Connect")
+                                .fontWeight(.semibold)
+                                .font(.system(size: 18))
+                        }
+                        Spacer()
+                    }
+
+                    HStack {
+                        if #available(iOS 26, *) {
+                            Button {
+                                withAnimation(.default) {
+                                    onboardingViewModel.selectedTab = 1
+                                }
+                            } label: {
+                                backContent
+                            }
+                            .buttonStyle(.glass)
+                            Spacer()
+                                .frame(width: 16)
+                            Button {
+                                onboardingViewModel.onConnect()
+                            } label: {
+                                connectContent
+                            }
+                            .buttonStyle(.glassProminent)
+                        }
+                        else {
+                            Button {
+                                withAnimation(.default) {
+                                    onboardingViewModel.selectedTab = 1
+                                }
+                            } label: {
+                                backContent
+                            }
+                            .buttonStyle(.bordered)
+                            Spacer()
+                                .frame(width: 16)
+                            Button {
+                                onboardingViewModel.onConnect()
+                            } label: {
+                                connectContent
+                            }
+                            .buttonStyle(.borderedProminent)
+                        }
+                    }
+                    .padding(.top, 12)
+                    .padding(.bottom, 32)
+                    .disabled(onboardingViewModel.connecting)
                 }
             }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .disabled(onboardingViewModel.connecting)
         .alert("Invalid values", isPresented: $onboardingViewModel.invalidValuesAlert, actions: {

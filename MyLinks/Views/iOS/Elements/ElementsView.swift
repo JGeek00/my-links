@@ -1,11 +1,8 @@
 import SwiftUI
 
 struct ElementsView: View {
-    
-    @EnvironmentObject private var navigationProvider: NavigationProvider
-    
     var body: some View {
-        NavigationStack(path: $navigationProvider.library) {
+        NavigationStack {
             List {
                 NavigationLink {
                     LinksView()
@@ -14,12 +11,12 @@ struct ElementsView: View {
                     Label("Links", systemImage: "link")
                 }
                 NavigationLink {
-                    CollectionsView(navigationFlow: .library)
+                    CollectionsView()
                 } label: {
                     Label("Collections", systemImage: "folder")
                 }
                 NavigationLink {
-                    TagsView(navigationFlow: .library)
+                    TagsView()
                 } label: {
                     Label("Tags", systemImage: "tag")
                 }

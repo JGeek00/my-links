@@ -56,7 +56,7 @@ struct DashboardView: View {
             }
             .background(Color.listBackground)
             .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView(navigationFlow: .dashboard)
+                LinksFilteredView()
                     .environmentObject(LinksFilteredViewModel(input: value))
             }
             .sheet(isPresented: $linkFormUrlSheet, content: {
@@ -216,7 +216,6 @@ fileprivate struct DashboardCompactView: View {
                             Text("View all")
                             Image(systemName: "chevron.right")
                         }
-                        .font(.system(size: 12))
                     }
                 }
             }
@@ -239,7 +238,6 @@ fileprivate struct DashboardCompactView: View {
                             Image(systemName: "chevron.right")
                         }
                     }
-                    .font(.system(size: 12))
                 }
             }
         }

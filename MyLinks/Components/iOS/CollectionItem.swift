@@ -17,7 +17,7 @@ struct CollectionItemComponent: View {
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
         NavigationLink {
-            LinksFilteredView(navigationFlow: .library)
+            LinksFilteredView()
                 .environmentObject(LinksFilteredViewModel(input: LinksFilteredRequest(name: collection.name!, mode: .collection, id: collection.id!)))
         } label: {
             VStack(alignment: .leading) {

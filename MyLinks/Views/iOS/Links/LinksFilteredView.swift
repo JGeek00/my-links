@@ -1,12 +1,6 @@
 import SwiftUI
 
 struct LinksFilteredView: View {
-    var navigationFlow: Enums.NavigationFlow
-    
-    init(navigationFlow: Enums.NavigationFlow) {
-        self.navigationFlow = navigationFlow
-    }
-    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
@@ -16,9 +10,6 @@ struct LinksFilteredView: View {
     @State private var collectionFormSheet = false
 
     var body: some View {
-        let a = print(linksFilteredViewModel.data.isEmpty)
-        let b = print(linksFilteredViewModel.loading)
-        let c = print(linksFilteredViewModel.error)
         Group {
             if (linksFilteredViewModel.input.mode == .collection || linksFilteredViewModel.input.mode == .tag) && linksFilteredViewModel.input.id == nil  {
                 ContentUnavailableView {
@@ -47,10 +38,10 @@ struct LinksFilteredView: View {
                     }
                     else {
                         if horizontalSizeClass == .regular {
-                            LinksFilteredRegularView(navigationFlow: navigationFlow)
+                            LinksFilteredRegularView()
                         }
                         else {
-                            LinksFilteredCompactView(navigationFlow: navigationFlow)
+                            LinksFilteredCompactView()
                         }
                     }
                 }
@@ -129,12 +120,6 @@ struct LinksFilteredView: View {
 }
 
 fileprivate struct LinksFilteredRegularView: View {
-    var navigationFlow: Enums.NavigationFlow
-    
-    init(navigationFlow: Enums.NavigationFlow) {
-        self.navigationFlow = navigationFlow
-    }
-    
     @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
@@ -214,12 +199,6 @@ fileprivate struct LinksFilteredRegularView: View {
 }
 
 fileprivate struct LinksFilteredCompactView: View {
-    var navigationFlow: Enums.NavigationFlow
-    
-    init(navigationFlow: Enums.NavigationFlow) {
-        self.navigationFlow = navigationFlow
-    }
-    
     @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider

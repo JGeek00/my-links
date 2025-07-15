@@ -30,19 +30,36 @@ struct Welcome: View {
             Spacer()
             HStack {
                 Spacer()
-                Button {
-                    withAnimation(.default) {
-                        onboardingViewModel.selectedTab = 1
+                if #available(iOS 26, *) {
+                    Button {
+                        withAnimation(.default) {
+                            onboardingViewModel.selectedTab = 1
+                        }
+                    } label: {
+                        Text("Get started")
+                            .fontWeight(.medium)
+                            .font(.system(size: 20))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
                     }
-                } label: {
-                    Text("Get started")
-                        .fontWeight(.medium)
-                        .font(.system(size: 20))
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
+                    .buttonStyle(.glassProminent)
+                    .padding(.bottom, 32)
                 }
-                .buttonStyle(BorderedProminentButtonStyle())
-                .padding()
+                else {
+                    Button {
+                        withAnimation(.default) {
+                            onboardingViewModel.selectedTab = 1
+                        }
+                    } label: {
+                        Text("Get started")
+                            .fontWeight(.medium)
+                            .font(.system(size: 20))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                    }
+                    .buttonStyle(BorderedProminentButtonStyle())
+                    .padding()
+                }
                 Spacer()
             }
             .padding(0)

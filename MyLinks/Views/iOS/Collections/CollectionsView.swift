@@ -2,15 +2,8 @@ import SwiftUI
 import CustomAlert
 
 struct CollectionsView: View {
-    var navigationFlow: Enums.NavigationFlow
-    
-    init(navigationFlow: Enums.NavigationFlow) {
-        self.navigationFlow = navigationFlow
-    }
-    
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
-    @EnvironmentObject private var navigationProvider: NavigationProvider
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     

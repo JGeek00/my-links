@@ -5,6 +5,15 @@ extension View {
         self
             .modifier(ShimmerEffect())
     }
+    
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
 }
 
 private struct ShimmerEffect: ViewModifier {

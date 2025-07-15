@@ -2,14 +2,7 @@ import SwiftUI
 import CustomAlert
 
 struct TagsView: View {
-    var navigationFlow: Enums.NavigationFlow
-    
     @EnvironmentObject private var tagsProvider: TagsProvider
-    @EnvironmentObject private var navigationProvider: NavigationProvider
-    
-    init(navigationFlow: Enums.NavigationFlow) {
-        self.navigationFlow = navigationFlow
-    }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 

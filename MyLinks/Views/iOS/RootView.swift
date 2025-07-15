@@ -120,6 +120,5 @@ struct RootView: View {
         }
         .environmentObject(collectionsProvider)
         .environmentObject(tagsProvider)
-        .environmentObject(NavigationProvider.shared)
     }
 }

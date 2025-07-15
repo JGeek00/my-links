@@ -4,14 +4,13 @@ struct SearchView: View {
     @EnvironmentObject private var searchViewModel: SearchViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var tagsProvider: TagsProvider
-    @EnvironmentObject private var navigationProvider: NavigationProvider
         
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
         let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         let tagsSliced = tagsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
 
-        NavigationStack(path: $navigationProvider.search) {
+        NavigationStack {
             Group {
                 if searchViewModel.searchQueryValue == nil {
                     ContentUnavailableView("Insert search term", systemImage: "magnifyingglass", description: Text("Input a search term to search links, categories and tags"))
@@ -127,7 +126,7 @@ struct SearchView: View {
                 }
             })
             .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView(navigationFlow: .search)
+                LinksFilteredView()
                     .environmentObject(LinksFilteredViewModel(input: value))
             }
         }
