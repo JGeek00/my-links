@@ -469,6 +469,7 @@
       }
     },
     "Collections view mode" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1241,6 +1242,7 @@
       }
     },
     "List view" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1924,6 +1926,7 @@
       }
     },
     "Tabs view" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2105,6 +2108,7 @@
       }
     },
     "The subcategories and the links are displayed on a single list, with the subcategories at the top and the links under them." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2115,6 +2119,7 @@
       }
     },
     "The subcategories and the links are displayed on two different lists, with a tab system to switch between them." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

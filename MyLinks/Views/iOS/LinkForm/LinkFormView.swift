@@ -143,15 +143,25 @@ struct LinkFormView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        onClose()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.foreground.opacity(0.5))
+                    if #available(iOS 26, *) {
+                        Button {
+                            onClose()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .fontWeight(.semibold)
+                        }
                     }
-                    .buttonStyle(BorderedButtonStyle())
-                    .clipShape(Circle())
+                    else {
+                        Button {
+                            onClose()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color.foreground.opacity(0.5))
+                        }
+                        .buttonStyle(BorderedButtonStyle())
+                        .clipShape(Circle())
+                    }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
