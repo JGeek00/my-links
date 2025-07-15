@@ -168,6 +168,16 @@
         }
       }
     },
+    "All search results" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los resultados de búsqueda"
+          }
+        }
+      }
+    },
     "An error occured when loading the content. Check your Internet connection and try again later." : {
       "localizations" : {
         "es" : {

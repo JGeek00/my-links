@@ -12,8 +12,7 @@ struct TagItemComponent: View {
     var body: some View {
         let dateFormatted = tag.createdAt != nil ? formatDate(tag.createdAt!) : nil
         NavigationLink {
-            LinksFilteredView()
-                .environmentObject(LinksFilteredViewModel(input: LinksFilteredRequest(name: tag.name!, mode: .tag, id: tag.id!)))
+            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: tag.name!, mode: .tag, id: tag.id!))
         } label: {
             VStack(alignment: .leading) {
                 Text(tag.name!)

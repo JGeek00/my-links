@@ -40,15 +40,14 @@ struct SearchView: View {
                                 Section {
                                     ForEach(linksSliced, id: \.self) { item in
                                         LinkItemComponent(item: item) { _, _ in }
-                                        
                                     }
                                 } header: {
                                     HStack {
                                         Text("Links")
                                         if searchViewModel.links.count > 10 {
                                             Spacer()
-                                            Button {
-                                                
+                                            NavigationLink {
+                                                LinksSearchResults()
                                             } label: {
                                                 HStack {
                                                     Text("View more")
@@ -73,8 +72,8 @@ struct SearchView: View {
                                         Text("Collections")
                                         if collectionsProvider.data.count > 10 {
                                             Spacer()
-                                            Button {
-                                                
+                                            NavigationLink {
+                                                CollectionsSearchResults()
                                             } label: {
                                                 HStack {
                                                     Text("View more")
@@ -97,8 +96,8 @@ struct SearchView: View {
                                         Text("Tags")
                                         if tagsProvider.data.count > 10 {
                                             Spacer()
-                                            Button {
-                                                
+                                            NavigationLink {
+                                                TagsSearchResults()
                                             } label: {
                                                 HStack {
                                                     Text("View more")
@@ -125,10 +124,6 @@ struct SearchView: View {
                     searchViewModel.clearSearch()
                 }
             })
-            .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView()
-                    .environmentObject(LinksFilteredViewModel(input: value))
-            }
         }
     }
 }

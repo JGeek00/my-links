@@ -76,7 +76,6 @@ class SearchViewModel: ObservableObject {
     }
     
     func search() {
-        print("search")
         self.searchQueryValue = searchFieldValue
         Task {
             await loadData(setLoading: true)

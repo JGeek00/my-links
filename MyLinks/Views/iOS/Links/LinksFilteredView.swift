@@ -1,11 +1,19 @@
 import SwiftUI
 
 struct LinksFilteredView: View {
+    var linksFilterdRequest: LinksFilteredRequest
+    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    
+    @StateObject private var linksFilteredViewModel: LinksFilteredViewModel
+    
+    init(linksFilteredRequest: LinksFilteredRequest) {
+        self.linksFilterdRequest = linksFilteredRequest
+        _linksFilteredViewModel = StateObject(wrappedValue: LinksFilteredViewModel(input: linksFilteredRequest))
+    }
     
     @State private var collectionFormSheet = false
 
@@ -37,12 +45,15 @@ struct LinksFilteredView: View {
                         .transition(.opacity)
                     }
                     else {
-                        if horizontalSizeClass == .regular {
-                            LinksFilteredRegularView()
+                        Group {
+                            if horizontalSizeClass == .regular {
+                                LinksFilteredRegularView()
+                            }
+                            else {
+                                LinksFilteredCompactView()
+                            }
                         }
-                        else {
-                            LinksFilteredCompactView()
-                        }
+                        .environmentObject(linksFilteredViewModel)
                     }
                 }
                 .overlay {

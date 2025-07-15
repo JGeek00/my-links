@@ -101,14 +101,6 @@ struct CollectionsView: View {
             }
             .environmentObject(CollectionFormViewModel())
         })
-        .onOpenURL { url in
-            if apiClientProvider.instance == nil {
-                return
-            }
-            if url.scheme == DeepLinks.urlScheme && url.host == DeepLinks.newCollection {
-                collectionFormSheet = true
-            }
-        }
         .alert("Error", isPresented: $collectionsProvider.deleteError) {
             Button("Close", role: .cancel) {
                 collectionsProvider.deleteError.toggle()
