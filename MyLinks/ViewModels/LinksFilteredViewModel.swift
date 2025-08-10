@@ -38,7 +38,7 @@ class LinksFilteredViewModel: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchLinks(
+        let result = await instance.searchLiks(
             cursor: cursor,
             collectionId: input.mode == .collection ? input.id! : nil,
             tagId: input.mode == .tag ? input.id! : nil,
@@ -51,10 +51,10 @@ class LinksFilteredViewModel: ObservableObject {
         if result.successful == true {
             DispatchQueue.main.async {
                 if loadMore == true {
-                    self.data = self.data + (result.data?.response ?? [])
+                    self.data = self.data + (result.data?.data?.links ?? [])
                 }
                 else {
-                    self.data = result.data?.response ?? []
+                    self.data = result.data?.data?.links ?? []
                 }
             }
             // The duration of the list animation
