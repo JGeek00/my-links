@@ -1,27 +1,36 @@
 import SwiftUI
 
 struct ElementsView: View {
+    @State private var selectedView: Enums.ElementsDetailView? = nil
+    
     var body: some View {
-        NavigationStack {
-            List {
-                NavigationLink {
-                    LinksView()
-                        .environmentObject(LinksViewModel.shared)
-                } label: {
+        NavigationSplitView {
+            List(selection: $selectedView) {
+                NavigationLink(value: Enums.ElementsDetailView.links) {
                     Label("Links", systemImage: "link")
                 }
-                NavigationLink {
-                    CollectionsView()
-                } label: {
+                NavigationLink(value: Enums.ElementsDetailView.collections) {
                     Label("Collections", systemImage: "folder")
                 }
-                NavigationLink {
-                    TagsView()
-                } label: {
+                NavigationLink(value: Enums.ElementsDetailView.tags) {
                     Label("Tags", systemImage: "tag")
                 }
             }
             .navigationTitle("Elements")
+        } detail: {
+            if let selectedView = selectedView {
+                switch selectedView {
+                case .links:
+                    LinksView()
+                        .environmentObject(LinksViewModel.shared)
+                case .collections:
+                    CollectionsView()
+                case .tags:
+                    TagsView()
+                }
+            } else {
+                ContentUnavailableView("Choose one option", systemImage: "list.dash")
+            }
         }
     }
 }

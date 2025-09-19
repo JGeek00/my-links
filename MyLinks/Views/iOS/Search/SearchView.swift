@@ -116,6 +116,7 @@ struct SearchView: View {
                 }
             }
             .navigationTitle("Search")
+            .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
             .onSubmit(of: .search) {
                 searchViewModel.search()
             }

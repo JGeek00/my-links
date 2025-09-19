@@ -45,10 +45,6 @@ struct RootView: View {
                                     .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                             }
                         }
-                        .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
-                        .onSubmit(of: .search) {
-                            searchViewModel.search()
-                        }
                     }
                     else {
                         TabView {

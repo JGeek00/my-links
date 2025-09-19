@@ -438,6 +438,16 @@
         }
       }
     },
+    "Choose one option" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una opción"
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "es" : {

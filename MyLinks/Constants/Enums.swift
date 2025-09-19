@@ -95,4 +95,10 @@ class Enums {
         case links
         case subcollections
     }
+    
+    enum ElementsDetailView: String, CaseIterable {
+        case links = "Links"
+        case collections = "Collections"
+        case tags = "Tags"
+    }
 }
