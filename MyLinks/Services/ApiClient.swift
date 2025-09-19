@@ -351,15 +351,78 @@ struct ApiClient: Equatable {
         }
     }
     
-    func fetchLinks(
-        cursor: Int? = nil, 
+    func searchLiks(
+        cursor: Int? = nil,
         collectionId: Int? = nil,
         tagId: Int? = nil,
         pinnedOnly: Bool? = nil,
         recentOnly: Bool? = nil,
         searchQueryString: String? = nil,
         searchByName: Bool? = true,
-        sort: Int? = nil
+        sort: Int? = nil,
+    ) async -> StatusResponse<SearchLinksResponse> {
+        let defaultErrorResponse = StatusResponse<SearchLinksResponse>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/search") else { return defaultErrorResponse }
+        do {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            var queryItems: [URLQueryItem] = []
+            if cursor != nil {
+                queryItems.append(URLQueryItem(name: "cursor", value: "\(cursor!)"))
+            }
+            if collectionId != nil {
+                queryItems.append(URLQueryItem(name: "collectionId", value: "\(collectionId!)"))
+            }
+            if tagId != nil {
+                queryItems.append(URLQueryItem(name: "tagId", value: "\(tagId!)"))
+            }
+            if pinnedOnly != nil {
+                queryItems.append(URLQueryItem(name: "pinnedOnly", value: "\(pinnedOnly!)"))
+            }
+            if recentOnly != nil {
+                queryItems.append(URLQueryItem(name: "recentOnly", value: "\(recentOnly!)"))
+            }
+            if searchQueryString != nil {
+                queryItems.append(URLQueryItem(name: "searchQueryString", value: "\(searchQueryString!)"))
+            }
+            if searchByName != nil {
+                queryItems.append(URLQueryItem(name: "searchByName", value: "\(searchByName!)"))
+            }
+            if sort != nil {
+                queryItems.append(URLQueryItem(name: "sort", value: "\(sort!)"))
+            }
+            components.queryItems = queryItems
+            
+            var request = URLRequest(url: components.url!)
+            
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+
+            let sessionConfig = URLSessionConfiguration.default
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(SearchLinksResponse.self, from: data)
+                return StatusResponse<SearchLinksResponse>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<SearchLinksResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+    
+    func fetchLinks(
+        cursor: Int? = nil,
+        collectionId: Int? = nil,
+        tagId: Int? = nil,
+        pinnedOnly: Bool? = nil,
+        recentOnly: Bool? = nil,
+        searchQueryString: String? = nil,
+        searchByName: Bool? = true,
+        sort: Int? = nil,
     ) async -> StatusResponse<LinksResponse> {
         let defaultErrorResponse = StatusResponse<LinksResponse>(successful: false, statusCode: nil, data: nil)
         

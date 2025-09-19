@@ -5,6 +5,18 @@ struct LinksResponse: Codable {
     let response: [Link]?
 }
 
+// MARK: - SearchResponse
+struct SearchLinksResponse: Codable {
+    let data: SearchLinks?
+    let success: Bool
+    let message: String?
+}
+
+// MARK: - SearchLinks
+struct SearchLinks: Codable {
+    let links: [Link]?
+}
+
 // MARK: - LinkResponse
 struct LinkResponse: Codable {
     let response: Link?

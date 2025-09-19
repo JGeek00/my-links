@@ -33,14 +33,14 @@ class LinksViewModel: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
+        let result = await instance.searchLiks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
         if result.successful == true {
             DispatchQueue.main.async {
                 if loadMore == true {
-                    self.data = self.data + (result.data?.response ?? [])
+                    self.data = self.data + (result.data?.data?.links ?? [])
                 }
                 else {
-                    self.data = result.data?.response ?? []
+                    self.data = result.data?.data?.links ?? []
                 }
                 withAnimation(.default) {
                     self.loading = false
