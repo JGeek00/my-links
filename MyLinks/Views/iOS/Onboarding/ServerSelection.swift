@@ -67,7 +67,7 @@ struct ServerSelection: View {
             .buttonStyle(PlainButtonStyle())
             .padding(12)
             .background(Color.listItemBackground)
-            .cornerRadius(12)
+            .cornerRadius(24)
             Spacer()
         }
         .padding(24)

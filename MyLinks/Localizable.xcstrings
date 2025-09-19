@@ -128,6 +128,7 @@
       }
     },
     "Add some subcollections to this collection to see them here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -163,6 +164,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajustes avanzados"
+          }
+        }
+      }
+    },
+    "All search results" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los resultados de búsqueda"
           }
         }
       }
@@ -427,6 +438,16 @@
         }
       }
     },
+    "Choose one option" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una opción"
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "es" : {
@@ -468,6 +489,7 @@
       }
     },
     "Collections view mode" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -847,6 +869,16 @@
         }
       }
     },
+    "Elements" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elementos"
+          }
+        }
+      }
+    },
     "Error" : {
       "localizations" : {
         "es" : {
@@ -1049,6 +1081,26 @@
         }
       }
     },
+    "Input a search term to search links, categories and tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce un término de búsqueda para buscar enlaces, categorías y tags"
+          }
+        }
+      }
+    },
+    "Insert search term" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce término de búsqueda"
+          }
+        }
+      }
+    },
     "Invalid data" : {
       "localizations" : {
         "es" : {
@@ -1210,6 +1262,7 @@
       }
     },
     "List view" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1420,6 +1473,7 @@
       }
     },
     "No subcollections on this collection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1730,6 +1784,7 @@
       }
     },
     "Search links" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1740,6 +1795,7 @@
       }
     },
     "Search subcollections" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1890,6 +1946,7 @@
       }
     },
     "Tabs view" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2071,6 +2128,7 @@
       }
     },
     "The subcategories and the links are displayed on a single list, with the subcategories at the top and the links under them." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2081,6 +2139,7 @@
       }
     },
     "The subcategories and the links are displayed on two different lists, with a tab system to switch between them." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2166,17 +2225,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Instrucciones del token"
-          }
-        }
-      }
-    },
-    "Unknown error" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error desconocido"
           }
         }
       }
@@ -2287,6 +2335,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver todos"
+          }
+        }
+      }
+    },
+    "View more" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver mas"
           }
         }
       }

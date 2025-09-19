@@ -4,88 +4,74 @@ import CustomAlert
 struct TagsView: View {
     @EnvironmentObject private var tagsProvider: TagsProvider
     
-    init() {}
-    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    @State private var navigationPath = NavigationPath()
     @State private var searchText = ""
     
     var body: some View {
         let searched = searchText != "" ? tagsProvider.data.filter() { $0.name!.lowercased().contains(searchText.lowercased()) } : tagsProvider.data
-        NavigationStack(path: $navigationPath) {
-            Group {
-                if horizontalSizeClass == .regular {
-                    ScrollView {
-                        LazyVGrid(columns: Config.gridColumns) {
-                            ForEach(searched, id: \.self) { item in
-                                TagItemComponent(tag: item) {
-                                    navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
-                                }
+        Group {
+            if horizontalSizeClass == .regular {
+                ScrollView {
+                    LazyVGrid(columns: Config.gridColumns) {
+                        ForEach(searched, id: \.self) { item in
+                            TagItemComponent(tag: item)
                                 .padding(6)
-                            }
-                        }
-                        .padding(.horizontal, 12)
-                    }
-                    .overlay(alignment: .center) {
-                        if tagsProvider.data.isEmpty {
-                            ContentUnavailableView {
-                                Label("No tags created", systemImage: "tag")
-                            } description: {
-                                Text("Add tags to links to see them here.")
-                            }
                         }
                     }
-                    .overlay(alignment: .center) {
-                        if searched.isEmpty {
-                            ContentUnavailableView {
-                                Label("No tags found", systemImage: "tag")
-                            } description: {
-                                Text("Change the search term to see some tags.")
-                            }
+                    .padding(.horizontal, 12)
+                }
+                .overlay(alignment: .center) {
+                    if tagsProvider.data.isEmpty {
+                        ContentUnavailableView {
+                            Label("No tags created", systemImage: "tag")
+                        } description: {
+                            Text("Add tags to links to see them here.")
                         }
                     }
                 }
-                else {
-                    List(searched, id: \.self) { item in
-                        TagItemComponent(tag: item) {
-                            navigationPath.append(LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
-                        }
-                    }
-                    .animation(.default, value: searched)
-                    .overlay(alignment: .center) {
-                        if tagsProvider.data.isEmpty {
-                            ContentUnavailableView {
-                                Label("No tags created", systemImage: "tag")
-                            } description: {
-                                Text("Add tags to links to see them here.")
-                            }
-                        }
-                    }
-                    .overlay(alignment: .center) {
-                        if searched.isEmpty && searchText != "" {
-                            ContentUnavailableView {
-                                Label("No tags found", systemImage: "tag")
-                            } description: {
-                                Text("Change the search term to see some tags.")
-                            }
+                .overlay(alignment: .center) {
+                    if searched.isEmpty {
+                        ContentUnavailableView {
+                            Label("No tags found", systemImage: "tag")
+                        } description: {
+                            Text("Change the search term to see some tags.")
                         }
                     }
                 }
             }
-            .navigationTitle("Tags")
-            .refreshable {
-                await tagsProvider.loadData()
+            else {
+                List(searched, id: \.self) { item in
+                    TagItemComponent(tag: item)
+                }
+                .animation(.default, value: searched)
+                .overlay(alignment: .center) {
+                    if tagsProvider.data.isEmpty {
+                        ContentUnavailableView {
+                            Label("No tags created", systemImage: "tag")
+                        } description: {
+                            Text("Add tags to links to see them here.")
+                        }
+                    }
+                }
+                .overlay(alignment: .center) {
+                    if searched.isEmpty && searchText != "" {
+                        ContentUnavailableView {
+                            Label("No tags found", systemImage: "tag")
+                        } description: {
+                            Text("Change the search term to see some tags.")
+                        }
+                    }
+                }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .overlay(alignment: .center) {
-                TagsIndicators()
-            }
-            .background(Color.listBackground)
-            .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView()
-                    .environmentObject(LinksFilteredViewModel(input: value))
-            }
+        }
+        .navigationTitle("Tags")
+        .refreshable {
+            await tagsProvider.loadData()
+        }
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .overlay(alignment: .center) {
+            TagsIndicators()
         }
     }
 }

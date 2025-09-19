@@ -2,12 +2,10 @@ import SwiftUI
 
 struct CollectionItemComponent: View {
     let collection: Collection
-    let onTap: () -> Void
     let onDelete: () -> Void
     
-    init(collection: Collection, onTap: @escaping () -> Void, onDelete: @escaping () -> Void) {
+    init(collection: Collection, onDelete: @escaping () -> Void) {
         self.collection = collection
-        self.onTap = onTap
         self.onDelete = onDelete
     }
     
@@ -18,8 +16,8 @@ struct CollectionItemComponent: View {
     
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
-        Button {
-            onTap()
+        NavigationLink {
+            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: collection.name!, mode: .collection, id: collection.id!))
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -34,6 +32,7 @@ struct CollectionItemComponent: View {
                     Text(collection.name!)
                         .lineLimit(1)
                         .fontWeight(.medium)
+                    Spacer() // Añade un Spacer aquí para ocupar todo el ancho
                 }
                 if let description = collection.description {
                     if description != "" {
@@ -52,22 +51,25 @@ struct CollectionItemComponent: View {
                         Text(dateFormatted)
                             .font(.system(size: 14))
                         Spacer()
+                            .frame(width: 16)
                     }
                     if let linkCount = collection._count?.links {
-                        Spacer()
                         Image(systemName: "link")
                             .font(.system(size: 12))
                         Text(String(linkCount))
                             .font(.system(size: 14))
                     }
+                    Spacer()
                 }
                 .foregroundStyle(Color.gray)
             }
+            .contentShape(Rectangle())
         }
-        .padding(horizontalSizeClass == .regular ? 12 : 2)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(horizontalSizeClass == .regular ? 16 : 2)
         .foregroundStyle(Color.foreground)
         .background(horizontalSizeClass == .regular ? Color.listItemBackground: Color.clear)
-        .cornerRadius(horizontalSizeClass == .regular ? 12 : 1)
+        .cornerRadius(horizontalSizeClass == .regular ? 24 : 1)
         .contextMenu {
             Button("Edit", systemImage: "pencil") {
                 collectionFormSheet = true

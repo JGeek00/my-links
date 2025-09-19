@@ -11,22 +11,6 @@ struct GeneralSettings: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("Collections") {
-                    Button {
-                        collectionsViewModeSheet = true
-                    } label: {
-                        HStack {
-                            Text("Collections view mode")
-                                .foregroundStyle(Color.foreground)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(Color.navigationLinkArrow)
-                                .fontWeight(.semibold)
-                                .font(.system(size: 14))
-                        }
-                    }
-                }
-                
                 Section("Links") {
                     Toggle("Show favicons", isOn: $showFavicons)
                 }
@@ -50,13 +34,6 @@ struct GeneralSettings: View {
                 }
             }
             .navigationTitle("General settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented: $collectionsViewModeSheet) {
-                CollectionViewModeSheet {
-                    collectionsViewModeSheet = false
-                }
-                .presentationDetents([.fraction(0.5)])
-            }
         }
     }
 }

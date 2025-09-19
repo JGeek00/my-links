@@ -56,8 +56,7 @@ struct DashboardView: View {
             }
             .background(Color.listBackground)
             .navigationDestination(for: LinksFilteredRequest.self) { value in
-                LinksFilteredView()
-                    .environmentObject(LinksFilteredViewModel(input: value))
+                LinksFilteredView(linksFilteredRequest: value)
             }
             .sheet(isPresented: $linkFormUrlSheet, content: {
                 LinkFormView(mode: .url) {
@@ -216,7 +215,6 @@ fileprivate struct DashboardCompactView: View {
                             Text("View all")
                             Image(systemName: "chevron.right")
                         }
-                        .font(.system(size: 12))
                     }
                 }
             }
@@ -239,7 +237,6 @@ fileprivate struct DashboardCompactView: View {
                             Image(systemName: "chevron.right")
                         }
                     }
-                    .font(.system(size: 12))
                 }
             }
         }
@@ -354,9 +351,9 @@ fileprivate struct SummaryEntry: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(12)
+        .padding(16)
         .background(Color.listItemBackground)
-        .cornerRadius(12)
+        .cornerRadius(24)
     }
 }
 

@@ -2,19 +2,17 @@ import SwiftUI
 
 struct TagItemComponent: View {
     let tag: Tag
-    let onTap: () -> Void
     
-    init(tag: Tag, onTap: @escaping () -> Void) {
+    init(tag: Tag) {
         self.tag = tag
-        self.onTap = onTap
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
     var body: some View {
         let dateFormatted = tag.createdAt != nil ? formatDate(tag.createdAt!) : nil
-        Button {
-            onTap()
+        NavigationLink {
+            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: tag.name!, mode: .tag, id: tag.id!))
         } label: {
             VStack(alignment: .leading) {
                 Text(tag.name!)
@@ -29,21 +27,24 @@ struct TagItemComponent: View {
                         Text(dateFormatted)
                             .font(.system(size: 14))
                         Spacer()
+                            .frame(width: 16)
                     }
                     if let linkCount = tag._count?.links {
-                        Spacer()
                         Image(systemName: "link")
                             .font(.system(size: 12))
                         Text(String(linkCount))
                             .font(.system(size: 14))
                     }
+                    Spacer()
                 }
                 .foregroundStyle(Color.gray)
             }
+            .contentShape(Rectangle())
         }
-        .padding(horizontalSizeClass == .regular ? 12 : 0)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(horizontalSizeClass == .regular ? 16 : 0)
         .foregroundStyle(Color.foreground)
         .background(horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear)
-        .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
+        .cornerRadius(horizontalSizeClass == .regular ? 24 : 0)
     }
 }

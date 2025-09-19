@@ -51,7 +51,7 @@ struct OnboardingView: View {
                         .contentShape(Rectangle()).simultaneousGesture(DragGesture())
                     }
                     .frame(maxWidth: 600, maxHeight: 800)
-                    .cornerRadius(12)
+                    .cornerRadius(24)
                     Spacer()
                 }
                 Spacer()

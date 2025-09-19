@@ -96,8 +96,9 @@ class Enums {
         case subcollections
     }
     
-    enum CollectionViewMode: String {
-        case list
-        case tabs
+    enum ElementsDetailView: String, CaseIterable {
+        case links = "Links"
+        case collections = "Collections"
+        case tags = "Tags"
     }
 }

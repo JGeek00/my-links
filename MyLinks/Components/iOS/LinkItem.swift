@@ -105,10 +105,10 @@ struct LinkItemComponent: View {
                 }
             }
         }
-        .padding(horizontalSizeClass == .regular ? 12 : 0)
+        .padding(horizontalSizeClass == .regular ? 16 : 0)
         .foregroundColor(Color.foreground)
         .background(horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear)
-        .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
+        .cornerRadius(horizontalSizeClass == .regular ? 24 : 0)
         .contextMenu {
             Section {
                 Button {
