@@ -32,6 +32,7 @@ struct CollectionItemComponent: View {
                     Text(collection.name!)
                         .lineLimit(1)
                         .fontWeight(.medium)
+                    Spacer() // Añade un Spacer aquí para ocupar todo el ancho
                 }
                 if let description = collection.description {
                     if description != "" {
@@ -58,14 +59,17 @@ struct CollectionItemComponent: View {
                         Text(String(linkCount))
                             .font(.system(size: 14))
                     }
+                    Spacer()
                 }
                 .foregroundStyle(Color.gray)
             }
+            .contentShape(Rectangle())
         }
-        .padding(horizontalSizeClass == .regular ? 12 : 2)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(horizontalSizeClass == .regular ? 16 : 2)
         .foregroundStyle(Color.foreground)
         .background(horizontalSizeClass == .regular ? Color.listItemBackground: Color.clear)
-        .cornerRadius(horizontalSizeClass == .regular ? 12 : 1)
+        .cornerRadius(horizontalSizeClass == .regular ? 24 : 1)
         .contextMenu {
             Button("Edit", systemImage: "pencil") {
                 collectionFormSheet = true

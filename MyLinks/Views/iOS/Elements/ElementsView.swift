@@ -21,16 +21,27 @@ struct ElementsView: View {
             if let selectedView = selectedView {
                 switch selectedView {
                 case .links:
-                    LinksView()
-                        .environmentObject(LinksViewModel.shared)
+                    NavigationStack {
+                        LinksView()
+                            .environmentObject(LinksViewModel.shared)
+                            .background(Color.listBackground)
+                    }
                 case .collections:
-                    CollectionsView()
+                    NavigationStack {
+                        CollectionsView()
+                            .background(Color.listBackground)
+                    }
                 case .tags:
-                    TagsView()
+                    NavigationStack {
+                        TagsView()
+                            .background(Color.listBackground)
+                    }
                 }
             } else {
                 ContentUnavailableView("Choose one option", systemImage: "list.dash")
+                    .background(Color.listBackground)
             }
         }
+        .background(Color.listBackground)
     }
 }

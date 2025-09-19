@@ -135,7 +135,6 @@ struct LinksView: View {
             .onSubmit(of: .search) {
                 linksViewModel.search()
             }
-            .background(Color.listBackground)
             .onChange(of: linksViewModel.searchPresented, { oldValue, newValue in
                 if oldValue == true && newValue == false {
                     linksViewModel.clearSearch()

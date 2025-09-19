@@ -6,7 +6,7 @@ struct TagsResponse: Codable {
 }
 
 // MARK: - Tag
-struct Tag: Codable, Hashable {
+struct Tag: Codable, Hashable, Sendable {
     let id: Int?
     let name: String?
     let ownerId: Int?

@@ -351,9 +351,9 @@ fileprivate struct SummaryEntry: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(12)
+        .padding(16)
         .background(Color.listItemBackground)
-        .cornerRadius(12)
+        .cornerRadius(24)
     }
 }
 

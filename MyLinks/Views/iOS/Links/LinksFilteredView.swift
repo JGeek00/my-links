@@ -29,43 +29,39 @@ struct LinksFilteredView: View {
                 .transition(.opacity)
             }
             else {
-                Group {
-                    if linksFilteredViewModel.error == true {
-                        ContentUnavailableView {
-                            Label("Error", systemImage: "exclamationmark.circle")
-                        } description: {
-                            Text("An error occured when loading the links data. Check your Internet connection and try again later.")
-                            Button {
-                                Task { await linksFilteredViewModel.loadData(setLoading: true) }
-                            } label: {
-                                Label("Retry", systemImage: "arrow.counterclockwise")
-                            }
+                if linksFilteredViewModel.error == true {
+                    ContentUnavailableView {
+                        Label("Error", systemImage: "exclamationmark.circle")
+                    } description: {
+                        Text("An error occured when loading the links data. Check your Internet connection and try again later.")
+                        Button {
+                            Task { await linksFilteredViewModel.loadData(setLoading: true) }
+                        } label: {
+                            Label("Retry", systemImage: "arrow.counterclockwise")
                         }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .transition(.opacity)
+                }
+                else if linksFilteredViewModel.loading == true {
+                    ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                         .transition(.opacity)
-                    }
-                    else {
-                        Group {
-                            if horizontalSizeClass == .regular {
-                                LinksFilteredRegularView()
-                            }
-                            else {
-                                LinksFilteredCompactView()
-                            }
-                        }
-                        .environmentObject(linksFilteredViewModel)
-                    }
                 }
-                .overlay {
-                    if linksFilteredViewModel.loading == true {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                            .transition(.opacity)
-                            .background(Color(.systemBackground))
+                else {
+                    Group {
+                        if horizontalSizeClass == .regular {
+                            LinksFilteredRegularView()
+                        }
+                        else {
+                            LinksFilteredCompactView()
+                        }
                     }
+                    .environmentObject(linksFilteredViewModel)
                 }
             }
         }
+        .background(Color.listBackground)
         .navigationTitle(linksFilteredViewModel.input.name)
         .refreshable {
             await linksFilteredViewModel.loadData()
@@ -206,6 +202,7 @@ fileprivate struct LinksFilteredRegularView: View {
             }
             .transition(.opacity)
         })
+        .background(Color.listBackground)
     }
 }
 

@@ -35,13 +35,16 @@ struct TagItemComponent: View {
                         Text(String(linkCount))
                             .font(.system(size: 14))
                     }
+                    Spacer()
                 }
                 .foregroundStyle(Color.gray)
             }
+            .contentShape(Rectangle())
         }
-        .padding(horizontalSizeClass == .regular ? 12 : 0)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(horizontalSizeClass == .regular ? 16 : 0)
         .foregroundStyle(Color.foreground)
         .background(horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear)
-        .cornerRadius(horizontalSizeClass == .regular ? 12 : 0)
+        .cornerRadius(horizontalSizeClass == .regular ? 24 : 0)
     }
 }
