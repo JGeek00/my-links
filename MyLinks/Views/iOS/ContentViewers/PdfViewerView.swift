@@ -55,15 +55,9 @@ struct PDFViewerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
+                    CloseButton {
                         onClose()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.foreground.opacity(0.5))
                     }
-                    .buttonStyle(BorderedButtonStyle())
-                    .clipShape(Circle())
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack {

@@ -75,15 +75,9 @@ struct ShareExtensionView: View {
             .navigationTitle("Create new link")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
+                    CloseButton {
                         discardAlert = true
-                    } label: {
-                        Image(systemName: "xmark")
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.foreground.opacity(0.5))
                     }
-                    .buttonStyle(BorderedButtonStyle())
-                    .clipShape(Circle())
                 }
                 if shareExtensionViewModel.apiClient != nil {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -99,6 +93,7 @@ struct ShareExtensionView: View {
                                 Text("Save")
                             }
                         }
+                        .glassProminentButtonStyleIfAvailable()
                         .disabled(shareExtensionViewModel.saving || shareExtensionViewModel.loading == true || shareExtensionViewModel.loadError == true)
                     }
                 }

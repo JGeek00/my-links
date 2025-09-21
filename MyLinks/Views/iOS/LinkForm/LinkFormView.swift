@@ -143,24 +143,8 @@ struct LinkFormView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    if #available(iOS 26, *) {
-                        Button {
-                            onClose()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .fontWeight(.semibold)
-                        }
-                    }
-                    else {
-                        Button {
-                            onClose()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color.foreground.opacity(0.5))
-                        }
-                        .buttonStyle(BorderedButtonStyle())
-                        .clipShape(Circle())
+                    CloseButton {
+                        onClose()
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -176,6 +160,7 @@ struct LinkFormView: View {
                             Text("Save")
                         }
                     }
+                    .glassProminentButtonStyleIfAvailable()
                     .disabled(linkFormViewModel.saving)
                 }
             }

@@ -14,6 +14,28 @@ extension View {
             self
         }
     }
+    
+    @ViewBuilder
+    func glassProminentButtonStyleIfAvailable() -> some View {
+        if #available(iOS 26.0, *) {
+            self.buttonStyle(.glassProminent)
+        } else {
+            self
+        }
+    }
+    
+    @ViewBuilder
+    func circleButtonStyleCompatible() -> some View {
+        if #available(iOS 26.0, *) {
+            self
+                .buttonStyle(.glass)
+        } else {
+            self
+                .buttonStyle(BorderedButtonStyle())
+                .clipShape(Circle())
+            
+        }
+    }
 }
 
 private struct ShimmerEffect: ViewModifier {
