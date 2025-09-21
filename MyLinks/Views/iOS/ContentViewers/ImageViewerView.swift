@@ -4,16 +4,16 @@ struct ImageViewerView: View {
     var link: Link
     var onClose: () -> Void
     
-    @StateObject private var imageViewerViewModel: ImageViewerViewModel
+    @EnvironmentObject private var imageViewerViewModel: ImageViewerViewModel
     
     init(link: Link, onClose: @escaping () -> Void) {
         self.link = link
         self.onClose = onClose
-        _imageViewerViewModel = StateObject(wrappedValue: ImageViewerViewModel(link: link))
     }
     
     var body: some View {
         let name = link.name! != "" ? link.name! : link.description! != "" ? link.description! : link.url!
+        let fileName = (name.hasSuffix(".") ? String(name.dropLast()) : name).replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: "/", with: "")
         NavigationStack {
             Group {
                 if imageViewerViewModel.loading == true {
@@ -49,37 +49,16 @@ struct ImageViewerView: View {
                     .transition(.opacity)
                 }
             }
-            .overlay(alignment: .topLeading) {
-                GeometryReader(content: { geometry in
-                    Group {
-                        Button {
-                            onClose()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 22))
-                                .foregroundStyle(Color.foreground)
-                        }
-                        .frame(width: 40, height: 40)
-                        .background(.regularMaterial)
-                        .cornerRadius(10)
-                        .shadow(color: .black.opacity(0.3), radius: 5)
+            .navigationTitle(link.name ?? "Image")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    CloseButton {
+                        onClose()
                     }
-                    .offset(x: 12, y: 12)
-                    Group {
-                        Button {
-                            Task { await imageViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 22))
-                                .foregroundStyle(Color.foreground)
-                        }
-                        .frame(width: 40, height: 40)
-                        .background(.regularMaterial)
-                        .cornerRadius(10)
-                        .shadow(color: .black.opacity(0.3), radius: 5)
-                    }
-                    .offset(x: geometry.size.width - 52, y: 12)
-                    Group {
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
                         Button {
                             Task { await imageViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
                         } label: {
@@ -92,34 +71,29 @@ struct ImageViewerView: View {
                             } label: {
                                 Label("Download", systemImage: "square.and.arrow.down")
                             }
-                            if imageViewerViewModel.data != nil {
+                            if let i = imageViewerViewModel.imageData {
                                 ShareLink(
                                     "Share",
-                                    item: Image(uiImage: imageViewerViewModel.imageData!),
-                                    preview: SharePreview(name)
+                                    item: Image(uiImage: i),
+                                    preview: SharePreview(fileName)
                                 )
                             }
                         } label: {
                             Image(systemName: "ellipsis.circle")
-                                .font(.system(size: 22))
-                                .foregroundStyle(Color.foreground)
                         }
                         .disabled(imageViewerViewModel.loading == true || imageViewerViewModel.data == nil)
-                        .frame(width: 40, height: 40)
-                        .background(.regularMaterial)
-                        .cornerRadius(10)
-                        .shadow(color: .black.opacity(0.3), radius: 5)
                     }
-                    .offset(x: geometry.size.width - 52, y: 70)
-                })
+                }
             }
             .sheet(isPresented: $imageViewerViewModel.saveDocumentSheet, content: {
-                if imageViewerViewModel.data != nil {
-                    DocumentPicker(data: imageViewerViewModel.data!, fileName: "\(name).png") { _ in
+                if let image = imageViewerViewModel.data {
+                    DocumentPicker(data: image, fileName: "\(fileName).png") { _ in
                         // --- //
                     } onError: {
-                        imageViewerViewModel.savingErrorMessage = String(localized: "An error occured when saving the file")
-                        imageViewerViewModel.savingErrorAlert.toggle()
+                        Task {
+                            imageViewerViewModel.savingErrorMessage = String(localized: "An error occured when saving the file")
+                            imageViewerViewModel.savingErrorAlert.toggle()
+                        }
                     } onCancelled: {
                         // --- //
                     }

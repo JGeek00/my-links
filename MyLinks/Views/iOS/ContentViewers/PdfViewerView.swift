@@ -6,16 +6,16 @@ struct PDFViewerView: View {
     var link: Link
     var onClose: () -> Void
     
-    @StateObject private var pdfViewerViewModel: PdfViewerViewModel
+    @EnvironmentObject private var pdfViewerViewModel: PdfViewerViewModel
 
     init(link: Link, onClose: @escaping () -> Void) {
         self.link = link
         self.onClose = onClose
-        _pdfViewerViewModel = StateObject(wrappedValue: PdfViewerViewModel(link: link))
     }
     
     var body: some View {
-        let name = link.name! != "" ? link.name! : link.description! != "" ? link.description! : link.url!
+        let name = link.name != "" ? link.name! : link.description != "" ? link.description! : link.url!
+        let fileName = (name.hasSuffix(".") ? String(name.dropLast()) : name).replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: "/", with: "")
         NavigationStack {
             Group {
                 if pdfViewerViewModel.loading == true {
@@ -73,11 +73,11 @@ struct PDFViewerView: View {
                             } label: {
                                 Label("Download", systemImage: "square.and.arrow.down")
                             }
-                            if pdfViewerViewModel.pdfData != nil {
+                            if let pdf = pdfViewerViewModel.pdfData {
                                 ShareLink(
                                     "Share",
-                                    item: pdfViewerViewModel.pdfData!,
-                                    preview: SharePreview(name)
+                                    item: pdf,
+                                    preview: SharePreview(fileName)
                                 )
                             }
                         } label: {
@@ -88,12 +88,14 @@ struct PDFViewerView: View {
                 }
             }
             .sheet(isPresented: $pdfViewerViewModel.saveDocumentSheet, content: {
-                if pdfViewerViewModel.data != nil {
-                    DocumentPicker(data: pdfViewerViewModel.data!, fileName: "\(name).pdf") { _ in
+                if let data = pdfViewerViewModel.data {
+                    DocumentPicker(data: data, fileName: "\(fileName).pdf") { _ in
                         // --- //
                     } onError: {
-                        pdfViewerViewModel.savingErrorMessage = String(localized: "An error occured when saving the file")
-                        pdfViewerViewModel.savingErrorAlert.toggle()
+                        Task {
+                            pdfViewerViewModel.savingErrorMessage = String(localized: "An error occured when saving the file")
+                            pdfViewerViewModel.savingErrorAlert.toggle()
+                        }
                     } onCancelled: {
                         // --- //
                     }

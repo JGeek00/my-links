@@ -226,11 +226,13 @@ struct LinkItemComponent: View {
             PDFViewerView(link: item) {
                 pdfViewerSheet.toggle()
             }
+            .environmentObject(PdfViewerViewModel(link: item))
         })
         .sheet(isPresented: $imageViewerSheet, content: {
             ImageViewerView(link: item) {
                 imageViewerSheet.toggle()
             }
+            .environmentObject(ImageViewerViewModel(link: item))
         })
         .alert("Link content unavailable", isPresented: $linkContentUnavailable) {
             Button("Close", role: .cancel) {

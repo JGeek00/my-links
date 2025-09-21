@@ -1,5 +1,5 @@
 {
-  "originHash" : "978e57db8b41b9b8c69a4d31d1464fdf542a6f136812eeda027abf91641a1f42",
+  "originHash" : "83338fc7c7dc4696c731c22101485e31579aaf75980c198996ee5d1ed4320682",
   "pins" : [
     {
       "identity" : "alerttoast",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/divadretlaw/CustomAlert.git",
       "state" : {
-        "revision" : "ce671704a27e418f606ead1dfb25c622de98bd5b",
-        "version" : "3.6.1"
+        "revision" : "d9de26fd92c8fe521d84aedb9eb56fb176f646de",
+        "version" : "3.8.2"
       }
     },
     {
@@ -33,17 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/NuPlay/RichText.git",
       "state" : {
-        "revision" : "8abbc59142523ac18f36fcf07414c2f85a2e75ae",
-        "version" : "2.4.1"
-      }
-    },
-    {
-      "identity" : "sentry-cocoa",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/getsentry/sentry-cocoa.git",
-      "state" : {
-        "revision" : "5575af93efb776414f243e93d6af9f6258dc539a",
-        "version" : "8.36.0"
+        "revision" : "ec3469ee47c17e0f90e4b43f23d7e19bc42e069b",
+        "version" : "2.7.0"
       }
     },
     {
@@ -51,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/divadretlaw/WindowKit",
       "state" : {
-        "revision" : "d2d317c3cd57592d823d30a42bdc8898d425155a",
-        "version" : "2.2.0"
+        "revision" : "2e689d5ebf019ed3e7abffa4e6ddb06287f231e9",
+        "version" : "2.6.1"
       }
     },
     {
@@ -60,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/divadretlaw/WindowReader",
       "state" : {
-        "revision" : "7e1f994df0ed26a7d7a139f1fce2537d2c931059",
-        "version" : "2.0.0"
+        "revision" : "58ff2db81e17fd39d40c325dafd8b962c363ad5f",
+        "version" : "3.1.0"
       }
     },
     {
@@ -69,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/divadretlaw/WindowSceneReader",
       "state" : {
-        "revision" : "0779fbf801a723570f90158aa5e618ff885b6c47",
-        "version" : "3.0.0"
+        "revision" : "35441047ff4134838a884a30d613cfbd6291a5fa",
+        "version" : "3.3.0"
       }
     }
   ],

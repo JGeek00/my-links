@@ -1,7 +1,6 @@
 import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
-import Sentry
 
 class ShareViewController: UIViewController {
     let urlDataType = UTType.url.identifier
@@ -9,14 +8,6 @@ class ShareViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        #if RELEASE
-        SentrySDK.start { options in
-            options.dsn = Config.sentryDsn
-            options.debug = false
-            options.enableTracing = false
-        }
-        #endif
         
         guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem else {
             close()

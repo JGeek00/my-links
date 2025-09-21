@@ -1,5 +1,4 @@
 import SwiftUI
-import Sentry
 
 @main
 struct MyLinksApp: App {
@@ -8,17 +7,6 @@ struct MyLinksApp: App {
     #endif
     
     let persistenceController = PersistenceController.shared
-    
-    init() {
-        #if RELEASE
-        SentrySDK.start { options in
-            options.dsn = Config.sentryDsn
-            options.debug = false
-            options.enableTracing = false
-        }
-        #endif
-        UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")
-    }
 
     var body: some Scene {
         #if os(macOS)

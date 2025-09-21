@@ -51,7 +51,6 @@ struct DashboardView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-
                 }
             }
             .background(Color.listBackground)
