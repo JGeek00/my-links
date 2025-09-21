@@ -113,14 +113,10 @@ fileprivate struct DashboardRegularView: View {
                             .font(.system(size: 16))
                             .fontWeight(.semibold)
                         Spacer()
-                        Button {
+                        ViewAllButton {
                             let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
                             dashboardViewModel.path.append(request)
-                        } label: {
-                            Text("View all")
-                            Image(systemName: "chevron.right")
                         }
-                        .font(.system(size: 16))
                     }
                     .padding(.horizontal, 8)
                     Spacer()
@@ -143,14 +139,10 @@ fileprivate struct DashboardRegularView: View {
                             .font(.system(size: 16))
                             .fontWeight(.semibold)
                         Spacer()
-                        Button {
+                        ViewAllButton {
                             let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
                             dashboardViewModel.path.append(request)
-                        } label: {
-                            Text("View all")
-                            Image(systemName: "chevron.right")
                         }
-                        .font(.system(size: 16))
                     }
                     .padding(.horizontal, 8)
                     Spacer()
@@ -207,12 +199,9 @@ fileprivate struct DashboardCompactView: View {
                     HStack {
                         Text("Recent")
                         Spacer()
-                        Button {
+                        ViewAllButton {
                             let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
                             dashboardViewModel.path.append(request)
-                        } label: {
-                            Text("View all")
-                            Image(systemName: "chevron.right")
                         }
                     }
                 }
@@ -228,12 +217,9 @@ fileprivate struct DashboardCompactView: View {
                     HStack {
                         Text("Pinned")
                         Spacer()
-                        Button {
+                        ViewAllButton {
                             let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
                             dashboardViewModel.path.append(request)
-                        } label: {
-                            Text("View all")
-                            Image(systemName: "chevron.right")
                         }
                     }
                 }
@@ -404,6 +390,35 @@ fileprivate struct DashboardIndicators: View {
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
             .background(Color.listBackground)
+        }
+    }
+}
+
+fileprivate struct ViewAllButton: View {
+    var action: () -> Void
+    
+    init(action: @escaping () -> Void) {
+        self.action = action
+    }
+    
+    var body: some View {
+        if #available(iOS 26, *) {
+            Button {
+                action()
+            } label: {
+                Text("View all")
+                Image(systemName: "chevron.right")
+            }
+            .font(.system(size: 14))
+        }
+        else {
+            Button {
+                action()
+            } label: {
+                Text("View all")
+                Image(systemName: "chevron.right")
+            }
+            .font(.system(size: 12))
         }
     }
 }
