@@ -159,6 +159,7 @@
       }
     },
     "Advanced settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -464,6 +465,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nube"
+          }
+        }
+      }
+    },
+    "Cloud mode" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo nube"
           }
         }
       }
@@ -1272,6 +1283,16 @@
         }
       }
     },
+    "Log out" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar sesión"
+          }
+        }
+      }
+    },
     "Method" : {
       "localizations" : {
         "es" : {
@@ -1694,6 +1715,7 @@
       }
     },
     "Replaces the top navigation tab bar introduced on iOS 18 with the previous one. This only affects to iPadOS." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2280,6 +2302,7 @@
       }
     },
     "Use old navigation tab bar" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

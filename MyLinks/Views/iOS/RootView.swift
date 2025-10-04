@@ -13,15 +13,12 @@ struct RootView: View {
     let tagsProvider = TagsProvider.shared
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
-    @AppStorage(StorageKeys.useOldTabBar, store: UserDefaults.shared) private var useOldTabBar: Bool = false
     
     @FetchRequest(
         entity: ServerInstance.entity(),
         sortDescriptors: []
     ) private var instances: FetchedResults<ServerInstance>
-    
-    @Environment(\.horizontalSizeClass) var currentHorizontalSizeClass
-    
+        
     var body: some View {
         Group {
             if !instances.isEmpty && apiClientProvider.instance != nil {
@@ -31,18 +28,15 @@ struct RootView: View {
                             Tab("Dashboard", systemImage: "house.fill") {
                                 DashboardView()
                                     .environmentObject(DashboardViewModel.shared)
-                                    .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                             }
                             Tab("Elements", systemImage: "books.vertical.fill") {
                                ElementsView()
-                                    .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                             }
                             Tab("Search", systemImage: "magnifyingglass", role: .search) {
                                 SearchView()
                             }
                             Tab("Settings", systemImage: "gear") {
                                 SettingsView()
-                                    .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                             }
                         }
                     }
@@ -53,22 +47,18 @@ struct RootView: View {
                                 .tabItem {
                                     Label("Dashboard", systemImage: "house.fill")
                                 }
-                                .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
 
                             ElementsView()
                                 .tabItem {
                                     Label("Elements", systemImage: "books.vertical.fill")
                                 }
-                                .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                             SettingsView()
                                 .tabItem {
                                     Label("Settings", systemImage: "gear")
                                 }
-                                .environment(\.horizontalSizeClass, currentHorizontalSizeClass)
                         }
                     }
                 }
-                .environment(\.horizontalSizeClass, useOldTabBar == true ? .compact : currentHorizontalSizeClass)
                 .onAppear(perform: {
                     if collectionsProvider.data.isEmpty {
                         Task { await collectionsProvider.loadData() }

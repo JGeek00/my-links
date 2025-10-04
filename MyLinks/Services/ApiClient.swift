@@ -33,10 +33,12 @@ func getSessionToken(baseUrl: String, body: SessionTokenRequest) async -> Status
 struct ApiClient: Equatable {
     var url: String
     var token: String
+    var isSelfHosted: Bool
     
-    init(url: String, token: String) {
+    init(url: String, token: String, isSelfHosted: Bool) {
         self.url = url
         self.token = token
+        self.isSelfHosted = isSelfHosted
     }
     
     func fetchDashboardV2() async -> StatusResponse<DashboardV2Response> {

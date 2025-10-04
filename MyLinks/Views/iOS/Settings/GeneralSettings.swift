@@ -8,6 +8,8 @@ struct GeneralSettings: View {
     
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
     
+    @EnvironmentObject private var apiClientProvider: ApiClientProvider
+    
     var body: some View {
         NavigationStack {
             List {
@@ -16,20 +18,31 @@ struct GeneralSettings: View {
                 }
                 
                 Section("Server") {
-                    Button {
-                        disconnectAlert.toggle()
-                    } label: {
-                        ListRowWithIconEntry(systemIcon: "xmark", iconColor: .red, textColor: .red, label: "Disconnect from server")
-                    }
-                    .alert("Disconnect from server", isPresented: $disconnectAlert) {
-                        Button("Cancel", role: .cancel) {
+                    if let instance = apiClientProvider.instance {
+                        if instance.isSelfHosted == true {
+                            Text(instance.url)
+                                .foregroundStyle(Color.gray)
+                        }
+                        else {
+                            Text("Cloud mode")
+                                .foregroundStyle(Color.gray)
+                        }
+                        Button {
                             disconnectAlert.toggle()
+                        } label: {
+                            Text(instance.isSelfHosted ==  true ? "Disconnect" : "Log out")
+                                .foregroundStyle(Color.red)
                         }
-                        Button("Disconnect", role: .destructive) {
-                            ApiClientProvider.shared.destroy()
+                        .alert("Disconnect from server", isPresented: $disconnectAlert) {
+                            Button("Cancel", role: .cancel) {
+                                disconnectAlert.toggle()
+                            }
+                            Button(instance.isSelfHosted == true ? "Disconnect" : "Log out", role: .destructive) {
+                                ApiClientProvider.shared.destroy()
+                            }
+                        } message: {
+                            Text("You will have to establish a connection again.")
                         }
-                    } message: {
-                        Text("You will have to establish a connection again.")
                     }
                 }
             }

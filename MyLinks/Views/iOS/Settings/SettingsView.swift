@@ -30,13 +30,6 @@ struct SettingsView: View {
                     } label: {
                         ListRowWithIconEntry(systemIcon: "gear", iconColor: .gray, label: "General settings")
                     }
-                    if #available(iOS 18, *) {
-                        NavigationLink {
-                            AdvancedSettings()
-                        } label: {
-                            ListRowWithIconEntry(systemIcon: "gear", iconColor: .red, label: "Advanced settings")
-                        }
-                    }
                 }
                 
                 Section("Linkwarden") {

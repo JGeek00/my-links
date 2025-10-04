@@ -59,7 +59,7 @@ class ShareExtensionViewModel: ObservableObject {
                     }
                     let port = res[0].port != nil ? Int(res[0].port!) : nil
                     DispatchQueue.main.async {
-                        self.apiClient = ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token)
+                        self.apiClient = ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true)
                     }
                 }
                 else {
@@ -67,7 +67,7 @@ class ShareExtensionViewModel: ObservableObject {
                         return
                     }
                     DispatchQueue.main.async {
-                        self.apiClient = ApiClient(url: Config.linkwardenCloudUrl, token: token)
+                        self.apiClient = ApiClient(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false)
                     }
                 }
             }
