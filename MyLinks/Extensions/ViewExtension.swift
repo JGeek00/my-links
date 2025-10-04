@@ -17,15 +17,18 @@ extension View {
     
     @ViewBuilder
     func glassProminentButtonStyleIfAvailable() -> some View {
+        #if os(iOS)
         if #available(iOS 26.0, *) {
             self.buttonStyle(.glassProminent)
         } else {
             self
         }
+        #endif
     }
     
     @ViewBuilder
     func circleButtonStyleCompatible() -> some View {
+        #if os(iOS)
         if #available(iOS 26.0, *) {
             self
                 .buttonStyle(.glass)
@@ -35,6 +38,7 @@ extension View {
                 .clipShape(Circle())
             
         }
+        #endif
     }
 }
 

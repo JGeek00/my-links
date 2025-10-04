@@ -82,14 +82,14 @@ class MenuBarFormViewModel: ObservableObject {
                         return nil
                     }
                     let port = res[0].port != nil ? Int(res[0].port!) : nil
-                    return ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token)
+                    return ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true)
                 }
                 else {
                     guard let token = res[0].token else {
                         clearInstances()
                         return nil
                     }
-                    return ApiClient(url: Config.linkwardenCloudUrl, token: token)
+                    return ApiClient(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: true)
                 }
             }
         } catch {

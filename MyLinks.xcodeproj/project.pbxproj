@@ -148,7 +148,7 @@
 		0DCA0CC42E8004C700F53D54 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5A042F2D47FD5F0029A5D4 /* ViewExtension.swift */; };
 		0DCA0CC62E8007B600F53D54 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0CC52E8007B600F53D54 /* CloseButton.swift */; };
 		0DCA0CC72E8007B600F53D54 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0CC52E8007B600F53D54 /* CloseButton.swift */; };
-		0DCA0DC52E914E0A00F53D54 /* LinkDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DC42E914E0A00F53D54 /* LinkDetails.swift */; };
+		0DCA0DC52E914E0A00F53D54 /* LinkDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DC42E914E0A00F53D54 /* LinkDetails.swift */; platformFilter = ios; };
 		0DEA27A22C31E44800F1802F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27A12C31E44800F1802F /* RootView.swift */; platformFilters = (macos, ); };
 		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; platformFilters = (macos, ); };
 		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; platformFilters = (macos, ); };

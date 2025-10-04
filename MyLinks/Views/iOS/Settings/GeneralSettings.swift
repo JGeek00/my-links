@@ -47,12 +47,21 @@ struct GeneralSettings: View {
                 Section("Server") {
                     if let instance = apiClientProvider.instance {
                         if instance.isSelfHosted == true {
-                            Text(instance.url)
-                                .foregroundStyle(Color.gray)
+                            HStack {
+                                Text(instance.url)
+                                Spacer()
+                                Image(systemName: "server.rack")
+                            }
+                            .foregroundStyle(Color.gray)
                         }
                         else {
-                            Text("Cloud mode")
-                                .foregroundStyle(Color.gray)
+                            HStack {
+                                Image(systemName: "cloud.fill")
+                                Spacer()
+                                    .frame(width: 16)
+                                Text("Cloud mode")
+                            }
+                            .foregroundStyle(Color.gray)
                         }
                         Button {
                             disconnectAlert.toggle()

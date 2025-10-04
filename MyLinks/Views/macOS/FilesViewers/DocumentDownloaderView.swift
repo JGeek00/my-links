@@ -1,5 +1,4 @@
 import SwiftUI
-import Sentry
 
 struct DocumentDownloaderView: View {
     var linkId: Int
@@ -33,7 +32,6 @@ struct DocumentDownloaderView: View {
                         }
                     }
                 } catch let error {
-                    SentrySDK.capture(error: error)
                     DispatchQueue.main.async {
                         switch documentType {
                         case .pdf:

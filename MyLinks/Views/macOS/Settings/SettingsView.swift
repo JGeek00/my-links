@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject private var settingsViewModel = SettingsViewModel()
+    @StateObject private var settingsViewModel = SettingsViewModel()
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
@@ -31,20 +32,40 @@ struct SettingsView: View {
                     Toggle("Show favicons", isOn: $showFavicons)
                 }
                 Section("Server") {
-                    Button {
-                        disconnectAlert.toggle()
-                    } label: {
-                        ListRowWithIconEntry(systemIcon: "xmark", iconColor: .red, textColor: .red, label: "Disconnect from server")
-                    }
-                    .alert("Disconnect from server", isPresented: $disconnectAlert) {
-                        Button("Cancel", role: .cancel) {
+                    if let instance = apiClientProvider.instance {
+                        if instance.isSelfHosted == true {
+                            HStack {
+                                Text(instance.url)
+                                Spacer()
+                                Image(systemName: "server.rack")
+                            }
+                            .foregroundStyle(Color.gray)
+                        }
+                        else {
+                            HStack {
+                                Image(systemName: "cloud.fill")
+                                Spacer()
+                                    .frame(width: 16)
+                                Text("Cloud mode")
+                            }
+                            .foregroundStyle(Color.gray)
+                        }
+                        Button {
                             disconnectAlert.toggle()
+                        } label: {
+                            Text(instance.isSelfHosted ==  true ? "Disconnect" : "Log out")
+                                .foregroundStyle(Color.red)
                         }
-                        Button("Disconnect", role: .destructive) {
-                            ApiClientProvider.shared.destroy()
+                        .alert("Disconnect from server", isPresented: $disconnectAlert) {
+                            Button("Cancel", role: .cancel) {
+                                disconnectAlert.toggle()
+                            }
+                            Button(instance.isSelfHosted == true ? "Disconnect" : "Log out", role: .destructive) {
+                                ApiClientProvider.shared.destroy()
+                            }
+                        } message: {
+                            Text("You will have to establish a connection again.")
                         }
-                    } message: {
-                        Text("You will have to establish a connection again.")
                     }
                 }
                 Section("Linkwarden") {
