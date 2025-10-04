@@ -1072,6 +1072,16 @@
         }
       }
     },
+    "Image document" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documento de imagen"
+          }
+        }
+      }
+    },
     "Image saved" : {
       "localizations" : {
         "es" : {
@@ -1102,6 +1112,16 @@
         }
       }
     },
+    "In case of the selected option is not available for a specific item, if the item is a link will always fallback to Internal browser, and if the item is a file will always fallback to the file viewer." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En caso de que la opción seleccionada no esté disponible para un elemento específico, si es un enlace se utilizará por defecto el navegador interno, y si es un fichero se usará el visualizador de ese fichero."
+          }
+        }
+      }
+    },
     "Input a search term to search links, categories and tags" : {
       "localizations" : {
         "es" : {
@@ -1118,6 +1138,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Introduce término de búsqueda"
+          }
+        }
+      }
+    },
+    "Internal browser" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegador interno"
           }
         }
       }
@@ -1534,6 +1564,16 @@
         }
       }
     },
+    "Open by default" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir por defecto"
+          }
+        }
+      }
+    },
     "Open in..." : {
       "localizations" : {
         "es" : {
@@ -1590,6 +1630,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PDF"
+          }
+        }
+      }
+    },
+    "PDF document" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documento PDF"
           }
         }
       }
@@ -1700,6 +1750,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leíble"
+          }
+        }
+      }
+    },
+    "Readable mode" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo de lectura"
           }
         }
       }
@@ -1973,6 +2033,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Satisfactorio"
+          }
+        }
+      }
+    },
+    "System browser" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegador del sistema"
           }
         }
       }

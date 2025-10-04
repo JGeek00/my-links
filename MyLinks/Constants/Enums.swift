@@ -101,4 +101,12 @@ class Enums {
         case collections = "Collections"
         case tags = "Tags"
     }
+    
+    enum OpenLinkByDefault: String {
+        case internalBrowser
+        case systemBrowser
+        case readableMode
+        case pdfDocument
+        case imageDocument
+    }
 }

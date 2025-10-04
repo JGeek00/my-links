@@ -6,4 +6,5 @@ class StorageKeys {
     public static let hasRequestedReview = "HAS_REQUESTED_REVIEW"
     public static let collectionViewMode = "COLLECTION_VIEW_MODE"
     public static let showFavicons = "SHOW_FAVICONS"
+    public static let openLinkByDefault = "OPEN_LINK_BY_DEFAULT"
 }

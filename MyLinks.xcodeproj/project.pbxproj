@@ -148,6 +148,7 @@
 		0DCA0CC42E8004C700F53D54 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5A042F2D47FD5F0029A5D4 /* ViewExtension.swift */; };
 		0DCA0CC62E8007B600F53D54 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0CC52E8007B600F53D54 /* CloseButton.swift */; };
 		0DCA0CC72E8007B600F53D54 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0CC52E8007B600F53D54 /* CloseButton.swift */; };
+		0DCA0DC52E914E0A00F53D54 /* LinkDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DC42E914E0A00F53D54 /* LinkDetails.swift */; };
 		0DEA27A22C31E44800F1802F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27A12C31E44800F1802F /* RootView.swift */; platformFilters = (macos, ); };
 		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; platformFilters = (macos, ); };
 		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; platformFilters = (macos, ); };
@@ -311,6 +312,7 @@
 		0DC9C8EF2E25984A000628C8 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		0DCA0CC12E7E221300F53D54 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		0DCA0CC52E8007B600F53D54 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		0DCA0DC42E914E0A00F53D54 /* LinkDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkDetails.swift; sourceTree = "<group>"; };
 		0DEA27A12C31E44800F1802F /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionForm.swift; sourceTree = "<group>"; };
 		0DEA27AD2C31ED7900F1802F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -763,6 +765,7 @@
 				0D083CBE2C27648700F0EB3B /* ImageViewer.swift */,
 				0D5A042D2D47FC8E0029A5D4 /* FaviconImage.swift */,
 				0DCA0CC52E8007B600F53D54 /* CloseButton.swift */,
+				0DCA0DC42E914E0A00F53D54 /* LinkDetails.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -998,6 +1001,7 @@
 				0D083CAD2C27291800F0EB3B /* PdfViewerViewModel.swift in Sources */,
 				0DEA27C02C31F89100F1802F /* CollectionFormView.swift in Sources */,
 				0D083CBF2C27648700F0EB3B /* ImageViewer.swift in Sources */,
+				0DCA0DC52E914E0A00F53D54 /* LinkDetails.swift in Sources */,
 				0D55C4EC2C219E13002CE99A /* MyLinks.xcdatamodeld in Sources */,
 				0D55C5472C22140D002CE99A /* ServerInstances.swift in Sources */,
 				0DA868032C4AD8560084FC20 /* URLExtension.swift in Sources */,

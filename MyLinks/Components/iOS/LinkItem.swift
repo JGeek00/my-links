@@ -26,27 +26,75 @@ struct LinkItemComponent: View {
     @State private var linkContentUnavailable = false
     
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
+    @AppStorage(StorageKeys.openLinkByDefault, store: UserDefaults.shared) private var openLinkByDefault: Enums.OpenLinkByDefault = .internalBrowser
+    
+    func openItem(readerAvailable: Bool, pdfAvailable: Bool, imageAvailable: Bool) {
+        func openInternalBrowser() {
+            if let url = item.url {
+                openSafariView(url)
+            }
+            else {
+                linkContentUnavailable = true
+            }
+        }
+        
+        switch item.type {
+        case .url:
+            switch openLinkByDefault {
+            case .internalBrowser:
+               openInternalBrowser()
+            case .systemBrowser:
+                if let url = item.url {
+                    if let url = URL(string: url) {
+                        openURL(url)
+                    } else {
+                        linkContentUnavailable = true
+                    }
+                }
+                else {
+                    linkContentUnavailable = true
+                }
+            case .readableMode:
+                if readerAvailable == true {
+                    readerModeSheet.toggle()
+                }
+                else {
+                    openInternalBrowser()
+                }
+            case .pdfDocument:
+                if pdfAvailable == true {
+                    pdfViewerSheet = true
+                }
+                else {
+                    openInternalBrowser()
+                }
+            case .imageDocument:
+                if imageAvailable == true {
+                    imageViewerSheet = true
+                }
+                else {
+                    openInternalBrowser()
+                }
+            }
+        case .image:
+            imageViewerSheet = true
+        case .pdf:
+            pdfViewerSheet = true
+        case .none:
+            linkContentUnavailable = true
+        }
+    }
     
     var body: some View {
         let urlHost = getUrlHost(item.url)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
         let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
+        let pdfAvailable = item.pdf != nil && item.pdf != "unavailable"
+        let imageAvailable = item.image != nil && item.image != "unavailable"
+        let htmlWebpageAvailable = item.monolith != nil && item.monolith != "unavailable"
+        
         Button {
-            switch item.type {
-            case .url:
-                if let url = item.url {
-                    openSafariView(url)
-                }
-                else {
-                    linkContentUnavailable = true
-                }
-            case .image:
-                imageViewerSheet = true
-            case .pdf:
-                pdfViewerSheet = true
-            case .none:
-                linkContentUnavailable = true
-            }
+            openItem(readerAvailable: readerUrl != nil, pdfAvailable: pdfAvailable, imageAvailable: imageAvailable)
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -140,7 +188,7 @@ struct LinkItemComponent: View {
                 } label: {
                     Label("Copy link URL", systemImage: "doc.on.doc")
                 }
-                if (item.monolith != nil && item.monolith != "unavailable") || readerUrl != nil || (item.pdf != nil && item.pdf != "unavailable") || (item.image != nil && item.image != "unavailable") {
+                if htmlWebpageAvailable == true || readerUrl != nil || pdfAvailable == true || imageAvailable == true {
                     Menu("Preserved formats", systemImage: "doc.viewfinder") {
                         if item.monolith != nil && item.monolith != "unavailable" {
                             Button {
@@ -156,14 +204,14 @@ struct LinkItemComponent: View {
                                 Label("Readable", systemImage: "textformat")
                             }
                         }
-                        if item.pdf != nil && item.pdf != "unavailable" {
+                        if pdfAvailable == true {
                             Button {
                                 pdfViewerSheet.toggle()
                             } label: {
                                 Label("PDF", systemImage: "doc")
                             }
                         }
-                        if item.image != nil && item.image != "unavailable" {
+                        if imageAvailable == true {
                             Button {
                                 imageViewerSheet.toggle()
                             } label: {
@@ -260,130 +308,3 @@ struct LinkItemComponent: View {
     }
 }
 
-private struct LinkDetailsSheet: View {
-    var link: Link
-    var onClose: () -> Void
-
-    init(link: Link, onClose: @escaping () -> Void) {
-        self.link = link
-        self.onClose = onClose
-    }
-    
-    @State private var copiedClipboard = false
-    
-    func setCopiedClipboard() {
-        if copiedClipboard == true {
-            copiedClipboard = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                copiedClipboard = true
-            }
-        }
-        else {
-            copiedClipboard = true
-        }
-    }
-    
-    var body: some View {
-        let createdAt = link.createdAt != nil && link.createdAt != "" ? stringToDate(link.createdAt!) : nil
-        let updatedAt = link.updatedAt != nil && link.updatedAt != "" ? stringToDate(link.updatedAt!) : nil
-        NavigationStack {
-            List {
-                if let url = link.url {
-                    DetailsItem(icon: "link", iconColor: .green, label: "URL", value: url) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let name = link.name {
-                    DetailsItem(icon: "textformat.size.smaller", iconColor: .blue, label: String(localized: "Name"), value: name != "" ? name : String(localized: "No name")) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let description = link.description {
-                    DetailsItem(icon: "paragraph", iconColor: .orange, label: String(localized: "Description"), value: description != "" ? description : String(localized: "No description")) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let collectionName = link.collection?.name {
-                    DetailsItem(icon: "folder.fill", iconColor: .red, label: String(localized: "Collection"), value: collectionName) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let tags = link.tags {
-                    DetailsItem(icon: "tag.fill", iconColor: .gray, label: String(localized: "Tags"), value: tags.isEmpty ? String(localized: "This link has no tags") : tags.map() { $0.name! }.joined(separator: ", ")) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let createdAt = createdAt {
-                    DetailsItem(icon: "clock.fill", iconColor: .brown, label: String(localized: "Created at"), value: createdAt.formatted(date: .complete, time: .shortened)) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let updatedAt = updatedAt {
-                    DetailsItem(icon: "clock.fill", iconColor: .indigo, label: String(localized: "Updated at"), value: updatedAt.formatted(date: .complete, time: .shortened)) {
-                        setCopiedClipboard()
-                    }
-                }
-            }
-            .listRowSpacing(12)
-            .navigationTitle("Link details")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    CloseButton {
-                        onClose()
-                    }
-                }
-            }
-            .background(.listBackground)
-            .toast(isPresenting: $copiedClipboard) {
-                AlertToast(type: .systemImage("doc.on.clipboard", .foreground), title: String(localized: "Copied to the clipboard"))
-            } onTap: {
-                copiedClipboard = false
-            }
-        }
-    }
-}
-
-private struct DetailsItem: View {
-    var icon: String
-    var iconColor: Color
-    var label: String
-    var value: String
-    var showCopiedClipboard: () -> Void
-    
-    init(icon: String, iconColor: Color, label: String, value: String, showCopiedClipboard: @escaping () -> Void) {
-        self.icon = icon
-        self.iconColor = iconColor
-        self.label = label
-        self.value = value
-        self.showCopiedClipboard = showCopiedClipboard
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 14))
-                    .frame(width: 24, height: 24)
-                    .background(iconColor)
-                    .foregroundStyle(Color.white)
-                    .cornerRadius(6)
-                Spacer()
-                    .frame(width: 12)
-                Text(label)
-                    .font(.system(size: 20))
-                    .fontWeight(.semibold)
-            }
-            Spacer()
-                .frame(height: 12)
-            Text(value)
-                .font(.system(size: 16))
-                .onTapGesture {
-                    let attributedString = NSAttributedString(string: value)
-                    let plainString = attributedString.string
-                    UIPasteboard.general.string = plainString
-                    showCopiedClipboard()
-                }
-        }
-    }
-}
