@@ -96,6 +96,13 @@ class Enums {
         case subcollections
     }
     
+    enum TabViewTabs {
+        case home
+        case catalog
+        case settings
+        case search
+    }
+    
     enum ElementsDetailView: String, CaseIterable {
         case links = "Links"
         case collections = "Collections"

@@ -57,7 +57,6 @@
 		0D238CF52C37121F007DACF0 /* TagsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C54A2C22423C002CE99A /* TagsProvider.swift */; };
 		0D238CF62C371224007DACF0 /* ServerInstances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5462C22140D002CE99A /* ServerInstances.swift */; };
 		0D238CF72C37122D007DACF0 /* LinksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5682C2312E7002CE99A /* LinksViewModel.swift */; };
-		0D238CF82C371233007DACF0 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5242C21F8D2002CE99A /* DashboardViewModel.swift */; };
 		0D238CF92C37123E007DACF0 /* Regexps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C51D2C21E6DC002CE99A /* Regexps.swift */; };
 		0D238CFA2C37124B007DACF0 /* JsonEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5552C225F3F002CE99A /* JsonEncoder.swift */; };
 		0D238CFB2C371262007DACF0 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27ED2C34805100F1802F /* DeviceInfo.swift */; };
@@ -149,6 +148,13 @@
 		0DCA0CC62E8007B600F53D54 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0CC52E8007B600F53D54 /* CloseButton.swift */; };
 		0DCA0CC72E8007B600F53D54 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0CC52E8007B600F53D54 /* CloseButton.swift */; };
 		0DCA0DC52E914E0A00F53D54 /* LinkDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DC42E914E0A00F53D54 /* LinkDetails.swift */; platformFilter = ios; };
+		0DCA0DC72E917BDF00F53D54 /* NavigationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DC62E917BDF00F53D54 /* NavigationProvider.swift */; platformFilter = ios; };
+		0DCA0DC82E917BDF00F53D54 /* NavigationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DC62E917BDF00F53D54 /* NavigationProvider.swift */; };
+		0DCA0DCB2E9184AE00F53D54 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5242C21F8D2002CE99A /* DashboardViewModel.swift */; };
+		0DCA0DCC2E9184BC00F53D54 /* LinksFilteredRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */; };
+		0DCA0DCE2E91850C00F53D54 /* DashboardIndicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DCD2E91850C00F53D54 /* DashboardIndicators.swift */; };
+		0DCA0DD02E91852F00F53D54 /* DashboardViewAllButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DCF2E91852F00F53D54 /* DashboardViewAllButton.swift */; };
+		0DCA0DD22E91855400F53D54 /* DashboardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DD12E91855400F53D54 /* DashboardHeader.swift */; };
 		0DEA27A22C31E44800F1802F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27A12C31E44800F1802F /* RootView.swift */; platformFilters = (macos, ); };
 		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; platformFilters = (macos, ); };
 		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; platformFilters = (macos, ); };
@@ -313,6 +319,10 @@
 		0DCA0CC12E7E221300F53D54 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		0DCA0CC52E8007B600F53D54 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		0DCA0DC42E914E0A00F53D54 /* LinkDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkDetails.swift; sourceTree = "<group>"; };
+		0DCA0DC62E917BDF00F53D54 /* NavigationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationProvider.swift; sourceTree = "<group>"; };
+		0DCA0DCD2E91850C00F53D54 /* DashboardIndicators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardIndicators.swift; sourceTree = "<group>"; };
+		0DCA0DCF2E91852F00F53D54 /* DashboardViewAllButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewAllButton.swift; sourceTree = "<group>"; };
+		0DCA0DD12E91855400F53D54 /* DashboardHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHeader.swift; sourceTree = "<group>"; };
 		0DEA27A12C31E44800F1802F /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionForm.swift; sourceTree = "<group>"; };
 		0DEA27AD2C31ED7900F1802F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -504,6 +514,9 @@
 			isa = PBXGroup;
 			children = (
 				0D55C5012C21A053002CE99A /* DashboardView.swift */,
+				0DCA0DCD2E91850C00F53D54 /* DashboardIndicators.swift */,
+				0DCA0DCF2E91852F00F53D54 /* DashboardViewAllButton.swift */,
+				0DCA0DD12E91855400F53D54 /* DashboardHeader.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -577,6 +590,7 @@
 				0D55C54A2C22423C002CE99A /* TagsProvider.swift */,
 				0D55C58D2C23AFF5002CE99A /* LinkManagerProvider.swift */,
 				0D083C972C264E9800F0EB3B /* ToastProvider.swift */,
+				0DCA0DC62E917BDF00F53D54 /* NavigationProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -948,9 +962,10 @@
 				0D238CEE2C3711CE007DACF0 /* LinkCreationRequest.swift in Sources */,
 				0D238CE32C370D28007DACF0 /* MyLinks.xcdatamodeld in Sources */,
 				0D238CF22C3711FD007DACF0 /* SessionToken.swift in Sources */,
+				0DCA0DCC2E9184BC00F53D54 /* LinksFilteredRequest.swift in Sources */,
 				0D238CF72C37122D007DACF0 /* LinksViewModel.swift in Sources */,
-				0D238CF82C371233007DACF0 /* DashboardViewModel.swift in Sources */,
 				0D238CE42C370D54007DACF0 /* Persistence.swift in Sources */,
+				0DCA0DCB2E9184AE00F53D54 /* DashboardViewModel.swift in Sources */,
 				0D5F58662CA198DB00342D3F /* IAPsIds.swift in Sources */,
 				0DCA0CC42E8004C700F53D54 /* ViewExtension.swift in Sources */,
 				0D238CF32C37120E007DACF0 /* OnboardingViewModel.swift in Sources */,
@@ -962,6 +977,7 @@
 				0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */,
 				0D238CEC2C370FB4007DACF0 /* StatusResponse.swift in Sources */,
 				0D238CE52C370DD8007DACF0 /* ApiClient.swift in Sources */,
+				0DCA0DC82E917BDF00F53D54 /* NavigationProvider.swift in Sources */,
 				0DF548F62C3ED70700D5C257 /* Dashboard.swift in Sources */,
 				0D238CEA2C370FAC007DACF0 /* Collections.swift in Sources */,
 			);
@@ -1028,6 +1044,8 @@
 				0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */,
 				0D55C5182C21B472002CE99A /* ConnectionForm.swift in Sources */,
 				0DEA27B32C31F1FD00F1802F /* LinksFiltered.swift in Sources */,
+				0DCA0DD02E91852F00F53D54 /* DashboardViewAllButton.swift in Sources */,
+				0DCA0DD22E91855400F53D54 /* DashboardHeader.swift in Sources */,
 				0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */,
 				0D55C50A2C21ACAB002CE99A /* Links.swift in Sources */,
 				0D55C54E2C2248E7002CE99A /* LinkFormView.swift in Sources */,
@@ -1039,6 +1057,7 @@
 				0DB09E5A2E257E230066E193 /* LinkEditingRequest.swift in Sources */,
 				0D55C5692C2312E7002CE99A /* LinksViewModel.swift in Sources */,
 				0D55C5832C23A117002CE99A /* TagsView.swift in Sources */,
+				0DCA0DC72E917BDF00F53D54 /* NavigationProvider.swift in Sources */,
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
 				0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */,
 				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
@@ -1062,6 +1081,7 @@
 				0DEA27B62C31F21100F1802F /* CollectionsView.swift in Sources */,
 				0DEA27EE2C34805100F1802F /* DeviceInfo.swift in Sources */,
 				0D083CB02C272A1300F0EB3B /* PdfViewerView.swift in Sources */,
+				0DCA0DCE2E91850C00F53D54 /* DashboardIndicators.swift in Sources */,
 				0D55C5562C225F3F002CE99A /* JsonEncoder.swift in Sources */,
 				0D55C56D2C2314EB002CE99A /* CollectionsView.swift in Sources */,
 				0D55C50C2C21AD86002CE99A /* StatusResponse.swift in Sources */,

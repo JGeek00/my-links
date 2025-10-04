@@ -84,6 +84,16 @@ class DashboardViewModel: ObservableObject {
         _ = await (LinksViewModel.shared.loadData(), LinksViewModel.shared.scrollTopList.toggle(), CollectionsProvider.shared.loadData(), TagsProvider.shared.loadData())
     }
     
+    func navigateRecent() {
+        let request = LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil)
+        path.append(request)
+    }
+    
+    func navigatePinned() {
+        let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
+        path.append(request)
+    }
+    
     func reset() {
         self.data = []
         self.loading = true

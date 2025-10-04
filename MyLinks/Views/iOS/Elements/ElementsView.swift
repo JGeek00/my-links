@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ElementsView: View {
-    @State private var selectedView: Enums.ElementsDetailView? = nil
+    @EnvironmentObject private var navigationProvider: NavigationProvider
     
     var body: some View {
         NavigationSplitView {
-            List(selection: $selectedView) {
+            List(selection: $navigationProvider.catalogSelectedView) {
                 NavigationLink(value: Enums.ElementsDetailView.links) {
                     Label("Links", systemImage: "link")
                 }
@@ -18,7 +18,7 @@ struct ElementsView: View {
             }
             .navigationTitle("Elements")
         } detail: {
-            if let selectedView = selectedView {
+            if let selectedView = navigationProvider.catalogSelectedView {
                 switch selectedView {
                 case .links:
                     NavigationStack {

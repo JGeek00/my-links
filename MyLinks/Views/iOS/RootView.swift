@@ -8,6 +8,7 @@ struct RootView: View {
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var toastProvider: ToastProvider
     @EnvironmentObject private var searchViewModel: SearchViewModel
+    @EnvironmentObject private var navigationProvider: NavigationProvider
     
     let collectionsProvider = CollectionsProvider.shared
     let tagsProvider = TagsProvider.shared
@@ -24,38 +25,53 @@ struct RootView: View {
             if !instances.isEmpty && apiClientProvider.instance != nil {
                 Group {
                     if #available(iOS 26.0, *) {
-                        TabView {
-                            Tab("Dashboard", systemImage: "house.fill") {
+                        TabView(selection: $navigationProvider.selectedNavigationTab) {
+                            Tab(value: .home) {
                                 DashboardView()
                                     .environmentObject(DashboardViewModel.shared)
+                            } label: {
+                                Label("Dashboard", systemImage: "house.fill")
                             }
-                            Tab("Elements", systemImage: "books.vertical.fill") {
-                               ElementsView()
+                            Tab(value: .catalog) {
+                                ElementsView()
+                            } label: {
+                                Label("Elements", systemImage: "books.vertical.fill")
                             }
-                            Tab("Search", systemImage: "magnifyingglass", role: .search) {
+                            Tab(value: .search, role: .search) {
                                 SearchView()
+                            } label: {
+                                Label("Search", systemImage: "magnifyingglass")
                             }
-                            Tab("Settings", systemImage: "gear") {
+                            Tab(value: .settings) {
                                 SettingsView()
+                            } label: {
+                                Label("Settings", systemImage: "gear")
                             }
                         }
                     }
                     else {
-                        TabView {
+                        TabView(selection: $navigationProvider.selectedNavigationTab) {
                             DashboardView()
                                 .environmentObject(DashboardViewModel.shared)
                                 .tabItem {
                                     Label("Dashboard", systemImage: "house.fill")
                                 }
-
+                                .tag(Enums.TabViewTabs.home)
                             ElementsView()
                                 .tabItem {
                                     Label("Elements", systemImage: "books.vertical.fill")
                                 }
+                                .tag(Enums.TabViewTabs.catalog)
+                            SearchView()
+                                .tabItem {
+                                    Label("Search", systemImage: "magnifyingglass")
+                                }
+                                .tag(Enums.TabViewTabs.search)
                             SettingsView()
                                 .tabItem {
                                     Label("Settings", systemImage: "gear")
                                 }
+                                .tag(Enums.TabViewTabs.settings)
                         }
                     }
                 }

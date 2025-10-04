@@ -55,6 +55,7 @@ struct MyLinksApp: App {
         WindowGroup {
             RootView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(NavigationProvider())
                 .environmentObject(OnboardingViewModel.shared)
                 .environmentObject(ApiClientProvider.shared)
                 .environmentObject(LinkManagerProvider.shared)
