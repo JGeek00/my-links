@@ -1092,6 +1092,16 @@
         }
       }
     },
+    "In app browser" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegador en la app"
+          }
+        }
+      }
+    },
     "Input a search term to search links, categories and tags" : {
       "localizations" : {
         "es" : {
@@ -1520,6 +1530,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se han encontrado etiquetas"
+          }
+        }
+      }
+    },
+    "Open in..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en…"
           }
         }
       }
@@ -1953,6 +1973,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Satisfactorio"
+          }
+        }
+      }
+    },
+    "System default browser" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegador por defecto del sistema"
           }
         }
       }

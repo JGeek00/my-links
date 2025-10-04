@@ -13,6 +13,7 @@ struct LinkItemComponent: View {
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.openURL) var openURL
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var toastProvider: ToastProvider
     @State private var linkFormOpen = false
@@ -25,7 +26,7 @@ struct LinkItemComponent: View {
     @State private var linkContentUnavailable = false
     
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
-        
+    
     var body: some View {
         let urlHost = getUrlHost(item.url)
         let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
@@ -35,7 +36,8 @@ struct LinkItemComponent: View {
             case .url:
                 if let url = item.url {
                     openSafariView(url)
-                } else {
+                }
+                else {
                     linkContentUnavailable = true
                 }
             case .image:
@@ -110,6 +112,22 @@ struct LinkItemComponent: View {
         .background(horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear)
         .cornerRadius(horizontalSizeClass == .regular ? 24 : 0)
         .contextMenu {
+            if let url = item.url {
+                Section {
+                    Menu("Open in...", systemImage: "square.and.arrow.up.on.square") {
+                        Button("In app browser") {
+                            openSafariView(url)
+                        }
+                        Button("System default browser") {
+                            if let url = URL(string: url) {
+                                openURL(url)
+                            } else {
+                                linkContentUnavailable = true
+                            }
+                        }
+                    }
+                }
+            }
             Section {
                 Button {
                     showDetailsSheet.toggle()
