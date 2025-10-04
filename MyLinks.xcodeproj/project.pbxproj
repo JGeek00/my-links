@@ -152,9 +152,9 @@
 		0DCA0DC82E917BDF00F53D54 /* NavigationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DC62E917BDF00F53D54 /* NavigationProvider.swift */; };
 		0DCA0DCB2E9184AE00F53D54 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5242C21F8D2002CE99A /* DashboardViewModel.swift */; };
 		0DCA0DCC2E9184BC00F53D54 /* LinksFilteredRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5892C23A6C1002CE99A /* LinksFilteredRequest.swift */; };
-		0DCA0DCE2E91850C00F53D54 /* DashboardIndicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DCD2E91850C00F53D54 /* DashboardIndicators.swift */; };
-		0DCA0DD02E91852F00F53D54 /* DashboardViewAllButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DCF2E91852F00F53D54 /* DashboardViewAllButton.swift */; };
-		0DCA0DD22E91855400F53D54 /* DashboardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DD12E91855400F53D54 /* DashboardHeader.swift */; };
+		0DCA0DCE2E91850C00F53D54 /* DashboardIndicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DCD2E91850C00F53D54 /* DashboardIndicators.swift */; platformFilter = ios; };
+		0DCA0DD02E91852F00F53D54 /* DashboardViewAllButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DCF2E91852F00F53D54 /* DashboardViewAllButton.swift */; platformFilter = ios; };
+		0DCA0DD22E91855400F53D54 /* DashboardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCA0DD12E91855400F53D54 /* DashboardHeader.swift */; platformFilter = ios; };
 		0DEA27A22C31E44800F1802F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27A12C31E44800F1802F /* RootView.swift */; platformFilters = (macos, ); };
 		0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AA2C31E53400F1802F /* ConnectionForm.swift */; platformFilters = (macos, ); };
 		0DEA27AE2C31ED7900F1802F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27AD2C31ED7900F1802F /* DashboardView.swift */; platformFilters = (macos, ); };
@@ -1317,7 +1317,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MyLinks/MyLinks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MyLinks/Preview Content\"";
 				DEVELOPMENT_TEAM = 38Z3B9TJTR;
@@ -1341,7 +1341,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;
@@ -1360,7 +1360,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MyLinks/MyLinks.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MyLinks/Preview Content\"";
 				DEVELOPMENT_TEAM = 38Z3B9TJTR;
@@ -1384,7 +1384,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jgeek00.MyLinks;
 				PRODUCT_NAME = "My Links";
 				SDKROOT = auto;
