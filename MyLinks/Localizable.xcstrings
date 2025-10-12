@@ -87,6 +87,16 @@
         }
       }
     },
+    "A label is required to create a tag." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un nombre es requerido para crear la etiqueta."
+          }
+        }
+      }
+    },
     "About the app" : {
       "localizations" : {
         "es" : {
@@ -158,6 +168,16 @@
         }
       }
     },
+    "Add this tag to some links to see them here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade esta etiqueta a algunos enlaces para verlos aquí."
+          }
+        }
+      }
+    },
     "Advanced settings" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -175,6 +195,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todos los resultados de búsqueda"
+          }
+        }
+      }
+    },
+    "An error occured when creating the tag. Please try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al crear la etiqueta. Prueba de nuevo."
+          }
+        }
+      }
+    },
+    "An error occured when deleting the tag. Please try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al eliminar la etiqueta. Prueba de nuevo más tarde."
           }
         }
       }
@@ -620,6 +660,16 @@
         }
       }
     },
+    "Create tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear etiqueta"
+          }
+        }
+      }
+    },
     "Created at" : {
       "localizations" : {
         "es" : {
@@ -716,6 +766,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminar enlace"
+          }
+        }
+      }
+    },
+    "Delete tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar etiqueta"
           }
         }
       }
@@ -1222,6 +1282,26 @@
         }
       }
     },
+    "Label" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "Label is empty" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre está vacío"
+          }
+        }
+      }
+    },
     "Light" : {
       "localizations" : {
         "es" : {
@@ -1439,6 +1519,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nueva subcolección"
+          }
+        }
+      }
+    },
+    "New tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva etiqueta"
           }
         }
       }
@@ -2307,6 +2397,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este enlace será eliminado. Esta acción no es reversible."
+          }
+        }
+      }
+    },
+    "This tag has no links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta etiqueta no tiene enlaces"
+          }
+        }
+      }
+    },
+    "This tag will be deleted. This action is not reversible." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta etiqueta será eliminada. Esta acción no es reversible."
           }
         }
       }

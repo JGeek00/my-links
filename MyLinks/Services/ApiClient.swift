@@ -161,6 +161,67 @@ struct ApiClient: Equatable {
         }
     }
     
+    func createTag(_ body: TagCreationRequest) async -> StatusResponse<Tag> {
+        let defaultErrorResponse = StatusResponse<Tag>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/tags") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            let body = try CustomJSONEncoder().encode(body)
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+            
+            let sessionConfig = URLSessionConfiguration.default
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(Tag.self, from: data)
+                return StatusResponse<Tag>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<Tag>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+    
+    func deleteTag(tagId: Int) async -> StatusResponse<Tag> {
+        let defaultErrorResponse = StatusResponse<Tag>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.url)/api/v1/tags/\(tagId)") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "DELETE"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+            
+            let sessionConfig = URLSessionConfiguration.default
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            
+            let (data, r) = try await session.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(Tag.self, from: data)
+                return StatusResponse<Tag>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<Tag>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+    
     func createLink(_ body: LinkCreationRequest) async -> StatusResponse<LinkResponse> {
         let defaultErrorResponse = StatusResponse<LinkResponse>(successful: false, statusCode: nil, data: nil)
         

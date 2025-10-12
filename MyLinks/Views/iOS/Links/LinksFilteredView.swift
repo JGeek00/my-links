@@ -51,10 +51,10 @@ struct LinksFilteredView: View {
                 else {
                     Group {
                         if horizontalSizeClass == .regular {
-                            LinksFilteredRegularView()
+                            LinksFilteredRegularView(mode: linksFilterdRequest.mode)
                         }
                         else {
-                            LinksFilteredCompactView()
+                            LinksFilteredCompactView(mode: linksFilterdRequest.mode)
                         }
                     }
                     .environmentObject(linksFilteredViewModel)
@@ -91,10 +91,12 @@ struct LinksFilteredView: View {
                         Image(systemName: "arrow.up.arrow.down")
                     }
                     .disabled(linksFilteredViewModel.loading)
-                    Button {
-                        collectionFormSheet = true
-                    } label: {
-                        Image(systemName: "plus")
+                    if linksFilteredViewModel.input.mode == .collection {
+                        Button {
+                            collectionFormSheet = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }
@@ -127,6 +129,12 @@ struct LinksFilteredView: View {
 }
 
 fileprivate struct LinksFilteredRegularView: View {
+    var mode: Enums.LinksFilteredMode
+    
+    init(mode: Enums.LinksFilteredMode) {
+        self.mode = mode
+    }
+    
     @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
@@ -193,9 +201,9 @@ fileprivate struct LinksFilteredRegularView: View {
                 }
                 else {
                     ContentUnavailableView {
-                        Label("No links added to this collection", systemImage: "link")
+                        Label(mode == .tag ? "This tag has no links" : "No links added to this collection", systemImage: "link")
                     } description: {
-                        Text("Add some links to this collection to see them here.")
+                        Text(mode == .tag ? "Add this tag to some links to see them here." : "Add some links to this collection to see them here.")
                     }
                     .transition(.opacity)
                 }
@@ -207,6 +215,12 @@ fileprivate struct LinksFilteredRegularView: View {
 }
 
 fileprivate struct LinksFilteredCompactView: View {
+    var mode: Enums.LinksFilteredMode
+    
+    init(mode: Enums.LinksFilteredMode) {
+        self.mode = mode
+    }
+    
     @EnvironmentObject private var linksFilteredViewModel: LinksFilteredViewModel
     @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
@@ -219,9 +233,9 @@ fileprivate struct LinksFilteredCompactView: View {
             if linksFilteredViewModel.loading == false && linksFilteredViewModel.error == false && filtered.isEmpty && subCollections.isEmpty {
                 // Show when no links and no subcategories
                 ContentUnavailableView {
-                    Label("No links added to this collection", systemImage: "link")
+                    Label(mode == .tag ? "This tag has no links" : "No links added to this collection", systemImage: "link")
                 } description: {
-                    Text("Add some links to this collection to see them here.")
+                    Text(mode == .tag ? "Add this tag to some links to see them here." : "Add some links to this collection to see them here.")
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -252,9 +266,9 @@ fileprivate struct LinksFilteredCompactView: View {
                     if filtered.isEmpty {
                         // Show when subcategories but no links
                         ContentUnavailableView {
-                            Label("No links added to this collection", systemImage: "link")
+                            Label(mode == .tag ? "This tag has no links" : "No links added to this collection", systemImage: "link")
                         } description: {
-                            Text("Add some links to this collection to see them here.")
+                            Text(mode == .tag ? "Add this tag to some links to see them here." : "Add some links to this collection to see them here.")
                         }
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))

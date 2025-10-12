@@ -8,6 +8,7 @@ struct DashboardView: View {
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
     @State private var collectionFormSheet = false
+    @State private var tagFormSheet = false
 
     var body: some View {
         NavigationStack {
@@ -139,6 +140,11 @@ struct DashboardView: View {
                         } label: {
                             Label("New collection", systemImage: "folder")
                         }
+                        Button {
+                            tagFormSheet = true
+                        } label: {
+                            Label("New tag", systemImage: "tag")
+                        }
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -167,6 +173,11 @@ struct DashboardView: View {
                     collectionFormSheet = false
                 }
                 .environmentObject(CollectionFormViewModel())
+            })
+            .sheet(isPresented: $tagFormSheet, content: {
+                TagFormView {
+                    tagFormSheet = false
+                }
             })
             .onAppear(perform: {
                 Task { await dashboardViewModel.loadData() }

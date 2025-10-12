@@ -7,6 +7,7 @@ struct TagsView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var searchText = ""
+    @State private var showCreateTagSheet = false
     
     var body: some View {
         let searched = searchText != "" ? tagsProvider.data.filter() { $0.name!.lowercased().contains(searchText.lowercased()) } : tagsProvider.data
@@ -66,12 +67,24 @@ struct TagsView: View {
             }
         }
         .navigationTitle("Tags")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Create tag", systemImage: "plus") {
+                    showCreateTagSheet = true
+                }
+            }
+        }
         .refreshable {
             await tagsProvider.loadData()
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
         .overlay(alignment: .center) {
             TagsIndicators()
+        }
+        .sheet(isPresented: $showCreateTagSheet) {
+            TagFormView {
+                showCreateTagSheet = false
+            }
         }
     }
 }

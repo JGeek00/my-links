@@ -23,6 +23,9 @@ struct Sidebar: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var tagsProvider: TagsProvider
     
+    @State private var idToDelete: Int? = nil
+    @State private var errorDeleteAlert: Bool = false
+    
     var body: some View {
         let collections = sidebarCollections(data: collectionsProvider.data)
         VStack(alignment :.leading) {
@@ -66,11 +69,46 @@ struct Sidebar: View {
                                 }
                                 .contentShape(Rectangle())
                             }
+                            .contextMenu {
+                                Button("Delete tag", role: .destructive) {
+                                    idToDelete = item.id!
+                                }
+                            }
                         }
                     }
                     .collapsible(true)
                 }
             }
+        }
+        .alert("Delete tag", isPresented: Binding<Bool>(
+            get: { idToDelete != nil },
+            set: { newValue in
+                if !newValue { idToDelete = nil }
+            })) {
+            Button("Cancel", role: .cancel) {
+                idToDelete = nil
+            }
+            Button("Delete tag", role: .destructive) {
+                let id = idToDelete
+                idToDelete = nil
+                if let id {
+                    Task {
+                        let result = await tagsProvider.deleteTag(tagId: id)
+                        if result == false {
+                            errorDeleteAlert = true
+                        }
+                    }
+                }
+            }
+        } message: {
+            Text("This tag will be deleted. This action is not reversible.")
+        }
+        .alert("Error", isPresented: $errorDeleteAlert) {
+            Button("Close") {
+                errorDeleteAlert = false
+            }
+        } message: {
+            Text("An error occured when deleting the tag. Please try again later.")
         }
     }
 }

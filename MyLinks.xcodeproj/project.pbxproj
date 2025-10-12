@@ -28,6 +28,10 @@
 		0D0F0FAE2CEA919F00548D75 /* InvalidUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0F0FAD2CEA919F00548D75 /* InvalidUrlView.swift */; };
 		0D117FE02C98A9D3006299C5 /* DeepLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */; };
 		0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */; };
+		0D19D8012E9BBE74003B9C10 /* TagCreationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19D8002E9BBE74003B9C10 /* TagCreationRequest.swift */; };
+		0D19D8022E9BBE74003B9C10 /* TagCreationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19D8002E9BBE74003B9C10 /* TagCreationRequest.swift */; };
+		0D19D8052E9BC398003B9C10 /* TagForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19D8032E9BC398003B9C10 /* TagForm.swift */; platformFilter = ios; };
+		0D19D8082E9BCDAF003B9C10 /* TagFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19D8062E9BCDAF003B9C10 /* TagFormView.swift */; platformFilters = (macos, ); };
 		0D211AC62E27189400A5A81B /* LinksSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D211AC52E27189400A5A81B /* LinksSearchResults.swift */; platformFilter = ios; };
 		0D211AC82E27197200A5A81B /* CollectionsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D211AC72E27197200A5A81B /* CollectionsSearchResults.swift */; platformFilter = ios; };
 		0D211ACA2E2719DB00A5A81B /* TagsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D211AC92E2719DB00A5A81B /* TagsSearchResults.swift */; platformFilter = ios; };
@@ -226,6 +230,9 @@
 		0D083CC42C2DEEBB00F0EB3B /* TokenInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInstructions.swift; sourceTree = "<group>"; };
 		0D0F0FAD2CEA919F00548D75 /* InvalidUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidUrlView.swift; sourceTree = "<group>"; };
 		0D117FDF2C98A9D3006299C5 /* DeepLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinks.swift; sourceTree = "<group>"; };
+		0D19D8002E9BBE74003B9C10 /* TagCreationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCreationRequest.swift; sourceTree = "<group>"; };
+		0D19D8032E9BC398003B9C10 /* TagForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagForm.swift; sourceTree = "<group>"; };
+		0D19D8062E9BCDAF003B9C10 /* TagFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFormView.swift; sourceTree = "<group>"; };
 		0D211AC52E27189400A5A81B /* LinksSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksSearchResults.swift; sourceTree = "<group>"; };
 		0D211AC72E27197200A5A81B /* CollectionsSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsSearchResults.swift; sourceTree = "<group>"; };
 		0D211AC92E2719DB00A5A81B /* TagsSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSearchResults.swift; sourceTree = "<group>"; };
@@ -381,6 +388,22 @@
 				0D083CB82C27588700F0EB3B /* ImageViewerView.swift */,
 			);
 			path = ContentViewers;
+			sourceTree = "<group>";
+		};
+		0D19D8042E9BC398003B9C10 /* TagForm */ = {
+			isa = PBXGroup;
+			children = (
+				0D19D8032E9BC398003B9C10 /* TagForm.swift */,
+			);
+			path = TagForm;
+			sourceTree = "<group>";
+		};
+		0D19D8072E9BCDAF003B9C10 /* TagForm */ = {
+			isa = PBXGroup;
+			children = (
+				0D19D8062E9BCDAF003B9C10 /* TagFormView.swift */,
+			);
+			path = TagForm;
 			sourceTree = "<group>";
 		};
 		0D238CD12C370953007DACF0 /* ShareExtension */ = {
@@ -547,6 +570,7 @@
 				0DF548F42C3ED6A100D5C257 /* Dashboard.swift */,
 				0DA868042C4AE2130084FC20 /* FileDataResponse.swift */,
 				0DB09E592E257E230066E193 /* LinkEditingRequest.swift */,
+				0D19D8002E9BBE74003B9C10 /* TagCreationRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -689,6 +713,7 @@
 				0D55C56B2C2314E2002CE99A /* Collections */,
 				0D55C5622C231131002CE99A /* Links */,
 				0D55C5592C22FDDA002CE99A /* CollectionForm */,
+				0D19D8042E9BC398003B9C10 /* TagForm */,
 				0D55C54C2C2248D6002CE99A /* LinkForm */,
 				0D55C50D2C21AE20002CE99A /* Onboarding */,
 				0D55C5032C21A08C002CE99A /* Settings */,
@@ -704,6 +729,7 @@
 				0DEA27F12C35E6A800F1802F /* FilesViewers */,
 				0DEA27CD2C32EA8600F1802F /* Settings */,
 				0DEA27BD2C31F87C00F1802F /* CollectionForm */,
+				0D19D8072E9BCDAF003B9C10 /* TagForm */,
 				0DEA27B72C31F52D00F1802F /* LinkForm */,
 				0DEA27B42C31F20700F1802F /* Collections */,
 				0DEA27B12C31F1ED00F1802F /* Links */,
@@ -976,6 +1002,7 @@
 				0DCA0CC72E8007B600F53D54 /* CloseButton.swift in Sources */,
 				0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */,
 				0D238CEC2C370FB4007DACF0 /* StatusResponse.swift in Sources */,
+				0D19D8022E9BBE74003B9C10 /* TagCreationRequest.swift in Sources */,
 				0D238CE52C370DD8007DACF0 /* ApiClient.swift in Sources */,
 				0DCA0DC82E917BDF00F53D54 /* NavigationProvider.swift in Sources */,
 				0DF548F62C3ED70700D5C257 /* Dashboard.swift in Sources */,
@@ -1033,6 +1060,7 @@
 				0D55C55F2C230369002CE99A /* CollectionCreationRequest.swift in Sources */,
 				0D55C5162C21B45F002CE99A /* ServerSelection.swift in Sources */,
 				0D55C51C2C21BBE9002CE99A /* Enums.swift in Sources */,
+				0D19D8052E9BC398003B9C10 /* TagForm.swift in Sources */,
 				0DEA27D82C32FC8700F1802F /* PopoverView.swift in Sources */,
 				0D5A04302D47FD5F0029A5D4 /* ViewExtension.swift in Sources */,
 				0D55C5582C22674F002CE99A /* ArrayExtension.swift in Sources */,
@@ -1102,12 +1130,14 @@
 				0DEA27BC2C31F55F00F1802F /* TagsPickerView.swift in Sources */,
 				0DC9C8F02E25984A000628C8 /* SearchViewModel.swift in Sources */,
 				0D55C5852C23A1F1002CE99A /* TagItem.swift in Sources */,
+				0D19D8082E9BCDAF003B9C10 /* TagFormView.swift in Sources */,
 				0D55C5612C230439002CE99A /* ColorExtension.swift in Sources */,
 				0D55C5382C220E40002CE99A /* UIApplicationExtension.swift in Sources */,
 				0D55C52B2C22012E002CE99A /* GetUrlHost.swift in Sources */,
 				0D083CA12C2663B200F0EB3B /* HtmlViewerViewModel.swift in Sources */,
 				0D55C5492C2241DF002CE99A /* CollectionsProvider.swift in Sources */,
 				0D55C55B2C22FDE6002CE99A /* CollectionFormView.swift in Sources */,
+				0D19D8012E9BBE74003B9C10 /* TagCreationRequest.swift in Sources */,
 				0D55C53B2C221106002CE99A /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

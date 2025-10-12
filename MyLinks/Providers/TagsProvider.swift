@@ -45,6 +45,32 @@ class TagsProvider: ObservableObject {
         }
     }
     
+    func createTag(name: String) async -> Bool {
+        guard let instance = ApiClientProvider.shared.instance else { return false }
+        let body = TagCreationRequest()
+        body.tags.append(TagCreationItem(label: name))
+        let result = await instance.createTag(body)
+        if result.successful == true {
+            await loadData(setLoading: false)
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    func deleteTag(tagId: Int) async -> Bool {
+        guard let instance = ApiClientProvider.shared.instance else { return false }
+        let result = await instance.deleteTag(tagId: tagId)
+        if result.successful == true {
+            await loadData(setLoading: false)
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
     func reset() {
         data = []
         loading = true
