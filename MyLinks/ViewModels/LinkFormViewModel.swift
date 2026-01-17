@@ -21,15 +21,17 @@ class LinkFormViewModel: ObservableObject {
     @Published var savingErrorAlert = false
     
     init(link: Link? = nil, defaultCollectionId: Int? = nil) {
-        if link != nil {
-            let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
-            collection = link?.collection?.id ?? filtered.first?.id ?? 0
-            
-            guard let link = link else { return }
+        let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
+        collection = filtered.first?.id ?? 0
+               
+        if let link = link {
             editingLink = link
             url = link.url ?? ""
             name = link.name ?? ""
             description = link.description ?? ""
+            if let linkCollectionId = link.collection?.id {
+                collection = linkCollectionId
+            }
             selectedTags = link.tags?.map() { $0.name! } ?? []
         }
         else if defaultCollectionId != nil {
