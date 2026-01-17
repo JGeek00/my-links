@@ -17,6 +17,16 @@
         }
       }
     },
+    "%lld tags selected" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld etiquetas seleccionadas"
+          }
+        }
+      }
+    },
     "⚠️ Warning" : {
       "localizations" : {
         "es" : {
@@ -1994,6 +2004,9 @@
           }
         }
       }
+    },
+    "Search collections" : {
+
     },
     "Search links" : {
       "extractionState" : "stale",

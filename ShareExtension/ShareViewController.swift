@@ -10,10 +10,12 @@ class ShareViewController: UIViewController {
         super.viewDidLoad()
         
         guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem else {
+            print("Error: No extension item found")
             close()
             return
         }
         guard let items = extensionItem.attachments else {
+            print("Error: No attachments found")
             close()
             return
         }
@@ -28,6 +30,7 @@ class ShareViewController: UIViewController {
        
         NotificationCenter.default.addObserver(forName: NSNotification.Name("close"), object: nil, queue: nil) { _ in
             DispatchQueue.main.async {
+                print("Error: Close notification received")
                 self.close()
             }
         }
@@ -36,12 +39,14 @@ class ShareViewController: UIViewController {
     func handleUrl(attachment: NSItemProvider) {
         attachment.loadItem(forTypeIdentifier: urlDataType , options: nil) { (providedText, error) in
               if error != nil {
+                  print("Error: handleUrl error: \(String(describing: error))")
                   self.close()
                   return
               }
             
             if let url = providedText as? NSURL {
                 guard let urlString = url.absoluteString else {
+                    print("Error: URL absoluteString is nil")
                     self.close()
                     return
                 }
@@ -63,6 +68,7 @@ class ShareViewController: UIViewController {
                     contentView.view.rightAnchor.constraint (equalTo: self.view.rightAnchor).isActive = true
                 }
             } else {
+                print("Error: providedText is not NSURL")
                 self.close()
                 return
             }
@@ -72,6 +78,7 @@ class ShareViewController: UIViewController {
     func handleInvalidText() {
         DispatchQueue.main.async {
             let contentView = UIHostingController(rootView: InvalidUrlView {
+                print("Error: InvalidUrlView completion")
                 self.close()
             })
             self.addChild(contentView)

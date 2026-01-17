@@ -7,4 +7,6 @@ class Config {
     static let linkwardenCloudUrl = "https://cloud.linkwarden.app"
     static let defaultCollection = CollectionCreation(id: 1, name: "Unorganized", ownerId: 1)
     static let gridColumns = [GridItem(.adaptive(minimum: 400))]
+    static let collectionsCountSelectorBreakpoint = 10
+    static let selectedTagsCountLabelBreakpoint = 5
 }

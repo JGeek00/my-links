@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@MainActor
 class ShareExtensionViewModel: ObservableObject {
     @Published var apiClient: ApiClient? = nil
     
@@ -133,5 +134,10 @@ class ShareExtensionViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+   func getCollectionName() -> String? {
+        let col = collections.first(where: { $0.id == collection })
+        return col?.name
     }
 }

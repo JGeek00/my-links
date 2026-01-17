@@ -8,6 +8,7 @@ struct ShareExtensionView: View {
     }
     
     @EnvironmentObject private var shareExtensionViewModel: ShareExtensionViewModel
+    @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
     @State private var discardAlert = false
     
@@ -43,27 +44,50 @@ struct ShareExtensionView: View {
                             TextField("Description", text: $shareExtensionViewModel.description, axis: .vertical)
                         }
                         Section {
+                            let filtered = shareExtensionViewModel.collections
+                            let selectedCollectionName = shareExtensionViewModel.getCollectionName()
                             if !shareExtensionViewModel.collections.isEmpty {
-                                Picker("Collection", selection: $shareExtensionViewModel.collection) {
-                                    ForEach(shareExtensionViewModel.collections, id: \.self) { item in
-                                        Text(item.name!)
-                                            .tag(item.id!)
+                                if filtered.count > Config.collectionsCountSelectorBreakpoint {
+                                    NavigationLink {
+                                        ShareExtensionCollectionsPickerView()
+                                    } label: {
+                                        VStack(alignment: .leading) {
+                                            Text("Collection")
+                                            if let name = selectedCollectionName {
+                                                Spacer().frame(height: 6)
+                                                Text(verbatim: name)
+                                                    .font(.system(size: 14))
+                                                    .foregroundStyle(.gray)
+                                            }
+                                        }
                                     }
+                                }
+                                else {
+                                    Picker("Collection", selection: $shareExtensionViewModel.collection) {
+                                        if !filtered.isEmpty {
+                                            ForEach(filtered, id: \.self) { item in
+                                                Text(item.name!)
+                                                    .tag(item.id!)
+                                            }
+                                        }
+                                        else {
+                                            Text("Unorganized")
+                                                .tag(0)
+                                        }
+                                    }
+                                    .pickerStyle(.menu)
                                 }
                             }
                             NavigationLink {
-                                TagsPickerView()
+                                ShareExtensionTagsPickerView()
                             } label: {
-                                HStack {
+                                VStack(alignment: .leading) {
                                     Text("Tags")
                                     if shareExtensionViewModel.selectedTags.isEmpty == false {
-                                        Text(String(shareExtensionViewModel.selectedTags.count))
-                                            .font(.system(size: 12))
-                                            .fontWeight(.semibold)
-                                            .padding(6)
-                                            .foregroundStyle(Color.white)
-                                            .background(Color.accentColor)
-                                            .clipShape(Circle())
+                                        Spacer().frame(height: 6)
+                                        Text(verbatim: shareExtensionViewModel.selectedTags.count <= Config.selectedTagsCountLabelBreakpoint ? shareExtensionViewModel.selectedTags.joined(separator: ", ") : String(localized: "\(shareExtensionViewModel.selectedTags.count) tags selected"))
+                                            .font(.system(size: 14))
+                                            .foregroundStyle(.gray)
                                     }
                                 }
                             }
@@ -129,72 +153,3 @@ struct ShareExtensionView: View {
         }
     }
 }
-
-private struct TagsPickerView: View {
-    @EnvironmentObject private var shareExtensionViewModel: ShareExtensionViewModel
-    
-    @State private var addTagAlert = false
-    @State private var newTagName = ""
-    @State private var searchText = ""
-    
-    var body: some View {
-        let mapped = (shareExtensionViewModel.tags.map() { $0.name! }) + shareExtensionViewModel.localTags
-        Group {
-            if mapped.isEmpty {
-                ContentUnavailableView {
-                    Label("No tags created", systemImage: "tag")
-                } description: {
-                    Text("Add tags to links to see them here.")
-                }
-            }
-            else {
-                let searched = searchText != "" ? mapped.filter() { $0.lowercased().contains(searchText.lowercased()) } : mapped
-                List(searched, id: \.self) { item in
-                    Button {
-                        if shareExtensionViewModel.selectedTags.contains(item) {
-                            shareExtensionViewModel.selectedTags = shareExtensionViewModel.selectedTags.filter() { $0 != item }
-                        }
-                        else {
-                            shareExtensionViewModel.selectedTags.append(item)
-                        }
-                    } label: {
-                        HStack {
-                            Text(item)
-                                .foregroundStyle(Color.foreground)
-                            Spacer()
-                            if shareExtensionViewModel.selectedTags.contains(item) {
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.accentColor)
-                                    .fontWeight(.semibold)
-                            }
-                        }
-                    }
-                }
-                .animation(.default, value: searched)
-            }
-        }
-        .navigationTitle("Tags")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Add tag", systemImage: "plus") {
-                    newTagName = ""
-                    addTagAlert.toggle()
-                }
-            }
-        }
-        .searchable(text: $searchText)
-        .background(Color.listBackground)
-        .alert("Add tag", isPresented: $addTagAlert) {
-            Button("Cancel", role: .cancel) {
-                addTagAlert.toggle()
-            }
-            Button("Save") {
-                shareExtensionViewModel.localTags.append(newTagName)
-                shareExtensionViewModel.selectedTags.append(newTagName)
-            }
-            TextField("Tag name", text: $newTagName)
-        }
-    }
-}
-

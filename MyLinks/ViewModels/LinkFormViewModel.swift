@@ -194,4 +194,10 @@ class LinkFormViewModel: ObservableObject {
     func setSelectedFileUrl(fileUrl: URL) {
         self.selectedFileUrl = fileUrl
     }
+    
+    func getCollectionName() -> String? {
+        let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
+        let col = filtered.first(where: { $0.id == collection })
+        return col?.name
+    }
 }

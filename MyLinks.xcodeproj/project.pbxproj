@@ -69,6 +69,9 @@
 		0D2DB37B2F1C2800000EEB84 /* DashboardSummaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB37A2F1C27FB000EEB84 /* DashboardSummaryEntry.swift */; platformFilters = (macos, ); };
 		0D2DB37D2F1C2829000EEB84 /* DashboardRecentLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB37C2F1C2829000EEB84 /* DashboardRecentLinks.swift */; platformFilters = (macos, ); };
 		0D2DB37F2F1C288F000EEB84 /* DashboardPinnedLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB37E2F1C288F000EEB84 /* DashboardPinnedLinks.swift */; platformFilters = (macos, ); };
+		0D2DB3832F1C32B3000EEB84 /* CollectionsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB3822F1C32B3000EEB84 /* CollectionsPickerView.swift */; platformFilter = ios; };
+		0D2DB3852F1C3B8C000EEB84 /* ShareExtensionTagsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB3842F1C3B86000EEB84 /* ShareExtensionTagsPickerView.swift */; };
+		0D2DB3872F1C3BD3000EEB84 /* ShareExtensionCollectionsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB3862F1C3BD3000EEB84 /* ShareExtensionCollectionsPickerView.swift */; };
 		0D31309F2C9D0AF50028BFDA /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
 		0D36C5342C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
 		0D4E07742C371F0100AE1C2E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C5792C236C72002CE99A /* Localizable.xcstrings */; };
@@ -253,6 +256,9 @@
 		0D2DB37A2F1C27FB000EEB84 /* DashboardSummaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSummaryEntry.swift; sourceTree = "<group>"; };
 		0D2DB37C2F1C2829000EEB84 /* DashboardRecentLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRecentLinks.swift; sourceTree = "<group>"; };
 		0D2DB37E2F1C288F000EEB84 /* DashboardPinnedLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPinnedLinks.swift; sourceTree = "<group>"; };
+		0D2DB3822F1C32B3000EEB84 /* CollectionsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsPickerView.swift; sourceTree = "<group>"; };
+		0D2DB3842F1C3B86000EEB84 /* ShareExtensionTagsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionTagsPickerView.swift; sourceTree = "<group>"; };
+		0D2DB3862F1C3BD3000EEB84 /* ShareExtensionCollectionsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionCollectionsPickerView.swift; sourceTree = "<group>"; };
 		0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLIgnoringDelegate.swift; sourceTree = "<group>"; };
 		0D40136D2C9894DF0059D459 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		0D40136F2C9894DF0059D459 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -424,6 +430,8 @@
 				0D238CD22C370953007DACF0 /* ShareViewController.swift */,
 				0D238CE12C370CE5007DACF0 /* ShareExtensionViewModel.swift */,
 				0D238CDF2C370B8A007DACF0 /* ShareExtensionView.swift */,
+				0D2DB3842F1C3B86000EEB84 /* ShareExtensionTagsPickerView.swift */,
+				0D2DB3862F1C3BD3000EEB84 /* ShareExtensionCollectionsPickerView.swift */,
 				0D0F0FAD2CEA919F00548D75 /* InvalidUrlView.swift */,
 			);
 			path = ShareExtension;
@@ -650,6 +658,7 @@
 			children = (
 				0D55C54D2C2248E7002CE99A /* LinkFormView.swift */,
 				0D55C5512C224F07002CE99A /* TagsPickerView.swift */,
+				0D2DB3822F1C32B3000EEB84 /* CollectionsPickerView.swift */,
 			);
 			path = LinkForm;
 			sourceTree = "<group>";
@@ -1016,6 +1025,8 @@
 				0D238CE72C370E55007DACF0 /* ApiClientProvider.swift in Sources */,
 				0DCA0CC72E8007B600F53D54 /* CloseButton.swift in Sources */,
 				0D117FE12C98A9D3006299C5 /* DeepLinks.swift in Sources */,
+				0D2DB3852F1C3B8C000EEB84 /* ShareExtensionTagsPickerView.swift in Sources */,
+				0D2DB3872F1C3BD3000EEB84 /* ShareExtensionCollectionsPickerView.swift in Sources */,
 				0D238CEC2C370FB4007DACF0 /* StatusResponse.swift in Sources */,
 				0D19D8022E9BBE74003B9C10 /* TagCreationRequest.swift in Sources */,
 				0D238CE52C370DD8007DACF0 /* ApiClient.swift in Sources */,
@@ -1031,6 +1042,7 @@
 			files = (
 				0DEA27D62C32FC7100F1802F /* AppDelegate.swift in Sources */,
 				0D55C5742C2315F0002CE99A /* CollectionItem.swift in Sources */,
+				0D2DB3832F1C32B3000EEB84 /* CollectionsPickerView.swift in Sources */,
 				0D55C5452C221215002CE99A /* ColorScheme.swift in Sources */,
 				0D55C51E2C21E6DC002CE99A /* Regexps.swift in Sources */,
 				0D55C5672C231199002CE99A /* LinkItem.swift in Sources */,

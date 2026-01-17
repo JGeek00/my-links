@@ -108,31 +108,47 @@ struct LinkFormView: View {
                 }
                 Section {
                     let filtered = collectionsProvider.data.filter() { $0.name != nil && $0.id != nil }
-                    Picker("Collection", selection: $linkFormViewModel.collection) {
-                        if !filtered.isEmpty {
-                            ForEach(filtered, id: \.self) { item in
-                                Text(item.name!)
-                                    .tag(item.id!)
+                    let selectedCollectionName = linkFormViewModel.getCollectionName()
+                    if filtered.count > Config.collectionsCountSelectorBreakpoint {
+                        NavigationLink {
+                            CollectionsPickerView()
+                        } label: {
+                            VStack(alignment: .leading) {
+                                Text("Collection")
+                                if let name = selectedCollectionName {
+                                    Spacer().frame(height: 6)
+                                    Text(verbatim: name)
+                                        .font(.system(size: 14))
+                                        .foregroundStyle(.gray)
+                                }
                             }
                         }
-                        else {
-                            Text("Unorganized")
-                                .tag(0)
+                    }
+                    else {
+                        Picker("Collection", selection: $linkFormViewModel.collection) {
+                            if !filtered.isEmpty {
+                                ForEach(filtered, id: \.self) { item in
+                                    Text(item.name!)
+                                        .tag(item.id!)
+                                }
+                            }
+                            else {
+                                Text("Unorganized")
+                                    .tag(0)
+                            }
                         }
+                        .pickerStyle(.menu)
                     }
                     NavigationLink {
                         TagsPickerView()
                     } label: {
-                        HStack {
+                        VStack(alignment: .leading) {
                             Text("Tags")
                             if linkFormViewModel.selectedTags.isEmpty == false {
-                                Text(String(linkFormViewModel.selectedTags.count))
-                                    .font(.system(size: 12))
-                                    .fontWeight(.semibold)
-                                    .padding(6)
-                                    .foregroundStyle(Color.white)
-                                    .background(Color.accentColor)
-                                    .clipShape(Circle())
+                                Spacer().frame(height: 6)
+                                Text(verbatim: linkFormViewModel.selectedTags.count <= Config.selectedTagsCountLabelBreakpoint ? linkFormViewModel.selectedTags.joined(separator: ", ") : String(localized: "\(linkFormViewModel.selectedTags.count) tags selected"))
+                                    .font(.system(size: 14))
+                                    .foregroundStyle(.gray)
                             }
                         }
                     }
