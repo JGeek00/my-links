@@ -20,16 +20,21 @@ class LinkFormViewModel: ObservableObject {
     @Published var savingErrorMessage = ""
     @Published var savingErrorAlert = false
     
-    init(link: Link? = nil) {
-        let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
-        collection = link?.collection?.id ?? filtered.first?.id ?? 0
-        
-        guard let link = link else { return }
-        editingLink = link
-        url = link.url ?? ""
-        name = link.name ?? ""
-        description = link.description ?? ""
-        selectedTags = link.tags?.map() { $0.name! } ?? []
+    init(link: Link? = nil, defaultCollectionId: Int? = nil) {
+        if link != nil {
+            let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
+            collection = link?.collection?.id ?? filtered.first?.id ?? 0
+            
+            guard let link = link else { return }
+            editingLink = link
+            url = link.url ?? ""
+            name = link.name ?? ""
+            description = link.description ?? ""
+            selectedTags = link.tags?.map() { $0.name! } ?? []
+        }
+        else if defaultCollectionId != nil {
+            collection = defaultCollectionId!
+        }
     }
         
     func onSave(mode: Enums.LinkFormItem, onCompleted: @escaping (Link) -> Void) {

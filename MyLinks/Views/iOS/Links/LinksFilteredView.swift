@@ -16,6 +16,8 @@ struct LinksFilteredView: View {
     }
     
     @State private var collectionFormSheet = false
+    @State private var linkFormSheet = false
+    @State private var fileFormSheet = false
 
     var body: some View {
         Group {
@@ -92,10 +94,28 @@ struct LinksFilteredView: View {
                     }
                     .disabled(linksFilteredViewModel.loading)
                     if linksFilteredViewModel.input.mode == .collection {
-                        Button {
-                            collectionFormSheet = true
+                        Menu {
+                            Section {
+                                Button {
+                                    collectionFormSheet = true
+                                } label: {
+                                    Label("Create new subcollection", systemImage: "folder")
+                                }
+                            }
+                            Section {
+                                Button {
+                                    linkFormSheet = true
+                                } label: {
+                                    Label("Create link on this collection", systemImage: "link")
+                                }
+                                Button {
+                                    fileFormSheet = true
+                                } label: {
+                                    Label("Upload a file to this collection", systemImage: "doc")
+                                }
+                            }
                         } label: {
-                            Image(systemName: "plus")
+                            Label("Add", systemImage: "plus")
                         }
                     }
                 }
@@ -108,6 +128,24 @@ struct LinksFilteredView: View {
                 collectionFormSheet = false
             }
             .environmentObject(CollectionFormViewModel())
+        })
+        .sheet(isPresented: $linkFormSheet, content: {
+            LinkFormView(mode: .url, onClose: {
+                linkFormSheet = false
+            }, onSuccess: { link, _ in
+                linkFormSheet = false
+                linksFilteredViewModel.reload()
+            })
+            .environmentObject(LinkFormViewModel(defaultCollectionId: linksFilterdRequest.id))
+        })
+        .sheet(isPresented: $fileFormSheet, content: {
+            LinkFormView(mode: .file, onClose: {
+                fileFormSheet = false
+            }, onSuccess: { link, _ in
+                fileFormSheet = false
+                linksFilteredViewModel.reload()
+            })
+            .environmentObject(LinkFormViewModel(defaultCollectionId: linksFilterdRequest.id))
         })
         .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
         .onSubmit(of: .search) {

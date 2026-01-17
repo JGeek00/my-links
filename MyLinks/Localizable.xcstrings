@@ -640,12 +640,32 @@
         }
       }
     },
+    "Create link on this collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear enlace en esta colección"
+          }
+        }
+      }
+    },
     "Create new link" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crear nuevo link"
+          }
+        }
+      }
+    },
+    "Create new subcollection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear nueva subcolección"
           }
         }
       }
@@ -2487,6 +2507,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Actualizado"
+          }
+        }
+      }
+    },
+    "Upload a file to this collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subir un fichero a esta colección"
           }
         }
       }
