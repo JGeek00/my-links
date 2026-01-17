@@ -131,6 +131,7 @@ private struct SidebarButton: View {
             switch dashboardView {
             case .dashboard:
                 DashboardView()
+                    .environmentObject(DashboardViewModel.shared)
             case .links:
                 LinksView()
             case .pinned:

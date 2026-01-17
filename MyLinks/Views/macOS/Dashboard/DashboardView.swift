@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @StateObject private var dashboardViewModel = DashboardViewModel.shared
+    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
     @EnvironmentObject private var tagsProvider: TagsProvider
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
@@ -9,6 +9,8 @@ struct DashboardView: View {
     @State private var linkFormFileSheet = false
     @State private var collectionFormSheet = false
     @State private var tagFormSheet = false
+    
+    @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = true
 
     var body: some View {
         NavigationStack {
@@ -51,63 +53,14 @@ struct DashboardView: View {
                             )
                         }
                         .padding(16)
-                        if !filtered.isEmpty {
-                            VStack {
-                                HStack {
-                                    Text("Recent")
-                                        .font(.system(size: 16))
-                                        .fontWeight(.semibold)
-                                    Spacer()
-                                    NavigationLink {
-                                        LinksFilteredView(input: LinksFilteredRequest(name: String(localized: "Recent"), mode: .recent, id: nil))
-                                    } label: {
-                                        Text("View all")
-                                        Image(systemName: "chevron.right")
-                                    }
-                                    .buttonStyle(BorderlessButtonStyle())
-                                }
-                                .padding(.horizontal, 8)
-                                Spacer()
-                                    .frame(height: 16)
-                                LazyVGrid(columns: Config.gridColumns) {
-                                    ForEach(filtered.uniqued(), id: \.self) { item in
-                                        LinkItemComponent(item: item) { link, action in
-                                            dashboardViewModel.reload()
-                                        }
-                                        .padding(6)
-                                    }
-                                }
-                            }
-                            .padding(8)
+                        
+                        if showPinnedBeforeRecent == true {
+                            DashboardPinnedLinks()
+                            DashboardRecentLinks()
                         }
-                        if !pinned.isEmpty {
-                            VStack {
-                                HStack {
-                                    Text("Pinned")
-                                        .font(.system(size: 16))
-                                        .fontWeight(.semibold)
-                                    Spacer()
-                                    NavigationLink {
-                                        LinksFilteredView(input: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
-                                    } label: {
-                                        Text("View all")
-                                        Image(systemName: "chevron.right")
-                                    }
-                                    .buttonStyle(BorderlessButtonStyle())
-                                }
-                                .padding(.horizontal, 8)
-                                Spacer()
-                                    .frame(height: 16)
-                                LazyVGrid(columns: Config.gridColumns) {
-                                    ForEach(pinned.uniqued(), id: \.self) { item in
-                                        LinkItemComponent(item: item) { link, action in
-                                            dashboardViewModel.reload()
-                                        }
-                                        .padding(6)
-                                    }
-                                }
-                            }
-                            .padding(8)
+                        else {
+                            DashboardRecentLinks()
+                            DashboardPinnedLinks()
                         }
                     }
                 }
@@ -182,54 +135,6 @@ struct DashboardView: View {
             .onAppear(perform: {
                 Task { await dashboardViewModel.loadData() }
             })
-        }
-    }
-}
-
-private struct SummaryEntry: View {
-    var icon: String
-    var label: String
-    var value: Int
-    var color: Color
-    var status: Enums.Status
-    
-    init(icon: String, label: String, value: Int, color: Color, status: Enums.Status) {
-        self.icon = icon
-        self.label = label
-        self.value = value
-        self.color = color
-        self.status = status
-    }
-    
-    var body: some View {
-        HStack {
-            Spacer()
-            Image(systemName: icon)
-                .font(.system(size: 22))
-                .foregroundStyle(Color.white)
-                .frame(width: 40, height: 40)
-                .background(color)
-                .cornerRadius(6)
-            Spacer()
-                .frame(width: 12)
-            VStack {
-                Text(LocalizedStringKey(label))
-                    .lineLimit(1)
-                    .fontWeight(.bold)
-                Spacer()
-                    .frame(height: 6)
-                if status == .loading {
-                    ProgressView()
-                }
-                else if status == .error {
-                    Image(systemName: "exclamationmark.circle")
-                }
-                else {
-                    Text(String(value))
-                        .font(.system(size: 18))
-                }
-            }
-            Spacer()
         }
     }
 }

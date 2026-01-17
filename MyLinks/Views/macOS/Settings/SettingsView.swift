@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State var disconnectAlert = false
     
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
+    @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = true
     
     var body: some View {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
@@ -28,6 +29,9 @@ struct SettingsView: View {
                         .tag(Enums.Theme.dark)
                 }
                 .pickerStyle(.radioGroup)
+                Section("Dashboard") {
+                    Toggle("Show pinned section before recent", isOn: $showPinnedBeforeRecent)
+                }
                 Section("Links") {
                     Toggle("Show favicons", isOn: $showFavicons)
                 }

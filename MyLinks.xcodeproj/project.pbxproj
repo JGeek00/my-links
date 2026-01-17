@@ -66,6 +66,9 @@
 		0D238CFB2C371262007DACF0 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27ED2C34805100F1802F /* DeviceInfo.swift */; };
 		0D2DB3772F1C1E49000EEB84 /* DashboardCompactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB3762F1C1E49000EEB84 /* DashboardCompactView.swift */; platformFilter = ios; };
 		0D2DB3792F1C1F55000EEB84 /* DashboardRegularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB3782F1C1F55000EEB84 /* DashboardRegularView.swift */; platformFilter = ios; };
+		0D2DB37B2F1C2800000EEB84 /* DashboardSummaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB37A2F1C27FB000EEB84 /* DashboardSummaryEntry.swift */; platformFilters = (macos, ); };
+		0D2DB37D2F1C2829000EEB84 /* DashboardRecentLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB37C2F1C2829000EEB84 /* DashboardRecentLinks.swift */; platformFilters = (macos, ); };
+		0D2DB37F2F1C288F000EEB84 /* DashboardPinnedLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB37E2F1C288F000EEB84 /* DashboardPinnedLinks.swift */; platformFilters = (macos, ); };
 		0D31309F2C9D0AF50028BFDA /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
 		0D36C5342C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
 		0D4E07742C371F0100AE1C2E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C5792C236C72002CE99A /* Localizable.xcstrings */; };
@@ -247,6 +250,9 @@
 		0D238CFC2C371304007DACF0 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		0D2DB3762F1C1E49000EEB84 /* DashboardCompactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCompactView.swift; sourceTree = "<group>"; };
 		0D2DB3782F1C1F55000EEB84 /* DashboardRegularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRegularView.swift; sourceTree = "<group>"; };
+		0D2DB37A2F1C27FB000EEB84 /* DashboardSummaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSummaryEntry.swift; sourceTree = "<group>"; };
+		0D2DB37C2F1C2829000EEB84 /* DashboardRecentLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRecentLinks.swift; sourceTree = "<group>"; };
+		0D2DB37E2F1C288F000EEB84 /* DashboardPinnedLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPinnedLinks.swift; sourceTree = "<group>"; };
 		0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLIgnoringDelegate.swift; sourceTree = "<group>"; };
 		0D40136D2C9894DF0059D459 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		0D40136F2C9894DF0059D459 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -759,7 +765,10 @@
 		0DEA27AC2C31ED6600F1802F /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				0D2DB37A2F1C27FB000EEB84 /* DashboardSummaryEntry.swift */,
 				0DEA27AD2C31ED7900F1802F /* DashboardView.swift */,
+				0D2DB37C2F1C2829000EEB84 /* DashboardRecentLinks.swift */,
+				0D2DB37E2F1C288F000EEB84 /* DashboardPinnedLinks.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -1077,6 +1086,7 @@
 				0D083C832C25EAD300F0EB3B /* ListRowWithIconEntry.swift in Sources */,
 				0D083C982C264E9800F0EB3B /* ToastProvider.swift in Sources */,
 				0D55C5182C21B472002CE99A /* ConnectionForm.swift in Sources */,
+				0D2DB37F2F1C288F000EEB84 /* DashboardPinnedLinks.swift in Sources */,
 				0DEA27B32C31F1FD00F1802F /* LinksFiltered.swift in Sources */,
 				0DCA0DD02E91852F00F53D54 /* DashboardViewAllButton.swift in Sources */,
 				0DCA0DD22E91855400F53D54 /* DashboardHeader.swift in Sources */,
@@ -1094,6 +1104,7 @@
 				0D55C5832C23A117002CE99A /* TagsView.swift in Sources */,
 				0DCA0DC72E917BDF00F53D54 /* NavigationProvider.swift in Sources */,
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
+				0D2DB37D2F1C2829000EEB84 /* DashboardRecentLinks.swift in Sources */,
 				0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */,
 				0D2DB3772F1C1E49000EEB84 /* DashboardCompactView.swift in Sources */,
 				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
@@ -1146,6 +1157,7 @@
 				0D55C5492C2241DF002CE99A /* CollectionsProvider.swift in Sources */,
 				0D55C55B2C22FDE6002CE99A /* CollectionFormView.swift in Sources */,
 				0D19D8012E9BBE74003B9C10 /* TagCreationRequest.swift in Sources */,
+				0D2DB37B2F1C2800000EEB84 /* DashboardSummaryEntry.swift in Sources */,
 				0D55C53B2C221106002CE99A /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

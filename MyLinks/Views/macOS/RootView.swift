@@ -29,6 +29,7 @@ struct RootView: View {
                 } detail: {
                     DashboardView()
                         .navigationTitle("Dashboard")
+                        .environmentObject(DashboardViewModel.shared)
                 }
                 .onAppear(perform: {
                     Task { await collectionsProvider.loadData() }
