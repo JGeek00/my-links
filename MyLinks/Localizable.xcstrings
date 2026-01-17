@@ -2117,6 +2117,16 @@
         }
       }
     },
+    "Show pinned section before recent" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar sección de fijados antes de recientes"
+          }
+        }
+      }
+    },
     "Sort" : {
       "localizations" : {
         "es" : {

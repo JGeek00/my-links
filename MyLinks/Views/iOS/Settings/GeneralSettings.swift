@@ -8,12 +8,17 @@ struct GeneralSettings: View {
     
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
     @AppStorage(StorageKeys.openLinkByDefault, store: UserDefaults.shared) private var openLinkByDefault: Enums.OpenLinkByDefault = .internalBrowser
+    @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = false
     
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
     var body: some View {
         NavigationStack {
             List {
+                Section("Dashboard") {
+                    Toggle("Show pinned section before recent", isOn: $showPinnedBeforeRecent)
+                }
+                
                 Section {
                     Toggle("Show favicons", isOn: $showFavicons)
                     Picker("Open by default", selection: $openLinkByDefault) {

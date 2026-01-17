@@ -64,6 +64,8 @@
 		0D238CF92C37123E007DACF0 /* Regexps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C51D2C21E6DC002CE99A /* Regexps.swift */; };
 		0D238CFA2C37124B007DACF0 /* JsonEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55C5552C225F3F002CE99A /* JsonEncoder.swift */; };
 		0D238CFB2C371262007DACF0 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA27ED2C34805100F1802F /* DeviceInfo.swift */; };
+		0D2DB3772F1C1E49000EEB84 /* DashboardCompactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB3762F1C1E49000EEB84 /* DashboardCompactView.swift */; platformFilter = ios; };
+		0D2DB3792F1C1F55000EEB84 /* DashboardRegularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DB3782F1C1F55000EEB84 /* DashboardRegularView.swift */; platformFilter = ios; };
 		0D31309F2C9D0AF50028BFDA /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
 		0D36C5342C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */; };
 		0D4E07742C371F0100AE1C2E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0D55C5792C236C72002CE99A /* Localizable.xcstrings */; };
@@ -243,6 +245,8 @@
 		0D238CDF2C370B8A007DACF0 /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		0D238CE12C370CE5007DACF0 /* ShareExtensionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionViewModel.swift; sourceTree = "<group>"; };
 		0D238CFC2C371304007DACF0 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		0D2DB3762F1C1E49000EEB84 /* DashboardCompactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCompactView.swift; sourceTree = "<group>"; };
+		0D2DB3782F1C1F55000EEB84 /* DashboardRegularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRegularView.swift; sourceTree = "<group>"; };
 		0D36C5332C9D04E600DC0EC3 /* SSLIgnoringDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLIgnoringDelegate.swift; sourceTree = "<group>"; };
 		0D40136D2C9894DF0059D459 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		0D40136F2C9894DF0059D459 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -540,6 +544,8 @@
 				0DCA0DCD2E91850C00F53D54 /* DashboardIndicators.swift */,
 				0DCA0DCF2E91852F00F53D54 /* DashboardViewAllButton.swift */,
 				0DCA0DD12E91855400F53D54 /* DashboardHeader.swift */,
+				0D2DB3782F1C1F55000EEB84 /* DashboardRegularView.swift */,
+				0D2DB3762F1C1E49000EEB84 /* DashboardCompactView.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -1075,6 +1081,7 @@
 				0DCA0DD02E91852F00F53D54 /* DashboardViewAllButton.swift in Sources */,
 				0DCA0DD22E91855400F53D54 /* DashboardHeader.swift in Sources */,
 				0DEA27AB2C31E53400F1802F /* ConnectionForm.swift in Sources */,
+				0D2DB3792F1C1F55000EEB84 /* DashboardRegularView.swift in Sources */,
 				0D55C50A2C21ACAB002CE99A /* Links.swift in Sources */,
 				0D55C54E2C2248E7002CE99A /* LinkFormView.swift in Sources */,
 				0DC9C8EE2E2597D2000628C8 /* SearchView.swift in Sources */,
@@ -1088,6 +1095,7 @@
 				0DCA0DC72E917BDF00F53D54 /* NavigationProvider.swift in Sources */,
 				0D55C5252C21F8D2002CE99A /* DashboardViewModel.swift in Sources */,
 				0D238CCB2C35EFA9007DACF0 /* HtmlViewer.swift in Sources */,
+				0D2DB3772F1C1E49000EEB84 /* DashboardCompactView.swift in Sources */,
 				0DEA27C42C320D9A00F1802F /* LinkItem.swift in Sources */,
 				0DC9C8EB2E2594E6000628C8 /* ElementsView.swift in Sources */,
 				0D117FE02C98A9D3006299C5 /* DeepLinks.swift in Sources */,
