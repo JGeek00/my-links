@@ -2,7 +2,6 @@
   <img src="./ReadmeAssets/icon-glass.png" alt="icon" height="150" />
   <h1>My Links</h1>
 </div>
-<hr>
 <p>
   My Links is a <b><a href="https://github.com/linkwarden/linkwarden">Linkwarden</a></b> client for iOS and macOS. It has been built with SwiftUI, the official framework provided by Apple to build applications for their operating systems, focusing mainly on obtaining good performance and an UI that follows Apple's design guidelines.
 </p>
