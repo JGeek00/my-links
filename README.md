@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./ReadmeAssets/icon-glass.png" alt="icon" height="100" />
+  <img src="./ReadmeAssets/icon-glass.png" alt="icon" height="150" />
   <h1>My Links</h1>
 </div>
 <hr>
