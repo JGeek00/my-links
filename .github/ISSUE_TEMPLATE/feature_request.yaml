@@ -1,0 +1,14 @@
+name: Request a new feature or an improvement
+description: |
+  You want a new feature or an improvement for an existing one.
+labels: ["feature request"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the feature or improvement that you want on the app.
+      placeholder: |
+        Write the details here...
+    validations:
+      required: true
