@@ -1,10 +1,13 @@
 import Foundation
 
 @MainActor
-class SettingsViewModel: ObservableObject {
-    @Published var contactDeveloperSafariOpen = false
-    @Published var dataSourceSafariOpen = false
-    @Published var showBuildNumber = false
-    @Published var linkwardenSiteOpen = false
-    @Published var linkwardenRepoOpen = false
+@Observable
+class SettingsViewModel {
+    var contactDeveloperSafariOpen = false
+    var dataSourceSafariOpen = false
+    var showBuildNumber = false
+    var linkwardenSiteOpen = false
+    var linkwardenRepoOpen = false
+    var appInfoWebOpen = false
+    var myOtherAppsOpen = false
 }

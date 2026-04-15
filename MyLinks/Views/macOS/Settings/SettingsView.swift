@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject private var settingsViewModel = SettingsViewModel()
+    @State private var settingsViewModel = SettingsViewModel()
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
@@ -91,9 +91,19 @@ struct SettingsView: View {
                         ListRowWithIconEntry(systemIcon: "dollarsign.circle.fill", iconColor: .green, label: "Give a tip to the developer")
                     }
                     Button {
+                        openURL(URL(string: Urls.appInfo)!)
+                    } label: {
+                        ListRowWithIconEntry(systemIcon: "info", iconColor: .orange, label: "More information about this app")
+                    }
+                    Button {
+                        openURL(URL(string: Urls.myOtherApps)!)
+                    } label: {
+                        ListRowWithIconEntry(systemIcon: "app.gift", iconColor: .brown, label: "Check out my other apps")
+                    }
+                    Button {
                         openURL(URL(string: Urls.appSupport)!)
                     } label: {
-                        ListRowWithIconEntry(systemIcon: "message.fill", iconColor: .brown, label: "Contact the developer")
+                        ListRowWithIconEntry(systemIcon: "message.fill", iconColor: .red, label: "Contact the developer")
                     }
                     HStack {
                         ListRowWithIconEntry(systemIcon: "info.circle.fill", iconColor: .teal, label: "App version")

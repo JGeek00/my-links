@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject private var settingsViewModel = SettingsViewModel()
     @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    @State private var settingsViewModel = SettingsViewModel()
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
@@ -51,9 +51,19 @@ struct SettingsView: View {
                         ListRowWithIconEntry(systemIcon: "dollarsign.circle.fill", iconColor: .green, label: "Give a tip to the developer")
                     }
                     Button {
+                        settingsViewModel.appInfoWebOpen.toggle()
+                    } label: {
+                        ListRowWithIconEntry(systemIcon: "info", iconColor: .orange, label: "More information about this app")
+                    }
+                    Button {
+                        settingsViewModel.myOtherAppsOpen.toggle()
+                    } label: {
+                        ListRowWithIconEntry(systemIcon: "app.gift", iconColor: .brown, label: "Check out my other apps")
+                    }
+                    Button {
                         settingsViewModel.contactDeveloperSafariOpen.toggle()
                     } label: {
-                        ListRowWithIconEntry(systemIcon: "message.fill", iconColor: .brown, label: "Contact the developer")
+                        ListRowWithIconEntry(systemIcon: "message.fill", iconColor: .red, label: "Contact the developer")
                     }
                     HStack {
                         ListRowWithIconEntry(systemIcon: "info.circle.fill", iconColor: .teal, label: "App version")
@@ -88,6 +98,12 @@ struct SettingsView: View {
             })
             .fullScreenCover(isPresented: $settingsViewModel.linkwardenRepoOpen, content: {
                 SFSafariViewWrapper(url: URL(string: Urls.linkwardenRepo)!).ignoresSafeArea()
+            })
+            .fullScreenCover(isPresented: $settingsViewModel.appInfoWebOpen, content: {
+                SFSafariViewWrapper(url: URL(string: Urls.appInfo)!).ignoresSafeArea()
+            })
+            .fullScreenCover(isPresented: $settingsViewModel.myOtherAppsOpen, content: {
+                SFSafariViewWrapper(url: URL(string: Urls.myOtherApps)!).ignoresSafeArea()
             })
         }
     }
