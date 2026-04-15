@@ -107,7 +107,6 @@ struct LinksView: View {
             } onSuccess: { newLink, action in
                 linkFormUrlSheet = false
             }
-            .environmentObject(LinkFormViewModel())
         })
         .sheet(isPresented: $linkFormFileSheet, content: {
             LinkFormView(mode: .file) {
@@ -115,7 +114,6 @@ struct LinksView: View {
             } onSuccess: { newLink, action in
                 linkFormFileSheet = false
             }
-            .environmentObject(LinkFormViewModel())
         })
         .onChange(of: linksViewModel.searchPresented, { oldValue, newValue in
             if oldValue == true && newValue == false {

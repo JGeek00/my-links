@@ -5,7 +5,7 @@ struct CollectionsPickerView: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @Environment(LinkFormViewModel.self) private var linkFormViewModel
     
     @State private var searchText = ""
     

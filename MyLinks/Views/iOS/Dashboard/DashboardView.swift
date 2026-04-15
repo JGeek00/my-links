@@ -63,7 +63,6 @@ struct DashboardView: View {
                 } onSuccess: { newLink, action in
                     linkFormUrlSheet = false
                 }
-                .environmentObject(LinkFormViewModel())
             })
             .sheet(isPresented: $linkFormFileSheet, content: {
                 LinkFormView(mode: .file) {
@@ -71,7 +70,6 @@ struct DashboardView: View {
                 } onSuccess: { newLink, action in
                     linkFormFileSheet = false
                 }
-                .environmentObject(LinkFormViewModel())
             })
             .onOpenURL { url in
                 if apiClientProvider.instance == nil {

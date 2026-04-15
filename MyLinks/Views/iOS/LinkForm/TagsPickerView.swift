@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TagsPickerView: View {
     @EnvironmentObject private var tagsProvider: TagsProvider
-    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @Environment(LinkFormViewModel.self) private var linkFormViewModel
     
     @State private var addTagAlert = false
     @State private var newTagName = ""

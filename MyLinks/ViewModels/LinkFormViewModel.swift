@@ -2,23 +2,24 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class LinkFormViewModel: ObservableObject {
-    @Published var editingLink: Link? = nil
+@Observable
+class LinkFormViewModel {
+    var editingLink: Link? = nil
     
-    @Published var url = ""
-    @Published var name = ""
-    @Published var collection = 0
-    @Published var description = ""
-    @Published var selectedTags: [String] = []
-    @Published var localTags: [String] = []
-    @Published var selectedFileUrl: URL? = nil
+    var url = ""
+    var name = ""
+    var collection = 0
+    var description = ""
+    var selectedTags: [String] = []
+    var localTags: [String] = []
+    var selectedFileUrl: URL? = nil
     
-    @Published var validationErrorAlert = false
-    @Published var validationErrorMessage = ""
+    var validationErrorAlert = false
+    var validationErrorMessage = ""
     
-    @Published var saving = false
-    @Published var savingErrorMessage = ""
-    @Published var savingErrorAlert = false
+    var saving = false
+    var savingErrorMessage = ""
+    var savingErrorAlert = false
     
     init(link: Link? = nil, defaultCollectionId: Int? = nil) {
         let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }

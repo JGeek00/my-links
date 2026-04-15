@@ -197,7 +197,7 @@ private struct TagsList: View {
     @State private var newTagName = ""
     
     var body: some View {
-        let tags = (menuBarFormViewModel.tags.map() { $0.name! }) + menuBarFormViewModel.localTags
+        let tags = (menuBarFormViewModel.tags.map() { $0.name }) + menuBarFormViewModel.localTags
         VStack {
             HStack {
                 Button {

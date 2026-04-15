@@ -8,7 +8,7 @@ class MenuBarFormViewModel: ObservableObject {
     @Published var loading = true
     @Published var error = false
     @Published var collections: [Collection] = []
-    @Published var tags: [Tag] = []
+    @Published var tags: [TagsResponse_DataClass_Tag] = []
     
     @Published var url = ""
     @Published var name = ""
@@ -41,13 +41,13 @@ class MenuBarFormViewModel: ObservableObject {
         }
         Task {
             let (collectionsResult, tagsResult) = await (instance.fetchCollections(), instance.fetchTags())
-            if collectionsResult.successful == true && tagsResult.successful == true {
+            if collectionsResult.successful == true && tagsResult.successful == true, let tags = tagsResult.data?.data?.tags {
                 DispatchQueue.main.async {
                     self.loading = false
                     self.error = false
                     self.collections = collectionsResult.data!.response!
                     self.collection = collectionsResult.data!.response!.first?.id ?? 0
-                    self.tags = tagsResult.data!.response!
+                    self.tags = tags
                 }
             }
             else {

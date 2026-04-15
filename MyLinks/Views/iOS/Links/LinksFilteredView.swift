@@ -127,25 +127,22 @@ struct LinksFilteredView: View {
             } onSuccess: { item, action in
                 collectionFormSheet = false
             }
-            .environmentObject(CollectionFormViewModel())
         })
         .sheet(isPresented: $linkFormSheet, content: {
-            LinkFormView(mode: .url, onClose: {
+            LinkFormView(mode: .url, defaultCollectionId: linksFilterdRequest.id, onClose: {
                 linkFormSheet = false
             }, onSuccess: { link, _ in
                 linkFormSheet = false
                 linksFilteredViewModel.reload()
             })
-            .environmentObject(LinkFormViewModel(defaultCollectionId: linksFilterdRequest.id))
         })
         .sheet(isPresented: $fileFormSheet, content: {
-            LinkFormView(mode: .file, onClose: {
+            LinkFormView(mode: .file, defaultCollectionId: linksFilterdRequest.id, onClose: {
                 fileFormSheet = false
             }, onSuccess: { link, _ in
                 fileFormSheet = false
                 linksFilteredViewModel.reload()
             })
-            .environmentObject(LinkFormViewModel(defaultCollectionId: linksFilterdRequest.id))
         })
         .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
         .onSubmit(of: .search) {

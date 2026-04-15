@@ -5,13 +5,33 @@ struct LinkFormView: View {
     var onClose: () -> Void
     var onSuccess: (Link, Enums.LinkTaskCompleted) -> Void
     
+    @State private var viewModel: LinkFormViewModel
+    
+    init(mode: Enums.LinkFormItem, link: Link? = nil, defaultCollectionId: Int? = nil, onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+        self.mode = mode
+        self.onClose = onClose
+        self.onSuccess = onSuccess
+        _viewModel = State(wrappedValue: LinkFormViewModel(link: link, defaultCollectionId: defaultCollectionId))
+    }
+    
+    var body: some View {
+        LinkFormViewContent(mode: mode, onClose: onClose, onSuccess: onSuccess)
+            .environment(viewModel)
+    }
+}
+
+fileprivate struct LinkFormViewContent: View {
+    var mode: Enums.LinkFormItem
+    var onClose: () -> Void
+    var onSuccess: (Link, Enums.LinkTaskCompleted) -> Void
+    
     init(mode: Enums.LinkFormItem, onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
         self.mode = mode
         self.onClose = onClose
         self.onSuccess = onSuccess
     }
     
-    @EnvironmentObject private var linkFormViewModel: LinkFormViewModel
+    @Environment(LinkFormViewModel.self) private var linkFormViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var tagsProvider: TagsProvider
     
@@ -20,6 +40,7 @@ struct LinkFormView: View {
     @State private var selectFileError = false
     
     var body: some View {
+        @Bindable var linkFormViewModel = linkFormViewModel
         NavigationStack {
             Form {
                 switch mode {

@@ -181,22 +181,20 @@ struct LinksFilteredView: View {
             .environmentObject(CollectionFormViewModel())
         })
         .sheet(isPresented: $linkFormSheet, content: {
-            LinkFormView(mode: .url, onClose: {
+            LinkFormView(mode: .url, defaultCollectionId: input.id, onClose: {
                 linkFormSheet = false
             }, onSuccess: { link, _ in
                 linkFormSheet = false
                 linksFilteredViewModel.reload()
             })
-            .environmentObject(LinkFormViewModel(defaultCollectionId: input.id))
         })
         .sheet(isPresented: $fileFormSheet, content: {
-            LinkFormView(mode: .file, onClose: {
+            LinkFormView(mode: .file, defaultCollectionId: input.id, onClose: {
                 fileFormSheet = false
             }, onSuccess: { link, _ in
                 fileFormSheet = false
                 linksFilteredViewModel.reload()
             })
-            .environmentObject(LinkFormViewModel(defaultCollectionId: input.id))
         })
         .onChange(of: linksFilteredViewModel.searchLinksPresented, { oldValue, newValue in
             if oldValue == true && newValue == false {

@@ -55,23 +55,21 @@ struct Sidebar: View {
                     Section("Tags") {
                         ForEach(tagsProvider.data, id: \.self) { item in
                             NavigationLink {
-                                LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .tag, id: item.id!))
+                                LinksFilteredView(input: LinksFilteredRequest(name: item.name, mode: .tag, id: item.id))
                             } label: {
                                 HStack {
                                     Image(systemName: "tag.fill")
                                     Spacer()
                                         .frame(width: 6)
-                                    Text(item.name!)
+                                    Text(item.name)
                                     Spacer()
-                                    if let count = item._count?.links {
-                                        Text(String(count))
-                                    }
+                                    Text(String(item.count.links))
                                 }
                                 .contentShape(Rectangle())
                             }
                             .contextMenu {
                                 Button("Delete tag", role: .destructive) {
-                                    idToDelete = item.id!
+                                    idToDelete = item.id
                                 }
                             }
                         }
