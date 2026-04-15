@@ -11,7 +11,7 @@ func getDeviceInfo() -> String {
     uname(&systemInfo)
     let modelCode = withUnsafePointer(to: &systemInfo.machine) {
         $0.withMemoryRebound(to: CChar.self, capacity: 1) {
-            String(validatingUTF8: $0)
+            String(validatingCString: $0)
         }
     }
     let device = modelCode ?? "Unknown"

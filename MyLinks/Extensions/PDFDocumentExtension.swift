@@ -2,7 +2,7 @@ import Foundation
 import PDFKit
 import SwiftUI
 
-extension PDFDocument: Transferable {
+extension PDFDocument: @retroactive Transferable {
     public static var transferRepresentation: some TransferRepresentation {
         DataRepresentation(contentType: .pdf) { pdf in
                 if let data = pdf.dataRepresentation() {
