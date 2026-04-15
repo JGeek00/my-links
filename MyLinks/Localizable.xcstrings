@@ -459,6 +459,16 @@
         }
       }
     },
+    "Check out my other apps" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mis otras aplicaciones"
+          }
+        }
+      }
+    },
     "Check your internet connection and try again." : {
       "localizations" : {
         "es" : {
@@ -1453,6 +1463,16 @@
         }
       }
     },
+    "More information about this app" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más información sobre esta app"
+          }
+        }
+      }
+    },
     "My Links is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server." : {
       "localizations" : {
         "es" : {
@@ -2006,7 +2026,14 @@
       }
     },
     "Search collections" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar colecciones"
+          }
+        }
+      }
     },
     "Search links" : {
       "extractionState" : "stale",
