@@ -4,7 +4,7 @@ import Foundation
 class TagsProvider: ObservableObject {
     static var shared = TagsProvider()
     
-    @Published var data: [Tag] = []
+    @Published var data: [TagsResponse_DataClass_Tag] = []
     @Published var loading = true
     @Published var error = false
     
@@ -22,9 +22,8 @@ class TagsProvider: ObservableObject {
         let result = await instance.fetchTags()
         if result.successful == true {
             DispatchQueue.main.async {
-                if result.data?.response != nil {
-                    let filtered = result.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
-                    self.data = filtered.sorted() { $0.name! < $1.name! }
+                if let data = result.data?.data {
+                    self.data = data.tags.sorted() { $0.name < $1.name }
                 }
                 else {
                     self.data = []

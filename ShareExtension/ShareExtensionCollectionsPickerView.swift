@@ -4,7 +4,7 @@ struct ShareExtensionCollectionsPickerView: View {
     init() {}
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var shareExtensionViewModel: ShareExtensionViewModel
+    @Environment(ShareExtensionViewModel.self) private var shareExtensionViewModel
     
     @State private var searchText = ""
     

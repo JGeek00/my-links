@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct TagItemComponent: View {
-    let tag: Tag
+    let tag: TagsResponse_DataClass_Tag
     
-    init(tag: Tag) {
+    init(tag: TagsResponse_DataClass_Tag) {
         self.tag = tag
     }
     
@@ -14,12 +14,12 @@ struct TagItemComponent: View {
     @State private var showDeleteAlert: Bool = false
         
     var body: some View {
-        let dateFormatted = tag.createdAt != nil ? formatDate(tag.createdAt!) : nil
+        let dateFormatted = formatDate(tag.createdAt)
         NavigationLink {
-            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: tag.name!, mode: .tag, id: tag.id!))
+            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: tag.name, mode: .tag, id: tag.id))
         } label: {
             VStack(alignment: .leading) {
-                Text(tag.name!)
+                Text(tag.name)
                     .lineLimit(1)
                     .fontWeight(.medium)
                 Spacer()
@@ -33,12 +33,10 @@ struct TagItemComponent: View {
                         Spacer()
                             .frame(width: 16)
                     }
-                    if let linkCount = tag._count?.links {
-                        Image(systemName: "link")
-                            .font(.system(size: 12))
-                        Text(String(linkCount))
-                            .font(.system(size: 14))
-                    }
+                    Image(systemName: "link")
+                        .font(.system(size: 12))
+                    Text(String(tag.count.links))
+                        .font(.system(size: 14))
                     Spacer()
                 }
                 .foregroundStyle(Color.gray)
@@ -61,7 +59,7 @@ struct TagItemComponent: View {
             }
             Button("Delete tag", role: .destructive) {
                 Task {
-                    await tagsProvider.deleteTag(tagId: tag.id!)
+                    await tagsProvider.deleteTag(tagId: tag.id)
                 }
             }
         } message: {

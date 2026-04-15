@@ -7,7 +7,7 @@ struct TagsSearchResults: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        let tags = tagsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") })
+        let tags = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") })
         if horizontalSizeClass == .regular {
             ScrollView {
                 LazyVGrid(columns: Config.gridColumns) {

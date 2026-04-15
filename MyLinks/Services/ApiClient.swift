@@ -161,8 +161,8 @@ struct ApiClient: Equatable {
         }
     }
     
-    func createTag(_ body: TagCreationRequest) async -> StatusResponse<Tag> {
-        let defaultErrorResponse = StatusResponse<Tag>(successful: false, statusCode: nil, data: nil)
+    func createTag(_ body: TagCreationRequest) async -> StatusResponse<CreateTagResponse> {
+        let defaultErrorResponse = StatusResponse<CreateTagResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/tags") else { return defaultErrorResponse }
         do {
@@ -182,19 +182,19 @@ struct ApiClient: Equatable {
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(Tag.self, from: data)
-                return StatusResponse<Tag>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(CreateTagResponse.self, from: data)
+                return StatusResponse<CreateTagResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Tag>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<CreateTagResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse
         }
     }
     
-    func deleteTag(tagId: Int) async -> StatusResponse<Tag> {
-        let defaultErrorResponse = StatusResponse<Tag>(successful: false, statusCode: nil, data: nil)
+    func deleteTag(tagId: Int) async -> StatusResponse<DeleteTagResponse> {
+        let defaultErrorResponse = StatusResponse<DeleteTagResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.url)/api/v1/tags/\(tagId)") else { return defaultErrorResponse }
         do {
@@ -211,11 +211,11 @@ struct ApiClient: Equatable {
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(Tag.self, from: data)
-                return StatusResponse<Tag>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(DeleteTagResponse.self, from: data)
+                return StatusResponse<DeleteTagResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<Tag>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<DeleteTagResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse

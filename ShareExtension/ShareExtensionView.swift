@@ -1,18 +1,34 @@
 import SwiftUI
 
 struct ShareExtensionView: View {
-    var onClose: () -> Void
+    let url: String
+    let onClose: () -> Void
+    
+    init(url: String, onClose: @escaping () -> Void) {
+        self.onClose = onClose
+        self.url = url
+    }
+    
+    var body: some View {
+        ShareExtensionViewContent(onClose: onClose)
+            .environment(ShareExtensionViewModel(url: url))
+    }
+}
+
+fileprivate struct ShareExtensionViewContent: View {
+    let onClose: () -> Void
     
     init(onClose: @escaping () -> Void) {
         self.onClose = onClose
     }
-    
-    @EnvironmentObject private var shareExtensionViewModel: ShareExtensionViewModel
+
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @Environment(ShareExtensionViewModel.self) private var shareExtensionViewModel
     
     @State private var discardAlert = false
     
     var body: some View {
+        @Bindable var shareExtensionViewModel = shareExtensionViewModel
         NavigationStack {
             Group {
                 if shareExtensionViewModel.invalidUrl == true {

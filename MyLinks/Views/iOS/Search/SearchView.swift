@@ -68,7 +68,7 @@ fileprivate struct SearchCompactView: View {
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
         let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        let tagsSliced = tagsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         
         List {
             if !linksSliced.isEmpty {
@@ -158,7 +158,7 @@ fileprivate struct SearchRegularView: View {
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
         let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        let tagsSliced = tagsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         
         ScrollView {
             Group {

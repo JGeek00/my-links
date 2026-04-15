@@ -53,10 +53,9 @@ class ShareViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     let contentView = UIHostingController(
-                        rootView: ShareExtensionView {
+                        rootView: ShareExtensionView(url: urlString) {
                             self.close()
                         }
-                        .environmentObject(ShareExtensionViewModel(url: urlString))
                     )
                     self.addChild(contentView)
                     self.view.addSubview(contentView.view)

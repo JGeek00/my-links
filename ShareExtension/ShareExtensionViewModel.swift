@@ -1,27 +1,29 @@
 import Foundation
 import CoreData
+import SwiftUI
 
 @MainActor
-class ShareExtensionViewModel: ObservableObject {
-    @Published var apiClient: ApiClient? = nil
+@Observable
+class ShareExtensionViewModel {
+    var apiClient: ApiClient? = nil
     
-    @Published var invalidUrl = false
+    var invalidUrl = false
     
-    @Published var url = ""
-    @Published var name = ""
-    @Published var description = ""
-    @Published var collection = 0
-    @Published var selectedTags: [String] = []
+    var url = ""
+    var name = ""
+    var description = ""
+    var collection = 0
+    var selectedTags: [String] = []
     
-    @Published var collections: [Collection] = []
-    @Published var tags: [Tag] = []
-    @Published var localTags: [String] = []
+    var collections: [Collection] = []
+    var tags: [TagsResponse_DataClass_Tag] = []
+    var localTags: [String] = []
     
-    @Published var loading = true
-    @Published var loadError = false
+    var loading = true
+    var loadError = false
     
-    @Published var saving = false
-    @Published var saveError = false
+    var saving = false
+    var saveError = false
     
     init(url: String) {
         self.url = url
@@ -80,7 +82,7 @@ class ShareExtensionViewModel: ObservableObject {
     func loadData() async {
         guard let instance = apiClient else { return }
         let (collectionsResult, tagsResult) = await (instance.fetchCollections(), instance.fetchTags())
-        if collectionsResult.successful == true && tagsResult.successful == true {
+        if collectionsResult.successful == true && tagsResult.successful == true, let tagsData = tagsResult.data?.data {
             DispatchQueue.main.async {
                 let collectionsFiltered = collectionsResult.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
                 let sorted = collectionsFiltered.sorted() { $0.name! < $1.name! }
@@ -88,8 +90,7 @@ class ShareExtensionViewModel: ObservableObject {
                     self.collection = first.id ?? 0
                 }
                 self.collections = sorted
-                let tagsFiltered = tagsResult.data!.response!.filter() { $0.id != nil && $0.name != nil }
-                self.tags = tagsFiltered.sorted() { $0.name! < $1.name! }
+                self.tags = tagsData.tags.sorted() { $0.name < $1.name }
                 self.loading = false
                 self.loadError = false
             }

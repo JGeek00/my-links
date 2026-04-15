@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct ShareExtensionTagsPickerView: View {
-    @EnvironmentObject private var shareExtensionViewModel: ShareExtensionViewModel
+    @Environment(ShareExtensionViewModel.self) private var shareExtensionViewModel
     
     @State private var addTagAlert = false
     @State private var newTagName = ""
     @State private var searchText = ""
     
     var body: some View {
-        let mapped = (shareExtensionViewModel.tags.map() { $0.name! }) + shareExtensionViewModel.localTags
+        let mapped = (shareExtensionViewModel.tags.map() { $0.name }) + shareExtensionViewModel.localTags
         Group {
             if mapped.isEmpty {
                 ContentUnavailableView {

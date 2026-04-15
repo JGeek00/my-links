@@ -117,7 +117,7 @@ class LinkManagerProvider: ObservableObject {
             collection: CollectionCreation(id: link.collection!.id!, name: link.collection!.name!, ownerId: link.collection!.ownerId!),
             pinnedBy: link.pinnedBy!.isEmpty ? [PinnedByRequestEditing(id: 1)] : [],
             image: link.image,
-            pdf: link.pdf,
+            pdf: link.pdf
         )
         let result = await instance.editLink(linkId: link.id!, body: body)
         if result.successful == true {

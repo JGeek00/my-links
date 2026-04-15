@@ -2,7 +2,7 @@ import Foundation
 import NullCodable
 
 // MARK: - LinkEditingRequest
-struct LinkEditingRequest: Codable {
+struct LinkEditingRequest: Codable, @unchecked Sendable {
     var id: Int? = nil
     @NullCodable var url: String?
     var name, description, type: String?

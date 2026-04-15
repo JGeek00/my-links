@@ -10,7 +10,7 @@ struct TagsView: View {
     @State private var showCreateTagSheet = false
     
     var body: some View {
-        let searched = searchText != "" ? tagsProvider.data.filter() { $0.name!.lowercased().contains(searchText.lowercased()) } : tagsProvider.data
+        let searched = searchText != "" ? tagsProvider.data.filter() { $0.name.lowercased().contains(searchText.lowercased()) } : tagsProvider.data
         Group {
             if horizontalSizeClass == .regular {
                 ScrollView {
