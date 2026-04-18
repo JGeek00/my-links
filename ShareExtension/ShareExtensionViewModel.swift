@@ -84,10 +84,9 @@ class ShareExtensionViewModel {
         let collectionsResult = await instance.collections.fetchCollections()
         if let data = collectionsResult.data?.response {
             DispatchQueue.main.async {
-                let collectionsFiltered = data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
-                let sorted = collectionsFiltered.sorted() { $0.name! < $1.name! }
+                let sorted = data.sorted() { $0.name < $1.name }
                 if let first = sorted.first {
-                    self.collection = first.id ?? 0
+                    self.collection = first.id
                 }
                 self.collections = sorted
                 self.loading = false

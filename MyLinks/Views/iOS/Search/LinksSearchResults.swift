@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LinksSearchResults: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -10,8 +10,10 @@ struct LinksSearchResults: View {
             ScrollView {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(searchViewModel.links, id: \.self) { item in
-                        LinkItemComponent(item: item) { _, _ in }
-                            .padding(8)
+                        LinkItemComponent(item: item) {
+                            Task { await searchViewModel.loadData() }
+                        }
+                        .padding(8)
                     }
                 }
                 .padding(16)
@@ -21,7 +23,9 @@ struct LinksSearchResults: View {
         }
         else {
             List(searchViewModel.links, id: \.self) { item in
-                LinkItemComponent(item: item) { _, _ in }
+                LinkItemComponent(item: item) {
+                    Task { await searchViewModel.loadData() }
+                }
             }
             .navigationTitle("All search results")
         }

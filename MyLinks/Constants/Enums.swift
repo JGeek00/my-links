@@ -88,6 +88,17 @@ class Enums {
         case create
     }
     
+    enum LinkTaskOption: String {
+        case edit
+        case delete
+        case pin
+    }
+    
+    enum CollectionTaskOption: String {
+        case edit
+        case delete
+    }
+    
     enum SortingOptions: Int {
         case dateNewestFirst
         case dateOldestFirst

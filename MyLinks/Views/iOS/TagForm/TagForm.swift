@@ -7,7 +7,7 @@ struct TagFormView: View {
         self.onClose = onClose
     }
     
-    @Environment(TagsViewModel.self) private var tagsProvider
+    @Environment(TagsViewModel.self) private var tagsViewModel
     
     @State private var label: String = ""
     @State private var saving: Bool = false
@@ -21,7 +21,7 @@ struct TagFormView: View {
         }
         
         saving = true
-        let result = await tagsProvider.createTag(name: label)
+        let result = await tagsViewModel.createTag(name: label)
         if result == true {
             onClose()
         }

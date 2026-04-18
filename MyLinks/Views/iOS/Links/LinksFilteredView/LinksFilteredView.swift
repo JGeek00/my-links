@@ -2,17 +2,14 @@ import SwiftUI
 
 struct LinksFilteredView: View {
     var linksFilterdRequest: LinksFilteredRequest
-    
+        
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
     
     @State private var linksFilteredViewModel: LinksFilteredViewModel
     
     init(linksFilteredRequest: LinksFilteredRequest) {
         self.linksFilterdRequest = linksFilteredRequest
-        _linksFilteredViewModel = State(wrappedValue: LinksFilteredViewModel(input: linksFilteredRequest))
+        _linksFilteredViewModel = State(initialValue: LinksFilteredViewModel(input: linksFilteredRequest))
     }
     
     @State private var collectionFormSheet = false
@@ -59,7 +56,6 @@ struct LinksFilteredView: View {
                             LinksFilteredCompactView(mode: linksFilterdRequest.mode)
                         }
                     }
-                    .environment(linksFilteredViewModel)
                 }
             }
         }
@@ -122,7 +118,7 @@ struct LinksFilteredView: View {
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView(parentCollection: linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil ? collectionsProvider.data.first() { $0.id == linksFilteredViewModel.input.id! } : nil) {
+            CollectionFormView(parentCollectionId: linksFilteredViewModel.input.mode == .collection ? linksFilteredViewModel.input.id : nil) {
                 collectionFormSheet = false
             } onSuccess: { item, action in
                 collectionFormSheet = false
@@ -133,7 +129,7 @@ struct LinksFilteredView: View {
                 linkFormSheet = false
             }, onSuccess: { link, _ in
                 linkFormSheet = false
-                linksFilteredViewModel.reload()
+                Task { await linksFilteredViewModel.loadData() }
             })
         })
         .sheet(isPresented: $fileFormSheet, content: {
@@ -141,7 +137,7 @@ struct LinksFilteredView: View {
                 fileFormSheet = false
             }, onSuccess: { link, _ in
                 fileFormSheet = false
-                linksFilteredViewModel.reload()
+                Task { await linksFilteredViewModel.loadData() }
             })
         })
         .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
@@ -158,6 +154,7 @@ struct LinksFilteredView: View {
         .task {
             await linksFilteredViewModel.loadData()
         }
+        .environment(linksFilteredViewModel)
     }
 }
 

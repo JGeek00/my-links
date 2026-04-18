@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ServerSelection: View {
-    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) private var onboardingViewModel
     
     var body: some View {
         VStack(alignment: .leading) {

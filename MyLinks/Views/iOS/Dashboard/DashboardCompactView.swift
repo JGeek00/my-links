@@ -12,7 +12,7 @@ struct DashboardCompactViewRecent: View {
     var body: some View {
         Section {
             ForEach(data.links.uniqued(), id: \.self) { item in
-                LinkItemComponent(item: item) { link, action in
+                LinkItemComponent(item: item, options: [.delete, .edit, .pin]) {
                     dashboardViewModel.reload()
                 }
             }
@@ -53,7 +53,7 @@ struct DashboardCompactViewPinned: View {
         if !pinned.isEmpty {
             Section {
                 ForEach(pinned.uniqued(), id: \.self) { item in
-                    LinkItemComponent(item: item) { link, action in
+                    LinkItemComponent(item: item) {
                         dashboardViewModel.reload()
                     }
                 }

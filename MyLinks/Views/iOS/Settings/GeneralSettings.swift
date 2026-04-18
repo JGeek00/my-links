@@ -6,11 +6,11 @@ struct GeneralSettings: View {
     @State var disconnectAlert = false
     @State var collectionsViewModeSheet = false
     
+    @Environment(SettingsViewModel.self) private var settingsViewModel
+    
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
     @AppStorage(StorageKeys.openLinkByDefault, store: UserDefaults.shared) private var openLinkByDefault: Enums.OpenLinkByDefault = .internalBrowser
     @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = false
-    
-    @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
     var body: some View {
         NavigationStack {
@@ -50,7 +50,7 @@ struct GeneralSettings: View {
 
                 
                 Section("Server") {
-                    if let instance = apiClientProvider.instance {
+                    if let instance = settingsViewModel.apiClientInstance {
                         if instance.getIsSelfHosted() == true {
                             HStack {
                                 Text(instance.getInstanceUrl())
@@ -79,7 +79,7 @@ struct GeneralSettings: View {
                                 disconnectAlert.toggle()
                             }
                             Button(instance.getIsSelfHosted() == true ? "Disconnect" : "Log out", role: .destructive) {
-                                ApiClientProvider.shared.destroy()
+                                settingsViewModel.destroyServer()
                             }
                         } message: {
                             Text("You will have to establish a connection again.")

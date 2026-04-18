@@ -2,16 +2,14 @@ import SwiftUI
 import CustomAlert
 
 struct DashboardView: View {
+    @State private var dashboardViewModel: DashboardViewModel
     
-    init() {}
-    
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var apiClientProvider: ApiClientProvider
-    
+    init() {
+        _dashboardViewModel = State(initialValue: DashboardViewModel())
+    }
+        
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    @State private var dashboardViewModel = DashboardViewModel()
-    
+        
     @State private var navigationPath = NavigationPath()
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
@@ -88,21 +86,12 @@ struct DashboardView: View {
                     linkFormFileSheet = false
                 }
             })
-            .onOpenURL { url in
-                if apiClientProvider.instance == nil {
-                    return
-                }
-                if url.scheme == DeepLinks.urlScheme && url.host == DeepLinks.newLink {
-                    linkFormUrlSheet = true
-                }
-            }
             .sheet(isPresented: $collectionFormSheet, content: {
                 CollectionFormView {
                     collectionFormSheet = false
                 } onSuccess: { item, action in
                     collectionFormSheet = false
                 }
-                .environmentObject(CollectionFormViewModel())
             })
         }
         .task {

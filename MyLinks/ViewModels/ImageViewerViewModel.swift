@@ -2,27 +2,30 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class ImageViewerViewModel: ObservableObject {
-    @Published var data: Data? = nil
-    @Published var imageData: UIImage? = nil
-    @Published var loading = true
-    @Published var error = false
+@Observable
+class ImageViewerViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
     
-    @Published var downloadedFilePath: URL? = nil
-    @Published var saveDocumentSheet = false
-    
-    @Published var savingErrorAlert = false
-    @Published var savingErrorMessage = ""
-    
-    init(link: Link) {
-        Task { await self.loadData(linkId: link.id) }
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, link: Link) {
+        self.apiClientRepository = apiClientRepository
     }
+    
+    var data: Data? = nil
+    var imageData: UIImage? = nil
+    var loading = true
+    var error = false
+    
+    var downloadedFilePath: URL? = nil
+    var saveDocumentSheet = false
+    
+    var savingErrorAlert = false
+    var savingErrorMessage = ""
     
     func loadData(linkId: Int, setLoading: Bool = false) async {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
+        guard let instance = apiClientRepository.instance else { return }
         let result = await instance.files.fetchImage(linkId: linkId)
         if result.successful == true {
             DispatchQueue.main.async {
@@ -36,7 +39,7 @@ class ImageViewerViewModel: ObservableObject {
         }
         else {
             if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {

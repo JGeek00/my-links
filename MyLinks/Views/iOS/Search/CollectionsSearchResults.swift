@@ -1,19 +1,18 @@
 import SwiftUI
 
 struct CollectionsSearchResults: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        let collections = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") })
+        let collections = searchViewModel.collections.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") })
         if horizontalSizeClass == .regular {
             ScrollView {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(collections, id: \.self) { item in
                         CollectionItemComponent(collection: item) {
-                            collectionsProvider.deleteCollection(id: item.id!)
+                            // TODO: refresh collections
                         }
                         .padding(8)
                     }
@@ -26,7 +25,7 @@ struct CollectionsSearchResults: View {
         else {
             List(collections, id: \.self) { item in
                 CollectionItemComponent(collection: item) {
-                    collectionsProvider.deleteCollection(id: item.id!)
+                   // TODO: refresh collections
                 }
             }
             .navigationTitle("All search results")

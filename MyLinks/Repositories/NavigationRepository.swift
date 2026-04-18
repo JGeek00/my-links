@@ -1,8 +1,9 @@
 import Foundation
 
-class NavigationProvider: ObservableObject {
-    @Published var selectedNavigationTab: Enums.TabViewTabs = .home
-    @Published var catalogSelectedView: Enums.ElementsDetailView? = nil
+@Observable
+class NavigationRepository {
+    var selectedNavigationTab: Enums.TabViewTabs = .home
+    var catalogSelectedView: Enums.ElementsDetailView? = nil
     
     func navigateLinksCatalog() {
         selectedNavigationTab = .catalog

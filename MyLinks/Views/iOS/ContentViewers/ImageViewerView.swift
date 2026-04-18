@@ -4,9 +4,10 @@ struct ImageViewerView: View {
     var link: Link
     var onClose: () -> Void
     
-    @EnvironmentObject private var imageViewerViewModel: ImageViewerViewModel
+    @State private var imageViewerViewModel: ImageViewerViewModel
     
     init(link: Link, onClose: @escaping () -> Void) {
+        _imageViewerViewModel = State(initialValue: ImageViewerViewModel(link: link))
         self.link = link
         self.onClose = onClose
     }

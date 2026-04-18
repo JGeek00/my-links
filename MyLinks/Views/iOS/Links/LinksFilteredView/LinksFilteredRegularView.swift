@@ -8,15 +8,13 @@ struct LinksFilteredRegularView: View {
     }
     
     @Environment(LinksFilteredViewModel.self) private var linksFilteredViewModel
-    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
         
     var body: some View {
-        let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
+        let subCollections = linksFilteredViewModel.collections.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
         ScrollViewReader(content: { scrollView in
             ScrollView {
                 if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
-                    let filteredSubCollections = linksFilteredViewModel.searchLinksValue != "" ? subCollections.filter() { $0.name!.lowercased().contains(linksFilteredViewModel.searchLinksValue.lowercased())} : subCollections
+                    let filteredSubCollections = linksFilteredViewModel.searchLinksValue != "" ? subCollections.filter() { $0.name.lowercased().contains(linksFilteredViewModel.searchLinksValue.lowercased())} : subCollections
                     VStack(alignment: .leading) {
                         Text("Collections")
                             .font(.system(size: 16))
@@ -34,7 +32,7 @@ struct LinksFilteredRegularView: View {
                             LazyVGrid(columns: Config.gridColumns) {
                                 ForEach(filteredSubCollections, id: \.self) { item in
                                     CollectionItemComponent(collection: item) {
-                                        collectionsProvider.deleteCollection(id: item.id!)
+                                        Task { await linksFilteredViewModel.loadData()}
                                     }
                                     .padding(6)
                                 }
@@ -55,8 +53,8 @@ struct LinksFilteredRegularView: View {
                         }
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(linksFilteredViewModel.data, id: \.self) { item in
-                                LinkItemComponent(item: item) { link, action in
-                                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                LinkItemComponent(item: item) {
+                                    Task { await linksFilteredViewModel.loadData() }
                                 }
                                 .onAppear {
                                     if item == linksFilteredViewModel.data.last {

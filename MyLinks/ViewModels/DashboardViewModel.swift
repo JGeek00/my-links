@@ -4,19 +4,28 @@ import SwiftUI
 @MainActor
 @Observable
 class DashboardViewModel {
-    static let shared = DashboardViewModel()
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored private let navigationRepository: NavigationRepository
+    
+    init() {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
+        self.navigationRepository = RepositoriesContainer.shared.navigationRepository
+    }
     
     var state: Enums.LoadingState<DashboardResponse_Data> = .loading
-    
+    var collections: [Collection] = []
+    var loadingCollections: Bool = true
+    var errorCollections: Bool = false
+        
     var path = NavigationPath()
-    
-    init() {}
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
             self.state = .loading
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
+        guard let instance = apiClientRepository.instance else { return }
         let result = await instance.dashboard.fetchDashboard()
         if let data = result.data?.data {
             DispatchQueue.main.async {
@@ -34,10 +43,6 @@ class DashboardViewModel {
     
     func reload() {
         Task { await loadData() }
-        Task {
-            await LinksViewModel.shared.loadData()
-            LinksViewModel.shared.scrollTopList.toggle()
-        }
     }
     
     func navigateRecent() {
@@ -48,6 +53,18 @@ class DashboardViewModel {
     func navigatePinned() {
         let request = LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil)
         path.append(request)
+    }
+    
+    func navigateLinksCatalog() {
+        navigationRepository.navigateLinksCatalog()
+    }
+    
+    func navigateCollectionsCatalog() {
+        navigationRepository.navigateCollectionsCatalog()
+    }
+    
+    func navigateTagsCatalog() {
+        navigationRepository.navigateTagsCatalog()
     }
     
     func reset() {

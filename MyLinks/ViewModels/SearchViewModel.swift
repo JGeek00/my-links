@@ -2,24 +2,38 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class SearchViewModel: ObservableObject {
-    @Published var links: [Link] = []
-    @Published var loading = false
-    @Published var error = false
+@Observable
+class SearchViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
+    @ObservationIgnored private let collectionsRepository: CollectionsRepository
     
-    @Published var searchFieldValue = ""
-    @Published var searchPresented = false
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.linkManagerRepository = linkManagerRepository
+        self.collectionsRepository = collectionsRepository
+        self.collections = collectionsRepository.data
+    }
+    
+    var links: [Link] = []
+    var loading = false
+    var error = false
+    
+    var collections: [Collection] = []
+    
+    var searchFieldValue = ""
+    var searchPresented = false
     var searchQueryValue: String? = nil
     var previousSearch: String? = nil
     
-    @Published var loadingMore = false
+    var loadingMore = false
     
-    @Published var sortingSelected = Enums.SortingOptions.dateNewestFirst
+    var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
     // Flag to triger onChange
-    @Published var scrollTopList = false
+    var scrollTopList = false
     
-    init() {}
+    var deleteCollectionErrorAlert = false
     
     func loadData(
         cursor: Int? = nil,
@@ -30,7 +44,7 @@ class SearchViewModel: ObservableObject {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
+        guard let instance = apiClientRepository.instance else { return }
         let result = await instance.links.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
         if result.successful == true {
             DispatchQueue.main.async {
@@ -48,7 +62,7 @@ class SearchViewModel: ObservableObject {
         }
         else {
             if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {
@@ -91,41 +105,5 @@ class SearchViewModel: ObservableObject {
                 self.previousSearch = nil
             }
         }
-    }
-    
-    func removeLinkData(linkId: Int) {
-        DispatchQueue.main.async {
-            self.links = self.links.filter() { $0.id != linkId }
-        }
-    }
-    
-    func updateLinkData(link: Link) {
-        DispatchQueue.main.async {
-            self.links = self.links.map() { item in
-                if item.id == link.id {
-                    return link
-                }
-                else {
-                    return item
-                }
-            }
-        }
-    }
-    
-    func reload() {
-        Task { await loadData() }
-        Task { await DashboardViewModel.shared.loadData() }
-    }
-    
-    func reset() {
-        self.links = []
-        self.loading = true
-        self.error = false
-        self.searchFieldValue = ""
-        self.searchPresented = false
-        self.searchQueryValue = nil
-        self.previousSearch = nil
-        self.loadingMore = false
-        self.sortingSelected = .dateNewestFirst
     }
 }

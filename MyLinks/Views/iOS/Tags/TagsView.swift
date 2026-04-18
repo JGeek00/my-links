@@ -2,7 +2,11 @@ import SwiftUI
 import CustomAlert
 
 struct TagsView: View {
-    @State private var tagsViewModel = TagsViewModel()
+    @State private var tagsViewModel: TagsViewModel
+    
+    init() {
+        _tagsViewModel = State(initialValue: TagsViewModel())
+    }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 

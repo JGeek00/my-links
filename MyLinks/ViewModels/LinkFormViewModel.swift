@@ -4,6 +4,11 @@ import SwiftUI
 @MainActor
 @Observable
 class LinkFormViewModel {
+    @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
+    
+    var availableCollections: [Collection]
+        
     var editingLink: Link? = nil
     
     var url = ""
@@ -21,9 +26,17 @@ class LinkFormViewModel {
     var savingErrorMessage = ""
     var savingErrorAlert = false
     
-    init(link: Link? = nil, defaultCollectionId: Int? = nil) {
-        let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
-        collection = filtered.first?.id ?? 0
+    init(collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, link: Link? = nil, defaultCollectionId: Int? = nil) {
+        self.collectionsRepository = collectionsRepository
+        self.linkManagerRepository = linkManagerRepository
+        
+        self.availableCollections = collectionsRepository.data
+        
+        if let defaultCollectionId = defaultCollectionId {
+            collection = collectionsRepository.data.first(where: { collection in
+                collection.id == defaultCollectionId
+            })?.id ?? 0
+        }
                
         if let link = link {
             editingLink = link
@@ -38,8 +51,8 @@ class LinkFormViewModel {
         }
     }
         
-    func onSave(mode: Enums.LinkFormItem, onCompleted: @escaping (Link) -> Void) {
-        let collections = CollectionsProvider.shared.data
+    func onSave(mode: Enums.LinkFormItem, onSuccess: @escaping (Link) -> Void, onError: @escaping (Int?) -> Void) {
+        let collections = collectionsRepository.data
         
         if editingLink == nil {
             switch mode {
@@ -60,131 +73,116 @@ class LinkFormViewModel {
         
         let col = collections.first(where: { $0.id == collection })
     
-        self.saving = true
-        
-        if editingLink != nil {
-            var body = LinkEditingRequest(
-                url: url != "" ? url : nil,
-                name: name,
-                description: description,
-                type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
-                tags: selectedTags.map() { TagCreation(name: $0) },
-                collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-                pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequestEditing(id: $0.id) } : [],
-                image: self.editingLink?.image,
-                pdf: self.editingLink?.pdf,
-            )
+        Task {
+            self.saving = true
             
-            body.id = editingLink?.id
-            LinkManagerProvider.shared.editLink(id: editingLink!.id, body: body) { link in
-                DispatchQueue.main.async {
-                    self.saving = false
-                }
-                onCompleted(link)
-            } onError: { statusCode in
-                guard let statusCode = statusCode else {
+            if editingLink != nil {
+                var body = LinkEditingRequest(
+                    url: url != "" ? url : nil,
+                    name: name,
+                    description: description,
+                    type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
+                    tags: selectedTags.map() { TagCreation(name: $0) },
+                    collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
+                    pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequestEditing(id: $0.id) } : [],
+                    image: self.editingLink?.image,
+                    pdf: self.editingLink?.pdf,
+                )
+                
+                body.id = editingLink?.id
+                await linkManagerRepository.editLink(id: editingLink!.id, body: body) { link in
                     DispatchQueue.main.async {
                         self.saving = false
-                        self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                    }
+                    onSuccess(link)
+                } onError: { statusCode in
+                    guard let statusCode = statusCode else {
+                        DispatchQueue.main.async {
+                            self.saving = false
+                            self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                            self.savingErrorAlert = true
+                        }
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        self.saving = false
+                        self.savingErrorMessage = "Error \(statusCode)."
                         self.savingErrorAlert = true
                     }
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.saving = false
-                    self.savingErrorMessage = "Error \(statusCode)."
-                    self.savingErrorAlert = true
                 }
             }
-        }
-        else {
-            var body = LinkCreationRequest(
-                url: url != "" ? url : nil,
-                name: name,
-                description: description,
-                type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
-                tags: selectedTags.map() { TagCreation(name: $0) },
-                collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-                pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequest(id: $0.id) } : [],
-                image: self.editingLink?.image,
-                pdf: self.editingLink?.pdf,
-            )
-            
-            if mode == .file && selectedFileUrl == nil {
-                self.validationErrorMessage = String(localized: "No file selected.")
-                self.validationErrorAlert = true
-                self.saving = false
-                return
-            }
-            if let file = selectedFileUrl {
-                if file.pathExtension.lowercased() != "pdf" && file.pathExtension.lowercased() != "png" && file.pathExtension.lowercased() != "jpg" && file.pathExtension.lowercased() != "jpeg" {
-                    self.validationErrorMessage = String(localized: "The selected file has an unsupported format")
+            else {
+                var body = LinkCreationRequest(
+                    url: url != "" ? url : nil,
+                    name: name,
+                    description: description,
+                    type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
+                    tags: selectedTags.map() { TagCreation(name: $0) },
+                    collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
+                    pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequest(id: $0.id) } : [],
+                    image: self.editingLink?.image,
+                    pdf: self.editingLink?.pdf,
+                )
+                
+                if mode == .file && selectedFileUrl == nil {
+                    self.validationErrorMessage = String(localized: "No file selected.")
                     self.validationErrorAlert = true
                     self.saving = false
                     return
                 }
-            }
-            
-            if mode == .file && body.name == "" {
-                body.name = selectedFileUrl?.lastPathComponent
-            }
-            
-            LinkManagerProvider.shared.createLink(link: body) { link in
-                if mode == .file {
-                    LinkManagerProvider.shared.uploadLinkFile(linkId: link.id, fileUrl: self.selectedFileUrl!, fileType: self.selectedFileUrl!.pathExtension == "pdf" ? .pdf : .image) { _ in
+                if let file = selectedFileUrl {
+                    if file.pathExtension.lowercased() != "pdf" && file.pathExtension.lowercased() != "png" && file.pathExtension.lowercased() != "jpg" && file.pathExtension.lowercased() != "jpeg" {
+                        self.validationErrorMessage = String(localized: "The selected file has an unsupported format")
+                        self.validationErrorAlert = true
+                        self.saving = false
+                        return
+                    }
+                }
+                
+                if mode == .file && body.name == "" {
+                    body.name = selectedFileUrl?.lastPathComponent
+                }
+                
+               await linkManagerRepository.createLink(link: body) { link in
+                   Task {
+                       if mode == .file {
+                           await self.linkManagerRepository.uploadLinkFile(linkId: link.id, fileUrl: self.selectedFileUrl!, fileType: self.selectedFileUrl!.pathExtension == "pdf" ? .pdf : .image) { _ in
+                               onSuccess(link)
+                           } onError: { statusCode in
+                               guard let _ = statusCode else {
+                                   DispatchQueue.main.async {
+                                       self.saving = false
+                                       self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                                       self.savingErrorAlert = true
+                                   }
+                                   return
+                               }
+                               DispatchQueue.main.async {
+                                   self.saving = false
+                                   self.savingErrorMessage = String(localized: "The selected file could not be uploaded.")
+                                   self.savingErrorAlert = true
+                               }
+                           }
+                       }
+                       else {
+                           onSuccess(link)
+                       }
+                   }
+                } onError: { statusCode in
+                    onError(statusCode)
+                    guard let statusCode = statusCode else {
                         DispatchQueue.main.async {
                             self.saving = false
-                            // Task { await TagsProvider.shared.loadData() }
-                            Task { await CollectionsProvider.shared.loadData() }
-                            Task { await DashboardViewModel.shared.loadData() }
-                            Task {
-                                await LinksViewModel.shared.loadData()
-                                LinksViewModel.shared.scrollTopList.toggle()
-                            }
-                        }
-                        onCompleted(link)
-                    } onError: { statusCode in
-                        guard let _ = statusCode else {
-                            DispatchQueue.main.async {
-                                self.saving = false
-                                self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
-                                self.savingErrorAlert = true
-                            }
-                            return
-                        }
-                        DispatchQueue.main.async {
-                            self.saving = false
-                            self.savingErrorMessage = String(localized: "The selected file could not be uploaded.")
+                            self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
                             self.savingErrorAlert = true
                         }
+                        return
                     }
-                }
-                else {
                     DispatchQueue.main.async {
                         self.saving = false
-                        // Task { await TagsProvider.shared.loadData() }
-                        Task { await CollectionsProvider.shared.loadData() }
-                        Task { await DashboardViewModel.shared.loadData() }
-                        Task {
-                            await LinksViewModel.shared.loadData()
-                            LinksViewModel.shared.scrollTopList.toggle()
-                        }
-                    }
-                    onCompleted(link)
-                }
-            } onError: { statusCode in
-                guard let statusCode = statusCode else {
-                    DispatchQueue.main.async {
-                        self.saving = false
-                        self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                        self.savingErrorMessage = "Error \(statusCode)."
                         self.savingErrorAlert = true
                     }
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.saving = false
-                    self.savingErrorMessage = "Error \(statusCode)."
-                    self.savingErrorAlert = true
                 }
             }
         }
@@ -195,8 +193,7 @@ class LinkFormViewModel {
     }
     
     func getCollectionName() -> String? {
-        let filtered = CollectionsProvider.shared.data.filter() { $0.name != nil && $0.id != nil }
-        let col = filtered.first(where: { $0.id == collection })
+        let col = availableCollections.first(where: { $0.id == collection })
         return col?.name
     }
 }

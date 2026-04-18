@@ -7,6 +7,10 @@ struct FilesApiClient: Equatable {
         self.instance = instance
     }
     
+    func getReaderUrl(linkId: Int) -> URL? {
+        return URL(string: "\(instance.url)/preserved/\(linkId)?format=3")
+    }
+    
     func fetchReader(linkId: Int) async -> StatusResponse<ReaderResponse> {
         let defaultErrorResponse = StatusResponse<ReaderResponse>(successful: false, statusCode: nil, data: nil)
         

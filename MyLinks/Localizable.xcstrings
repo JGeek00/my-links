@@ -1393,6 +1393,7 @@
       }
     },
     "Link pinned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1403,6 +1404,7 @@
       }
     },
     "Link unpinned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1875,6 +1877,7 @@
       }
     },
     "Processing..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2309,6 +2312,7 @@
       }
     },
     "The link could not be deleted due to an error." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2319,6 +2323,7 @@
       }
     },
     "The link could not be pinned due to an error." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2329,6 +2334,7 @@
       }
     },
     "The link could not be unpinned due to an error." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

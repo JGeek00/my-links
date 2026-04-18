@@ -2,20 +2,28 @@ import SwiftUI
 import UIKit
 import AlertToast
 
+fileprivate struct FormatsAvailable {
+    let pdf: Bool
+    let image: Bool
+    let html: Bool
+    let readerUrl: URL?
+}
+
 struct LinkItemComponent: View {
-    var item: Link
-    var onTaskCompleted: (Link, Enums.LinkTaskCompleted) -> Void
+    let item: Link
+    let options: [Enums.LinkTaskOption]
+    let onTaskCompleted: () -> Void
     
-    init(item: Link, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+    init(item: Link, options: [Enums.LinkTaskOption] = [.edit, .delete, .pin], onTaskCompleted: @escaping () -> Void) {
         self.item = item
+        self.options = options
         self.onTaskCompleted = onTaskCompleted
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.openURL) var openURL
-    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
-    @EnvironmentObject private var toastProvider: ToastProvider
+    
     @State private var linkFormOpen = false
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
@@ -28,7 +36,7 @@ struct LinkItemComponent: View {
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
     @AppStorage(StorageKeys.openLinkByDefault, store: UserDefaults.shared) private var openLinkByDefault: Enums.OpenLinkByDefault = .internalBrowser
     
-    func openItem(readerAvailable: Bool, pdfAvailable: Bool, imageAvailable: Bool) {
+    fileprivate func openItem(_ formats: FormatsAvailable) {
         func openInternalBrowser() {
             if let url = item.url {
                 openSafariView(url)
@@ -47,21 +55,21 @@ struct LinkItemComponent: View {
                     linkContentUnavailable = true
                 }
             case .readableMode:
-                if readerAvailable == true {
+                if formats.readerUrl != nil {
                     readerModeSheet.toggle()
                 }
                 else {
                     openInternalBrowser()
                 }
             case .pdfDocument:
-                if pdfAvailable == true {
+                if formats.pdf == true {
                     pdfViewerSheet = true
                 }
                 else {
                     openInternalBrowser()
                 }
             case .imageDocument:
-                if imageAvailable == true {
+                if formats.image == true {
                     imageViewerSheet = true
                 }
                 else {
@@ -78,13 +86,17 @@ struct LinkItemComponent: View {
     var body: some View {
         let urlHost = getUrlHost(item.url)
         let dateFormatted = formatDate(item.createdAt)
-        let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.getInstanceUrl())/preserved/\(item.id)?format=3") : nil
-        let pdfAvailable = item.pdf != nil && item.pdf != "unavailable"
-        let imageAvailable = item.image != nil && item.image != "unavailable"
-        let htmlWebpageAvailable = item.monolith != nil && item.monolith != "unavailable"
+
+        let formatsAvailable = {
+            let pdfAvailable = item.pdf != nil && item.pdf != "unavailable"
+            let imageAvailable = item.image != nil && item.image != "unavailable"
+            let htmlAvailable = item.monolith != nil && item.monolith != "unavailable"
+            let readerUrl = item.readable != nil && item.readable != "unavailable" ? RepositoriesContainer.shared.apiClientRepository.instance?.files.getReaderUrl(linkId: item.id) : nil
+            return FormatsAvailable(pdf: pdfAvailable, image: imageAvailable, html: htmlAvailable, readerUrl: readerUrl)
+        }()
         
         Button {
-            openItem(readerAvailable: readerUrl != nil, pdfAvailable: pdfAvailable, imageAvailable: imageAvailable)
+            openItem(formatsAvailable)
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -146,106 +158,14 @@ struct LinkItemComponent: View {
         .background(horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear)
         .cornerRadius(horizontalSizeClass == .regular ? 24 : 0)
         .contextMenu {
-            if let url = item.url {
-                Section {
-                    Menu("Open in...", systemImage: "square.and.arrow.up.on.square") {
-                        Button("In app browser") {
-                            openSafariView(url)
-                        }
-                        Button("System default browser") {
-                            if let url = URL(string: url) {
-                                openURL(url)
-                            } else {
-                                linkContentUnavailable = true
-                            }
-                        }
-                    }
-                }
-            }
-            Section {
-                Button {
-                    showDetailsSheet.toggle()
-                } label: {
-                    Label("Link details", systemImage: "info.circle")
-                }
-                Button {
-                    UIPasteboard.general.string = item.url
-                    toastProvider.showToast(icon: "doc.on.doc", title: String(localized: "Link URL copied to the clipboard"))
-                } label: {
-                    Label("Copy link URL", systemImage: "doc.on.doc")
-                }
-                if htmlWebpageAvailable == true || readerUrl != nil || pdfAvailable == true || imageAvailable == true {
-                    Menu("Preserved formats", systemImage: "doc.viewfinder") {
-                        if item.monolith != nil && item.monolith != "unavailable" {
-                            Button {
-                                websiteViewerSheet.toggle()
-                            } label: {
-                                Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
-                            }
-                        }
-                        if readerUrl != nil {
-                            Button {
-                                readerModeSheet.toggle()
-                            } label: {
-                                Label("Readable", systemImage: "textformat")
-                            }
-                        }
-                        if pdfAvailable == true {
-                            Button {
-                                pdfViewerSheet.toggle()
-                            } label: {
-                                Label("PDF", systemImage: "doc")
-                            }
-                        }
-                        if imageAvailable == true {
-                            Button {
-                                imageViewerSheet.toggle()
-                            } label: {
-                                Label("Image", systemImage: "photo")
-                            }
-                        }
-                    }
-                }
-            }
-            Section {
-                if item.pinnedBy.isEmpty {
-                    Button("Pin to the dashboard", systemImage: "pin") {
-                        Task {
-                            await linkManagerProvider.pinUnpinLink(link: item) { item in
-                                onTaskCompleted(item, .pin)
-                            }
-                        }
-                    }
-                }
-                else {
-                    Button("Unpin from the dashboard", systemImage: "pin.slash") {
-                        Task {
-                            await linkManagerProvider.pinUnpinLink(link: item) { item in
-                                onTaskCompleted(item, .pin)
-                            }
-                        }
-                    }
-                }
-            }
-            Section {
-                Button("Edit", systemImage: "pencil") {
-                    linkFormOpen.toggle()
-                }
-                Button("Delete", systemImage: "trash", role: .destructive) {
-                    showDeleteAlert.toggle()
-                }
-            }
+            contextMenu(formatsAvailable)
         }
         .alert("Delete link", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) {
                 showDeleteAlert.toggle()
             }
             Button("Delete", role: .destructive) {
-                Task {
-                    await linkManagerProvider.deleteLink(id: item.id) { link in
-                        onTaskCompleted(link, .delete)
-                    }
-                }
+                onTaskCompleted()
             }
         } message: {
             Text("This link will be deleted. This action is not reversible.")
@@ -255,7 +175,7 @@ struct LinkItemComponent: View {
                 linkFormOpen = false
             } onSuccess: { resultLink, action in
                 linkFormOpen = false
-                onTaskCompleted(resultLink, action)
+                onTaskCompleted()
             }
         })
         .sheet(isPresented: $showDetailsSheet, content: {
@@ -277,17 +197,106 @@ struct LinkItemComponent: View {
             PDFViewerView(link: item) {
                 pdfViewerSheet.toggle()
             }
-            .environmentObject(PdfViewerViewModel(link: item))
         })
         .sheet(isPresented: $imageViewerSheet, content: {
             ImageViewerView(link: item) {
                 imageViewerSheet.toggle()
             }
-            .environmentObject(ImageViewerViewModel(link: item))
         })
         .alert("Link content unavailable", isPresented: $linkContentUnavailable) {
             Button("Close", role: .cancel) {
                 linkContentUnavailable = false
+            }
+        }
+    }
+    
+    @ViewBuilder
+    fileprivate func contextMenu(_ formats: FormatsAvailable) -> some View {
+        if let url = item.url {
+            Section {
+                Menu("Open in...", systemImage: "square.and.arrow.up.on.square") {
+                    Button("In app browser") {
+                        openSafariView(url)
+                    }
+                    Button("System default browser") {
+                        if let url = URL(string: url) {
+                            openURL(url)
+                        } else {
+                            linkContentUnavailable = true
+                        }
+                    }
+                }
+            }
+        }
+        Section {
+            Button {
+                showDetailsSheet.toggle()
+            } label: {
+                Label("Link details", systemImage: "info.circle")
+            }
+            Button {
+                UIPasteboard.general.string = item.url
+                RepositoriesContainer.shared.toastRepository.showToast(icon: "doc.on.doc", title: String(localized: "Link URL copied to the clipboard"))
+            } label: {
+                Label("Copy link URL", systemImage: "doc.on.doc")
+            }
+            if formats.html == true || formats.readerUrl != nil || formats.pdf == true || formats.image == true {
+                Menu("Preserved formats", systemImage: "doc.viewfinder") {
+                    if item.monolith != nil && item.monolith != "unavailable" {
+                        Button {
+                            websiteViewerSheet.toggle()
+                        } label: {
+                            Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
+                        }
+                    }
+                    if formats.readerUrl != nil {
+                        Button {
+                            readerModeSheet.toggle()
+                        } label: {
+                            Label("Readable", systemImage: "textformat")
+                        }
+                    }
+                    if formats.pdf == true {
+                        Button {
+                            pdfViewerSheet.toggle()
+                        } label: {
+                            Label("PDF", systemImage: "doc")
+                        }
+                    }
+                    if formats.image == true {
+                        Button {
+                            imageViewerSheet.toggle()
+                        } label: {
+                            Label("Image", systemImage: "photo")
+                        }
+                    }
+                }
+            }
+        }
+        if options.contains(.pin) {
+            Section {
+                if item.pinnedBy.isEmpty {
+                    Button("Pin to the dashboard", systemImage: "pin") {
+                        onTaskCompleted()
+                    }
+                }
+                else {
+                    Button("Unpin from the dashboard", systemImage: "pin.slash") {
+                        onTaskCompleted()
+                    }
+                }
+            }
+        }
+        Section {
+            if options.contains(.edit) {
+                Button("Edit", systemImage: "pencil") {
+                    onTaskCompleted()
+                }
+            }
+            if options.contains(.delete) {
+                Button("Delete", systemImage: "trash", role: .destructive) {
+                    onTaskCompleted()
+                }
             }
         }
     }

@@ -4,11 +4,22 @@ import SwiftUI
 @MainActor
 @Observable
 class LinksFilteredViewModel {
-    var input: LinksFilteredRequest
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
+    @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored var input: LinksFilteredRequest
     
-    init(input: LinksFilteredRequest) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, input: LinksFilteredRequest) {
+        self.apiClientRepository = apiClientRepository
+        self.collectionsRepository = collectionsRepository
+        self.linkManagerRepository = linkManagerRepository
         self.input = input
+        
+        self.collections = collectionsRepository.data
     }
+    
+    var collections: [Collection] = []
+        
     
     var data: [Link] = []
     var loading = true
@@ -24,6 +35,10 @@ class LinksFilteredViewModel {
     
     var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
+    var deleteLinkErrorAlert = false
+    var pinUnpinLinkErrorAlert = false
+    var editLinkErrorAlert = false
+    
     func loadData(
         cursor: Int? = nil,
         setLoading: Bool = false,
@@ -38,7 +53,7 @@ class LinksFilteredViewModel {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
+        guard let instance = apiClientRepository.instance else { return }
         let result = await instance.links.searchLiks(
             cursor: cursor,
             collectionId: input.mode == .collection ? input.id! : nil,
@@ -68,7 +83,7 @@ class LinksFilteredViewModel {
         }
         else {
             if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {
@@ -111,77 +126,38 @@ class LinksFilteredViewModel {
         }
     }
     
-    func onTaskCompleted(link: Link, action: Enums.LinkTaskCompleted) {
-        switch action {
-        case .delete:
-            removeLinkData(linkId: link.id)
-        case .pin:
-            updateLinkData(link: link)
-        case .edit:
-            updateLinkData(link: link)
-        case .create:
-            return
-        }
-    }
-    
-    func removeLinkData(linkId: Int) {
-        DispatchQueue.main.async {
-            self.data = self.data.filter() { $0.id != linkId }
-        }
-    }
-    
-    func updateLinkData(link: Link) {
-        DispatchQueue.main.async {
-            if self.input.mode == .tag {
-                let contains = link.tags.first { $0.id == self.input.id }
-                if contains == nil {
-                    self.data = self.data.filter() { $0.id != link.id }
-                }
-                else {
-                    self.data = self.data.map() { item in
-                        if item.id == link.id {
-                            return link
-                        }
-                        else {
-                            return item
-                        }
-                    }
-                }
-            }
-            else if self.input.mode == .collection {
-                if link.collection.id != self.input.id {
-                    self.data = self.data.filter() { $0.id != link.id }
-                }
-                else {
-                    self.data = self.data.map() { item in
-                        if item.id == link.id {
-                            return link
-                        }
-                        else {
-                            return item
-                        }
-                    }
-                }
-            }
-            else {
-                self.data = self.data.map() { item in
-                    if item.id == link.id {
-                        return link
-                    }
-                    else {
-                        return item
-                    }
-                }
-            }
-        }
-    }
-    
-    func reload() {
-        Task { await loadData() }
-        Task { await DashboardViewModel.shared.loadData() }
+    func deleteLink(link: Link) {
         Task {
-            await LinksViewModel.shared.loadData()
-            LinksViewModel.shared.scrollTopList.toggle()
+            await linkManagerRepository.deleteLink(id: link.id) { _ in
+                Task { await self.loadData() }
+            } onError: {
+                self.deleteLinkErrorAlert = true
+            }
         }
     }
+    
+    func pinUnpinLink(link: Link) {
+        Task {
+            await linkManagerRepository.pinUnpinLink(link: link) { result in
+                Task { await self.loadData() }
+            } onError: {
+                self.pinUnpinLinkErrorAlert = true
+            }
+        }
+    }
+    
+    func editLink(link: Link) {
+        Task {
+            let tags = link.tags.map() { TagCreation(name: $0.name) }
+            let collection = CollectionCreation(id: link.collection.id, name: link.collection.name, ownerId: link.collection.ownerId)
+            let pinnedBy = link.pinnedBy.map() { PinnedByRequestEditing(id: $0.id) }
+            let body = LinkEditingRequest(tags: tags, collection: collection, pinnedBy: pinnedBy, image: link.image, pdf: link.pdf)
+            await linkManagerRepository.editLink(id: link.id, body: body) { linkResult in
+                Task { await self.loadData() }
+            } onError: { statusCode in
+                self.editLinkErrorAlert = true
+            }
+        }
+    }
+    
 }

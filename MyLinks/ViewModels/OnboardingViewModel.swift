@@ -3,31 +3,36 @@ import CoreData
 import SwiftUI
 
 @MainActor
-class OnboardingViewModel: ObservableObject {
-    static let shared = OnboardingViewModel()
+@Observable
+class OnboardingViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
     
-    @Published var showOnboarding = false
+    init() {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+    }
     
-    @Published var selectedTab = 0
-    @Published var hostingMode: Enums.Hosting = .cloud
+    var showOnboarding = false
     
-    @Published var connectionMethod = Enums.ConnectionMethod.http
-    @Published var ipDomain = ""
-    @Published var port = ""
-    @Published var path = ""
+    var selectedTab = 0
+    var hostingMode: Enums.Hosting = .cloud
     
-    @Published var authMethod = Enums.AuthMethod.userPass
-    @Published var username = ""
-    @Published var password = ""
-    @Published var token = ""
+    var connectionMethod = Enums.ConnectionMethod.http
+    var ipDomain = ""
+    var port = ""
+    var path = ""
     
-    @Published var invalidValuesAlert = false
-    @Published var invalidValuesMessage = ""
+    var authMethod = Enums.AuthMethod.userPass
+    var username = ""
+    var password = ""
+    var token = ""
     
-    @Published var connectionErrorAlert = false
-    @Published var connectionErrorMessage = ""
+    var invalidValuesAlert = false
+    var invalidValuesMessage = ""
     
-    @Published var connecting = false
+    var connectionErrorAlert = false
+    var connectionErrorMessage = ""
+    
+    var connecting = false
     
     func checkInstance() {
         let fetchRequest: NSFetchRequest<ServerInstance> = ServerInstance.fetchRequest()
@@ -57,7 +62,7 @@ class OnboardingViewModel: ObservableObject {
                     let port = res[0].port != nil ? Int(res[0].port!) : nil
                     let client = ApiClient(instance: ServerApiInstance(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true))
                     DispatchQueue.main.async {
-                        ApiClientProvider.shared.initialice(instance: client)
+                        self.apiClientRepository.initialice(instance: client)
                     }
                 }
                 else {
@@ -67,7 +72,7 @@ class OnboardingViewModel: ObservableObject {
                     }
                     let client = ApiClient(instance: ServerApiInstance(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false))
                     DispatchQueue.main.async {
-                        ApiClientProvider.shared.initialice(instance: client)
+                        self.apiClientRepository.initialice(instance: client)
                     }
                 }
             }
@@ -231,7 +236,7 @@ class OnboardingViewModel: ObservableObject {
                 let saved = self.saveInstance(token: thisToken)
                 if saved == true {
                     DispatchQueue.main.async {
-                        ApiClientProvider.shared.initialice(instance: instance)
+                        self.apiClientRepository.initialice(instance: instance)
                         self.showOnboarding = false
                     }
                 }

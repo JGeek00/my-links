@@ -10,16 +10,14 @@ struct ShareExtensionCollectionsPickerView: View {
     
     var body: some View {
         let collections = shareExtensionViewModel.collections
-        let filtered = searchText != "" ? collections.filter { $0.name!.lowercased().contains(searchText.lowercased()) } : collections
+        let filtered = searchText != "" ? collections.filter { $0.name.lowercased().contains(searchText.lowercased()) } : collections
         List(filtered, id: \.self) { item in
             Button {
-                if let id = item.id {
-                    shareExtensionViewModel.collection = id
-                    dismiss()
-                }
+                shareExtensionViewModel.collection = item.id
+                dismiss()
             } label: {
                 HStack {
-                    Text(verbatim: "\(item.name ?? "")")
+                    Text(verbatim: item.name)
                         .foregroundColor(.foreground)
                     Spacer()
                     if shareExtensionViewModel.collection == item.id {

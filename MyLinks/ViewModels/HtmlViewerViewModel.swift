@@ -2,25 +2,28 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class HTMLViewerViewModel: ObservableObject {
-    let link: Link
-    let mode: Enums.HTMLViewerMode
+@Observable
+class HTMLViewerViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored let link: Link
+    @ObservationIgnored let mode: Enums.HTMLViewerMode
     
-    init(link: Link, mode: Enums.HTMLViewerMode) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, link: Link, mode: Enums.HTMLViewerMode) {
+        self.apiClientRepository = apiClientRepository
         self.link = link
         self.mode = mode
     }
     
-    @Published var readerData: ReaderResponse? = nil
-    @Published var htmlData: String? = nil
-    @Published var loading = true
-    @Published var error = false
+    var readerData: ReaderResponse? = nil
+    var htmlData: String? = nil
+    var loading = true
+    var error = false
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
+        guard let instance = apiClientRepository.instance else { return }
         switch mode {
         case .reader:
             let result = await instance.files.fetchReader(linkId: link.id)
@@ -35,7 +38,7 @@ class HTMLViewerViewModel: ObservableObject {
             }
             else {
                 if result.statusCode == 401 {
-                    ApiClientProvider.shared.destroy()
+                    apiClientRepository.destroy()
                     return
                 }
                 DispatchQueue.main.async {
@@ -58,7 +61,7 @@ class HTMLViewerViewModel: ObservableObject {
             }
             else {
                 if result.statusCode == 401 {
-                    ApiClientProvider.shared.destroy()
+                    apiClientRepository.destroy()
                     return
                 }
                 DispatchQueue.main.async {

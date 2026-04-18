@@ -3,27 +3,32 @@ import PDFKit
 import SwiftUI
 
 @MainActor
-class PdfViewerViewModel: ObservableObject {
-    @Published var pdfData: PDFDocument? = nil
-    @Published var data: Data? = nil
-    @Published var loading = true
-    @Published var error = false
+@Observable
+class PdfViewerViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    let linkId: Int
     
-    @Published var downloadedFilePath: URL? = nil
-    @Published var saveDocumentSheet = false
-    
-    @Published var savingErrorAlert = false
-    @Published var savingErrorMessage = ""
-    
-    init(link: Link) {
-        Task { await loadData(linkId: link.id) }
+    init(apiClientRepisotory: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkId: Int) {
+        self.apiClientRepository = apiClientRepisotory
+        self.linkId = linkId
     }
     
-    func loadData(linkId: Int, setLoading: Bool = false) async {
+    var pdfData: PDFDocument? = nil
+    var data: Data? = nil
+    var loading = true
+    var error = false
+    
+    var downloadedFilePath: URL? = nil
+    var saveDocumentSheet = false
+    
+    var savingErrorAlert = false
+    var savingErrorMessage = ""
+    
+    func loadData(setLoading: Bool = false) async {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
+        guard let instance = apiClientRepository.instance else { return }
         let result = await instance.files.fetchPdf(linkId: linkId)
         if result.successful == true {
             DispatchQueue.main.async {
@@ -37,7 +42,7 @@ class PdfViewerViewModel: ObservableObject {
         }
         else {
             if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {

@@ -1,13 +1,14 @@
 import SwiftUI
 
 struct ConnectionForm: View {
-    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) private var onboardingViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @State private var tokenInstructionsSheet = false
     
     var body: some View {
+        @Bindable var onboardingViewModel = onboardingViewModel
         Form {
             Section {} header: {
                 VStack(alignment: .leading) {

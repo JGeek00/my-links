@@ -1,12 +1,14 @@
 import SwiftUI
 import CustomAlert
 
-struct LinksView: View {
+struct LinksView: View {    
+    @State private var linksViewModel: LinksViewModel
+    
+    init() {
+        _linksViewModel = State(initialValue: LinksViewModel())
+    }
+    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    @State private var linksViewModel = LinksViewModel()
-    
-    init() {}
     
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
@@ -15,23 +17,11 @@ struct LinksView: View {
         NavigationStack {
             Group {
                 if linksViewModel.loading == true {
-                    Group {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .transition(.opacity)
+                    ProgressView("Loading...")
+                        .transition(.opacity)
                 }
                 else if linksViewModel.error == true {
-                    ContentUnavailableView {
-                        Label("Error", systemImage: "exclamationmark.circle")
-                    } description: {
-                        Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
-                        Button {
-                            linksViewModel.reload()
-                        } label: {
-                            Label("Retry", systemImage: "arrow.counterclockwise")
-                        }
-                    }
+                    ContentUnavailableView("Error", systemImage: "exclamationmark.circle", description: Text("An error occured when loading the dashboard data. Check your Internet connection and try again later."))
                     .transition(.opacity)
                 }
                 else {
@@ -50,7 +40,9 @@ struct LinksView: View {
                                     ScrollView {
                                         LazyVGrid(columns: Config.gridColumns) {
                                             ForEach(linksViewModel.data, id: \.self) { item in
-                                                LinkItemComponent(item: item) { _, _ in }
+                                                LinkItemComponent(item: item, options: [.edit, .delete]) {
+                                                    Task { await linksViewModel.loadData() }
+                                                }
                                                 .onAppear {
                                                     if item == linksViewModel.data.last {
                                                         linksViewModel.loadMore()
@@ -66,7 +58,9 @@ struct LinksView: View {
                             else {
                                 ScrollViewReader { scrollView in
                                     List(linksViewModel.data, id: \.self) { item in
-                                        LinkItemComponent(item: item) { _, _ in }
+                                        LinkItemComponent(item: item, options: [.edit, .delete]) {
+                                            Task { await linksViewModel.loadData() }
+                                        }
                                         .onAppear {
                                             if item == linksViewModel.data.last {
                                                 linksViewModel.loadMore()

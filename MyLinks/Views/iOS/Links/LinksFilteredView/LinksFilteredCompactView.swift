@@ -8,11 +8,9 @@ struct LinksFilteredCompactView: View {
     }
     
     @Environment(LinksFilteredViewModel.self) private var linksFilteredViewModel
-    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
        
     var body: some View {
-        let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
+        let subCollections = linksFilteredViewModel.collections.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
         
         ScrollViewReader { scrollView in
             if linksFilteredViewModel.loading == false && linksFilteredViewModel.error == false && linksFilteredViewModel.data.isEmpty && subCollections.isEmpty {
@@ -28,7 +26,7 @@ struct LinksFilteredCompactView: View {
             else {
                 List {
                     if linksFilteredViewModel.input.mode == .collection && linksFilteredViewModel.input.id != nil && !subCollections.isEmpty {
-                        let filteredSubCollections = linksFilteredViewModel.searchLinksValue != "" ? subCollections.filter() { $0.name!.lowercased().contains(linksFilteredViewModel.searchLinksValue.lowercased())} : subCollections
+                        let filteredSubCollections = linksFilteredViewModel.searchLinksValue != "" ? subCollections.filter() { $0.name.lowercased().contains(linksFilteredViewModel.searchLinksValue.lowercased())} : subCollections
                         Section("Subcollections") {
                             if filteredSubCollections.isEmpty {
                                 ContentUnavailableView {
@@ -41,7 +39,7 @@ struct LinksFilteredCompactView: View {
                             else {
                                 ForEach(filteredSubCollections, id: \.self) { item in
                                     CollectionItemComponent(collection: item) {
-                                        collectionsProvider.deleteCollection(id: item.id!)
+                                        Task { await linksFilteredViewModel.loadData() }
                                     }
                                 }
                                 .transition(.opacity)
@@ -61,8 +59,8 @@ struct LinksFilteredCompactView: View {
                     else {
                         Section("Links") {
                             ForEach(linksFilteredViewModel.data, id: \.self) { item in
-                                LinkItemComponent(item: item) { link, action in
-                                    linksFilteredViewModel.onTaskCompleted(link: link, action: action)
+                                LinkItemComponent(item: item) {
+                                    Task { await linksFilteredViewModel.loadData() }
                                 }
                                 .onAppear {
                                     if item == linksFilteredViewModel.data.last {

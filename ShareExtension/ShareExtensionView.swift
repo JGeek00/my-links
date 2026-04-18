@@ -4,26 +4,13 @@ struct ShareExtensionView: View {
     let url: String
     let onClose: () -> Void
     
+    @State private var shareExtensionViewModel: ShareExtensionViewModel
+    
     init(url: String, onClose: @escaping () -> Void) {
         self.onClose = onClose
         self.url = url
+        _shareExtensionViewModel = State(initialValue: ShareExtensionViewModel(url: url))
     }
-    
-    var body: some View {
-        ShareExtensionViewContent(onClose: onClose)
-            .environment(ShareExtensionViewModel(url: url))
-    }
-}
-
-fileprivate struct ShareExtensionViewContent: View {
-    let onClose: () -> Void
-    
-    init(onClose: @escaping () -> Void) {
-        self.onClose = onClose
-    }
-
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @Environment(ShareExtensionViewModel.self) private var shareExtensionViewModel
     
     @State private var discardAlert = false
     
@@ -82,8 +69,8 @@ fileprivate struct ShareExtensionViewContent: View {
                                     Picker("Collection", selection: $shareExtensionViewModel.collection) {
                                         if !filtered.isEmpty {
                                             ForEach(filtered, id: \.self) { item in
-                                                Text(item.name!)
-                                                    .tag(item.id!)
+                                                Text(item.name)
+                                                    .tag(item.id)
                                             }
                                         }
                                         else {

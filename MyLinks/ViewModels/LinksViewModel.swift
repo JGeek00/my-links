@@ -4,7 +4,13 @@ import SwiftUI
 @MainActor
 @Observable
 class LinksViewModel {
-    static let shared = LinksViewModel()
+    let apiClientRepository: ApiClientRepository
+    let linkManagerRepository: LinkManagerRepository
+    
+    init() {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
+    }
     
     var data: [Link] = []
     var loading = true
@@ -22,8 +28,6 @@ class LinksViewModel {
     // Flag to triger onChange
     var scrollTopList = false
     
-    init() {}
-    
     func loadData(
         cursor: Int? = nil,
         setLoading: Bool = false,
@@ -33,7 +37,7 @@ class LinksViewModel {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
+        guard let instance = apiClientRepository.instance else { return }
         let result = await instance.links.searchLiks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
         if result.successful == true {
             DispatchQueue.main.async {
@@ -51,7 +55,7 @@ class LinksViewModel {
         }
         else {
             if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {
@@ -117,18 +121,5 @@ class LinksViewModel {
     
     func reload() {
         Task { await loadData() }
-        Task { await DashboardViewModel.shared.loadData() }
-    }
-    
-    func reset() {
-        self.data = []
-        self.loading = true
-        self.error = false
-        self.searchFieldValue = ""
-        self.searchPresented = false
-        self.searchQueryValue = nil
-        self.previousSearch = nil
-        self.loadingMore = false
-        self.sortingSelected = .dateNewestFirst
     }
 }

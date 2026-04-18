@@ -1,9 +1,12 @@
 import SwiftUI
 
-struct SearchView: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-        
+struct SearchView: View {    
+    @State private var searchViewModel: SearchViewModel
+    
+    init() {
+        _searchViewModel = State(initialValue: SearchViewModel())
+    }
+    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
@@ -24,7 +27,7 @@ struct SearchView: View {
                         } description: {
                             Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
                             Button {
-                                searchViewModel.reload()
+                                Task { await searchViewModel.loadData() }
                             } label: {
                                 Label("Retry", systemImage: "arrow.counterclockwise")
                             }
@@ -56,23 +59,25 @@ struct SearchView: View {
                 }
             })
         }
+        .environment(searchViewModel)
     }
 }
 
 fileprivate struct SearchCompactView: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
-        let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let collectionsSliced = searchViewModel.collections.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         // let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         
         List {
             if !linksSliced.isEmpty {
                 Section {
                     ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item) { _, _ in }
+                        LinkItemComponent(item: item, options: [.edit, .delete]) {
+                            Task { await searchViewModel.loadData() }
+                        }
                     }
                 } header: {
                     HStack {
@@ -97,13 +102,13 @@ fileprivate struct SearchCompactView: View {
                 Section {
                     ForEach(collectionsSliced, id: \.self) { item in
                         CollectionItemComponent(collection: item) {
-                            collectionsProvider.deleteCollection(id: item.id!)
+                            Task { await searchViewModel.loadData() }
                         }
                     }
                 } header: {
                     HStack {
                         Text("Collections")
-                        if collectionsProvider.data.count > 10 {
+                        if searchViewModel.collections.count > 10 {
                             Spacer()
                             NavigationLink {
                                 CollectionsSearchResults()
@@ -149,12 +154,11 @@ fileprivate struct SearchCompactView: View {
 }
 
 fileprivate struct SearchRegularView: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
-        let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let collectionsSliced = searchViewModel.collections.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         // let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         
         ScrollView {
@@ -175,8 +179,10 @@ fileprivate struct SearchRegularView: View {
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item) { _, _ in }
-                            .padding(8)
+                        LinkItemComponent(item: item, options: [.edit, .delete]) {
+                            Task { await searchViewModel.loadData() }
+                        }
+                        .padding(8)
                     }
                 }
                 .padding(.top, -24)
@@ -201,7 +207,7 @@ fileprivate struct SearchRegularView: View {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(collectionsSliced, id: \.self) { item in
                         CollectionItemComponent(collection: item) {
-                            collectionsProvider.deleteCollection(id: item.id!)
+                            Task { await searchViewModel.loadData() }
                         }
                         .padding(8)
                     }

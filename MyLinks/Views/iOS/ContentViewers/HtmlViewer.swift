@@ -6,13 +6,13 @@ struct HTMLViewer: View {
     var mode: Enums.HTMLViewerMode
     var onClose: () -> Void
     
-    @StateObject private var htmlViewerViewModel: HTMLViewerViewModel
+    @State private var htmlViewerViewModel: HTMLViewerViewModel
     
     init(link: Link, mode: Enums.HTMLViewerMode, onClose: @escaping () -> Void) {
         self.link = link
         self.mode = mode
         self.onClose = onClose
-        _htmlViewerViewModel = StateObject(wrappedValue: HTMLViewerViewModel(link: link, mode: mode))
+        _htmlViewerViewModel = State(initialValue: HTMLViewerViewModel(link: link, mode: mode))
     }
     
     var body: some View {

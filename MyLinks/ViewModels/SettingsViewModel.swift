@@ -3,6 +3,12 @@ import Foundation
 @MainActor
 @Observable
 class SettingsViewModel {
+    @ObservationIgnored private var apiClientRepository: ApiClientRepository
+    
+    init() {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+    }
+    
     var contactDeveloperSafariOpen = false
     var dataSourceSafariOpen = false
     var showBuildNumber = false
@@ -10,4 +16,12 @@ class SettingsViewModel {
     var linkwardenRepoOpen = false
     var appInfoWebOpen = false
     var myOtherAppsOpen = false
+    
+    var apiClientInstance: ApiClient? {
+        apiClientRepository.instance
+    }
+    
+    func destroyServer() {
+        apiClientRepository.destroy()
+    }
 }
