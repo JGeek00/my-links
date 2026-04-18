@@ -11,10 +11,7 @@ struct RootView: View {
     @EnvironmentObject private var navigationProvider: NavigationProvider
     
     let collectionsProvider = CollectionsProvider.shared
-   
-    @State private var tagsViewModel = TagsViewModel()
-    @State private var dashboardViewModel = DashboardViewModel()
-    
+       
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
     @FetchRequest(
@@ -30,7 +27,6 @@ struct RootView: View {
                         TabView(selection: $navigationProvider.selectedNavigationTab) {
                             Tab(value: .home) {
                                 DashboardView()
-                                    .environment(dashboardViewModel)
                             } label: {
                                 Label("Dashboard", systemImage: "house.fill")
                             }
@@ -54,7 +50,6 @@ struct RootView: View {
                     else {
                         TabView(selection: $navigationProvider.selectedNavigationTab) {
                             DashboardView()
-                                .environment(dashboardViewModel)
                                 .tabItem {
                                     Label("Dashboard", systemImage: "house.fill")
                                 }
@@ -120,6 +115,5 @@ struct RootView: View {
             onboardingViewModel.reset()
         }
         .environmentObject(collectionsProvider)
-        .environment(tagsViewModel)
     }
 }

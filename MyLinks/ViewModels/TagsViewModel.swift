@@ -5,36 +5,26 @@ import Foundation
 class TagsViewModel {
     static var shared = TagsViewModel()
     
-    var data: [TagsResponse_DataClass_Tag] = []
-    var loading = true
-    var error = false
-    
-    @ObservationIgnored var nextPage: Int? = nil
+    var state: Enums.LoadingState<TagsResponse_DataClass> = .loading
     
     init() {
-        self.data = []
-        self.loading = true
-        self.error = false
+        self.state = .loading
     }
     
     func loadData(setLoading: Bool = false, page: Int? = nil) async {
         if setLoading == true {
-            self.loading = true
+            self.state = .loading
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
         let result = await instance.tags.fetchTags(page: page)
         if result.successful == true {
             DispatchQueue.main.async {
                 if let data = result.data?.data {
-                    self.data = data.tags.sorted() { $0.name < $1.name }
-                    self.nextPage = data.nextCursor
+                    self.state = .success(data)
                 }
                 else {
-                    self.data = []
-                    self.nextPage = nil
+                    self.state = .failure
                 }
-                self.loading = false
-                self.error = false
             }
         }
         else {
@@ -43,15 +33,14 @@ class TagsViewModel {
                 return
             }
             DispatchQueue.main.async {
-                self.loading = false
-                self.error = true
+                self.state = .failure
             }
         }
     }
     
     func loadNextPage() {
         Task {
-            await loadData(page: self.nextPage)
+            await loadData(page: self.state.data?.nextCursor)
         }
     }
     
@@ -82,8 +71,6 @@ class TagsViewModel {
     }
     
     func reset() {
-        data = []
-        loading = true
-        error = false
+        self.state = .loading
     }
 }

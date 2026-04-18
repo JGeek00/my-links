@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ElementsView: View {
     @EnvironmentObject private var navigationProvider: NavigationProvider
-    
+        
     var body: some View {
         NavigationSplitView {
             List(selection: $navigationProvider.catalogSelectedView) {
@@ -23,7 +23,6 @@ struct ElementsView: View {
                 case .links:
                     NavigationStack {
                         LinksView()
-                            .environmentObject(LinksViewModel.shared)
                             .background(Color.listBackground)
                     }
                 case .collections:

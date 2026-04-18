@@ -2,24 +2,25 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class LinksViewModel: ObservableObject {
+@Observable
+class LinksViewModel {
     static let shared = LinksViewModel()
     
-    @Published var data: [Link] = []
-    @Published var loading = true
-    @Published var error = false
+    var data: [Link] = []
+    var loading = true
+    var error = false
     
-    @Published var searchFieldValue = ""
-    @Published var searchPresented = false
-    var searchQueryValue: String? = nil
-    var previousSearch: String? = nil
+    var searchFieldValue = ""
+    var searchPresented = false
+    @ObservationIgnored var searchQueryValue: String? = nil
+    @ObservationIgnored var previousSearch: String? = nil
     
-    @Published var loadingMore = false
+    var loadingMore = false
     
-    @Published var sortingSelected = Enums.SortingOptions.dateNewestFirst
+    var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
     // Flag to triger onChange
-    @Published var scrollTopList = false
+    var scrollTopList = false
     
     init() {}
     

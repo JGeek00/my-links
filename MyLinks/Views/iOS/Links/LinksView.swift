@@ -4,7 +4,7 @@ import CustomAlert
 struct LinksView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @EnvironmentObject private var linksViewModel: LinksViewModel
+    @State private var linksViewModel = LinksViewModel()
     
     init() {}
     
@@ -154,10 +154,8 @@ struct LinksView: View {
                 }
             })
         }
-        .onAppear(perform: {
-            if linksViewModel.data.isEmpty {
-                Task { await linksViewModel.loadData() }
-            }
-        })
+        .task {
+            await linksViewModel.loadData()
+        }
     }
 }

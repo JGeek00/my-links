@@ -2,26 +2,27 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class LinksFilteredViewModel: ObservableObject {
-    @Published var input: LinksFilteredRequest
+@Observable
+class LinksFilteredViewModel {
+    var input: LinksFilteredRequest
     
     init(input: LinksFilteredRequest) {
         self.input = input
     }
     
-    @Published var data: [Link] = []
-    @Published var loading = true
-    @Published var error = false
+    var data: [Link] = []
+    var loading = true
+    var error = false
     
-    @Published var searchLinksValue = ""
-    @Published var searchLinksPresented = false
-    var previousLinksSearch: String? = nil
+    var searchLinksValue = ""
+    var searchLinksPresented = false
+    @ObservationIgnored var previousLinksSearch: String? = nil
     
-    @Published var searchCollectionsValue = ""
+    var searchCollectionsValue = ""
     
-    @Published var loadingMore = false
+    var loadingMore = false
     
-    @Published var sortingSelected = Enums.SortingOptions.dateNewestFirst
+    var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
     func loadData(
         cursor: Int? = nil,

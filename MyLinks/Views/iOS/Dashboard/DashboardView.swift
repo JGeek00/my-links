@@ -5,11 +5,12 @@ struct DashboardView: View {
     
     init() {}
     
-    @Environment(DashboardViewModel.self) private var dashboardViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    @State private var dashboardViewModel = DashboardViewModel()
     
     @State private var navigationPath = NavigationPath()
     @State private var linkFormUrlSheet = false
@@ -107,6 +108,7 @@ struct DashboardView: View {
         .task {
             await dashboardViewModel.loadData()
         }
+        .environment(dashboardViewModel)
     }
 }
 
