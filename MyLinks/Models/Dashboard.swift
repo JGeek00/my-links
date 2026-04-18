@@ -1,13 +1,14 @@
 import Foundation
 
-// MARK: - DashboardV2Response
-struct DashboardV2Response: Codable, Sendable {
-    let data: DataClass?
-    let message: String?
+// MARK: - DashboardResponse
+struct DashboardResponse: Codable, Sendable, Equatable {
+    let data: DashboardResponse_Data?
+    let message: String
 }
 
-// MARK: - DataClass
-struct DataClass: Codable, Sendable {
-    let links: [Link]?
-    let numberOfPinnedLinks: Int?
+// MARK: - DashboardResponse_Data
+struct DashboardResponse_Data: Codable, Sendable, Equatable {
+    let links: [Link]
+    let numberOfPinnedLinks: Int
+    let numberOfTags: Int
 }

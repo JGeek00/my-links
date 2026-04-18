@@ -1122,6 +1122,16 @@
         }
       }
     },
+    "HTML viewer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visor de HTML"
+          }
+        }
+      }
+    },
     "HTTP" : {
       "localizations" : {
         "es" : {
@@ -1439,6 +1449,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vista de lista"
+          }
+        }
+      }
+    },
+    "Loading..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando..."
           }
         }
       }

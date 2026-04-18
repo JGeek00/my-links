@@ -33,7 +33,7 @@ class LinksViewModel: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.searchLiks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
+        let result = await instance.links.searchLiks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
         if result.successful == true {
             DispatchQueue.main.async {
                 if loadMore == true {
@@ -70,7 +70,7 @@ class LinksViewModel: ObservableObject {
         }
         self.loadingMore = true
         Task {
-            await loadData(cursor: data.last!.id!, setError: false, loadMore: true)
+            await loadData(cursor: data.last!.id, setError: false, loadMore: true)
             DispatchQueue.main.async {
                 self.loadingMore = false
             }
@@ -97,7 +97,7 @@ class LinksViewModel: ObservableObject {
     
     func removeLinkData(linkId: Int) {
         DispatchQueue.main.async {
-            self.data = self.data.filter() { $0.id! != linkId }
+            self.data = self.data.filter() { $0.id != linkId }
         }
     }
     

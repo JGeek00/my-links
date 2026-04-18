@@ -16,7 +16,7 @@ class LinkManagerProvider: ObservableObject {
     func createLink(link: LinkCreationRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
-            let result = await instance.createLink(link)
+            let result = await instance.links.createLink(link)
             if result.successful == true {
                 onSuccess(result.data!.response!)
             }
@@ -33,7 +33,7 @@ class LinkManagerProvider: ObservableObject {
     func uploadLinkFile(linkId: Int, fileUrl: URL, fileType: Enums.DownloadDocumentType, onSuccess: @escaping (FileResponse) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
-            let result = await instance.uploadLinkFile(linkId: linkId, fileUrl: fileUrl, fileType: fileType)
+            let result = await instance.links.uploadLinkFile(linkId: linkId, fileUrl: fileUrl, fileType: fileType)
             if result.successful == true {
                 onSuccess(result.data!.response!)
             }
@@ -50,10 +50,10 @@ class LinkManagerProvider: ObservableObject {
     func editLink(id: Int, body: LinkEditingRequest, onSuccess: @escaping (Link) -> Void, onError: @escaping (_ statusCode: Int?) -> Void) {
         guard let instance = ApiClientProvider.shared.instance else { return }
         Task {
-            let result = await instance.editLink(linkId: id, body: body)
+            let result = await instance.links.editLink(linkId: id, body: body)
             if result.successful == true {
                 DispatchQueue.main.async {
-                    Task { await TagsProvider.shared.loadData() }
+                    //Task { await TagsProvider.shared.loadData() }
                     Task { await CollectionsProvider.shared.loadData() }
                     Task { await DashboardViewModel.shared.loadData() }
                     LinksViewModel.shared.updateLinkData(link: result.data!.response!)
@@ -75,19 +75,19 @@ class LinkManagerProvider: ObservableObject {
         DispatchQueue.main.async {
             self.processing = true
         }
-        let result = await instance.deleteLink(linkId: id)
-        if result.successful == true {
+        let result = await instance.links.deleteLink(linkId: id)
+        if let response = result.data?.response {
             DispatchQueue.main.async {
                 self.processing = false
                 self.errorMessage = ""
                 self.errorAlert = false
-                if !DashboardViewModel.shared.data.isEmpty {
-                    Task { await DashboardViewModel.shared.loadData() }
-                    Task { await CollectionsProvider.shared.loadData() }
-                    Task { await TagsProvider.shared.loadData() }
-                }
-                LinksViewModel.shared.removeLinkData(linkId: result.data!.response!.id!)
-                onComplete(result.data!.response!)
+                
+                Task { await DashboardViewModel.shared.loadData() }
+                Task { await CollectionsProvider.shared.loadData() }
+                //(Task { await TagsProvider.shared.loadData() }
+                
+                LinksViewModel.shared.removeLinkData(linkId: response.id)
+                onComplete(response)
             }
         }
         else {
@@ -109,30 +109,30 @@ class LinkManagerProvider: ObservableObject {
             self.processing = true
         }
         let body = LinkEditingRequest(
-            id: link.id!,
+            id: link.id,
             url: link.url,
-            name: link.name!,
-            description: link.description!,
-            tags: link.tags!.map() { TagCreation(name: $0.name!) },
-            collection: CollectionCreation(id: link.collection!.id!, name: link.collection!.name!, ownerId: link.collection!.ownerId!),
-            pinnedBy: link.pinnedBy!.isEmpty ? [PinnedByRequestEditing(id: 1)] : [],
+            name: link.name,
+            description: link.description,
+            tags: link.tags.map() { TagCreation(name: $0.name) },
+            collection: CollectionCreation(id: link.collection.id, name: link.collection.name, ownerId: link.collection.ownerId),
+            pinnedBy: link.pinnedBy.isEmpty ? [PinnedByRequestEditing(id: 1)] : [],
             image: link.image,
             pdf: link.pdf
         )
-        let result = await instance.editLink(linkId: link.id!, body: body)
+        let result = await instance.links.editLink(linkId: link.id, body: body)
         if result.successful == true {
             DispatchQueue.main.async {
                 self.processing = false
                 self.errorMessage = ""
                 self.errorAlert = false
-                if !DashboardViewModel.shared.data.isEmpty {
-                    Task { await DashboardViewModel.shared.loadData() }
-                    Task { await CollectionsProvider.shared.loadData() }
-                    Task { await TagsProvider.shared.loadData() }
-                }
+                
+                Task { await DashboardViewModel.shared.loadData() }
+                Task { await CollectionsProvider.shared.loadData() }
+                // Task { await TagsProvider.shared.loadData() }
+                
                 LinksViewModel.shared.updateLinkData(link: result.data!.response!)
                 onCompleted(result.data!.response!)
-                if link.pinnedBy!.isEmpty {
+                if link.pinnedBy.isEmpty {
                     ToastProvider.shared.showToast(icon: "pin.fill", title: "Link pinned")
                 }
                 else {
@@ -147,7 +147,7 @@ class LinkManagerProvider: ObservableObject {
             }
             DispatchQueue.main.async {
                 self.processing = false
-                if link.pinnedBy!.isEmpty {
+                if link.pinnedBy.isEmpty {
                     self.errorMessage = String(localized: "The link could not be pinned due to an error.")
                 }
                 else {

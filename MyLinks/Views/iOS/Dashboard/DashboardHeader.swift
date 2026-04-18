@@ -1,16 +1,15 @@
 import SwiftUI
 
 struct Header: View {
-    var dashboardData: [Link]
+    var dashboardData: DashboardResponse_Data
     
-    init(dashboardData: [Link]) {
+    init(dashboardData: DashboardResponse_Data) {
         self.dashboardData = dashboardData
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @EnvironmentObject private var tagsProvider: TagsProvider
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
+    @Environment(DashboardViewModel.self) private var dashboardViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
     @EnvironmentObject private var navigationProvider: NavigationProvider
     
@@ -21,13 +20,13 @@ struct Header: View {
                     SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded) {
                         navigationProvider.navigateLinksCatalog()
                     }
-                    SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardViewModel.pinnedLinks, color: Color.orange, status: .loaded) {
+                    SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardData.numberOfPinnedLinks, color: Color.orange, status: .loaded) {
                         dashboardViewModel.navigatePinned()
                     }
                     SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded) {
                         navigationProvider.navigateCollectionsCatalog()
                     }
-                    SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded) {
+                    SummaryEntry(icon: "tag.fill", label: "Tags", value: dashboardData.numberOfTags, color: Color.red, status: .loaded) {
                         navigationProvider.navigateTagsCatalog()
                     }
                 }
@@ -43,7 +42,7 @@ struct Header: View {
                         SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded) {
                             navigationProvider.navigateLinksCatalog()
                         }
-                        SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardViewModel.pinnedLinks, color: Color.orange, status: .loaded) {
+                        SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardData.numberOfPinnedLinks, color: Color.orange, status: .loaded) {
                             dashboardViewModel.navigatePinned()
                         }
                     }
@@ -51,7 +50,7 @@ struct Header: View {
                         SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded) {
                             navigationProvider.navigateCollectionsCatalog()
                         }
-                        SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded) {
+                        SummaryEntry(icon: "tag.fill", label: "Tags", value: dashboardData.numberOfTags, color: Color.red, status: .loaded) {
                             navigationProvider.navigateTagsCatalog()
                         }
                     }

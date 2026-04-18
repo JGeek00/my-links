@@ -27,7 +27,7 @@ struct DashboardView: View {
                     } description: {
                         Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
                         Button {
-                            Task { await dashboardViewModel.reloadAll() }
+                            Task { await dashboardViewModel.reload() }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -69,7 +69,7 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .automatic) {
                     Button {
-                        Task { await dashboardViewModel.reloadAll(setLoading: true) }
+                        Task { await dashboardViewModel.reload() }
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }

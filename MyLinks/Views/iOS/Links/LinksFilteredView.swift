@@ -175,7 +175,6 @@ fileprivate struct LinksFilteredRegularView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
         
     var body: some View {
-        let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
         let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
         ScrollViewReader(content: { scrollView in
             ScrollView {
@@ -209,7 +208,7 @@ fileprivate struct LinksFilteredRegularView: View {
                     .padding(.top, 16)
                     .padding(.horizontal, 14)
                 }
-                if !filtered.isEmpty {
+                if !linksFilteredViewModel.data.isEmpty {
                     VStack(alignment: .leading) {
                         if linksFilteredViewModel.input.mode == .collection {
                             Text("Links")
@@ -218,12 +217,12 @@ fileprivate struct LinksFilteredRegularView: View {
                                 .padding(.leading, 8)
                         }
                         LazyVGrid(columns: Config.gridColumns) {
-                            ForEach(filtered, id: \.self) { item in
+                            ForEach(linksFilteredViewModel.data, id: \.self) { item in
                                 LinkItemComponent(item: item) { link, action in
                                     linksFilteredViewModel.onTaskCompleted(link: link, action: action)
                                 }
                                 .onAppear {
-                                    if item == filtered.last {
+                                    if item == linksFilteredViewModel.data.last {
                                         linksFilteredViewModel.loadMore()
                                     }
                                 }
@@ -261,11 +260,10 @@ fileprivate struct LinksFilteredCompactView: View {
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
        
     var body: some View {
-        let filtered = linksFilteredViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
         let subCollections = collectionsProvider.data.filter() { $0.parent?.id != nil && linksFilteredViewModel.input.id != nil && $0.parent!.id! == linksFilteredViewModel.input.id! }
         
         ScrollViewReader { scrollView in
-            if linksFilteredViewModel.loading == false && linksFilteredViewModel.error == false && filtered.isEmpty && subCollections.isEmpty {
+            if linksFilteredViewModel.loading == false && linksFilteredViewModel.error == false && linksFilteredViewModel.data.isEmpty && subCollections.isEmpty {
                 // Show when no links and no subcategories
                 ContentUnavailableView {
                     Label(mode == .tag ? "This tag has no links" : "No links added to this collection", systemImage: "link")
@@ -298,7 +296,7 @@ fileprivate struct LinksFilteredCompactView: View {
                             }
                         }
                     }
-                    if filtered.isEmpty {
+                    if linksFilteredViewModel.data.isEmpty {
                         // Show when subcategories but no links
                         ContentUnavailableView {
                             Label(mode == .tag ? "This tag has no links" : "No links added to this collection", systemImage: "link")
@@ -310,12 +308,12 @@ fileprivate struct LinksFilteredCompactView: View {
                     }
                     else {
                         Section("Links") {
-                            ForEach(filtered, id: \.self) { item in
+                            ForEach(linksFilteredViewModel.data, id: \.self) { item in
                                 LinkItemComponent(item: item) { link, action in
                                     linksFilteredViewModel.onTaskCompleted(link: link, action: action)
                                 }
                                 .onAppear {
-                                    if item == filtered.last {
+                                    if item == linksFilteredViewModel.data.last {
                                         linksFilteredViewModel.loadMore()
                                     }
                                 }
@@ -323,7 +321,7 @@ fileprivate struct LinksFilteredCompactView: View {
                         }
                     }
                 }
-                .animation(.default, value: filtered)
+                .animation(.default, value: linksFilteredViewModel.data)
                 .animation(.default, value: subCollections)
             }
         }

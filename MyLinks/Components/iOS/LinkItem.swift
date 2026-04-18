@@ -33,9 +33,6 @@ struct LinkItemComponent: View {
             if let url = item.url {
                 openSafariView(url)
             }
-            else {
-                linkContentUnavailable = true
-            }
         }
         
         switch item.type {
@@ -44,14 +41,9 @@ struct LinkItemComponent: View {
             case .internalBrowser:
                openInternalBrowser()
             case .systemBrowser:
-                if let url = item.url {
-                    if let url = URL(string: url) {
-                        openURL(url)
-                    } else {
-                        linkContentUnavailable = true
-                    }
-                }
-                else {
+                if let itemUrl = item.url, let url = URL(string: itemUrl) {
+                    openURL(url)
+                } else {
                     linkContentUnavailable = true
                 }
             case .readableMode:
@@ -80,15 +72,13 @@ struct LinkItemComponent: View {
             imageViewerSheet = true
         case .pdf:
             pdfViewerSheet = true
-        case .none:
-            linkContentUnavailable = true
         }
     }
     
     var body: some View {
         let urlHost = getUrlHost(item.url)
-        let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
-        let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
+        let dateFormatted = formatDate(item.createdAt)
+        let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.getInstanceUrl())/preserved/\(item.id)?format=3") : nil
         let pdfAvailable = item.pdf != nil && item.pdf != "unavailable"
         let imageAvailable = item.image != nil && item.image != "unavailable"
         let htmlWebpageAvailable = item.monolith != nil && item.monolith != "unavailable"
@@ -98,12 +88,12 @@ struct LinkItemComponent: View {
         } label: {
             VStack(alignment: .leading) {
                 HStack {
-                    if showFavicons == true, let url = item.url {
+                    if let url = item.url, showFavicons == true {
                         FaviconImage(linkUrl: url)
                         Spacer()
                             .frame(width: 8)
                     }
-                    Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url ?? "")
+                    Text(item.name != "" ? item.name : item.description != "" ? item.description : item.url ?? "")
                         .lineLimit(1)
                         .fontWeight(.medium)
                 }
@@ -128,21 +118,17 @@ struct LinkItemComponent: View {
                             .font(.system(size: 10))
                         Text("Image")
                             .font(.system(size: 14))
-                    case .none:
-                        Spacer().frame(width: 0, height: 0)
                     }
                 }
                 .foregroundStyle(Color.gray)
-                if dateFormatted != nil || (item.collection?.name != nil) {
+                if dateFormatted != nil {
                     Spacer()
                         .frame(height: 4)
                     HStack {
-                        if let name = item.collection?.name {
-                            Image(systemName: "folder")
-                                .font(.system(size: 10))
-                            Text(name)
-                                .font(.system(size: 14))
-                        }
+                        Image(systemName: "folder")
+                            .font(.system(size: 10))
+                        Text(item.collection.name)
+                            .font(.system(size: 14))
                         if let dateFormatted =  dateFormatted {
                             Spacer()
                             Image(systemName: "calendar")
@@ -183,7 +169,7 @@ struct LinkItemComponent: View {
                     Label("Link details", systemImage: "info.circle")
                 }
                 Button {
-                    UIPasteboard.general.string = item.url!
+                    UIPasteboard.general.string = item.url
                     toastProvider.showToast(icon: "doc.on.doc", title: String(localized: "Link URL copied to the clipboard"))
                 } label: {
                     Label("Copy link URL", systemImage: "doc.on.doc")
@@ -222,7 +208,7 @@ struct LinkItemComponent: View {
                 }
             }
             Section {
-                if item.pinnedBy!.isEmpty {
+                if item.pinnedBy.isEmpty {
                     Button("Pin to the dashboard", systemImage: "pin") {
                         Task {
                             await linkManagerProvider.pinUnpinLink(link: item) { item in
@@ -256,7 +242,7 @@ struct LinkItemComponent: View {
             }
             Button("Delete", role: .destructive) {
                 Task {
-                    await linkManagerProvider.deleteLink(id: item.id!) { link in
+                    await linkManagerProvider.deleteLink(id: item.id) { link in
                         onTaskCompleted(link, .delete)
                     }
                 }

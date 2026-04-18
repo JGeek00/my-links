@@ -55,7 +55,7 @@ class OnboardingViewModel: ObservableObject {
                         return
                     }
                     let port = res[0].port != nil ? Int(res[0].port!) : nil
-                    let client = ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true)
+                    let client = ApiClient(instance: ServerApiInstance(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true))
                     DispatchQueue.main.async {
                         ApiClientProvider.shared.initialice(instance: client)
                     }
@@ -65,7 +65,7 @@ class OnboardingViewModel: ObservableObject {
                         clearInstances()
                         return
                     }
-                    let client = ApiClient(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false)
+                    let client = ApiClient(instance: ServerApiInstance(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false))
                     DispatchQueue.main.async {
                         ApiClientProvider.shared.initialice(instance: client)
                     }
@@ -214,8 +214,8 @@ class OnboardingViewModel: ObservableObject {
                 }
             }
 
-            let instance = hostingMode == .selfhosted ? ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: thisToken, isSelfHosted: true) : ApiClient(url: Config.linkwardenCloudUrl, token: thisToken, isSelfHosted: false)
-            let result = await instance.fetchDashboard()
+            let instance = hostingMode == .selfhosted ? ApiClient(instance: ServerApiInstance(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: thisToken, isSelfHosted: true)) : ApiClient(instance: ServerApiInstance(url: Config.linkwardenCloudUrl, token: thisToken, isSelfHosted: false))
+            let result = await instance.dashboard.fetchDashboard()
             DispatchQueue.main.async {
                 self.connecting = false
             }

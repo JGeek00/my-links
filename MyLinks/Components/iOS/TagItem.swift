@@ -9,7 +9,7 @@ struct TagItemComponent: View {
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @Environment(TagsViewModel.self) private var tagsViewModel
     
     @State private var showDeleteAlert: Bool = false
         
@@ -59,7 +59,7 @@ struct TagItemComponent: View {
             }
             Button("Delete tag", role: .destructive) {
                 Task {
-                    await tagsProvider.deleteTag(tagId: tag.id)
+                    await tagsViewModel.deleteTag(tagId: tag.id)
                 }
             }
         } message: {

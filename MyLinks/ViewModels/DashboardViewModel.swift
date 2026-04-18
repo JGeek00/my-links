@@ -2,71 +2,32 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class DashboardViewModel: ObservableObject {
+@Observable
+class DashboardViewModel {
     static let shared = DashboardViewModel()
     
-    @Published var data: [Link] = []
-    @Published var pinnedLinks: Int? = nil
-    @Published var loading = true
-    @Published var error = false
+    var state: Enums.LoadingState<DashboardResponse_Data> = .loading
     
-    @Published var path = NavigationPath()
+    var path = NavigationPath()
     
     init() {}
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            self.loading = true
-            self.data = []
+            self.state = .loading
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchDashboardV2()
-        if result.successful == true {
+        let result = await instance.dashboard.fetchDashboard()
+        if let data = result.data?.data {
             DispatchQueue.main.async {
-                self.data = result.data?.data?.links ?? []
-                self.pinnedLinks = result.data?.data?.numberOfPinnedLinks
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    withAnimation(.default) {
-                        self.loading = false
-                        self.error = false
-                    }
+                withAnimation {
+                    self.state = .success(data)
                 }
             }
         }
         else {
-            if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
-                return
-            }
-            else if result.statusCode != nil {
-                let result2 = await instance.fetchDashboard()
-                if result2.successful == true {
-                    DispatchQueue.main.async {
-                        self.data = result2.data?.response ?? []
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            withAnimation(.default) {
-                                self.loading = false
-                                self.error = false
-                            }
-                        }
-                    }
-                }
-                else {
-                    DispatchQueue.main.async {
-                        withAnimation(.default) {
-                            self.loading = false
-                            self.error = true
-                        }
-                    }
-                }
-            }
-            else {
-                DispatchQueue.main.async {
-                    withAnimation(.default) {
-                        self.loading = false
-                        self.error = true
-                    }
-                }
+            withAnimation {
+                self.state = .failure
             }
         }
     }
@@ -77,11 +38,6 @@ class DashboardViewModel: ObservableObject {
             await LinksViewModel.shared.loadData()
             LinksViewModel.shared.scrollTopList.toggle()
         }
-    }
-    
-    func reloadAll(setLoading: Bool = false) async {
-        await loadData(setLoading: setLoading)
-        _ = await (LinksViewModel.shared.loadData(), LinksViewModel.shared.scrollTopList.toggle(), CollectionsProvider.shared.loadData(), TagsProvider.shared.loadData())
     }
     
     func navigateRecent() {
@@ -95,10 +51,7 @@ class DashboardViewModel: ObservableObject {
     }
     
     func reset() {
-        self.data = []
-        self.loading = true
-        self.error = false
+        self.state = .loading
         self.path = NavigationPath()
-        self.pinnedLinks = nil
     }
 }

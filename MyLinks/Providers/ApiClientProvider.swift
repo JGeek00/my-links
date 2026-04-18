@@ -16,7 +16,7 @@ class ApiClientProvider: ObservableObject {
         DispatchQueue.main.async {
             OnboardingViewModel.shared.showOnboarding = true
             DashboardViewModel.shared.reset()
-            TagsProvider.shared.reset()
+            //TagsProvider.shared.reset()
             CollectionsProvider.shared.reset()
             LinksViewModel.shared.reset()
             ApiClientProvider.shared.instance = nil

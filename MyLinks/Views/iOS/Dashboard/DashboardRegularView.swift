@@ -1,11 +1,16 @@
 import SwiftUI
 
 struct DashboardRegularViewRecent: View {
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
+    let data: DashboardResponse_Data
+    
+    init(data: DashboardResponse_Data) {
+        self.data = data
+    }
+    
+    @Environment(DashboardViewModel.self) private var dashboardViewModel
     
     var body: some View {
-        let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-        if !filtered.isEmpty {
+        if !data.links.isEmpty {
             VStack {
                 HStack {
                     Text("Recent")
@@ -20,7 +25,7 @@ struct DashboardRegularViewRecent: View {
                 Spacer()
                     .frame(height: 16)
                 LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(filtered.uniqued(), id: \.self) { item in
+                    ForEach(data.links.uniqued(), id: \.self) { item in
                         LinkItemComponent(item: item) { link, action in
                             dashboardViewModel.reload()
                         }
@@ -35,11 +40,16 @@ struct DashboardRegularViewRecent: View {
 
 
 struct DashboardRegularViewPinned: View {
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
+    let data: DashboardResponse_Data
+    
+    init(data: DashboardResponse_Data) {
+        self.data = data
+    }
+    
+    @Environment(DashboardViewModel.self) private var dashboardViewModel
     
     var body: some View {
-        let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-        let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
+        let pinned = data.links.filter() { $0.pinnedBy.isEmpty == false }
         if !pinned.isEmpty {
             VStack {
                 HStack {

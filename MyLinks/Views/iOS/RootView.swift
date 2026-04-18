@@ -11,7 +11,9 @@ struct RootView: View {
     @EnvironmentObject private var navigationProvider: NavigationProvider
     
     let collectionsProvider = CollectionsProvider.shared
-    let tagsProvider = TagsProvider.shared
+   
+    @State private var tagsViewModel = TagsViewModel()
+    @State private var dashboardViewModel = DashboardViewModel()
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
@@ -28,7 +30,7 @@ struct RootView: View {
                         TabView(selection: $navigationProvider.selectedNavigationTab) {
                             Tab(value: .home) {
                                 DashboardView()
-                                    .environmentObject(DashboardViewModel.shared)
+                                    .environment(dashboardViewModel)
                             } label: {
                                 Label("Dashboard", systemImage: "house.fill")
                             }
@@ -52,7 +54,7 @@ struct RootView: View {
                     else {
                         TabView(selection: $navigationProvider.selectedNavigationTab) {
                             DashboardView()
-                                .environmentObject(DashboardViewModel.shared)
+                                .environment(dashboardViewModel)
                                 .tabItem {
                                     Label("Dashboard", systemImage: "house.fill")
                                 }
@@ -78,9 +80,6 @@ struct RootView: View {
                 .onAppear(perform: {
                     if collectionsProvider.data.isEmpty {
                         Task { await collectionsProvider.loadData() }
-                    }
-                    if tagsProvider.data.isEmpty {
-                        Task { await tagsProvider.loadData() }
                     }
                 })
                 .customAlert(isPresented: $linkManagerProvider.processing, content: {
@@ -121,6 +120,6 @@ struct RootView: View {
             onboardingViewModel.reset()
         }
         .environmentObject(collectionsProvider)
-        .environmentObject(tagsProvider)
+        .environment(tagsViewModel)
     }
 }

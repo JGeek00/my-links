@@ -1,12 +1,15 @@
 import Foundation
 
 @MainActor
-class TagsProvider: ObservableObject {
-    static var shared = TagsProvider()
+@Observable
+class TagsViewModel {
+    static var shared = TagsViewModel()
     
-    @Published var data: [TagsResponse_DataClass_Tag] = []
-    @Published var loading = true
-    @Published var error = false
+    var data: [TagsResponse_DataClass_Tag] = []
+    var loading = true
+    var error = false
+    
+    @ObservationIgnored var nextPage: Int? = nil
     
     init() {
         self.data = []
@@ -14,19 +17,21 @@ class TagsProvider: ObservableObject {
         self.error = false
     }
     
-    func loadData(setLoading: Bool = false) async {
+    func loadData(setLoading: Bool = false, page: Int? = nil) async {
         if setLoading == true {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchTags()
+        let result = await instance.tags.fetchTags(page: page)
         if result.successful == true {
             DispatchQueue.main.async {
                 if let data = result.data?.data {
                     self.data = data.tags.sorted() { $0.name < $1.name }
+                    self.nextPage = data.nextCursor
                 }
                 else {
                     self.data = []
+                    self.nextPage = nil
                 }
                 self.loading = false
                 self.error = false
@@ -44,11 +49,17 @@ class TagsProvider: ObservableObject {
         }
     }
     
+    func loadNextPage() {
+        Task {
+            await loadData(page: self.nextPage)
+        }
+    }
+    
     func createTag(name: String) async -> Bool {
         guard let instance = ApiClientProvider.shared.instance else { return false }
         let body = TagCreationRequest()
         body.tags.append(TagCreationItem(label: name))
-        let result = await instance.createTag(body)
+        let result = await instance.tags.createTag(body)
         if result.successful == true {
             await loadData(setLoading: false)
             return true;
@@ -60,7 +71,7 @@ class TagsProvider: ObservableObject {
     
     func deleteTag(tagId: Int) async -> Bool {
         guard let instance = ApiClientProvider.shared.instance else { return false }
-        let result = await instance.deleteTag(tagId: tagId)
+        let result = await instance.tags.deleteTag(tagId: tagId)
         if result.successful == true {
             await loadData(setLoading: false)
             return true;

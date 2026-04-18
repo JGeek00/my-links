@@ -15,7 +15,7 @@ class ImageViewerViewModel: ObservableObject {
     @Published var savingErrorMessage = ""
     
     init(link: Link) {
-        Task { await self.loadData(linkId: link.id!) }
+        Task { await self.loadData(linkId: link.id) }
     }
     
     func loadData(linkId: Int, setLoading: Bool = false) async {
@@ -23,7 +23,7 @@ class ImageViewerViewModel: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchImage(linkId: linkId)
+        let result = await instance.files.fetchImage(linkId: linkId)
         if result.successful == true {
             DispatchQueue.main.async {
                 withAnimation(.default) {

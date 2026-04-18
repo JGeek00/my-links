@@ -62,7 +62,7 @@ class ShareExtensionViewModel {
                     }
                     let port = res[0].port != nil ? Int(res[0].port!) : nil
                     DispatchQueue.main.async {
-                        self.apiClient = ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true)
+                        self.apiClient = ApiClient(instance: ServerApiInstance(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true))
                     }
                 }
                 else {
@@ -70,7 +70,7 @@ class ShareExtensionViewModel {
                         return
                     }
                     DispatchQueue.main.async {
-                        self.apiClient = ApiClient(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false)
+                        self.apiClient = ApiClient(instance: ServerApiInstance(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false))
                     }
                 }
             }
@@ -81,16 +81,15 @@ class ShareExtensionViewModel {
     
     func loadData() async {
         guard let instance = apiClient else { return }
-        let (collectionsResult, tagsResult) = await (instance.fetchCollections(), instance.fetchTags())
-        if collectionsResult.successful == true && tagsResult.successful == true, let tagsData = tagsResult.data?.data {
+        let collectionsResult = await instance.collections.fetchCollections()
+        if let data = collectionsResult.data?.response {
             DispatchQueue.main.async {
-                let collectionsFiltered = collectionsResult.data!.response!.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
+                let collectionsFiltered = data.filter() { $0.id != nil && $0.name != nil && $0.createdAt != nil }
                 let sorted = collectionsFiltered.sorted() { $0.name! < $1.name! }
                 if let first = sorted.first {
                     self.collection = first.id ?? 0
                 }
                 self.collections = sorted
-                self.tags = tagsData.tags.sorted() { $0.name < $1.name }
                 self.loading = false
                 self.loadError = false
             }
@@ -124,7 +123,7 @@ class ShareExtensionViewModel {
         }
         
         Task {
-            let result = await instance.createLink(body)
+            let result = await instance.links.createLink(body)
             if result.successful == true {
                 success()
             }

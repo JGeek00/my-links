@@ -2,7 +2,7 @@ import SwiftUI
 import CustomAlert
 
 struct TagsView: View {
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @Environment(TagsViewModel.self) private var tagsProvider
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -90,7 +90,7 @@ struct TagsView: View {
 }
 
 fileprivate struct TagsIndicators: View {
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @Environment(TagsViewModel.self) private var tagsProvider
     
     init() {}
     

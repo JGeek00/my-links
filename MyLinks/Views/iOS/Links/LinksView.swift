@@ -36,8 +36,7 @@ struct LinksView: View {
                 }
                 else {
                     Group {
-                        let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-                        if filtered.isEmpty {
+                        if linksViewModel.data.isEmpty {
                             ContentUnavailableView {
                                 Label("No links added", systemImage: "link")
                             } description: {
@@ -50,10 +49,10 @@ struct LinksView: View {
                                 ScrollViewReader(content: { scrollView in
                                     ScrollView {
                                         LazyVGrid(columns: Config.gridColumns) {
-                                            ForEach(filtered, id: \.self) { item in
+                                            ForEach(linksViewModel.data, id: \.self) { item in
                                                 LinkItemComponent(item: item) { _, _ in }
                                                 .onAppear {
-                                                    if item == filtered.last {
+                                                    if item == linksViewModel.data.last {
                                                         linksViewModel.loadMore()
                                                     }
                                                 }
@@ -66,15 +65,15 @@ struct LinksView: View {
                             }
                             else {
                                 ScrollViewReader { scrollView in
-                                    List(filtered, id: \.self) { item in
+                                    List(linksViewModel.data, id: \.self) { item in
                                         LinkItemComponent(item: item) { _, _ in }
                                         .onAppear {
-                                            if item == filtered.last {
+                                            if item == linksViewModel.data.last {
                                                 linksViewModel.loadMore()
                                             }
                                         }
                                     }
-                                    .animation(.default, value: filtered)
+                                    .animation(.default, value: linksViewModel.data)
                                     .onChange(of: linksViewModel.scrollTopList, initial: false) {
                                         guard let first = linksViewModel.data.first else { return }
                                         scrollView.scrollTo(first)

@@ -14,7 +14,7 @@ struct PDFViewerView: View {
     }
     
     var body: some View {
-        let name = link.name != "" ? link.name! : link.description != "" ? link.description! : link.url!
+        let name = link.name != "" ? link.name : link.description != "" ? link.description : link.url ?? ""
         let fileName = (name.hasSuffix(".") ? String(name.dropLast()) : name).replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: "/", with: "")
         NavigationStack {
             Group {
@@ -31,7 +31,7 @@ struct PDFViewerView: View {
                     } description: {
                         Text("An error occured when loading the PDF. Check your Internet connection and try again later.")
                         Button {
-                            Task { await pdfViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
+                            Task { await pdfViewerViewModel.loadData(linkId: link.id, setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -62,7 +62,7 @@ struct PDFViewerView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack {
                         Button {
-                            Task { await pdfViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
+                            Task { await pdfViewerViewModel.loadData(linkId: link.id, setLoading: true) }
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                         }

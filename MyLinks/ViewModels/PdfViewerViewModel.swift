@@ -16,7 +16,7 @@ class PdfViewerViewModel: ObservableObject {
     @Published var savingErrorMessage = ""
     
     init(link: Link) {
-        Task { await loadData(linkId: link.id!) }
+        Task { await loadData(linkId: link.id) }
     }
     
     func loadData(linkId: Int, setLoading: Bool = false) async {
@@ -24,7 +24,7 @@ class PdfViewerViewModel: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchPdf(linkId: linkId)
+        let result = await instance.files.fetchPdf(linkId: linkId)
         if result.successful == true {
             DispatchQueue.main.async {
                 withAnimation(.default) {

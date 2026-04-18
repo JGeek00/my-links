@@ -19,7 +19,7 @@ class CollectionsProvider: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchCollections()
+        let result = await instance.collections.fetchCollections()
         if result.successful == true {
             DispatchQueue.main.async {
                 if result.data?.response != nil {
@@ -49,7 +49,7 @@ class CollectionsProvider: ObservableObject {
         guard let instance = ApiClientProvider.shared.instance else { return }
         self.deleting = true
         Task {
-            let result = await instance.deleteCollection(collectionId: id)
+            let result = await instance.collections.deleteCollection(collectionId: id)
             if result.successful == true {
                 DispatchQueue.main.async {
                     self.deleting = false
@@ -61,9 +61,7 @@ class CollectionsProvider: ObservableObject {
                             LinksViewModel.shared.scrollTopList.toggle()
                         }
                     }
-                    if !DashboardViewModel.shared.data.isEmpty {
-                        Task { await DashboardViewModel.shared.loadData() }
-                    }
+                    Task { await DashboardViewModel.shared.loadData() }
                 }
             }
             else {

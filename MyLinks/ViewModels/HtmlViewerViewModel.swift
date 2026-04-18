@@ -23,7 +23,7 @@ class HTMLViewerViewModel: ObservableObject {
         guard let instance = ApiClientProvider.shared.instance else { return }
         switch mode {
         case .reader:
-            let result = await instance.fetchReader(linkId: link.id!)
+            let result = await instance.files.fetchReader(linkId: link.id)
             if result.successful == true {
                 DispatchQueue.main.async {
                     withAnimation(.default) {
@@ -46,7 +46,7 @@ class HTMLViewerViewModel: ObservableObject {
                 }
             }
         case .webpage:
-            let result = await instance.fetchWebpageHtml(linkId: link.id!)
+            let result = await instance.files.fetchWebpageHtml(linkId: link.id)
             if result.successful == true {
                 DispatchQueue.main.async {
                     withAnimation(.default) {

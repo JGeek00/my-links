@@ -3,7 +3,6 @@ import SwiftUI
 struct SearchView: View {
     @EnvironmentObject private var searchViewModel: SearchViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
         
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -63,12 +62,11 @@ struct SearchView: View {
 fileprivate struct SearchCompactView: View {
     @EnvironmentObject private var searchViewModel: SearchViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
         let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        // let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         
         List {
             if !linksSliced.isEmpty {
@@ -121,30 +119,30 @@ fileprivate struct SearchCompactView: View {
                     }
                 }
             }
-            if !tagsSliced.isEmpty {
-                Section {
-                    ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item)
-                    }
-                } header: {
-                    HStack {
-                        Text("Tags")
-                        if tagsProvider.data.count > 10 {
-                            Spacer()
-                            NavigationLink {
-                                TagsSearchResults()
-                            } label: {
-                                HStack {
-                                    Text("View more")
-                                    Spacer()
-                                        .frame(width: 8)
-                                    Image(systemName: "arrow.right")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+//            if !tagsSliced.isEmpty {
+//                Section {
+//                    ForEach(tagsSliced, id: \.self) { item in
+//                        TagItemComponent(tag: item)
+//                    }
+//                } header: {
+//                    HStack {
+//                        Text("Tags")
+//                        if tagsProvider.data.count > 10 {
+//                            Spacer()
+//                            NavigationLink {
+//                                TagsSearchResults()
+//                            } label: {
+//                                HStack {
+//                                    Text("View more")
+//                                    Spacer()
+//                                        .frame(width: 8)
+//                                    Image(systemName: "arrow.right")
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
         .transition(.opacity)
     }
@@ -153,12 +151,11 @@ fileprivate struct SearchCompactView: View {
 fileprivate struct SearchRegularView: View {
     @EnvironmentObject private var searchViewModel: SearchViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
         let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        // let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
         
         ScrollView {
             Group {
@@ -213,30 +210,30 @@ fileprivate struct SearchRegularView: View {
             }
             .padding(16)
             
-            Group {
-                HStack {
-                    Text("Tags")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                    Spacer()
-                    NavigationLink {
-                        TagsSearchResults()
-                    } label: {
-                        Text("View all")
-                        Image(systemName: "chevron.right")
-                    }
-                    .font(.system(size: 16))
-                }
-                .padding(.horizontal, 8)
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item)
-                            .padding(8)
-                    }
-                }
-                .padding(.top, -24)
-            }
-            .padding(16)
+//            Group {
+//                HStack {
+//                    Text("Tags")
+//                        .font(.system(size: 16))
+//                        .fontWeight(.semibold)
+//                    Spacer()
+//                    NavigationLink {
+//                        TagsSearchResults()
+//                    } label: {
+//                        Text("View all")
+//                        Image(systemName: "chevron.right")
+//                    }
+//                    .font(.system(size: 16))
+//                }
+//                .padding(.horizontal, 8)
+//                LazyVGrid(columns: Config.gridColumns) {
+//                    ForEach(tagsSliced, id: \.self) { item in
+//                        TagItemComponent(tag: item)
+//                            .padding(8)
+//                    }
+//                }
+//                .padding(.top, -24)
+//            }
+//            .padding(16)
         }
         .transition(.opacity)
     }

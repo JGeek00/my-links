@@ -44,7 +44,7 @@ class CollectionFormViewModel: ObservableObject {
                 parentId: editingCollection.parent?.id,
                 parent: Parent(id: editingCollection.parent?.id, name: editingCollection.parent?.name)
             )
-            let result = await instance.editCollection(collectionId: editingCollection.id!, body: data)
+            let result = await instance.collections.editCollection(collectionId: editingCollection.id!, body: data)
             if result.successful == true {
                 DispatchQueue.main.async {
                     var new = result.data!.response!
@@ -85,7 +85,7 @@ class CollectionFormViewModel: ObservableObject {
                 parentId: parentId,
                 parent: nil
             )
-            let result = await instance.createCollection(data)
+            let result = await instance.collections.createCollection(data)
             if result.successful == true {
                 DispatchQueue.main.async {
                     self.saving = false

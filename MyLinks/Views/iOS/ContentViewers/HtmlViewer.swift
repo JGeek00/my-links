@@ -75,7 +75,7 @@ struct HTMLViewer: View {
                 }
             }
             .background(Color.listBackground)
-            .navigationTitle(link.name! != "" ? link.name! : link.description! != "" ? link.description! : link.url!)
+            .navigationTitle(link.name != "" ? link.name : link.description != "" ? link.description : link.url ?? String(localized: "HTML viewer"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

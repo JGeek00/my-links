@@ -38,7 +38,7 @@ class LinksFilteredViewModel: ObservableObject {
             self.loading = true
         }
         guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.searchLiks(
+        let result = await instance.links.searchLiks(
             cursor: cursor,
             collectionId: input.mode == .collection ? input.id! : nil,
             tagId: input.mode == .tag ? input.id! : nil,
@@ -87,7 +87,7 @@ class LinksFilteredViewModel: ObservableObject {
         }
         self.loadingMore = true
         Task {
-            await loadData(cursor: data.last!.id!, setError: false, loadMore: true, searchTerm: searchLinksValue)
+            await loadData(cursor: data.last!.id, setError: false, loadMore: true, searchTerm: searchLinksValue)
             DispatchQueue.main.async {
                 self.loadingMore = false
             }
@@ -113,7 +113,7 @@ class LinksFilteredViewModel: ObservableObject {
     func onTaskCompleted(link: Link, action: Enums.LinkTaskCompleted) {
         switch action {
         case .delete:
-            removeLinkData(linkId: link.id!)
+            removeLinkData(linkId: link.id)
         case .pin:
             updateLinkData(link: link)
         case .edit:
@@ -125,16 +125,16 @@ class LinksFilteredViewModel: ObservableObject {
     
     func removeLinkData(linkId: Int) {
         DispatchQueue.main.async {
-            self.data = self.data.filter() { $0.id! != linkId }
+            self.data = self.data.filter() { $0.id != linkId }
         }
     }
     
     func updateLinkData(link: Link) {
         DispatchQueue.main.async {
             if self.input.mode == .tag {
-                let contains = link.tags!.first { $0.id == self.input.id }
+                let contains = link.tags.first { $0.id == self.input.id }
                 if contains == nil {
-                    self.data = self.data.filter() { $0.id! != link.id! }
+                    self.data = self.data.filter() { $0.id != link.id }
                 }
                 else {
                     self.data = self.data.map() { item in
@@ -148,8 +148,8 @@ class LinksFilteredViewModel: ObservableObject {
                 }
             }
             else if self.input.mode == .collection {
-                if link.collection!.id != self.input.id {
-                    self.data = self.data.filter() { $0.id! != link.id! }
+                if link.collection.id != self.input.id {
+                    self.data = self.data.filter() { $0.id != link.id }
                 }
                 else {
                     self.data = self.data.map() { item in

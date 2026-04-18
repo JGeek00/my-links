@@ -28,12 +28,10 @@ class LinkFormViewModel {
         if let link = link {
             editingLink = link
             url = link.url ?? ""
-            name = link.name ?? ""
-            description = link.description ?? ""
-            if let linkCollectionId = link.collection?.id {
-                collection = linkCollectionId
-            }
-            selectedTags = link.tags?.map() { $0.name! } ?? []
+            name = link.name
+            description = link.description
+            collection = link.collection.id
+            selectedTags = link.tags.map() { $0.name }
         }
         else if defaultCollectionId != nil {
             collection = defaultCollectionId!
@@ -72,13 +70,13 @@ class LinkFormViewModel {
                 type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
                 tags: selectedTags.map() { TagCreation(name: $0) },
                 collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-                pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequestEditing(id: $0.id!) } : [],
+                pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequestEditing(id: $0.id) } : [],
                 image: self.editingLink?.image,
                 pdf: self.editingLink?.pdf,
             )
             
             body.id = editingLink?.id
-            LinkManagerProvider.shared.editLink(id: editingLink!.id!, body: body) { link in
+            LinkManagerProvider.shared.editLink(id: editingLink!.id, body: body) { link in
                 DispatchQueue.main.async {
                     self.saving = false
                 }
@@ -107,7 +105,7 @@ class LinkFormViewModel {
                 type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
                 tags: selectedTags.map() { TagCreation(name: $0) },
                 collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-                pinnedBy: editingLink != nil ? editingLink!.pinnedBy!.map() { PinnedByRequest(id: $0.id!) } : [],
+                pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequest(id: $0.id) } : [],
                 image: self.editingLink?.image,
                 pdf: self.editingLink?.pdf,
             )
@@ -133,10 +131,10 @@ class LinkFormViewModel {
             
             LinkManagerProvider.shared.createLink(link: body) { link in
                 if mode == .file {
-                    LinkManagerProvider.shared.uploadLinkFile(linkId: link.id!, fileUrl: self.selectedFileUrl!, fileType: self.selectedFileUrl!.pathExtension == "pdf" ? .pdf : .image) { _ in
+                    LinkManagerProvider.shared.uploadLinkFile(linkId: link.id, fileUrl: self.selectedFileUrl!, fileType: self.selectedFileUrl!.pathExtension == "pdf" ? .pdf : .image) { _ in
                         DispatchQueue.main.async {
                             self.saving = false
-                            Task { await TagsProvider.shared.loadData() }
+                            // Task { await TagsProvider.shared.loadData() }
                             Task { await CollectionsProvider.shared.loadData() }
                             Task { await DashboardViewModel.shared.loadData() }
                             Task {
@@ -164,7 +162,7 @@ class LinkFormViewModel {
                 else {
                     DispatchQueue.main.async {
                         self.saving = false
-                        Task { await TagsProvider.shared.loadData() }
+                        // Task { await TagsProvider.shared.loadData() }
                         Task { await CollectionsProvider.shared.loadData() }
                         Task { await DashboardViewModel.shared.loadData() }
                         Task {

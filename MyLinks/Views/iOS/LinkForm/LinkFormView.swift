@@ -33,7 +33,6 @@ fileprivate struct LinkFormViewContent: View {
     
     @Environment(LinkFormViewModel.self) private var linkFormViewModel
     @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
     
     @State private var showFilePicker = false
     @State private var fileTooBigAlert = false

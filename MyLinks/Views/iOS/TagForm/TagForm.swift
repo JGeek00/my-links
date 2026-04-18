@@ -7,7 +7,7 @@ struct TagFormView: View {
         self.onClose = onClose
     }
     
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @Environment(TagsViewModel.self) private var tagsProvider
     
     @State private var label: String = ""
     @State private var saving: Bool = false
