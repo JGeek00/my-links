@@ -890,6 +890,16 @@
         }
       }
     },
+    "Discard changes?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Descartar los cambios?"
+          }
+        }
+      }
+    },
     "Disconnect" : {
       "localizations" : {
         "es" : {

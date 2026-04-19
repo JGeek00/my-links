@@ -26,6 +26,8 @@ class LinkFormViewModel {
     var savingErrorMessage = ""
     var savingErrorAlert = false
     
+    var discardChangesConfirmation = false
+    
     init(collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, link: Link? = nil, defaultCollectionId: Int? = nil) {
         self.collectionsRepository = collectionsRepository
         self.linkManagerRepository = linkManagerRepository
@@ -51,7 +53,7 @@ class LinkFormViewModel {
         }
     }
         
-    func onSave(mode: Enums.LinkFormItem, onSuccess: @escaping (Link) -> Void, onError: @escaping (Int?) -> Void) {
+    func onSave(mode: Enums.LinkFormItem, onSuccess: @escaping (Link) -> Void, onError: ((Int?) -> Void)? = nil) {
         let collections = collectionsRepository.data
         
         if editingLink == nil {
@@ -96,6 +98,9 @@ class LinkFormViewModel {
                     }
                     onSuccess(link)
                 } onError: { statusCode in
+                    if let onError = onError {
+                        onError(statusCode)
+                    }
                     guard let statusCode = statusCode else {
                         DispatchQueue.main.async {
                             self.saving = false
@@ -149,6 +154,9 @@ class LinkFormViewModel {
                            await self.linkManagerRepository.uploadLinkFile(linkId: link.id, fileUrl: self.selectedFileUrl!, fileType: self.selectedFileUrl!.pathExtension == "pdf" ? .pdf : .image) { _ in
                                onSuccess(link)
                            } onError: { statusCode in
+                               if let onError = onError {
+                                   onError(statusCode)
+                               }
                                guard let _ = statusCode else {
                                    DispatchQueue.main.async {
                                        self.saving = false
@@ -169,7 +177,9 @@ class LinkFormViewModel {
                        }
                    }
                 } onError: { statusCode in
-                    onError(statusCode)
+                    if let onError = onError {
+                        onError(statusCode)
+                    }
                     guard let statusCode = statusCode else {
                         DispatchQueue.main.async {
                             self.saving = false

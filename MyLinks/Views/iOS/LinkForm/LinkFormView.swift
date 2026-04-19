@@ -159,15 +159,18 @@ struct LinkFormView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     CloseButton {
-                        onClose()
+                        linkFormViewModel.discardChangesConfirmation = true
                     }
+                    .confirmationDialog("Discard changes?", isPresented: $linkFormViewModel.discardChangesConfirmation, actions: {
+                        Button("Discard changes", role: .destructive) {
+                            onClose()
+                        }
+                    })
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         linkFormViewModel.onSave(mode: mode) { l in
                             onSuccess(l, linkFormViewModel.editingLink != nil ? .edit : .create)
-                        } onError: { code in
-                            // TODO: add error alert
                         }
                     } label: {
                         if linkFormViewModel.saving == true {
@@ -218,5 +221,6 @@ struct LinkFormView: View {
                 Text("The selected file cannot be loaded on the app.")
             }
         }
+        .interactiveDismissDisabled()
     }
 }

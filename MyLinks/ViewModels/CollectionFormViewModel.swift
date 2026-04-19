@@ -19,6 +19,8 @@ class CollectionFormViewModel {
     var savingErrorMessage = ""
     var savingErrorAlert = false
     
+    var closeConfirmation = false
+    
     
     init(collectionId: Int? = nil, action: Enums.CollectionFormAction) {
         // collectionId is not passed -> new collection without parent

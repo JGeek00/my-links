@@ -32,8 +32,14 @@ struct CollectionFormView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     CloseButton {
-                        onClose()
+                        collectionFormViewModel.closeConfirmation = true
                     }
+                    .confirmationDialog("Discard changes?", isPresented: $collectionFormViewModel.closeConfirmation, actions: {
+                        Button("Discard changes", role: .destructive) {
+                            collectionFormViewModel.closeConfirmation = false
+                            onClose()
+                        }
+                    })
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -71,5 +77,6 @@ struct CollectionFormView: View {
                 Text(collectionFormViewModel.savingErrorMessage)
             }
         }
+        .interactiveDismissDisabled()
     }
 }
