@@ -29,9 +29,15 @@ class DashboardViewModel {
     var loading: Bool = true
     var error: Bool = false
     var data: DashboardResponse_Data? = nil
-    var collections: [Collection] = []
-    var loadingCollections: Bool = true
-    var errorCollections: Bool = false
+    var collections: [Collection] {
+        get { collectionsRepository.data }
+    }
+    var loadingCollections: Bool {
+        get { collectionsRepository.loading }
+    }
+    var errorCollections: Bool {
+        get { collectionsRepository.error }
+    }
     
     var deleteLinkErrorAlert: Bool = false
     var pinLinkErrorAlert: Bool = false
