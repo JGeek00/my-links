@@ -19,8 +19,8 @@ struct DashboardCompactViewRecent: View {
                     case .delete:
                         dashboardViewModel.handleDeleteLink(linkId: id!)
                     }
-                } onPinUnpin: { linkId, action in
-                    // TODO: handle pin unpin
+                } onPinUnpin: { l, action in
+                    dashboardViewModel.handlePinUnpin(link: l, action: action)
                 }
             }
             .overlay(alignment: .center) {
@@ -67,8 +67,8 @@ struct DashboardCompactViewPinned: View {
                         case .delete:
                             dashboardViewModel.handleDeleteLink(linkId: id!)
                         }
-                    } onPinUnpin: { linkId, action in
-                        // TODO: handle pin unpin
+                    } onPinUnpin: { l, action in
+                        dashboardViewModel.handlePinUnpin(link: l, action: action)
                     }
                 }
             } header: {

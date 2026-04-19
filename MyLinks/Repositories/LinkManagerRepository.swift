@@ -83,7 +83,7 @@ class LinkManagerRepository {
         }
     }
     
-    func pinUnpinLink(link: Link, setProcessing: @escaping (Bool) -> Void, onSuccess: @escaping (Link) -> Void, onError: () -> Void) async {
+    func pinUnpinLink(link: Link, action: Enums.PinUnpinAction, setProcessing: @escaping (Bool) -> Void, onSuccess: @escaping (Link) -> Void, onError: () -> Void) async {
         guard let instance = apiClientRepository.instance else { return }
         DispatchQueue.main.async {
             setProcessing(true)
@@ -95,7 +95,7 @@ class LinkManagerRepository {
             description: link.description,
             tags: link.tags.map() { TagCreation(name: $0.name) },
             collection: CollectionCreation(id: link.collection.id, name: link.collection.name, ownerId: link.collection.ownerId),
-            pinnedBy: link.pinnedBy != nil && link.pinnedBy!.isEmpty ? [PinnedByRequestEditing(id: 1)] : nil,
+            pinnedBy: action == .pin ? [PinnedByRequestEditing(id: 1)] : [],
             image: link.image,
             pdf: link.pdf
         )

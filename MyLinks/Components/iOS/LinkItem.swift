@@ -12,9 +12,9 @@ fileprivate struct FormatsAvailable {
 struct LinkItemComponent: View {
     let item: Link
     let onTaskCompleted: (Link?, Int?, Enums.LinkTaskAction) -> Void
-    let onPinUnpin: ((Int, Enums.PinUnpinAction) -> Void)?
+    let onPinUnpin: ((Link, Enums.PinUnpinAction) -> Void)?
     
-    init(item: Link, onTaskCompleted: @escaping (Link?, Int?, Enums.LinkTaskAction) -> Void, onPinUnpin: ((Int, Enums.PinUnpinAction) -> Void)? = nil) {
+    init(item: Link, onTaskCompleted: @escaping (Link?, Int?, Enums.LinkTaskAction) -> Void, onPinUnpin: ((Link, Enums.PinUnpinAction) -> Void)? = nil) {
         self.item = item
         self.onTaskCompleted = onTaskCompleted
         self.onPinUnpin = onPinUnpin
@@ -277,12 +277,12 @@ struct LinkItemComponent: View {
             Section {
                 if let pinnedBy = item.pinnedBy, pinnedBy.isEmpty {
                     Button("Pin to the dashboard", systemImage: "pin") {
-                        onPinUnpin(item.id, .pin)
+                        onPinUnpin(item, .pin)
                     }
                 }
                 else {
                     Button("Unpin from the dashboard", systemImage: "pin.slash") {
-                        onPinUnpin(item.id, .unpin)
+                        onPinUnpin(item, .unpin)
                     }
                 }
             }

@@ -33,8 +33,8 @@ struct DashboardRegularViewRecent: View {
                             case .delete:
                                 dashboardViewModel.handleDeleteLink(linkId: id!)
                             }
-                        } onPinUnpin: { linkId, action in
-                            // TODO: handle pin unpin
+                        } onPinUnpin: { l, action in
+                            dashboardViewModel.handlePinUnpin(link: l, action: action)
                         }
                         .padding(6)
                     }
@@ -80,8 +80,8 @@ struct DashboardRegularViewPinned: View {
                             case .delete:
                                 dashboardViewModel.handleDeleteLink(linkId: id!)
                             }
-                        } onPinUnpin: { linkId, action in
-                            // TODO: handle pin unpin
+                        } onPinUnpin: { l, action in
+                            dashboardViewModel.handlePinUnpin(link: l, action: action)
                         }
                         .padding(6)
                     }

@@ -34,6 +34,8 @@ class DashboardViewModel {
     var errorCollections: Bool = false
     
     var deleteLinkErrorAlert: Bool = false
+    var pinLinkErrorAlert: Bool = false
+    var unpinLinkErrorAlert: Bool = false
         
     var path = NavigationPath()
     
@@ -85,6 +87,10 @@ class DashboardViewModel {
         navigationRepository.navigateTagsCatalog()
     }
     
+    func handleAddLink(link: Link) {
+        self.reload()
+    }
+    
     func handleDeleteLink(linkId: Int) {
         Task {
             await linkManagerRepository.deleteLink(id: linkId) { processing in
@@ -92,11 +98,7 @@ class DashboardViewModel {
                     self.progressIndicatorRepository.presenting = processing
                 }
             } onSuccess: { _ in
-                DispatchQueue.main.async {
-                    if let links = self.data?.links {
-                        self.data?.links = links.filter() { $0.id != linkId }
-                    }
-                }
+                self.reload()
             } onError: {
                 DispatchQueue.main.async {
                     self.deleteLinkErrorAlert = true
@@ -106,14 +108,28 @@ class DashboardViewModel {
     }
     
     func handleEditLink(link: Link) {
-        DispatchQueue.main.async {
-            if let links = self.data?.links {
-                self.data?.links = links.map() { item in
-                    if item.id == link.id {
-                        return link
-                    }
-                    else {
-                        return item
+        self.reload()
+    }
+    
+    func handleAddCollection(collection: Collection) {
+        Task { await self.collectionsRepository.loadData() }
+    }
+    
+    func handlePinUnpin(link: Link, action: Enums.PinUnpinAction) {
+        Task {
+            await linkManagerRepository.pinUnpinLink(link: link, action: action) { processing in
+                DispatchQueue.main.async {
+                    self.progressIndicatorRepository.presenting = processing
+                }
+            } onSuccess: { _ in
+                self.reload()
+            } onError: {
+                DispatchQueue.main.async {
+                    switch action {
+                    case .pin:
+                        self.pinLinkErrorAlert = true
+                    case .unpin:
+                        self.unpinLinkErrorAlert = true
                     }
                 }
             }

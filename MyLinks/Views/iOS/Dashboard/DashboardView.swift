@@ -76,22 +76,25 @@ struct DashboardView: View {
             .sheet(isPresented: $linkFormUrlSheet, content: {
                 LinkFormView(mode: .url) {
                     linkFormUrlSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormUrlSheet = false
+                    dashboardViewModel.handleAddLink(link: newLink)
                 }
             })
             .sheet(isPresented: $linkFormFileSheet, content: {
                 LinkFormView(mode: .file) {
                     linkFormFileSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormFileSheet = false
+                    dashboardViewModel.handleAddLink(link: newLink)
                 }
             })
             .sheet(isPresented: $collectionFormSheet, content: {
                 CollectionFormView(action: .create) {
                     collectionFormSheet = false
-                } onSuccess: { item, action in
+                } onSuccess: { item, _ in
                     collectionFormSheet = false
+                    dashboardViewModel.handleAddCollection(collection: item)
                 }
             })
             .alert("Error", isPresented: $dashboardViewModel.deleteLinkErrorAlert) {
