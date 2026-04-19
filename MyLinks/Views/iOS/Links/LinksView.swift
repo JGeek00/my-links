@@ -18,11 +18,13 @@ struct LinksView: View {
             Group {
                 if linksViewModel.loading == true {
                     ProgressView("Loading...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .transition(.opacity)
                 }
                 else if linksViewModel.error == true {
                     ContentUnavailableView("Error", systemImage: "exclamationmark.circle", description: Text("An error occured when loading the dashboard data. Check your Internet connection and try again later."))
                     .transition(.opacity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else {
                     Group {

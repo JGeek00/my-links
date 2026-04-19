@@ -45,6 +45,7 @@ struct RootView: View {
             onboardingViewModel.reset()
         }
         .environment(rootViewModel)
+        .environment(onboardingViewModel)
     }
 }
 

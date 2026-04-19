@@ -43,6 +43,7 @@ struct ElementsView: View {
             } else {
                 ContentUnavailableView("Choose one option", systemImage: "list.dash")
                     .background(Color.listBackground)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .background(Color.listBackground)

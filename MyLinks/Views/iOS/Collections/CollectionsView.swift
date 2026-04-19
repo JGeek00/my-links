@@ -20,9 +20,11 @@ struct CollectionsView: View {
         Group {
             if collectionsViewModel.loading == true {
                 ProgressView("Loading...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             else if collectionsViewModel.error == true {
                 ContentUnavailableView("Error", systemImage: "exclamationmark.circle", description: Text("An error occured when loading the links data. Check your Internet connection and try again later."))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             else {
                 if horizontalSizeClass == .regular {
@@ -80,6 +82,7 @@ struct CollectionsView: View {
                             } description: {
                                 Text("Create some collections on Linkwarden to see them here.")
                             }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
                     .overlay(alignment: .center) {
@@ -89,6 +92,7 @@ struct CollectionsView: View {
                             } description: {
                                 Text("Change the search term to see some collections.")
                             }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
                 }

@@ -21,6 +21,7 @@ struct DashboardView: View {
             Group {
                 if dashboardViewModel.loading == true {
                     ProgressView("Loading...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else if dashboardViewModel.error == true {
                     ContentUnavailableView {
@@ -33,6 +34,7 @@ struct DashboardView: View {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else if let data = dashboardViewModel.data  {
                     if horizontalSizeClass == .regular {
@@ -43,6 +45,7 @@ struct DashboardView: View {
                     }
                 }
             }
+            .background(Color.listBackground)
             .transition(.opacity)
             .navigationTitle("Dashboard")
             .toolbar {

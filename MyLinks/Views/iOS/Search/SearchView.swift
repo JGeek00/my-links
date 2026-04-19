@@ -15,11 +15,13 @@ struct SearchView: View {
                 if searchViewModel.searchQueryValue == nil {
                     ContentUnavailableView("Insert search term", systemImage: "magnifyingglass", description: Text("Input a search term to search links, categories and tags"))
                         .transition(.opacity)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else {
                     if searchViewModel.loading == true {
                         ProgressView()
                             .transition(.opacity)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     if searchViewModel.error == true {
                         ContentUnavailableView {
@@ -33,6 +35,7 @@ struct SearchView: View {
                             }
                         }
                         .transition(.opacity)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     if searchViewModel.loading == false && searchViewModel.error == false {
                         if horizontalSizeClass == .regular {
@@ -48,6 +51,7 @@ struct SearchView: View {
                 view
                     .background(Color.listBackground)
             }
+            .background(Color.listBackground)
             .navigationTitle("Search")
             .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
             .onSubmit(of: .search) {

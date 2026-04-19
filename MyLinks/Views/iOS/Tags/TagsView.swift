@@ -18,6 +18,7 @@ struct TagsView: View {
             switch tagsViewModel.state {
             case .loading:
                 ProgressView("Loading...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .success(let data):
                 let searched = searchText != "" ? data.tags.filter() { $0.name.lowercased().contains(searchText.lowercased()) } : data.tags
                 if data.tags.isEmpty {
@@ -26,6 +27,7 @@ struct TagsView: View {
                     } description: {
                         Text("Add tags to links to see them here.")
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else if searched.isEmpty {
                     if searched.isEmpty {
@@ -34,6 +36,7 @@ struct TagsView: View {
                         } description: {
                             Text("Change the search term to see some tags.")
                         }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
                 else {
@@ -67,6 +70,7 @@ struct TagsView: View {
                         Label("Retry", systemImage: "arrow.counterclockwise")
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .navigationTitle("Tags")
