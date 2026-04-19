@@ -30,7 +30,7 @@ struct ImageViewerView: View {
                     } description: {
                         Text("An error occured when loading the image. Check your Internet connection and try again later.")
                         Button {
-                            Task { await imageViewerViewModel.loadData(linkId: link.id, setLoading: true) }
+                            Task { await imageViewerViewModel.loadData(setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -61,7 +61,7 @@ struct ImageViewerView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack {
                         Button {
-                            Task { await imageViewerViewModel.loadData(linkId: link.id, setLoading: true) }
+                            Task { await imageViewerViewModel.loadData(setLoading: true) }
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                         }
@@ -108,6 +108,9 @@ struct ImageViewerView: View {
             } message: {
                 Text(imageViewerViewModel.savingErrorMessage)
             }
+        }
+        .task {
+            await imageViewerViewModel.loadData()
         }
     }
 }

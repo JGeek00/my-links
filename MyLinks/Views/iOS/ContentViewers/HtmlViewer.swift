@@ -93,8 +93,8 @@ struct HTMLViewer: View {
                 }
             }
         }
-        .onAppear {
-            Task { await htmlViewerViewModel.loadData() }
+        .task {
+            await htmlViewerViewModel.loadData()
         }
     }
 }

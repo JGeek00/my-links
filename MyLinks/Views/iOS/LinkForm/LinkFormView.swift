@@ -222,5 +222,6 @@ struct LinkFormView: View {
             }
         }
         .interactiveDismissDisabled()
+        .environment(linkFormViewModel)
     }
 }

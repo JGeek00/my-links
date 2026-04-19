@@ -6,7 +6,7 @@ fileprivate struct FormatsAvailable {
     let pdf: Bool
     let image: Bool
     let html: Bool
-    let readerUrl: URL?
+    let reader: Bool
 }
 
 struct LinkItemComponent: View {
@@ -55,7 +55,7 @@ struct LinkItemComponent: View {
                     linkContentUnavailable = true
                 }
             case .readableMode:
-                if formats.readerUrl != nil {
+                if formats.reader == true {
                     readerModeSheet.toggle()
                 }
                 else {
@@ -91,8 +91,8 @@ struct LinkItemComponent: View {
             let pdfAvailable = item.pdf != nil && item.pdf != "unavailable"
             let imageAvailable = item.image != nil && item.image != "unavailable"
             let htmlAvailable = item.monolith != nil && item.monolith != "unavailable"
-            let readerUrl = item.readable != nil && item.readable != "unavailable" ? RepositoriesContainer.shared.apiClientRepository.instance?.files.getReaderUrl(linkId: item.id) : nil
-            return FormatsAvailable(pdf: pdfAvailable, image: imageAvailable, html: htmlAvailable, readerUrl: readerUrl)
+            let readerAvailable = item.readable != nil && item.readable != "unavailable"
+            return FormatsAvailable(pdf: pdfAvailable, image: imageAvailable, html: htmlAvailable, reader: readerAvailable)
         }()
         
         Button {
@@ -240,7 +240,7 @@ struct LinkItemComponent: View {
             } label: {
                 Label("Copy link URL", systemImage: "doc.on.doc")
             }
-            if formats.html == true || formats.readerUrl != nil || formats.pdf == true || formats.image == true {
+            if formats.html == true || formats.reader == true || formats.pdf == true || formats.image == true {
                 Menu("Preserved formats", systemImage: "doc.viewfinder") {
                     if item.monolith != nil && item.monolith != "unavailable" {
                         Button {
@@ -249,7 +249,7 @@ struct LinkItemComponent: View {
                             Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
                         }
                     }
-                    if formats.readerUrl != nil {
+                    if formats.reader == true {
                         Button {
                             readerModeSheet.toggle()
                         } label: {

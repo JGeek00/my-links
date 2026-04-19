@@ -7,14 +7,10 @@ struct FilesApiClient: Equatable {
         self.instance = instance
     }
     
-    func getReaderUrl(linkId: Int) -> URL? {
-        return URL(string: "\(instance.url)/preserved/\(linkId)?format=3")
-    }
-    
     func fetchReader(linkId: Int) async -> StatusResponse<ReaderResponse> {
         let defaultErrorResponse = StatusResponse<ReaderResponse>(successful: false, statusCode: nil, data: nil)
         
-        guard let url = URL(string: "\(self.instance.token)/api/v1/archives/\(linkId)?format=3") else { return defaultErrorResponse }
+        guard let url = URL(string: "\(self.instance.url)/api/v1/archives/\(linkId)?format=3") else { return defaultErrorResponse }
         do {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             
@@ -43,7 +39,7 @@ struct FilesApiClient: Equatable {
     func fetchWebpageHtml(linkId: Int) async -> StatusResponse<String> {
         let defaultErrorResponse = StatusResponse<String>(successful: false, statusCode: nil, data: nil)
         
-        guard let url = URL(string: "\(self.instance.token)/api/v1/archives/\(linkId)?format=4") else { return defaultErrorResponse }
+        guard let url = URL(string: "\(self.instance.url)/api/v1/archives/\(linkId)?format=4") else { return defaultErrorResponse }
         do {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             
@@ -62,8 +58,7 @@ struct FilesApiClient: Equatable {
             else {
                 return StatusResponse<String>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
-        } catch let e {
-            print(e.localizedDescription)
+        } catch {
             return defaultErrorResponse
         }
     }
@@ -71,7 +66,7 @@ struct FilesApiClient: Equatable {
     func fetchPdf(linkId: Int) async -> StatusResponse<Data> {
         let defaultErrorResponse = StatusResponse<Data>(successful: false, statusCode: nil, data: nil)
         
-        guard let url = URL(string: "\(self.instance.token)/api/v1/archives/\(linkId)?format=2") else { return defaultErrorResponse }
+        guard let url = URL(string: "\(self.instance.url)/api/v1/archives/\(linkId)?format=2") else { return defaultErrorResponse }
         do {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             
@@ -99,7 +94,7 @@ struct FilesApiClient: Equatable {
     func fetchImage(linkId: Int) async -> StatusResponse<Data> {
         let defaultErrorResponse = StatusResponse<Data>(successful: false, statusCode: nil, data: nil)
         
-        guard let url = URL(string: "\(self.instance.token)/api/v1/archives/\(linkId)?format=1") else { return defaultErrorResponse }
+        guard let url = URL(string: "\(self.instance.url)/api/v1/archives/\(linkId)?format=1") else { return defaultErrorResponse }
         do {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             

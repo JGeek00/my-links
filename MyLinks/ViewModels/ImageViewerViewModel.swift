@@ -5,9 +5,16 @@ import SwiftUI
 @Observable
 class ImageViewerViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let link: Link
+  
+    init(link: Link) {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+        self.link = link
+    }
     
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, link: Link) {
+    init(apiClientRepository: ApiClientRepository, link: Link) {
         self.apiClientRepository = apiClientRepository
+        self.link = link
     }
     
     var data: Data? = nil
@@ -21,12 +28,12 @@ class ImageViewerViewModel {
     var savingErrorAlert = false
     var savingErrorMessage = ""
     
-    func loadData(linkId: Int, setLoading: Bool = false) async {
+    func loadData(setLoading: Bool = false) async {
         if setLoading == true {
             self.loading = true
         }
         guard let instance = apiClientRepository.instance else { return }
-        let result = await instance.files.fetchImage(linkId: linkId)
+        let result = await instance.files.fetchImage(linkId: link.id)
         if result.successful == true {
             DispatchQueue.main.async {
                 withAnimation(.default) {

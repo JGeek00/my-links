@@ -110,9 +110,9 @@ struct PDFViewerView: View {
             } message: {
                 Text(pdfViewerViewModel.savingErrorMessage)
             }
-            .task {
-                await pdfViewerViewModel.loadData(setLoading: true)
-            }
+        }
+        .task {
+            await pdfViewerViewModel.loadData(setLoading: true)
         }
     }
 }
