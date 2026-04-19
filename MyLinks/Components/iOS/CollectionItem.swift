@@ -2,12 +2,10 @@ import SwiftUI
 
 struct CollectionItemComponent: View {
     let collection: Collection
-    let options: [Enums.CollectionTaskOption]
-    let onTaskCompleted: () -> Void
+    let onTaskCompleted: (Collection, Enums.CollectionTaskAction) -> Void
     
-    init(collection: Collection, options: [Enums.CollectionTaskOption] = [.edit, .delete], onTaskCompleted: @escaping () -> Void) {
+    init(collection: Collection, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
         self.collection = collection
-        self.options = options
         self.onTaskCompleted = onTaskCompleted
     }
     
@@ -73,23 +71,19 @@ struct CollectionItemComponent: View {
         .background(horizontalSizeClass == .regular ? Color.listItemBackground: Color.clear)
         .cornerRadius(horizontalSizeClass == .regular ? 24 : 1)
         .contextMenu {
-            if options.contains(.edit) {
-                Button("Edit", systemImage: "pencil") {
-                    collectionFormSheet = true
-                }
+            Button("Edit", systemImage: "pencil") {
+                collectionFormSheet = true
             }
-            if options.contains(.delete) {
-                Button("Delete", systemImage: "trash", role: .destructive) {
-                    showDeleteAlert = true
-                }
+            Button("Delete", systemImage: "trash", role: .destructive) {
+                showDeleteAlert = true
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView {
+            CollectionFormView(action: .edit) {
                 collectionFormSheet = false
             } onSuccess: { item, action in
                 collectionFormSheet = false
-                onTaskCompleted()
+                onTaskCompleted(item, .edit)
             }
         })
         .alert("Delete collection", isPresented: $showDeleteAlert) {
@@ -97,7 +91,7 @@ struct CollectionItemComponent: View {
                 showDeleteAlert.toggle()
             }
             Button("Delete", role: .destructive) {
-                onTaskCompleted()
+                onTaskCompleted(collection, .delete)
             }
         } message: {
             Text("This collection and all it's links will be deleted. This action is not reversible.")

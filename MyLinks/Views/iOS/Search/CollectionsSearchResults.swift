@@ -11,8 +11,13 @@ struct CollectionsSearchResults: View {
             ScrollView {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(collections, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            // TODO: refresh collections
+                        CollectionItemComponent(collection: item) { c, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditCollection(collection: c)
+                            case .delete:
+                                searchViewModel.handleDeleteCollection(collectionId: c.id)
+                            }
                         }
                         .padding(8)
                     }
@@ -24,8 +29,13 @@ struct CollectionsSearchResults: View {
         }
         else {
             List(collections, id: \.self) { item in
-                CollectionItemComponent(collection: item) {
-                   // TODO: refresh collections
+                CollectionItemComponent(collection: item) { c, action in
+                    switch action {
+                    case .edit:
+                        searchViewModel.handleEditCollection(collection: c)
+                    case .delete:
+                        searchViewModel.handleDeleteCollection(collectionId: c.id)
+                    }
                 }
             }
             .navigationTitle("All search results")

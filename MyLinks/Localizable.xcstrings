@@ -219,6 +219,26 @@
         }
       }
     },
+    "An error occured when deleting the collection. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al eliminar la colección. Prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
+    "An error occured when deleting the link. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al eliminar el enlace. Prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
     "An error occured when deleting the tag. Please try again later." : {
       "localizations" : {
         "es" : {
@@ -1565,6 +1585,16 @@
         }
       }
     },
+    "New child collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva colección hija"
+          }
+        }
+      }
+    },
     "New collection" : {
       "localizations" : {
         "es" : {
@@ -1722,6 +1752,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se han encontrado etiquetas"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
@@ -2287,6 +2327,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La colección no pudo ser eliminada debido a un error."
+          }
+        }
+      }
+    },
+    "The collection could not be deleted. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La colección no pudo ser eliminada. Prueba de nuevo más tarde."
           }
         }
       }

@@ -4,12 +4,20 @@ import SwiftUI
 @MainActor
 @Observable
 class LinksViewModel {
-    let apiClientRepository: ApiClientRepository
-    let linkManagerRepository: LinkManagerRepository
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
     init() {
         self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
         self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
+        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
+    }
+    
+    init(apiClientRepository: ApiClientRepository, linkManagerRepository: LinkManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.linkManagerRepository = linkManagerRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
     }
     
     var data: [Link] = []
@@ -27,6 +35,8 @@ class LinksViewModel {
     
     // Flag to triger onChange
     var scrollTopList = false
+    
+    var deleteLinkErrorAlert = false
     
     func loadData(
         cursor: Int? = nil,
@@ -100,13 +110,33 @@ class LinksViewModel {
         }
     }
     
-    func removeLinkData(linkId: Int) {
+    func handleCreatedLink(link: Link) {
+        // Request is done by the form view model
         DispatchQueue.main.async {
-            self.data = self.data.filter() { $0.id != linkId }
+            self.data.insert(link, at: 0)
         }
     }
     
-    func updateLinkData(link: Link) {
+    func handleDeleteLink(linkId: Int) {
+        Task {
+            await linkManagerRepository.deleteLink(id: linkId) { processing in
+                DispatchQueue.main.async {
+                    self.progressIndicatorRepository.presenting = processing
+                }
+            } onSuccess: { _ in
+                DispatchQueue.main.async {
+                    self.data = self.data.filter() { $0.id != linkId }
+                }
+            } onError: {
+                DispatchQueue.main.async {
+                    self.deleteLinkErrorAlert = true
+                }
+            }
+        }
+    }
+    
+    func handleEditLink(link: Link) {
+        // Request is done by the form view model
         DispatchQueue.main.async {
             self.data = self.data.map() { item in
                 if item.id == link.id {

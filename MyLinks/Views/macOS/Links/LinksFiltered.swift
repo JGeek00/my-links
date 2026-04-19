@@ -87,6 +87,7 @@ struct LinksFilteredView: View {
                                 LazyVGrid(columns: Config.gridColumns) {
                                     ForEach(filtered, id: \.self) { item in
                                         LinkItemComponent(item: item) { link, action in
+                                            // TODO: handle actions
                                             linksFilteredViewModel.onTaskCompleted(link: link, action: action)
                                         }
                                         .onAppear {

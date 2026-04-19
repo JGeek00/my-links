@@ -81,22 +81,29 @@ class Enums {
         case pinned
     }
     
-    enum LinkTaskCompleted: String {
+    enum LinkFormAction: String {
+        case create
+        case edit
+    }
+    
+    enum LinkTaskAction: String {
+        case edit
         case delete
-        case pin
+    }
+    
+    enum CollectionFormAction: String {
         case edit
         case create
     }
     
-    enum LinkTaskOption: String {
+    enum CollectionTaskAction: String {
         case edit
         case delete
-        case pin
     }
     
-    enum CollectionTaskOption: String {
-        case edit
-        case delete
+    enum PinUnpinAction: String {
+        case pin
+        case unpin
     }
     
     enum SortingOptions: Int {

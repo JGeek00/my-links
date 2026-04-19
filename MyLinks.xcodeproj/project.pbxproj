@@ -316,6 +316,7 @@
 				Repositories/CollectionsRepository.swift,
 				Repositories/LinkManagerRepository.swift,
 				Repositories/NavigationRepository.swift,
+				Repositories/ProgressIndicatorRepository.swift,
 				Repositories/RepositoriesContainer.swift,
 				Repositories/ToastRepository.swift,
 				Services/ApiClient/ApiClient.swift,

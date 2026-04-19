@@ -31,8 +31,13 @@ struct LinksFilteredRegularView: View {
                         else {
                             LazyVGrid(columns: Config.gridColumns) {
                                 ForEach(filteredSubCollections, id: \.self) { item in
-                                    CollectionItemComponent(collection: item) {
-                                        Task { await linksFilteredViewModel.loadData()}
+                                    CollectionItemComponent(collection: item) { c, action in
+                                        switch action {
+                                        case .edit:
+                                            linksFilteredViewModel.handleEditCollection(collection: c)
+                                        case .delete:
+                                            linksFilteredViewModel.handleDeleteCollection(collectionId: c.id)
+                                        }
                                     }
                                     .padding(6)
                                 }
@@ -53,8 +58,13 @@ struct LinksFilteredRegularView: View {
                         }
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(linksFilteredViewModel.data, id: \.self) { item in
-                                LinkItemComponent(item: item) {
-                                    Task { await linksFilteredViewModel.loadData() }
+                                LinkItemComponent(item: item) { l, id, action in
+                                    switch action {
+                                    case .edit:
+                                        linksFilteredViewModel.handleEditLink(link: l!)
+                                    case .delete:
+                                        linksFilteredViewModel.handleDeleteLink(linkId: id!)
+                                    }
                                 }
                                 .onAppear {
                                     if item == linksFilteredViewModel.data.last {

@@ -19,17 +19,10 @@ struct DashboardView: View {
         @Bindable var dashboardViewModel = dashboardViewModel
         NavigationStack(path: $dashboardViewModel.path) {
             Group {
-                switch dashboardViewModel.state {
-                case .loading:
+                if dashboardViewModel.loading == true {
                     ProgressView("Loading...")
-                case .success(let data):
-                    if horizontalSizeClass == .regular {
-                        DashboardRegularView(data: data)
-                    }
-                    else {
-                        DashboardCompactView(data: data)
-                    }
-                case .failure:
+                }
+                else if dashboardViewModel.error == true {
                     ContentUnavailableView {
                         Label("Error", systemImage: "exclamationmark.circle")
                     } description: {
@@ -39,6 +32,14 @@ struct DashboardView: View {
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
+                    }
+                }
+                else if let data = dashboardViewModel.data  {
+                    if horizontalSizeClass == .regular {
+                        DashboardRegularView(data: data)
+                    }
+                    else {
+                        DashboardCompactView(data: data)
                     }
                 }
             }
@@ -87,12 +88,19 @@ struct DashboardView: View {
                 }
             })
             .sheet(isPresented: $collectionFormSheet, content: {
-                CollectionFormView {
+                CollectionFormView(action: .create) {
                     collectionFormSheet = false
                 } onSuccess: { item, action in
                     collectionFormSheet = false
                 }
             })
+            .alert("Error", isPresented: $dashboardViewModel.deleteLinkErrorAlert) {
+                Button("OK", role: .cancel) {
+                    dashboardViewModel.deleteLinkErrorAlert = false
+                }
+            } message: {
+                Text("An error occured when deleting the link. Try again later.")
+            }
         }
         .task {
             await dashboardViewModel.loadData()

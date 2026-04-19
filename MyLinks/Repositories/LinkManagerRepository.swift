@@ -61,15 +61,15 @@ class LinkManagerRepository {
         }
     }
     
-    func deleteLink(id: Int, onSuccess: @escaping (Link) -> Void, onError: @escaping() -> Void) async {
+    func deleteLink(id: Int, setProcessing: @escaping (Bool) -> Void, onSuccess: @escaping (DeletedLink) -> Void, onError: @escaping() -> Void) async {
         guard let instance = apiClientRepository.instance else { return }
         DispatchQueue.main.async {
-            self.processing = true
+            setProcessing(true)
         }
         let result = await instance.links.deleteLink(linkId: id)
         if let response = result.data?.response {
             DispatchQueue.main.async {
-                self.processing = false
+                setProcessing(false)
                 onSuccess(response)
             }
         }
@@ -79,13 +79,14 @@ class LinkManagerRepository {
                 return
             }
             onError()
+            setProcessing(false)
         }
     }
     
-    func pinUnpinLink(link: Link, onSuccess: @escaping (Link) -> Void, onError: () -> Void) async {
+    func pinUnpinLink(link: Link, setProcessing: @escaping (Bool) -> Void, onSuccess: @escaping (Link) -> Void, onError: () -> Void) async {
         guard let instance = apiClientRepository.instance else { return }
         DispatchQueue.main.async {
-            self.processing = true
+            setProcessing(true)
         }
         let body = LinkEditingRequest(
             id: link.id,
@@ -94,14 +95,14 @@ class LinkManagerRepository {
             description: link.description,
             tags: link.tags.map() { TagCreation(name: $0.name) },
             collection: CollectionCreation(id: link.collection.id, name: link.collection.name, ownerId: link.collection.ownerId),
-            pinnedBy: link.pinnedBy.isEmpty ? [PinnedByRequestEditing(id: 1)] : [],
+            pinnedBy: link.pinnedBy != nil && link.pinnedBy!.isEmpty ? [PinnedByRequestEditing(id: 1)] : nil,
             image: link.image,
             pdf: link.pdf
         )
         let result = await instance.links.editLink(linkId: link.id, body: body)
         if let data = result.data?.response {
             DispatchQueue.main.async {
-                self.processing = false
+                setProcessing(false)
                 onSuccess(data)
             }
         }
@@ -111,6 +112,7 @@ class LinkManagerRepository {
                 return
             }
             onError()
+            setProcessing(false)
         }
     }
 }

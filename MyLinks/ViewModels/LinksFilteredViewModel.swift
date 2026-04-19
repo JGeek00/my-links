@@ -7,12 +7,24 @@ class LinksFilteredViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     @ObservationIgnored var input: LinksFilteredRequest
     
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, input: LinksFilteredRequest) {
+    init(input: LinksFilteredRequest) {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
+        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
+        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
+        self.input = input
+        
+        self.collections = collectionsRepository.data
+    }
+    
+    init(apiClientRepository: ApiClientRepository, linkManagerRepository: LinkManagerRepository, collectionsRepository: CollectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository, input: LinksFilteredRequest) {
         self.apiClientRepository = apiClientRepository
         self.collectionsRepository = collectionsRepository
         self.linkManagerRepository = linkManagerRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
         self.input = input
         
         self.collections = collectionsRepository.data
@@ -20,7 +32,6 @@ class LinksFilteredViewModel {
     
     var collections: [Collection] = []
         
-    
     var data: [Link] = []
     var loading = true
     var error = false
@@ -35,9 +46,8 @@ class LinksFilteredViewModel {
     
     var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
-    var deleteLinkErrorAlert = false
-    var pinUnpinLinkErrorAlert = false
-    var editLinkErrorAlert = false
+    var deleteLinkErrorAlert = false    
+    var deleteCollectionErrorAlert = false
     
     func loadData(
         cursor: Int? = nil,
@@ -126,38 +136,76 @@ class LinksFilteredViewModel {
         }
     }
     
-    func deleteLink(link: Link) {
+    func handleCreatedLink(link: Link) {
+        // Request is done by the form view model
+        DispatchQueue.main.async {
+            self.data.insert(link, at: 0)
+        }
+    }
+    
+    func handleDeleteLink(linkId: Int) {
         Task {
-            await linkManagerRepository.deleteLink(id: link.id) { _ in
-                Task { await self.loadData() }
+            await linkManagerRepository.deleteLink(id: linkId) { processing in
+                DispatchQueue.main.async {
+                    self.progressIndicatorRepository.presenting = processing
+                }
+            } onSuccess: { _ in
+                DispatchQueue.main.async {
+                    self.data = self.data.filter() { $0.id != linkId }
+                }
             } onError: {
-                self.deleteLinkErrorAlert = true
+                DispatchQueue.main.async {
+                    self.deleteLinkErrorAlert = true
+                }
             }
         }
     }
     
-    func pinUnpinLink(link: Link) {
+    func handleEditLink(link: Link) {
+        // Request is being handled in the form view model
+        DispatchQueue.main.async {
+            self.data = self.data.map() { item in
+                if item.id == link.id {
+                    return link
+                }
+                else {
+                    return item
+                }
+            }
+        }
+    }
+    
+    func handleCollectionCreated(collection: Collection) {
+        var newData = self.collections + [collection]
+        newData = newData.sorted() { $0.name.lowercased() < $1.name.lowercased() }
+        self.collections = newData
+    }
+    
+    func handleDeleteCollection(collectionId: Int) {
         Task {
-            await linkManagerRepository.pinUnpinLink(link: link) { result in
-                Task { await self.loadData() }
-            } onError: {
-                self.pinUnpinLinkErrorAlert = true
+            await collectionsRepository.deleteCollection(id: collectionId) { progress in
+                self.progressIndicatorRepository.presenting = progress
+            } setSuccess: {
+                DispatchQueue.main.async {
+                    self.collections = self.collections.filter() { $0.id != collectionId }
+                }
+            } setError: { _ in
+                DispatchQueue.main.async {
+                    self.deleteCollectionErrorAlert = true
+                }
             }
         }
     }
     
-    func editLink(link: Link) {
-        Task {
-            let tags = link.tags.map() { TagCreation(name: $0.name) }
-            let collection = CollectionCreation(id: link.collection.id, name: link.collection.name, ownerId: link.collection.ownerId)
-            let pinnedBy = link.pinnedBy.map() { PinnedByRequestEditing(id: $0.id) }
-            let body = LinkEditingRequest(tags: tags, collection: collection, pinnedBy: pinnedBy, image: link.image, pdf: link.pdf)
-            await linkManagerRepository.editLink(id: link.id, body: body) { linkResult in
-                Task { await self.loadData() }
-            } onError: { statusCode in
-                self.editLinkErrorAlert = true
+    func handleEditCollection(collection: Collection) {
+        // Request is being handled in the form view model
+        self.collections = self.collections.map() { item in
+            if item.id == collection.id {
+                return collection
+            }
+            else {
+                return item
             }
         }
     }
-    
 }

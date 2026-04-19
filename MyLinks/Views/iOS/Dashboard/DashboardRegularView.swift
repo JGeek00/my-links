@@ -26,8 +26,15 @@ struct DashboardRegularViewRecent: View {
                     .frame(height: 16)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(data.links.uniqued(), id: \.self) { item in
-                        LinkItemComponent(item: item, options: [.delete, .edit, .pin]) {
-                            dashboardViewModel.reload()
+                        LinkItemComponent(item: item) { l, id, action in
+                            switch action {
+                            case .edit:
+                                dashboardViewModel.handleEditLink(link: l!)
+                            case .delete:
+                                dashboardViewModel.handleDeleteLink(linkId: id!)
+                            }
+                        } onPinUnpin: { linkId, action in
+                            // TODO: handle pin unpin
                         }
                         .padding(6)
                     }
@@ -49,7 +56,7 @@ struct DashboardRegularViewPinned: View {
     @Environment(DashboardViewModel.self) private var dashboardViewModel
     
     var body: some View {
-        let pinned = data.links.filter() { $0.pinnedBy.isEmpty == false }
+        let pinned = data.links.filter() { $0.pinnedBy?.isEmpty == false }
         if !pinned.isEmpty {
             VStack {
                 HStack {
@@ -66,8 +73,15 @@ struct DashboardRegularViewPinned: View {
                     .frame(height: 16)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(pinned.uniqued(), id: \.self) { item in
-                        LinkItemComponent(item: item, options: [.delete, .edit, .pin]) {
-                            dashboardViewModel.reload()
+                        LinkItemComponent(item: item) { l, id, action in
+                            switch action {
+                            case .edit:
+                                dashboardViewModel.handleEditLink(link: l!)
+                            case .delete:
+                                dashboardViewModel.handleDeleteLink(linkId: id!)
+                            }
+                        } onPinUnpin: { linkId, action in
+                            // TODO: handle pin unpin
                         }
                         .padding(6)
                     }

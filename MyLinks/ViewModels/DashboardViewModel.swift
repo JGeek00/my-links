@@ -7,36 +7,54 @@ class DashboardViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
     @ObservationIgnored private let navigationRepository: NavigationRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     
     init() {
         self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
         self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
         self.navigationRepository = RepositoriesContainer.shared.navigationRepository
+        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
+        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
     }
     
-    var state: Enums.LoadingState<DashboardResponse_Data> = .loading
+    init(apiClientRepository: ApiClientRepository, collectionsRepository: CollectionsRepository, navigationRepository: NavigationRepository, progressIndicatorRepository: ProgressIndicatorRepository, linkManagerRepository: LinkManagerRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.collectionsRepository = collectionsRepository
+        self.navigationRepository = navigationRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
+        self.linkManagerRepository = linkManagerRepository
+    }
+    
+    var loading: Bool = true
+    var error: Bool = false
+    var data: DashboardResponse_Data? = nil
     var collections: [Collection] = []
     var loadingCollections: Bool = true
     var errorCollections: Bool = false
+    
+    var deleteLinkErrorAlert: Bool = false
         
     var path = NavigationPath()
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
-            self.state = .loading
+            self.loading = true
         }
         guard let instance = apiClientRepository.instance else { return }
         let result = await instance.dashboard.fetchDashboard()
         if let data = result.data?.data {
             DispatchQueue.main.async {
                 withAnimation {
-                    self.state = .success(data)
+                    self.data = data
+                    self.loading = false
                 }
             }
         }
         else {
             withAnimation {
-                self.state = .failure
+                self.error = true
+                self.loading = false
             }
         }
     }
@@ -67,8 +85,38 @@ class DashboardViewModel {
         navigationRepository.navigateTagsCatalog()
     }
     
-    func reset() {
-        self.state = .loading
-        self.path = NavigationPath()
+    func handleDeleteLink(linkId: Int) {
+        Task {
+            await linkManagerRepository.deleteLink(id: linkId) { processing in
+                DispatchQueue.main.async {
+                    self.progressIndicatorRepository.presenting = processing
+                }
+            } onSuccess: { _ in
+                DispatchQueue.main.async {
+                    if let links = self.data?.links {
+                        self.data?.links = links.filter() { $0.id != linkId }
+                    }
+                }
+            } onError: {
+                DispatchQueue.main.async {
+                    self.deleteLinkErrorAlert = true
+                }
+            }
+        }
+    }
+    
+    func handleEditLink(link: Link) {
+        DispatchQueue.main.async {
+            if let links = self.data?.links {
+                self.data?.links = links.map() { item in
+                    if item.id == link.id {
+                        return link
+                    }
+                    else {
+                        return item
+                    }
+                }
+            }
+        }
     }
 }

@@ -118,10 +118,11 @@ struct LinksFilteredView: View {
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView(parentCollectionId: linksFilteredViewModel.input.mode == .collection ? linksFilteredViewModel.input.id : nil) {
+            CollectionFormView(collectionId: linksFilteredViewModel.input.mode == .collection ? linksFilteredViewModel.input.id : nil, action: .create) {
                 collectionFormSheet = false
-            } onSuccess: { item, action in
+            } onSuccess: { item, _ in
                 collectionFormSheet = false
+                linksFilteredViewModel.handleCollectionCreated(collection: item)
             }
         })
         .sheet(isPresented: $linkFormSheet, content: {
@@ -129,7 +130,7 @@ struct LinksFilteredView: View {
                 linkFormSheet = false
             }, onSuccess: { link, _ in
                 linkFormSheet = false
-                Task { await linksFilteredViewModel.loadData() }
+                linksFilteredViewModel.handleCreatedLink(link: link)
             })
         })
         .sheet(isPresented: $fileFormSheet, content: {
@@ -137,9 +138,23 @@ struct LinksFilteredView: View {
                 fileFormSheet = false
             }, onSuccess: { link, _ in
                 fileFormSheet = false
-                Task { await linksFilteredViewModel.loadData() }
+                linksFilteredViewModel.handleCreatedLink(link: link)
             })
         })
+        .alert("Error", isPresented: $linksFilteredViewModel.deleteLinkErrorAlert) {
+            Button("OK") {
+                linksFilteredViewModel.deleteLinkErrorAlert = false
+            }
+        } message: {
+            Text("An error occured when deleting the link. Try again later.")
+        }
+        .alert("Error", isPresented: $linksFilteredViewModel.deleteCollectionErrorAlert) {
+            Button("OK") {
+                linksFilteredViewModel.deleteCollectionErrorAlert = false
+            }
+        } message: {
+            Text("An error occured when deleting the collection. Try again later.")
+        }
         .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
         .onSubmit(of: .search) {
             if linksFilteredViewModel.loading == false && linksFilteredViewModel.error == false {

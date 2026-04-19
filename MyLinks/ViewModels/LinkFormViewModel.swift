@@ -84,7 +84,7 @@ class LinkFormViewModel {
                     type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
                     tags: selectedTags.map() { TagCreation(name: $0) },
                     collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-                    pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequestEditing(id: $0.id) } : [],
+                    pinnedBy: editingLink != nil ? editingLink!.pinnedBy?.map() { PinnedByRequestEditing(id: $0.id) } : nil,
                     image: self.editingLink?.image,
                     pdf: self.editingLink?.pdf,
                 )
@@ -119,7 +119,7 @@ class LinkFormViewModel {
                     type: mode == .url ? "url" : selectedFileUrl?.pathExtension.lowercased() == "pdf" ? "pdf" : "image",
                     tags: selectedTags.map() { TagCreation(name: $0) },
                     collection: col != nil ? CollectionCreation(id: col!.id, name: col!.name, ownerId: col!.ownerId) : nil,
-                    pinnedBy: editingLink != nil ? editingLink!.pinnedBy.map() { PinnedByRequest(id: $0.id) } : [],
+                    pinnedBy: editingLink != nil ? editingLink!.pinnedBy?.map() { PinnedByRequest(id: $0.id) } : nil,
                     image: self.editingLink?.image,
                     pdf: self.editingLink?.pdf,
                 )

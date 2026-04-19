@@ -109,10 +109,4 @@ class CollectionsRepository {
             }
         }
     }
-    
-    func reset() {
-        self.data = []
-        self.loading = true
-        self.error = false
-    }
 }

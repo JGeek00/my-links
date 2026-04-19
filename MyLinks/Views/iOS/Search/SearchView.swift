@@ -58,6 +58,13 @@ struct SearchView: View {
                     searchViewModel.clearSearch()
                 }
             })
+            .alert("Error", isPresented: $searchViewModel.deleteCollectionErrorAlert) {
+                Button("OK", role: .cancel) {
+                    searchViewModel.deleteCollectionErrorAlert = false
+                }
+            } message: {
+                Text("The collection could not be deleted. Try again later.")
+            }
         }
         .environment(searchViewModel)
     }
@@ -75,7 +82,8 @@ fileprivate struct SearchCompactView: View {
             if !linksSliced.isEmpty {
                 Section {
                     ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item, options: [.edit, .delete]) {
+                        LinkItemComponent(item: item) {l, id, action in
+                            // TODO: handle actions
                             Task { await searchViewModel.loadData() }
                         }
                     }
@@ -101,8 +109,13 @@ fileprivate struct SearchCompactView: View {
             if !collectionsSliced.isEmpty {
                 Section {
                     ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            Task { await searchViewModel.loadData() }
+                        CollectionItemComponent(collection: item) { c, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditCollection(collection: c)
+                            case .delete:
+                                searchViewModel.handleDeleteCollection(collectionId: c.id)
+                            }
                         }
                     }
                 } header: {
@@ -179,8 +192,13 @@ fileprivate struct SearchRegularView: View {
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item, options: [.edit, .delete]) {
-                            Task { await searchViewModel.loadData() }
+                        LinkItemComponent(item: item) { l, id, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditLink(link: l!)
+                            case .delete:
+                                searchViewModel.handleDeleteLink(linkId: id!)
+                            }
                         }
                         .padding(8)
                     }
@@ -206,8 +224,13 @@ fileprivate struct SearchRegularView: View {
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            Task { await searchViewModel.loadData() }
+                        CollectionItemComponent(collection: item) { c, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditCollection(collection: c)
+                            case .delete:
+                                searchViewModel.handleDeleteCollection(collectionId: c.id)
+                            }
                         }
                         .padding(8)
                     }

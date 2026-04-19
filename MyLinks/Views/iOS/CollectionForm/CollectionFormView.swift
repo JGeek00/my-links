@@ -1,17 +1,19 @@
 import SwiftUI
 
 struct CollectionFormView: View {
-    var parentCollectionId: Int?
+    var collectionId: Int?
+    var action: Enums.CollectionFormAction
     var onClose: () -> Void
-    var onSuccess: (Collection, Enums.LinkTaskCompleted) -> Void
+    var onSuccess: (Collection, Enums.CollectionFormAction) -> Void
     
     @State private var collectionFormViewModel: CollectionFormViewModel
     
-    init(parentCollectionId: Int? = nil, onClose: @escaping () -> Void, onSuccess: @escaping (Collection, Enums.LinkTaskCompleted) -> Void) {
-        self.parentCollectionId = parentCollectionId
+    init(collectionId: Int? = nil, action: Enums.CollectionFormAction, onClose: @escaping () -> Void, onSuccess: @escaping (Collection, Enums.CollectionFormAction) -> Void) {
+        self.collectionId = collectionId
+        self.action = action
         self.onClose = onClose
         self.onSuccess = onSuccess
-        _collectionFormViewModel = State(initialValue: CollectionFormViewModel(collectionId: parentCollectionId))
+        _collectionFormViewModel = State(initialValue: CollectionFormViewModel(collectionId: collectionId, action: action))
     }
     
     var body: some View {
@@ -25,7 +27,7 @@ struct CollectionFormView: View {
                     ColorPicker("Color", selection: $collectionFormViewModel.color)
                 }
             }
-            .navigationTitle(collectionFormViewModel.editingCollection != nil ? collectionFormViewModel.editingCollection != nil ? "Edit subcollection" : "Edit collection" : parentCollectionId != nil ? "New subcollection" : "New collection")
+            .navigationTitle(collectionFormViewModel.editingCollection != nil ? "Edit collection" : (collectionFormViewModel.parentCollection != nil) ? "New child collection" : "New collection")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -35,7 +37,7 @@ struct CollectionFormView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        collectionFormViewModel.onSave(parentId: parentCollectionId) { item in
+                        collectionFormViewModel.onSave() { item in
                             onSuccess(item, collectionFormViewModel.editingCollection != nil ? .edit : .create)
                         }
                     } label: {

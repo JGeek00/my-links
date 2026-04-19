@@ -27,6 +27,7 @@ struct DashboardRecentLinks: View {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(filtered.uniqued(), id: \.self) { item in
                         LinkItemComponent(item: item) { link, action in
+                            // TODO: handle actions
                             dashboardViewModel.reload()
                         }
                         .padding(6)

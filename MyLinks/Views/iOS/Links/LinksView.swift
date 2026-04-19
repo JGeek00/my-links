@@ -40,8 +40,13 @@ struct LinksView: View {
                                     ScrollView {
                                         LazyVGrid(columns: Config.gridColumns) {
                                             ForEach(linksViewModel.data, id: \.self) { item in
-                                                LinkItemComponent(item: item, options: [.edit, .delete]) {
-                                                    Task { await linksViewModel.loadData() }
+                                                LinkItemComponent(item: item) { l, id, action in
+                                                    switch action {
+                                                    case .edit:
+                                                        linksViewModel.handleEditLink(link: l!)
+                                                    case .delete:
+                                                        linksViewModel.handleDeleteLink(linkId: id!)
+                                                    }
                                                 }
                                                 .onAppear {
                                                     if item == linksViewModel.data.last {
@@ -58,8 +63,13 @@ struct LinksView: View {
                             else {
                                 ScrollViewReader { scrollView in
                                     List(linksViewModel.data, id: \.self) { item in
-                                        LinkItemComponent(item: item, options: [.edit, .delete]) {
-                                            Task { await linksViewModel.loadData() }
+                                        LinkItemComponent(item: item) { l, id, action in
+                                            switch action {
+                                            case .edit:
+                                                linksViewModel.handleEditLink(link: l!)
+                                            case .delete:
+                                                linksViewModel.handleDeleteLink(linkId: id!)
+                                            }
                                         }
                                         .onAppear {
                                             if item == linksViewModel.data.last {
@@ -138,15 +148,24 @@ struct LinksView: View {
                     linkFormUrlSheet = false
                 } onSuccess: { newLink, action in
                     linkFormUrlSheet = false
+                    linksViewModel.handleCreatedLink(link: newLink)
                 }
             })
             .sheet(isPresented: $linkFormFileSheet, content: {
                 LinkFormView(mode: .file) {
                     linkFormFileSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormFileSheet = false
+                    linksViewModel.handleCreatedLink(link: newLink)
                 }
             })
+            .alert("Error", isPresented: $linksViewModel.deleteLinkErrorAlert) {
+                Button("OK", role: .cancel) {
+                    linksViewModel.deleteLinkErrorAlert = false
+                }
+            } message: {
+                Text("An error occured when deleting the link. Try again later.")
+            }
         }
         .task {
             await linksViewModel.loadData()

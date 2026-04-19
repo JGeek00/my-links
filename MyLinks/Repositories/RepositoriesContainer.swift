@@ -17,4 +17,6 @@ class RepositoriesContainer {
     let navigationRepository = NavigationRepository()
     
     let toastRepository = ToastRepository()
+    
+    let progressIndicatorRepository = ProgressIndicatorRepository()
 }

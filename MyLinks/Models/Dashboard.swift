@@ -8,7 +8,7 @@ struct DashboardResponse: Codable, Sendable, Equatable {
 
 // MARK: - DashboardResponse_Data
 struct DashboardResponse_Data: Codable, Sendable, Equatable {
-    let links: [Link]
+    var links: [Link]
     let numberOfPinnedLinks: Int
     let numberOfTags: Int
 }

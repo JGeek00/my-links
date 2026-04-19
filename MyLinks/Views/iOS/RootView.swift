@@ -27,6 +27,11 @@ struct RootView: View {
         .toast(isPresenting: $rootViewModel.toastPresenting, duration: 2, tapToDismiss: true) {
             rootViewModel.toast ?? AlertToast(type: .regular)
         }
+        .customAlert(isPresented: $rootViewModel.showingProgressIndicator, content: {
+            ProgressView()
+                .controlSize(.extraLarge)
+                .foregroundStyle(.primary)
+        })
         .fontDesign(.rounded)
         .preferredColorScheme(getColorScheme(theme: theme))
         .onAppear(perform: {

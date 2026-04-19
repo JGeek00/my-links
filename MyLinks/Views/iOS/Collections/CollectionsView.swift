@@ -29,8 +29,13 @@ struct CollectionsView: View {
                     ScrollView {
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(searched, id: \.self) { item in
-                                CollectionItemComponent(collection: item) {
-                                    Task { await collectionsViewModel.loadData() }
+                                CollectionItemComponent(collection: item) { c, action in
+                                    switch action {
+                                    case .edit:
+                                        collectionsViewModel.handleEditCollection(collection: c)
+                                    case .delete:
+                                        collectionsViewModel.handleDeleteCollection(collectionId: c.id)
+                                    }
                                 }
                                 .padding(6)
                             }
@@ -58,8 +63,13 @@ struct CollectionsView: View {
                 }
                 else {
                     List(searched, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            Task { await collectionsViewModel.loadData() }
+                        CollectionItemComponent(collection: item) { c, action in
+                            switch action {
+                            case .edit:
+                                collectionsViewModel.handleEditCollection(collection: c)
+                            case .delete:
+                                collectionsViewModel.handleDeleteCollection(collectionId: c.id)
+                            }
                         }
                     }
                     .animation(.default, value: searched)
@@ -98,14 +108,12 @@ struct CollectionsView: View {
             await collectionsViewModel.loadData()
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-        .customAlert(isPresented: $collectionsViewModel.deleting, content: {
-            ProgressView()
-        })
         .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView {
+            CollectionFormView(action: .create) {
                 collectionFormSheet = false
-            } onSuccess: { item, action in
+            } onSuccess: { item, _ in
                 collectionFormSheet = false
+                collectionsViewModel.handleCollectionCreated(collection: item)
             }
         })
         .alert("Error", isPresented: $collectionsViewModel.deleteError) {

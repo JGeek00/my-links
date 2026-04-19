@@ -33,6 +33,7 @@ class SearchViewModel {
     // Flag to triger onChange
     var scrollTopList = false
     
+    var progressIndicator = false
     var deleteCollectionErrorAlert = false
     
     func loadData(
@@ -103,6 +104,52 @@ class SearchViewModel {
             Task {
                 await loadData(setLoading: true)
                 self.previousSearch = nil
+            }
+        }
+    }
+    
+    func handleDeleteLink(linkId: Int) {
+        DispatchQueue.main.async {
+            self.links = self.links.filter() { $0.id != linkId }
+        }
+    }
+    
+    func handleEditLink(link: Link) {
+        DispatchQueue.main.async {
+            self.links = self.links.map() { item in
+                if item.id == link.id {
+                    return link
+                }
+                else {
+                    return item
+                }
+            }
+        }
+    }
+    
+    func handleDeleteCollection(collectionId: Int) {
+        Task {
+            await collectionsRepository.deleteCollection(id: collectionId) { del in
+                DispatchQueue.main.async { self.progressIndicator = del }
+            } setSuccess: {
+                DispatchQueue.main.async {
+                    self.collections = self.collections.filter() { $0.id != collectionId }
+                }
+            } setError: { _ in
+                DispatchQueue.main.async {
+                    self.deleteCollectionErrorAlert = true
+                }
+            }
+        }
+    }
+    
+    func handleEditCollection(collection: Collection) {
+        self.collections = self.collections.map() { item in
+            if item.id == collection.id {
+                return collection
+            }
+            else {
+                return item
             }
         }
     }

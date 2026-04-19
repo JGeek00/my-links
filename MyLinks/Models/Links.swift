@@ -35,7 +35,7 @@ struct Link: Codable, Hashable {
     let createdAt, updatedAt: String
     let tags: [TagInfo]
     let collection: LinkCollection
-    let pinnedBy: [PinnedBy]
+    let pinnedBy: [PinnedBy]?
 }
 
 // MARK: - LinkCollection
@@ -66,4 +66,20 @@ enum LinkType: String, Codable, Hashable {
     case url
     case pdf
     case image
+}
+
+
+// MARK: - DeletedLinkResponse
+struct DeletedLinkResponse: Codable {
+    let response: DeletedLink?
+}
+
+// MARK: - DeletedLink
+struct DeletedLink: Codable, Hashable {
+    let id: Int
+    let name, type, description: String
+    let createdById, collectionId: Int
+    let url: String
+    let clientSide, aiTagged: Bool
+    let createdAt, updatedAt: String
 }

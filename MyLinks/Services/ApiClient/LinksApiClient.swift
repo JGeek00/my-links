@@ -265,8 +265,8 @@ struct LinksApiClient: Equatable {
         }
     }
     
-    func deleteLink(linkId: Int) async -> StatusResponse<LinkResponse> {
-        let defaultErrorResponse = StatusResponse<LinkResponse>(successful: false, statusCode: nil, data: nil)
+    func deleteLink(linkId: Int) async -> StatusResponse<DeletedLinkResponse> {
+        let defaultErrorResponse = StatusResponse<DeletedLinkResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.instance.url)/api/v1/links/\(linkId)") else { return defaultErrorResponse }
         do {
@@ -283,11 +283,11 @@ struct LinksApiClient: Equatable {
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(LinkResponse.self, from: data)
-                return StatusResponse<LinkResponse>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(DeletedLinkResponse.self, from: data)
+                return StatusResponse<DeletedLinkResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<LinkResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<DeletedLinkResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse

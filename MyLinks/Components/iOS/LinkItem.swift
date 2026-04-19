@@ -11,13 +11,13 @@ fileprivate struct FormatsAvailable {
 
 struct LinkItemComponent: View {
     let item: Link
-    let options: [Enums.LinkTaskOption]
-    let onTaskCompleted: () -> Void
+    let onTaskCompleted: (Link?, Int?, Enums.LinkTaskAction) -> Void
+    let onPinUnpin: ((Int, Enums.PinUnpinAction) -> Void)?
     
-    init(item: Link, options: [Enums.LinkTaskOption] = [.edit, .delete, .pin], onTaskCompleted: @escaping () -> Void) {
+    init(item: Link, onTaskCompleted: @escaping (Link?, Int?, Enums.LinkTaskAction) -> Void, onPinUnpin: ((Int, Enums.PinUnpinAction) -> Void)? = nil) {
         self.item = item
-        self.options = options
         self.onTaskCompleted = onTaskCompleted
+        self.onPinUnpin = onPinUnpin
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -165,7 +165,7 @@ struct LinkItemComponent: View {
                 showDeleteAlert.toggle()
             }
             Button("Delete", role: .destructive) {
-                onTaskCompleted()
+                onTaskCompleted(nil, item.id, .delete)
             }
         } message: {
             Text("This link will be deleted. This action is not reversible.")
@@ -173,9 +173,9 @@ struct LinkItemComponent: View {
         .sheet(isPresented: $linkFormOpen, content: {
             LinkFormView(mode: item.type == .url ? .url : .file, link: item) {
                 linkFormOpen = false
-            } onSuccess: { resultLink, action in
+            } onSuccess: { resultLink, _ in
                 linkFormOpen = false
-                onTaskCompleted()
+                onTaskCompleted(resultLink, nil, .edit)
             }
         })
         .sheet(isPresented: $showDetailsSheet, content: {
@@ -273,30 +273,26 @@ struct LinkItemComponent: View {
                 }
             }
         }
-        if options.contains(.pin) {
+        if let onPinUnpin = onPinUnpin {
             Section {
-                if item.pinnedBy.isEmpty {
+                if let pinnedBy = item.pinnedBy, pinnedBy.isEmpty {
                     Button("Pin to the dashboard", systemImage: "pin") {
-                        onTaskCompleted()
+                        onPinUnpin(item.id, .pin)
                     }
                 }
                 else {
                     Button("Unpin from the dashboard", systemImage: "pin.slash") {
-                        onTaskCompleted()
+                        onPinUnpin(item.id, .unpin)
                     }
                 }
             }
         }
         Section {
-            if options.contains(.edit) {
-                Button("Edit", systemImage: "pencil") {
-                    onTaskCompleted()
-                }
+            Button("Edit", systemImage: "pencil") {
+                linkFormOpen = true
             }
-            if options.contains(.delete) {
-                Button("Delete", systemImage: "trash", role: .destructive) {
-                    onTaskCompleted()
-                }
+            Button("Delete", systemImage: "trash", role: .destructive) {
+                showDeleteAlert = true
             }
         }
     }
