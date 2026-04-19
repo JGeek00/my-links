@@ -146,31 +146,23 @@ class LinksFilteredViewModel {
     func handleDeleteLink(linkId: Int) {
         Task {
             await linkManagerRepository.deleteLink(id: linkId) { processing in
-                DispatchQueue.main.async {
-                    self.progressIndicatorRepository.presenting = processing
-                }
+                self.progressIndicatorRepository.presenting = processing
             } onSuccess: { _ in
-                DispatchQueue.main.async {
-                    self.data = self.data.filter() { $0.id != linkId }
-                }
+                self.data = self.data.filter() { $0.id != linkId }
             } onError: {
-                DispatchQueue.main.async {
-                    self.deleteLinkErrorAlert = true
-                }
+                self.deleteLinkErrorAlert = true
             }
         }
     }
     
     func handleEditLink(link: Link) {
         // Request is being handled in the form view model
-        DispatchQueue.main.async {
-            self.data = self.data.map() { item in
-                if item.id == link.id {
-                    return link
-                }
-                else {
-                    return item
-                }
+        self.data = self.data.map() { item in
+            if item.id == link.id {
+                return link
+            }
+            else {
+                return item
             }
         }
     }
@@ -186,13 +178,9 @@ class LinksFilteredViewModel {
             await collectionsRepository.deleteCollection(id: collectionId) { progress in
                 self.progressIndicatorRepository.presenting = progress
             } setSuccess: {
-                DispatchQueue.main.async {
-                    self.collections = self.collections.filter() { $0.id != collectionId }
-                }
+                self.collections = self.collections.filter() { $0.id != collectionId }
             } setError: { _ in
-                DispatchQueue.main.async {
-                    self.deleteCollectionErrorAlert = true
-                }
+                self.deleteCollectionErrorAlert = true
             }
         }
     }

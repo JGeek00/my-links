@@ -7,19 +7,30 @@ class SearchViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
+  
+    init() {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
+        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
+        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
+    }
     
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository) {
+    init(apiClientRepository: ApiClientRepository, linkManagerRepository: LinkManagerRepository, collectionsRepository: CollectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository) {
         self.apiClientRepository = apiClientRepository
         self.linkManagerRepository = linkManagerRepository
         self.collectionsRepository = collectionsRepository
-        self.collections = collectionsRepository.data
+        self.progressIndicatorRepository = progressIndicatorRepository
     }
     
     var links: [Link] = []
     var loading = false
     var error = false
     
-    var collections: [Collection] = []
+    var collections: [Collection] {
+        get { collectionsRepository.data }
+        set { collectionsRepository.data = newValue }
+    }
     
     var searchFieldValue = ""
     var searchPresented = false
@@ -33,7 +44,7 @@ class SearchViewModel {
     // Flag to triger onChange
     var scrollTopList = false
     
-    var progressIndicator = false
+    var deleteLinkErrorAlert = false
     var deleteCollectionErrorAlert = false
     
     func loadData(
@@ -109,20 +120,24 @@ class SearchViewModel {
     }
     
     func handleDeleteLink(linkId: Int) {
-        DispatchQueue.main.async {
-            self.links = self.links.filter() { $0.id != linkId }
+        Task {
+            await linkManagerRepository.deleteLink(id: linkId) { processing in
+                self.progressIndicatorRepository.presenting = processing
+            } onSuccess: { _ in
+                self.links = self.links.filter() { $0.id != linkId }
+            } onError: {
+                self.deleteLinkErrorAlert = true
+            }
         }
     }
     
     func handleEditLink(link: Link) {
-        DispatchQueue.main.async {
-            self.links = self.links.map() { item in
-                if item.id == link.id {
-                    return link
-                }
-                else {
-                    return item
-                }
+        self.links = self.links.map() { item in
+            if item.id == link.id {
+                return link
+            }
+            else {
+                return item
             }
         }
     }
@@ -130,15 +145,11 @@ class SearchViewModel {
     func handleDeleteCollection(collectionId: Int) {
         Task {
             await collectionsRepository.deleteCollection(id: collectionId) { del in
-                DispatchQueue.main.async { self.progressIndicator = del }
+                self.progressIndicatorRepository.presenting = del
             } setSuccess: {
-                DispatchQueue.main.async {
-                    self.collections = self.collections.filter() { $0.id != collectionId }
-                }
+                self.collections = self.collections.filter() { $0.id != collectionId }
             } setError: { _ in
-                DispatchQueue.main.async {
-                    self.deleteCollectionErrorAlert = true
-                }
+                self.deleteCollectionErrorAlert = true
             }
         }
     }

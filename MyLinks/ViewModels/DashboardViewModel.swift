@@ -100,15 +100,11 @@ class DashboardViewModel {
     func handleDeleteLink(linkId: Int) {
         Task {
             await linkManagerRepository.deleteLink(id: linkId) { processing in
-                DispatchQueue.main.async {
-                    self.progressIndicatorRepository.presenting = processing
-                }
+                self.progressIndicatorRepository.presenting = processing
             } onSuccess: { _ in
                 self.reload()
             } onError: {
-                DispatchQueue.main.async {
-                    self.deleteLinkErrorAlert = true
-                }
+                self.deleteLinkErrorAlert = true
             }
         }
     }
@@ -124,19 +120,15 @@ class DashboardViewModel {
     func handlePinUnpin(link: Link, action: Enums.PinUnpinAction) {
         Task {
             await linkManagerRepository.pinUnpinLink(link: link, action: action) { processing in
-                DispatchQueue.main.async {
-                    self.progressIndicatorRepository.presenting = processing
-                }
+                self.progressIndicatorRepository.presenting = processing
             } onSuccess: { _ in
                 self.reload()
             } onError: {
-                DispatchQueue.main.async {
-                    switch action {
-                    case .pin:
-                        self.pinLinkErrorAlert = true
-                    case .unpin:
-                        self.unpinLinkErrorAlert = true
-                    }
+                switch action {
+                case .pin:
+                    self.pinLinkErrorAlert = true
+                case .unpin:
+                    self.unpinLinkErrorAlert = true
                 }
             }
         }

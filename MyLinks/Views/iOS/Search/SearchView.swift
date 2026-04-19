@@ -65,6 +65,13 @@ struct SearchView: View {
             } message: {
                 Text("The collection could not be deleted. Try again later.")
             }
+            .alert("Error", isPresented: $searchViewModel.deleteLinkErrorAlert) {
+                Button("OK", role: .cancel) {
+                    searchViewModel.deleteLinkErrorAlert = false
+                }
+            } message: {
+                Text("The link could not be deleted. Try again later.")
+            }
         }
         .environment(searchViewModel)
     }
@@ -83,8 +90,12 @@ fileprivate struct SearchCompactView: View {
                 Section {
                     ForEach(linksSliced, id: \.self) { item in
                         LinkItemComponent(item: item) {l, id, action in
-                            // TODO: handle actions
-                            Task { await searchViewModel.loadData() }
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditLink(link: l!)
+                            case .delete:
+                                searchViewModel.handleDeleteLink(linkId: id!)
+                            }
                         }
                     }
                 } header: {

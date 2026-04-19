@@ -2372,6 +2372,16 @@
         }
       }
     },
+    "The link could not be deleted. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser eliminado. Prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
     "The link could not be pinned due to an error." : {
       "extractionState" : "stale",
       "localizations" : {

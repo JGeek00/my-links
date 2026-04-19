@@ -112,39 +112,29 @@ class LinksViewModel {
     
     func handleCreatedLink(link: Link) {
         // Request is done by the form view model
-        DispatchQueue.main.async {
-            self.data.insert(link, at: 0)
-        }
+        self.data.insert(link, at: 0)
     }
     
     func handleDeleteLink(linkId: Int) {
         Task {
             await linkManagerRepository.deleteLink(id: linkId) { processing in
-                DispatchQueue.main.async {
-                    self.progressIndicatorRepository.presenting = processing
-                }
+                self.progressIndicatorRepository.presenting = processing
             } onSuccess: { _ in
-                DispatchQueue.main.async {
-                    self.data = self.data.filter() { $0.id != linkId }
-                }
+                self.data = self.data.filter() { $0.id != linkId }
             } onError: {
-                DispatchQueue.main.async {
-                    self.deleteLinkErrorAlert = true
-                }
+                self.deleteLinkErrorAlert = true
             }
         }
     }
     
     func handleEditLink(link: Link) {
         // Request is done by the form view model
-        DispatchQueue.main.async {
-            self.data = self.data.map() { item in
-                if item.id == link.id {
-                    return link
-                }
-                else {
-                    return item
-                }
+        self.data = self.data.map() { item in
+            if item.id == link.id {
+                return link
+            }
+            else {
+                return item
             }
         }
     }

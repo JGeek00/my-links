@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(OnboardingViewModel.self) private var onboardingViewModel
     @State private var settingsViewModel = SettingsViewModel()
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
@@ -106,5 +105,6 @@ struct SettingsView: View {
                 SFSafariViewWrapper(url: URL(string: Urls.myOtherApps)!).ignoresSafeArea()
             })
         }
+        .environment(settingsViewModel)
     }
 }
