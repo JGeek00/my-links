@@ -4,10 +4,13 @@ import SwiftUI
 @MainActor
 @Observable
 class LinkFormViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     
-    var availableCollections: [Collection]
+    var availableCollections: [Collection] {
+        get { collectionsRepository.data }
+    }
         
     var editingLink: Link? = nil
     
@@ -16,7 +19,6 @@ class LinkFormViewModel {
     var collection = 0
     var description = ""
     var selectedTags: [String] = []
-    var localTags: [String] = []
     var selectedFileUrl: URL? = nil
     
     var validationErrorAlert = false
@@ -28,12 +30,23 @@ class LinkFormViewModel {
     
     var discardChangesConfirmation = false
     
-    init(collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, link: Link? = nil, defaultCollectionId: Int? = nil) {
+    init(link: Link? = nil, defaultCollectionId: Int? = nil) {
+        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
+        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
+        
+        self.postInit(link: link, defaultCollectionId: defaultCollectionId)
+    }
+    
+    init(apiClientRepository: ApiClientRepository, collectionsRepository: CollectionsRepository, linkManagerRepository: LinkManagerRepository, link: Link? = nil, defaultCollectionId: Int? = nil) {
+        self.apiClientRepository = apiClientRepository
         self.collectionsRepository = collectionsRepository
         self.linkManagerRepository = linkManagerRepository
-        
-        self.availableCollections = collectionsRepository.data
-        
+
+        self.postInit(link: link, defaultCollectionId: defaultCollectionId)
+    }
+    
+    fileprivate func postInit(link: Link? = nil, defaultCollectionId: Int? = nil) {
         if let defaultCollectionId = defaultCollectionId {
             collection = collectionsRepository.data.first(where: { collection in
                 collection.id == defaultCollectionId
@@ -206,4 +219,5 @@ class LinkFormViewModel {
         let col = availableCollections.first(where: { $0.id == collection })
         return col?.name
     }
+
 }

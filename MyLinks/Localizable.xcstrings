@@ -2270,6 +2270,16 @@
         }
       }
     },
+    "Suggested tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas sugeridas"
+          }
+        }
+      }
+    },
     "System browser" : {
       "localizations" : {
         "es" : {

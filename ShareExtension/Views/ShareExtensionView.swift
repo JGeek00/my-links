@@ -21,7 +21,7 @@ struct ShareExtensionView: View {
                 if shareExtensionViewModel.invalidUrl == true {
                     ContentUnavailableView("Invalid URL", systemImage: "link", description: Text("The provided URL is not valid."))
                 }
-                else if shareExtensionViewModel.apiClient == nil {
+                else if shareExtensionViewModel.serverInstanceAvailable == false {
                     ContentUnavailableView("Server unavailable", systemImage: "server.rack", description: Text("Open the app to create a connection to a server."))
                 }
                 else if shareExtensionViewModel.loading == true {
@@ -82,7 +82,7 @@ struct ShareExtensionView: View {
                                 }
                             }
                             NavigationLink {
-                                ShareExtensionTagsPickerView()
+                                ShareExtensionTagsPickerView(existingTags: shareExtensionViewModel.selectedTags)
                             } label: {
                                 VStack(alignment: .leading) {
                                     Text("Tags")
@@ -106,7 +106,7 @@ struct ShareExtensionView: View {
                         discardAlert = true
                     }
                 }
-                if shareExtensionViewModel.apiClient != nil {
+                if shareExtensionViewModel.serverInstanceAvailable == true {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             shareExtensionViewModel.onSave {
@@ -144,15 +144,9 @@ struct ShareExtensionView: View {
             }
         }
         .fontDesign(.rounded)
-        .onChange(of: shareExtensionViewModel.apiClient, { oldValue, newValue in
-            if oldValue == nil && newValue != nil {
-                Task { await shareExtensionViewModel.loadData() }
-            }
-        })
-        .onAppear {
-            if shareExtensionViewModel.apiClient != nil {
-                Task { await shareExtensionViewModel.loadData() }
-            }
+        .task {
+            await shareExtensionViewModel.loadData()
         }
+        .environment(shareExtensionViewModel)
     }
 }

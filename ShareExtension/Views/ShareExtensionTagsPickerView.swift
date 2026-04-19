@@ -1,16 +1,15 @@
 import SwiftUI
 
-struct TagsPickerView: View {
-    @State private var tagsPickerViewModel: TagsPickerViewModel
+struct ShareExtensionTagsPickerView: View {
+    @State private var tagsPickerViewModel: ShareExtensionTagsPickerViewModel
     
     init(existingTags: [String]) {
-        _tagsPickerViewModel = State(initialValue: TagsPickerViewModel(existingTags: existingTags))
+        _tagsPickerViewModel = State(initialValue: ShareExtensionTagsPickerViewModel(existingTags: existingTags))
     }
     
-    @Environment(LinkFormViewModel.self) private var linkFormViewModel
+    @Environment(ShareExtensionViewModel.self) private var shareExtensionViewModel
     
     var body: some View {
-        @Bindable var linkFormViewModel = linkFormViewModel
         List {
             Section {
                 TagsTextField(tags: $tagsPickerViewModel.selectedTags, currentTextInput: $tagsPickerViewModel.currentTextInput)
@@ -46,7 +45,7 @@ struct TagsPickerView: View {
         .navigationTitle("Tags")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: tagsPickerViewModel.selectedTags) { _, newValue in
-            linkFormViewModel.selectedTags = newValue
+            shareExtensionViewModel.selectedTags = newValue
         }
     }
 }

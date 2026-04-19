@@ -288,6 +288,7 @@
 				AppIcon.icon,
 				Assets.xcassets,
 				Components/iOS/CloseButton.swift,
+				Components/iOS/TagsTextField.swift,
 				Constants/Config.swift,
 				Constants/DeepLinks.swift,
 				Constants/Enums.swift,

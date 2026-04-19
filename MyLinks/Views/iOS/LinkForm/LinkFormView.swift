@@ -139,7 +139,7 @@ struct LinkFormView: View {
                         .pickerStyle(.menu)
                     }
                     NavigationLink {
-                        TagsPickerView()
+                        TagsPickerView(existingTags: linkFormViewModel.selectedTags)
                     } label: {
                         VStack(alignment: .leading) {
                             Text("Tags")
