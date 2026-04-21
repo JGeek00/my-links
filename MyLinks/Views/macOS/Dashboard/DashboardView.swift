@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
-    @EnvironmentObject private var tagsProvider: TagsProvider
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @State private var dashboardViewModel: DashboardViewModel
+    
+    init() {
+        _dashboardViewModel = State(initialValue: DashboardViewModel())
+    }
     
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
@@ -27,40 +29,49 @@ struct DashboardView: View {
                     } description: {
                         Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
                         Button {
-                            Task { await dashboardViewModel.reload() }
+                            dashboardViewModel.reload()
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
                     }
                 }
                 else {
-                    let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-                    let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
-                    
-                    ScrollView {
-                        Section {
-                            HStack {
-                                SummaryEntry(icon: "link", label: "Links", value: (collectionsProvider.data.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                                Divider()
-                                SummaryEntry(icon: "folder.fill", label: "Collections", value: collectionsProvider.data.count, color: Color.blue, status: collectionsProvider.loading == true ? .loading : collectionsProvider.error == true ? .error : .loaded)
-                                Divider()
-                                SummaryEntry(icon: "tag.fill", label: "Tags", value: tagsProvider.data.count, color: Color.red, status: tagsProvider.loading == true ? .loading : tagsProvider.error == true ? .error : .loaded)
+                    if dashboardViewModel.loading {
+                        ProgressView()
+                    }
+                    else if dashboardViewModel.error {
+                       
+                    }
+                    else if let data = dashboardViewModel.data {
+                        let pinned = data.links.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
+
+                        ScrollView {
+                            Section {
+                                HStack {
+                                    SummaryEntry(icon: "link", label: "Links", value: (dashboardViewModel.collections.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded)
+                                    Divider()
+                                    SummaryEntry(icon: "pin.fill", label: "Pinned", value: data.numberOfPinnedLinks, color: Color.orange, status: .loaded)
+                                    Divider()
+                                    SummaryEntry(icon: "folder.fill", label: "Collections", value: dashboardViewModel.collections.count, color: Color.blue, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded)
+                                    Divider()
+                                    SummaryEntry(icon: "tag.fill", label: "Tags", value: data.numberOfTags, color: Color.red, status: .loaded)
+                                }
+                                .padding()
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(.gray.opacity(0.2), lineWidth: 1)
+                                )
                             }
-                            .padding()
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(.gray.opacity(0.2), lineWidth: 1)
-                            )
-                        }
-                        .padding(16)
-                        
-                        if showPinnedBeforeRecent == true {
-                            DashboardPinnedLinks()
-                            DashboardRecentLinks()
-                        }
-                        else {
-                            DashboardRecentLinks()
-                            DashboardPinnedLinks()
+                            .padding(16)
+                            
+                            if showPinnedBeforeRecent == true {
+                                DashboardPinnedLinks(pinned: pinned)
+                                DashboardRecentLinks(links: data.links)
+                            }
+                            else {
+                                DashboardRecentLinks(links: data.links)
+                                DashboardPinnedLinks(pinned: pinned)
+                            }
                         }
                     }
                 }
@@ -69,7 +80,7 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .automatic) {
                     Button {
-                        Task { await dashboardViewModel.reload() }
+                        dashboardViewModel.reload()
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }
@@ -104,26 +115,28 @@ struct DashboardView: View {
                 }
             }
             .sheet(isPresented: $linkFormUrlSheet, content: {
-                LinkFormView(mode: .url) {
+                LinkFormView(mode: Enums.LinkFormItem.url) {
                     linkFormUrlSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormUrlSheet = false
+                    dashboardViewModel.handleAddLink(link: newLink)
                 }
             })
             .sheet(isPresented: $linkFormFileSheet, content: {
-                LinkFormView(mode: .file) {
+                LinkFormView(mode: Enums.LinkFormItem.file) {
                     linkFormFileSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormFileSheet = false
+                    dashboardViewModel.handleAddLink(link: newLink)
                 }
             })
             .sheet(isPresented: $collectionFormSheet, content: {
-                CollectionFormView() {
+                CollectionFormView(action: Enums.CollectionFormAction.create) {
                     collectionFormSheet = false
-                } onSuccess: { item, action in
+                } onSuccess: { item, _ in
                     collectionFormSheet = false
+                    dashboardViewModel.handleAddCollection(collection: item)
                 }
-                .environmentObject(CollectionFormViewModel())
             })
             .sheet(isPresented: $tagFormSheet, content: {
                 TagFormView {
@@ -134,5 +147,6 @@ struct DashboardView: View {
                 Task { await dashboardViewModel.loadData() }
             })
         }
+        .environment(dashboardViewModel)
     }
 }

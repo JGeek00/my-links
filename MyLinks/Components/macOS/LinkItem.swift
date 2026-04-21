@@ -1,19 +1,28 @@
 import SwiftUI
 import AppKit
 
+fileprivate struct FormatsAvailable {
+    let pdf: Bool
+    let image: Bool
+    let html: Bool
+    let reader: Bool
+}
+
+
 struct LinkItemComponent: View {
-    var item: Link
-    var onTaskCompleted: (Link, Enums.LinkTaskCompleted) -> Void
+    let item: Link
+    let onTaskCompleted: (Link?, Int?, Enums.LinkTaskAction) -> Void
+    let onPinUnpin: ((Link, Enums.PinUnpinAction) -> Void)?
     
-    init(item: Link, onTaskCompleted: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+    init(item: Link, onTaskCompleted: @escaping (Link?, Int?, Enums.LinkTaskAction) -> Void, onPinUnpin: ((Link, Enums.PinUnpinAction) -> Void)? = nil) {
         self.item = item
         self.onTaskCompleted = onTaskCompleted
+        self.onPinUnpin = onPinUnpin
     }
     
     @Environment(\.openURL) var openURL
     @Environment(\.colorScheme) private var colorScheme
-    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
-    @EnvironmentObject private var toastProvider: ToastProvider
+    
     @State private var linkFormOpen = false
     @State private var showDeleteAlert = false
     @State private var showDetailsSheet = false
@@ -27,24 +36,20 @@ struct LinkItemComponent: View {
     
     var body: some View {
         let urlHost = getUrlHost(item.url)
-        let readerUrl = item.readable != nil && item.readable != "unavailable" && ApiClientProvider.shared.instance != nil ? URL(string: "\(ApiClientProvider.shared.instance!.url)/preserved/\(item.id!)?format=3") : nil
-        let dateFormatted = item.createdAt != nil ? formatDate(item.createdAt!) : nil
+        let dateFormatted = formatDate(item.createdAt)
+
+        let formatsAvailable = {
+            let pdfAvailable = item.pdf != nil && item.pdf != "unavailable"
+            let imageAvailable = item.image != nil && item.image != "unavailable"
+            let htmlAvailable = item.monolith != nil && item.monolith != "unavailable"
+            let readerAvailable = item.readable != nil && item.readable != "unavailable"
+            return FormatsAvailable(pdf: pdfAvailable, image: imageAvailable, html: htmlAvailable, reader: readerAvailable)
+        }()
+        
         Button {
-            switch item.type {
-            case .url:
-                if let url = item.url {
-                    openURL(URL(string: url)!)
-                } else {
-                    linkContentUnavailable = true
-                }
-            case .image:
-                imageViewerSheet.toggle()
-            case .pdf:
-                pdfViewerSheet.toggle()
-            case .none:
-                linkContentUnavailable = true
+            if let url = item.url, let convertedUrl = URL(string: url) {
+                openURL(convertedUrl)
             }
-           
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -53,7 +58,7 @@ struct LinkItemComponent: View {
                         Spacer()
                             .frame(width: 8)
                     }
-                    Text(item.name != "" ? item.name! : item.description != "" ? item.description! : item.url!)
+                    Text(item.name != "" ? item.name : item.description != "" ? item.description : item.url ?? "")
                         .lineLimit(1)
                         .fontWeight(.medium)
                 }
@@ -77,73 +82,28 @@ struct LinkItemComponent: View {
                                 .font(.system(size: 10))
                             Text("Image")
                                 .font(.system(size: 14))
-                        case .none:
-                            Spacer().frame(width: 0, height: 0)
                         }
                     }
-                    Spacer()
-                    if readerUrl != nil || item.pdf != nil || item.image != nil {
-                        Group {
-                            if item.monolith != nil && item.monolith != "unavailable" {
-                                Button {
-                                    websiteViewerSheet.toggle()
-                                } label: {
-                                    Image("htmltag-gray")
-                                        .resizable()
-                                        .frame(width: 12, height: 12)
-                                }
-                            }
-                            if readerUrl != nil {
-                                Button {
-                                    readerModeSheet.toggle()
-                                } label: {
-                                    Label("Reader mode", systemImage: "textformat")
-                                }
-                            }
-                            if item.pdf != nil {
-                                Button {
-                                    pdfViewerSheet.toggle()
-                                } label: {
-                                    Label("Download PDF file", systemImage: "doc")
-                                }
-                            }
-                            if item.image != nil {
-                                Button {
-                                    imageViewerSheet.toggle()
-                                } label: {
-                                    Label("Download image file", systemImage: "photo")
-                                }
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .labelStyle(.iconOnly)
-                    }
-                    else {
-                        Spacer()
-                    }
+                    availableFormatsButtons(formatsAvailable)
                 }
                 .foregroundStyle(Color.gray)
                 .padding(.vertical, 4)
-                if dateFormatted != nil || (item.collection?.name != nil) {
-                    Spacer()
-                        .frame(height: 4)
-                    HStack {
-                        if let name = item.collection?.name {
-                            Image(systemName: "folder")
-                                .font(.system(size: 10))
-                            Text(name)
-                                .font(.system(size: 14))
-                        }
-                        if let dateFormatted =  dateFormatted {
-                            Spacer()
-                            Image(systemName: "calendar")
-                                .font(.system(size: 12))
-                            Text(dateFormatted)
-                                .font(.system(size: 14))
-                        }
+                Spacer()
+                    .frame(height: 4)
+                HStack {
+                    Image(systemName: "folder")
+                        .font(.system(size: 10))
+                    Text(item.collection.name)
+                        .font(.system(size: 14))
+                    if let dateFormatted = dateFormatted {
+                        Spacer()
+                        Image(systemName: "calendar")
+                            .font(.system(size: 12))
+                        Text(dateFormatted)
+                            .font(.system(size: 14))
                     }
-                    .foregroundStyle(Color.gray)
                 }
+                .foregroundStyle(Color.gray)
             }
             .padding(12)
             .foregroundColor(Color.foreground)
@@ -156,91 +116,14 @@ struct LinkItemComponent: View {
         }
         .buttonStyle(PlainButtonStyle())
         .contextMenu {
-            Section {
-                Button {
-                    showDetailsSheet.toggle()
-                } label: {
-                    Label("Link details", systemImage: "info.circle")
-                }
-                Button {
-                    NSPasteboard.general.clearContents()
-                    NSPasteboard.general.setString(item.url!, forType: .string)
-                    toastProvider.showToast(icon: "doc.on.doc", title: String(localized: "Link URL copied to the clipboard"))
-                } label: {
-                    Label("Copy link URL", systemImage: "doc.on.doc")
-                }
-                if readerUrl != nil || item.pdf != nil || item.image != nil {
-                    Menu("Preserved formats", systemImage: "doc.viewfinder") {
-                        if item.monolith != nil && item.monolith != "unavailable" {
-                            Button {
-                                websiteViewerSheet.toggle()
-                            } label: {
-                                Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
-                            }
-                        }
-                        if readerUrl != nil {
-                            Button {
-                                readerModeSheet.toggle()
-                            } label: {
-                                Label("Reader mode", systemImage: "textformat")
-                            }
-                        }
-                        if item.pdf != nil {
-                            Button {
-                                pdfViewerSheet.toggle()
-                            } label: {
-                                Label("Download PDF file", systemImage: "doc")
-                            }
-                        }
-                        if item.image != nil {
-                            Button {
-                                imageViewerSheet.toggle()
-                            } label: {
-                                Label("Download image file", systemImage: "photo")
-                            }
-                        }
-                    }
-                }
-            }
-            Section {
-                if item.pinnedBy!.isEmpty {
-                    Button("Pin to the dashboard", systemImage: "pin") {
-                        Task {
-                            await linkManagerProvider.pinUnpinLink(link: item) { item in
-                                onTaskCompleted(item, .pin)
-                            }
-                        }
-                    }
-                }
-                else {
-                    Button("Unpin from the dashboard", systemImage: "pin.slash") {
-                        Task {
-                            await linkManagerProvider.pinUnpinLink(link: item) { item in
-                                onTaskCompleted(item, .pin)
-                            }
-                        }
-                    }
-                }
-            }
-            Section {
-                Button("Edit", systemImage: "pencil") {
-                    linkFormOpen.toggle()
-                }
-                Button("Delete", systemImage: "trash", role: .destructive) {
-                    showDeleteAlert.toggle()
-                }
-            }
+            contextMenu(formatsAvailable)
         }
         .alert("Delete link", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) {
                 showDeleteAlert.toggle()
             }
             Button("Delete", role: .destructive) {
-                Task {
-                    await linkManagerProvider.deleteLink(id: item.id!) { link in
-                        onTaskCompleted(link, .delete)
-                    }
-                }
+                onTaskCompleted(nil, item.id, .delete)
             }
         } message: {
             Text("This link will be deleted. This action is not reversible.")
@@ -248,9 +131,9 @@ struct LinkItemComponent: View {
         .sheet(isPresented: $linkFormOpen, content: {
             LinkFormView(mode: item.type == .url ? .url : .file, link: item) {
                 linkFormOpen = false
-            } onSuccess: { resultLink, action in
+            } onSuccess: { resultLink, _ in
                 linkFormOpen = false
-                onTaskCompleted(resultLink, action)
+                onTaskCompleted(resultLink, item.id, .edit)
             }
         })
         .sheet(isPresented: $showDetailsSheet, content: {
@@ -259,13 +142,13 @@ struct LinkItemComponent: View {
             }
         })
         .sheet(isPresented: $pdfViewerSheet, content: {
-            DocumentDownloaderView(linkId: item.id!, documentType: .pdf) {
+            DocumentDownloaderView(linkId: item.id, documentType: .pdf) {
                 pdfViewerSheet = false
             }
             .interactiveDismissDisabled()
         })
         .sheet(isPresented: $imageViewerSheet, content: {
-            DocumentDownloaderView(linkId: item.id!, documentType: .image) {
+            DocumentDownloaderView(linkId: item.id, documentType: .image) {
                 imageViewerSheet = false
             }
             .interactiveDismissDisabled()
@@ -288,123 +171,120 @@ struct LinkItemComponent: View {
             }
         }
     }
-}
+    
+    @ViewBuilder
+    fileprivate func contextMenu(_ formatsAvailable: FormatsAvailable) -> some View {
+        Section {
+            Button {
+                showDetailsSheet.toggle()
+            } label: {
+                Label("Link details", systemImage: "info.circle")
+            }
+            Button {
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(item.url!, forType: .string)
+            } label: {
+                Label("Copy link URL", systemImage: "doc.on.doc")
+            }
 
-private struct LinkDetailsSheet: View {
-    var link: Link
-    var onClose: () -> Void
-
-    init(link: Link, onClose: @escaping () -> Void) {
-        self.link = link
-        self.onClose = onClose
+            if formatsAvailable.html == true || formatsAvailable.reader == true || formatsAvailable.pdf == true || formatsAvailable.image == true {
+                Menu("Preserved formats", systemImage: "doc.viewfinder") {
+                    if item.monolith != nil && item.monolith != "unavailable" {
+                        Button {
+                            websiteViewerSheet.toggle()
+                        } label: {
+                            Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
+                        }
+                    }
+                    if formatsAvailable.reader == true {
+                        Button {
+                            readerModeSheet.toggle()
+                        } label: {
+                            Label("Readable", systemImage: "textformat")
+                        }
+                    }
+                    if formatsAvailable.pdf == true {
+                        Button {
+                            pdfViewerSheet.toggle()
+                        } label: {
+                            Label("PDF", systemImage: "doc")
+                        }
+                    }
+                    if formatsAvailable.image == true {
+                        Button {
+                            imageViewerSheet.toggle()
+                        } label: {
+                            Label("Image", systemImage: "photo")
+                        }
+                    }
+                }
+            }
+        }
+        if let onPinUnpin = onPinUnpin {
+            Section {
+                if let pinnedBy = item.pinnedBy, pinnedBy.isEmpty {
+                    Button("Pin to the dashboard", systemImage: "pin") {
+                        onPinUnpin(item, .pin)
+                    }
+                }
+                else {
+                    Button("Unpin from the dashboard", systemImage: "pin.slash") {
+                        onPinUnpin(item, .unpin)
+                    }
+                }
+            }
+        }
+        Section {
+            Button("Edit", systemImage: "pencil") {
+                linkFormOpen = true
+            }
+            Button("Delete", systemImage: "trash", role: .destructive) {
+                showDeleteAlert = true
+            }
+        }
     }
     
-    @State private var copiedClipboard = false
-    
-    func setCopiedClipboard() {
-        if copiedClipboard == true {
-            copiedClipboard = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                copiedClipboard = true
+    @ViewBuilder
+    fileprivate func availableFormatsButtons(_ formatsAvailable: FormatsAvailable) -> some View {
+        if formatsAvailable.html == true || formatsAvailable.reader == true || formatsAvailable.pdf == true || formatsAvailable.image == true {           Spacer()
+            Group {
+                if item.monolith != nil && item.monolith != "unavailable" {
+                    Button {
+                        websiteViewerSheet.toggle()
+                    } label: {
+                        Image("htmltag-gray")
+                            .resizable()
+                            .frame(width: 12, height: 12)
+                    }
+                }
+                if formatsAvailable.reader == true {
+                    Button {
+                        readerModeSheet.toggle()
+                    } label: {
+                        Label("Reader mode", systemImage: "textformat")
+                    }
+                }
+                if formatsAvailable.pdf == true {
+                    Button {
+                        pdfViewerSheet.toggle()
+                    } label: {
+                        Label("Download PDF file", systemImage: "doc")
+                    }
+                }
+                if formatsAvailable.image == true {
+                    Button {
+                        imageViewerSheet.toggle()
+                    } label: {
+                        Label("Download image file", systemImage: "photo")
+                    }
+                }
             }
+            .buttonStyle(PlainButtonStyle())
+            .labelStyle(.iconOnly)
         }
         else {
-            copiedClipboard = true
+            Spacer()
         }
-    }
-    
-    var body: some View {
-        let createdAt = link.createdAt != nil && link.createdAt != "" ? stringToDate(link.createdAt!) : nil
-        let updatedAt = link.updatedAt != nil && link.updatedAt != "" ? stringToDate(link.updatedAt!) : nil
-        NavigationStack {
-            Form {
-                if let url = link.url {
-                    DetailsItem(icon: "link", iconColor: .green, label: "URL", value: url) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let name = link.name {
-                    DetailsItem(icon: "textformat.size.smaller", iconColor: .blue, label: String(localized: "Name"), value: name != "" ? name : String(localized: "No name")) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let description = link.description {
-                    DetailsItem(icon: "paragraph", iconColor: .orange, label: String(localized: "Description"), value: description != "" ? description : String(localized: "No description")) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let collectionName = link.collection?.name {
-                    DetailsItem(icon: "folder.fill", iconColor: .red, label: String(localized: "Collection"), value: collectionName) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let tags = link.tags {
-                    DetailsItem(icon: "tag.fill", iconColor: .gray, label: String(localized: "Tags"), value: tags.isEmpty ? String(localized: "This link has no tags") : tags.map() { $0.name! }.joined(separator: ", ")) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let createdAt = createdAt {
-                    DetailsItem(icon: "clock.fill", iconColor: .brown, label: String(localized: "Created at"), value: createdAt.formatted(date: .complete, time: .shortened)) {
-                        setCopiedClipboard()
-                    }
-                }
-                if let updatedAt = updatedAt {
-                    DetailsItem(icon: "clock.fill", iconColor: .indigo, label: String(localized: "Updated at"), value: updatedAt.formatted(date: .complete, time: .shortened)) {
-                        setCopiedClipboard()
-                    }
-                }
-            }
-            .formStyle(GroupedFormStyle())
-            .navigationTitle("Link details")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        onClose()
-                    } label: {
-                        Text("Close")
-                    }
-                }
-            }
-        }
-        .frame(width: 600, height: 500)
     }
 }
 
-private struct DetailsItem: View {
-    var icon: String
-    var iconColor: Color
-    var label: String
-    var value: String
-    var showCopiedClipboard: () -> Void
-    
-    init(icon: String, iconColor: Color, label: String, value: String, showCopiedClipboard: @escaping () -> Void) {
-        self.icon = icon
-        self.iconColor = iconColor
-        self.label = label
-        self.value = value
-        self.showCopiedClipboard = showCopiedClipboard
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 12))
-                    .frame(width: 20, height: 20)
-                    .background(iconColor)
-                    .foregroundStyle(Color.white)
-                    .cornerRadius(6)
-                Spacer()
-                    .frame(width: 12)
-                Text(label)
-                    .font(.system(size: 16))
-                    .fontWeight(.semibold)
-            }
-            Spacer()
-                .frame(height: 12)
-            Text(value)
-                .font(.system(size: 12))
-                .textSelection(.enabled)
-        }
-    }
-}

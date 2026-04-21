@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         Self.popover.contentViewController = NSHostingController(
-            rootView: PopoverView()
+            rootView: MenuBarPopoverView()
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .environmentObject(popoverState)
         )
@@ -23,8 +23,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Self.popover.contentSize = NSSize(width: 400, height: 400)
         statusBar = StatusBarController(Self.popover, popoverState: popoverState)
     }
-}
-
-class PopoverState: ObservableObject {
-    @Published var isPopoverOpen = false
 }

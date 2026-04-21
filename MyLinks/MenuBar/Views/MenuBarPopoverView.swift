@@ -1,11 +1,16 @@
 import SwiftUI
 
-private enum PopoverNavigation: String {
+fileprivate enum PopoverNavigation: String {
     case tags
 }
 
-struct PopoverView: View {
-
+struct MenuBarPopoverView: View {
+    @State private var menuBarFormViewModel: MenuBarFormViewModel
+    
+    init() {
+        _menuBarFormViewModel = State(initialValue: MenuBarFormViewModel())
+    }
+    
     @Environment(\.openWindow) private var openWindow
     @EnvironmentObject private var popoverState: PopoverState
     
@@ -15,7 +20,7 @@ struct PopoverView: View {
     var body: some View {
         if popoverState.isPopoverOpen == true {
             PopoverContent()
-                .environmentObject(MenuBarFormViewModel())
+                .environment(menuBarFormViewModel)
                 .frame(width: 400, height: 400)
         }
         else {
@@ -33,7 +38,7 @@ struct PopoverView: View {
 }
 
 struct PopoverContent: View {
-    @EnvironmentObject private var menuBarFormViewModel: MenuBarFormViewModel
+    @Environment(MenuBarFormViewModel.self) private var menuBarFormViewModel
     @EnvironmentObject private var popoverState: PopoverState
     
     @Environment(\.openWindow) private var openWindow
@@ -47,13 +52,14 @@ struct PopoverContent: View {
     }
     
     var body: some View {
+        @Bindable var menuBarFormViewModel = menuBarFormViewModel
         NavigationStack(path: $path) {
             VStack {
-                if menuBarFormViewModel.apiClient != nil {
+                if menuBarFormViewModel.serverInstanceAvailable == true {
                     if menuBarFormViewModel.loading == true {
                         ProgressView()
                     }
-                    else if menuBarFormViewModel.error == true {
+                    else if menuBarFormViewModel.loadError == true {
                         ContentUnavailableView("Cannot connect to the server", systemImage: "exclamationmark.circle", description: Text("Check your internet connection and try again."))
                         Spacer()
                             .frame(height: 30)
@@ -94,8 +100,8 @@ struct PopoverContent: View {
                                 Section {
                                     Picker("Collection", selection: $menuBarFormViewModel.collection) {
                                         ForEach(menuBarFormViewModel.collections, id: \.self) { item in
-                                            Text(item.name!)
-                                                .tag(item.id!)
+                                            Text(item.name)
+                                                .tag(item.id)
                                         }
                                     }
                                 }
@@ -130,7 +136,7 @@ struct PopoverContent: View {
                                 .opacity(menuBarFormViewModel.saving ? 1 : 0)
                             Spacer()
                             Button {
-                                menuBarFormViewModel.createLink()
+                                menuBarFormViewModel.onSave()
                             } label: {
                                 Text("Create")
                                     .font(.system(size: 16))
@@ -158,11 +164,11 @@ struct PopoverContent: View {
                                 Text("Close")
                             }
                         } message: {
-                            Text(menuBarFormViewModel.savingErrorMessage)
+                            Text("An error occurred while creating the link. Please try again.")
                         }
-                        .alert("Success", isPresented: $menuBarFormViewModel.linkCreated) {
+                        .alert("Success", isPresented: $menuBarFormViewModel.linkCreatedAlert) {
                             Button {
-                                menuBarFormViewModel.linkCreated = false
+                                popoverState.isPopoverOpen = false
                             } label: {
                                 Text("Close")
                             }
@@ -176,7 +182,7 @@ struct PopoverContent: View {
                 }
             }
             .navigationDestination(for: PopoverNavigation.self) { _ in
-                TagsList {
+                MenuBarTagsPickerView {
                     path.removeLast()
                 }
             }
@@ -184,79 +190,3 @@ struct PopoverContent: View {
     }
 }
 
-private struct TagsList: View {
-    var goBack: () -> Void
-    
-    init(goBack: @escaping () -> Void) {
-        self.goBack = goBack
-    }
-    
-    @EnvironmentObject private var menuBarFormViewModel: MenuBarFormViewModel
-    
-    @State private var addTagAlert = false
-    @State private var newTagName = ""
-    
-    var body: some View {
-        let tags = (menuBarFormViewModel.tags.map() { $0.name }) + menuBarFormViewModel.localTags
-        VStack {
-            HStack {
-                Button {
-                    goBack()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .padding(.horizontal, 2)
-                        .padding(.vertical, 8)
-                }
-                Spacer()
-                    .frame(width: 12)
-                Text("Tags")
-                    .font(.system(size: 16))
-                    .fontWeight(.semibold)
-                Spacer()
-                Button {
-                    addTagAlert = true
-                } label: {
-                    Image(systemName: "plus")
-                        .padding(.horizontal, 2)
-                        .padding(.vertical, 8)
-                }
-            }
-            .padding(.top, 24)
-            .padding(.horizontal, 24)
-            Form {
-                ForEach(tags, id: \.self) { item in
-                    let contains = menuBarFormViewModel.selectedTags.contains(item)
-                    Button {
-                        if menuBarFormViewModel.selectedTags.contains(item) {
-                            menuBarFormViewModel.selectedTags = menuBarFormViewModel.selectedTags.filter() { $0 != item }
-                        }
-                        else {
-                            menuBarFormViewModel.selectedTags.append(item)
-                        }
-                    } label: {
-                        HStack {
-                            Text(item)
-                            Spacer()
-                            Image(systemName: "checkmark")
-                                .opacity(contains ? 1 : 0)
-                                .animation(.default, value: contains)
-                        }
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-            }
-            .formStyle(GroupedFormStyle())
-        }
-        .alert("Add tag", isPresented: $addTagAlert) {
-            Button("Cancel", role: .cancel) {
-                addTagAlert.toggle()
-            }
-            Button("Save") {
-                menuBarFormViewModel.localTags.append(newTagName)
-                menuBarFormViewModel.selectedTags.append(newTagName)
-            }
-            TextField("Tag name", text: $newTagName)
-        }
-    }
-}

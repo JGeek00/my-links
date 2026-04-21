@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct LinksView: View {
-    @StateObject private var linksViewModel = LinksViewModel.shared
+    @State private var linksViewModel: LinksViewModel
+    
+    init() {
+        _linksViewModel = State(initialValue: LinksViewModel())
+    }
 
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
@@ -27,17 +31,21 @@ struct LinksView: View {
                 }
             }
             else {
-                let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-                if !filtered.isEmpty {
+                if !linksViewModel.data.isEmpty {
                     ScrollViewReader(content: { scrollView in
                         ScrollView {
                             LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(filtered, id: \.self) { item in
-                                    LinkItemComponent(item: item) { l, action in
-                                        // TODO: handle actions
+                                ForEach(linksViewModel.data, id: \.self) { item in
+                                    LinkItemComponent(item: item) { l, id, action in
+                                        switch action {
+                                        case .edit:
+                                            linksViewModel.handleEditLink(link: l!)
+                                        case .delete:
+                                            linksViewModel.handleDeleteLink(linkId: id!)
+                                        }
                                     }
                                     .onAppear {
-                                        if item == filtered.last {
+                                        if item == linksViewModel.data.last {
                                             linksViewModel.loadMore()
                                         }
                                     }
@@ -104,17 +112,19 @@ struct LinksView: View {
             linksViewModel.search()
         }
         .sheet(isPresented: $linkFormUrlSheet, content: {
-            LinkFormView(mode: .url) {
+            LinkFormView(mode: Enums.LinkFormItem.url) {
                 linkFormUrlSheet = false
             } onSuccess: { newLink, action in
                 linkFormUrlSheet = false
+                linksViewModel.handleCreatedLink(link: newLink)
             }
         })
         .sheet(isPresented: $linkFormFileSheet, content: {
-            LinkFormView(mode: .file) {
+            LinkFormView(mode: Enums.LinkFormItem.url) {
                 linkFormFileSheet = false
-            } onSuccess: { newLink, action in
+            } onSuccess: { newLink, _ in
                 linkFormFileSheet = false
+                linksViewModel.handleCreatedLink(link: newLink)
             }
         })
         .onChange(of: linksViewModel.searchPresented, { oldValue, newValue in
@@ -122,8 +132,8 @@ struct LinksView: View {
                 linksViewModel.clearSearch()
             }
         })
-        .onAppear(perform: {
-            Task { await linksViewModel.loadData() }
-        })
+        .task {
+            await linksViewModel.loadData()
+        }
     }
 }

@@ -2,10 +2,15 @@ import SwiftUI
 
 @MainActor
 @Observable
-class TagsPickerViewModel {
-    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+class MenuBarTagsPickerViewModel {
+    @ObservationIgnored private let apiClientRepository: MenuBarApiClientRepository
     
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, existingTags: [String] = []) {
+    init(existingTags: [String] = []) {
+        self.apiClientRepository = MenuBarRepositoriesContainer.shared.apiClientRepository
+        self.selectedTags = existingTags
+    }
+    
+    init(apiClientRepository: MenuBarApiClientRepository, existingTags: [String] = []) {
         self.apiClientRepository = apiClientRepository
         self.selectedTags = existingTags
     }

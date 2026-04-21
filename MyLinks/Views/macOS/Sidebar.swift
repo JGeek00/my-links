@@ -11,7 +11,7 @@ private struct SidebarCollection: Identifiable, Hashable {
 private func sidebarCollections(data: [Collection]) -> [SidebarCollection] {
     func findChildren(parent: Collection) -> SidebarCollection {
         let children = data.filter() { $0.parent?.id == parent.id }
-        return SidebarCollection(id: parent.id!, name: parent.name!, color: parent.color!, count: parent._count?.links ?? 0, subCollections: children.map() { findChildren(parent: $0) })
+        return SidebarCollection(id: parent.id, name: parent.name, color: parent.color!, count: parent._count?.links ?? 0, subCollections: children.map() { findChildren(parent: $0) })
     }
     
     let hasParent = (data.filter() { $0.parent?.id != nil }).map() { $0.id }
@@ -20,14 +20,16 @@ private func sidebarCollections(data: [Collection]) -> [SidebarCollection] {
 }
 
 struct Sidebar: View {    
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @State private var sidebarViewModel: SidebarViewModel
+    
+    init() {
+        _sidebarViewModel = State(initialValue: SidebarViewModel())
+    }
     
     @State private var idToDelete: Int? = nil
-    @State private var errorDeleteAlert: Bool = false
     
     var body: some View {
-        let collections = sidebarCollections(data: collectionsProvider.data)
+        let collections = sidebarCollections(data: sidebarViewModel.collections)
         VStack(alignment :.leading) {
             Group {
                 HStack(spacing: 6) {
@@ -51,11 +53,11 @@ struct Sidebar: View {
                     }
                     .collapsible(true)
                 }
-                if !tagsProvider.data.isEmpty {
+                if !sidebarViewModel.tags.isEmpty {
                     Section("Tags") {
-                        ForEach(tagsProvider.data, id: \.self) { item in
+                        ForEach(sidebarViewModel.tags, id: \.self) { item in
                             NavigationLink {
-                                LinksFilteredView(input: LinksFilteredRequest(name: item.name, mode: .tag, id: item.id))
+                                LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .tag, id: item.id))
                             } label: {
                                 HStack {
                                     Image(systemName: "tag.fill")
@@ -89,21 +91,16 @@ struct Sidebar: View {
             Button("Delete tag", role: .destructive) {
                 let id = idToDelete
                 idToDelete = nil
-                if let id {
-                    Task {
-                        let result = await tagsProvider.deleteTag(tagId: id)
-                        if result == false {
-                            errorDeleteAlert = true
-                        }
-                    }
+                if let id = id {
+                    sidebarViewModel.deleteTag(tagId: id)
                 }
             }
         } message: {
             Text("This tag will be deleted. This action is not reversible.")
         }
-        .alert("Error", isPresented: $errorDeleteAlert) {
+        .alert("Error", isPresented: $sidebarViewModel.errorDeleteTagAlert) {
             Button("Close") {
-                errorDeleteAlert = false
+                sidebarViewModel.errorDeleteTagAlert = false
             }
         } message: {
             Text("An error occured when deleting the tag. Please try again later.")
@@ -129,11 +126,10 @@ private struct SidebarButton: View {
             switch dashboardView {
             case .dashboard:
                 DashboardView()
-                    .environmentObject(DashboardViewModel.shared)
             case .links:
                 LinksView()
             case .pinned:
-                LinksFilteredView(input: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
+                LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
             case .collections:
                 CollectionsView()
             }
@@ -171,7 +167,7 @@ private struct CollectionItem: View {
     var body: some View {
         if item.subCollections.isEmpty {
             NavigationLink {
-                LinksFilteredView(input: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
+                LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
             } label: {
                 HStack {
                     Image(systemName: "folder.fill")
@@ -192,7 +188,7 @@ private struct CollectionItem: View {
                 }
             } label: {
                 NavigationLink {
-                    LinksFilteredView(input: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
+                    LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
                 } label: {
                     HStack {
                         if !item.subCollections.isEmpty {

@@ -18,8 +18,10 @@ class RootViewModel {
         self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
     }
     
-    func fetchCollections() async {
-        await collectionsRepository.loadData()
+    func fetchCollections() {
+        Task {
+            await collectionsRepository.loadData()
+        }
     }
     
     var toastPresenting: Bool {

@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct CollectionsView: View {
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-        
-    init() {}
+    @State private var collectionsViewModel: CollectionsViewModel
+    
+    init() {
+        _collectionsViewModel = State(initialValue: CollectionsViewModel())
+    }
     
     @State private var searchText = ""
     @State private var collectionFormSheet = false
@@ -11,26 +13,26 @@ struct CollectionsView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if collectionsProvider.loading == true {
+                if collectionsViewModel.loading == true {
                     Group {
                         ProgressView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                else if collectionsProvider.error == true {
+                else if collectionsViewModel.error == true {
                     ContentUnavailableView {
                         Label("Error", systemImage: "exclamationmark.circle")
                     } description: {
                         Text("An error occured when loading the links data. Check your Internet connection and try again later.")
                         Button {
-                            Task { await collectionsProvider.loadData(setLoading: true) }
+                            Task { await collectionsViewModel.loadData(setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
                     }
                 }
                 else {
-                    if collectionsProvider.data.isEmpty {
+                    if collectionsViewModel.data.isEmpty {
                         ContentUnavailableView {
                             Label("No collections added", systemImage: "folder")
                         } description: {
@@ -38,17 +40,22 @@ struct CollectionsView: View {
                         }
                     }
                     else {
-                        let notChildCollections = collectionsProvider.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
-                        let searched = searchText != "" ? notChildCollections.filter() { $0.name!.lowercased().contains(searchText.lowercased())} : notChildCollections
+                        let notChildCollections = collectionsViewModel.data.filter() { $0.parent?.id == nil && $0.parent?.name == nil }
+                        let searched = searchText != "" ? notChildCollections.filter() { $0.name.lowercased().contains(searchText.lowercased())} : notChildCollections
                         if !searched.isEmpty {
                             ScrollView {
                                 LazyVGrid(columns: Config.gridColumns) {
                                     ForEach(searched, id: \.self) { item in
                                         NavigationLink {
-                                            LinksFilteredView(input: LinksFilteredRequest(name: item.name!, mode: .collection, id: item.id!))
+                                            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
                                         } label: {
-                                            CollectionItemComponent(collection: item) {
-                                                collectionsProvider.deleteCollection(id: item.id!)
+                                            CollectionItemComponent(collection: item) { c, action in
+                                                switch action {
+                                                case .edit:
+                                                    collectionsViewModel.handleEditCollection(collection: c)
+                                                case .delete:
+                                                    collectionsViewModel.handleDeleteCollection(collectionId: c.id)
+                                                }
                                             }
                                             .padding(6)
                                         }
@@ -74,7 +81,7 @@ struct CollectionsView: View {
                 ToolbarItem(placement: .automatic) {
                     HStack {
                         Button {
-                            Task { await collectionsProvider.loadData(setLoading: true) }
+                            Task { await collectionsViewModel.loadData(setLoading: true) }
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                         }
@@ -87,20 +94,24 @@ struct CollectionsView: View {
                 }
             }
             .sheet(isPresented: $collectionFormSheet, content: {
-                CollectionFormView {
+                CollectionFormView(action: .create) {
                     collectionFormSheet = false
-                } onSuccess: { item, action in
+                } onSuccess: { item, _ in
                     collectionFormSheet = false
+                    collectionsViewModel.handleCollectionCreated(collection: item)
                 }
-                .environmentObject(CollectionFormViewModel())
             })
-            .alert("Error", isPresented: $collectionsProvider.deleteError) {
+            .alert("Error", isPresented: $collectionsViewModel.deleteError) {
                 Button("Close", role: .cancel) {
-                    collectionsProvider.deleteError.toggle()
+                    collectionsViewModel.deleteError.toggle()
                 }
             } message: {
                 Text("The collection could not be deleted due to an error.")
             }
         }
+        .task {
+            await collectionsViewModel.loadData()
+        }
+        .environment(collectionsViewModel)
     }
 }

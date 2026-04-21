@@ -159,6 +159,7 @@
       }
     },
     "Add tag" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -325,6 +326,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocurrió un error al guardar el link"
+          }
+        }
+      }
+    },
+    "An error occurred while creating the link. Please try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al crear el enlace. Por favor, prueba de nuevo."
           }
         }
       }
@@ -1001,6 +1012,7 @@
       }
     },
     "Edit subcollection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1626,6 +1638,7 @@
       }
     },
     "New subcollection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2322,6 +2335,7 @@
       }
     },
     "Tag name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

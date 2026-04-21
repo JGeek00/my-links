@@ -106,7 +106,7 @@ fileprivate struct ActiveServerView: View {
             }
         }
         .task {
-            await rootViewModel.fetchCollections()
+            rootViewModel.fetchCollections()
         }
 //        .customAlert(isPresented: $linkManagerProvider.processing, content: {
 //            HStack {

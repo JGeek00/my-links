@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var settingsViewModel = SettingsViewModel()
-    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
-    @EnvironmentObject private var apiClientProvider: ApiClientProvider
+    @State private var settingsViewModel: SettingsViewModel
+    
+    init() {
+        _settingsViewModel = State(initialValue: SettingsViewModel())
+    }
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
@@ -36,10 +38,10 @@ struct SettingsView: View {
                     Toggle("Show favicons", isOn: $showFavicons)
                 }
                 Section("Server") {
-                    if let instance = apiClientProvider.instance {
-                        if instance.isSelfHosted == true {
+                    if let instance = settingsViewModel.apiClientInstance {
+                        if instance.getIsSelfHosted() == true {
                             HStack {
-                                Text(instance.url)
+                                Text(instance.getInstanceUrl())
                                 Spacer()
                                 Image(systemName: "server.rack")
                             }
@@ -57,15 +59,15 @@ struct SettingsView: View {
                         Button {
                             disconnectAlert.toggle()
                         } label: {
-                            Text(instance.isSelfHosted ==  true ? "Disconnect" : "Log out")
+                            Text(instance.getIsSelfHosted() ==  true ? "Disconnect" : "Log out")
                                 .foregroundStyle(Color.red)
                         }
                         .alert("Disconnect from server", isPresented: $disconnectAlert) {
                             Button("Cancel", role: .cancel) {
                                 disconnectAlert.toggle()
                             }
-                            Button(instance.isSelfHosted == true ? "Disconnect" : "Log out", role: .destructive) {
-                                ApiClientProvider.shared.destroy()
+                            Button(instance.getIsSelfHosted() == true ? "Disconnect" : "Log out", role: .destructive) {
+                                settingsViewModel.destroyServer()
                             }
                         } message: {
                             Text("You will have to establish a connection again.")

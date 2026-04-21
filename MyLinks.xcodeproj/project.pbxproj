@@ -87,6 +87,9 @@
 				Components/iOS/TagItem.swift = (
 					ios,
 				);
+				Components/iOS/TagsTextField.swift = (
+					ios,
+				);
 				Components/macOS/CollectionItem.swift = (
 					macos,
 				);
@@ -102,23 +105,23 @@
 				MenuBar/AppDelegate.swift = (
 					macos,
 				);
-				MenuBar/MenuBarFormViewModel.swift = (
-					macos,
-				);
-				MenuBar/PopoverView.swift = (
-					macos,
-				);
 				MenuBar/StatusBarController.swift = (
 					macos,
 				);
-				Repositories/NavigationRepository.swift = (
-					ios,
+				MenuBar/ViewModels/MenuBarFormViewModel.swift = (
+					macos,
+				);
+				MenuBar/Views/MenuBarPopoverView.swift = (
+					macos,
 				);
 				Utils/ReviewApp.swift = (
 					ios,
 				);
 				Utils/SafariView.swift = (
 					ios,
+				);
+				ViewModels/DocumentDownloaderViewModel.swift = (
+					macos,
 				);
 				ViewModels/ImageViewerViewModel.swift = (
 					ios,
@@ -128,6 +131,9 @@
 				);
 				ViewModels/SearchViewModel.swift = (
 					ios,
+				);
+				ViewModels/SidebarViewModel.swift = (
+					macos,
 				);
 				Views/iOS/CollectionForm/CollectionFormView.swift = (
 					ios,

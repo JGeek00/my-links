@@ -1,18 +1,21 @@
 import SwiftUI
 
 struct CollectionFormView: View {
-    var parentCollection: Collection?
+    var collectionId: Int?
+    var action: Enums.CollectionFormAction
     var onClose: () -> Void
-    var onSuccess: (Collection, Enums.LinkTaskCompleted) -> Void
+    var onSuccess: (Collection, Enums.CollectionFormAction) -> Void
     
-    init(parentCollection: Collection? = nil, onClose: @escaping () -> Void, onSuccess: @escaping (Collection, Enums.LinkTaskCompleted) -> Void) {
-        self.parentCollection = parentCollection
+    @State private var collectionFormViewModel: CollectionFormViewModel
+    
+    init(collectionId: Int? = nil, action: Enums.CollectionFormAction, onClose: @escaping () -> Void, onSuccess: @escaping (Collection, Enums.CollectionFormAction) -> Void) {
+        self.collectionId = collectionId
+        self.action = action
         self.onClose = onClose
         self.onSuccess = onSuccess
+        _collectionFormViewModel = State(initialValue: CollectionFormViewModel(collectionId: collectionId, action: action))
     }
-    
-    @EnvironmentObject private var collectionFormViewModel: CollectionFormViewModel
-    
+        
     var body: some View {
         NavigationStack {
             Form {
@@ -25,7 +28,7 @@ struct CollectionFormView: View {
                 }
             }
             .formStyle(GroupedFormStyle())
-            .navigationTitle(collectionFormViewModel.editingCollection != nil ? collectionFormViewModel.editingCollection != nil ? "Edit subcollection" : "Edit collection" : parentCollection != nil ? "New subcollection" : "New collection")
+            .navigationTitle(collectionFormViewModel.editingCollection != nil ? "Edit collection" : (collectionFormViewModel.parentCollection != nil) ? "New child collection" : "New collection")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {
@@ -36,10 +39,8 @@ struct CollectionFormView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        Task {
-                            await collectionFormViewModel.onSave(parentId: parentCollection?.id) { item in
-                                onSuccess(item, collectionFormViewModel.editingCollection != nil ? .edit : .create)
-                            }
+                        collectionFormViewModel.onSave() { item in
+                            onSuccess(item, collectionFormViewModel.editingCollection != nil ? .edit : .create)
                         }
                     } label: {
                         Text("Save")

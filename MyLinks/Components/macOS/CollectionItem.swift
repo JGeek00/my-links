@@ -2,11 +2,11 @@ import SwiftUI
 
 struct CollectionItemComponent: View {
     let collection: Collection
-    let onDelete: () -> Void
+    let onTaskCompleted: (Collection, Enums.CollectionTaskAction) -> Void
     
-    init(collection: Collection, onDelete: @escaping () -> Void) {
+    init(collection: Collection, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
         self.collection = collection
-        self.onDelete = onDelete
+        self.onTaskCompleted = onTaskCompleted
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -26,7 +26,7 @@ struct CollectionItemComponent: View {
                     Spacer()
                         .frame(width: 6)
                 }
-                Text(collection.name!)
+                Text(collection.name)
                     .lineLimit(1)
                     .fontWeight(.medium)
             }
@@ -75,19 +75,19 @@ struct CollectionItemComponent: View {
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView {
+            CollectionFormView(action: .edit) {
                 collectionFormSheet = false
             } onSuccess: { item, action in
                 collectionFormSheet = false
+                onTaskCompleted(item, .edit)
             }
-            .environmentObject(CollectionFormViewModel(collection: collection))
         })
         .alert("Delete collection", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) {
                 showDeleteAlert.toggle()
             }
             Button("Delete", role: .destructive) {
-                onDelete()
+                onTaskCompleted(collection, .delete)
             }
         } message: {
             Text("This collection and all it's links will be deleted. This action is not reversible.")

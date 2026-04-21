@@ -14,9 +14,6 @@ struct MyLinksApp: App {
             RootView()
                 .frame(minWidth: 800, idealWidth: 1000, maxWidth: .infinity, minHeight: 500, idealHeight: 700, maxHeight: .infinity)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(OnboardingViewModel.shared)
-                .environmentObject(LinkManagerProvider.shared)
-                .environmentObject(ToastProvider.shared)
                 .onAppear {
                     NSApp.setActivationPolicy(.regular)
                     NSWindow.allowsAutomaticWindowTabbing = false
