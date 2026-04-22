@@ -210,8 +210,9 @@ struct LinksFilteredView: View {
                 linksFilteredViewModel.clearLinksSearch()
             }
         })
-        .task {
-            await linksFilteredViewModel.loadData()
+        .onChange(of: linksFilteredRequest, initial: true) { _, newValue in
+            linksFilteredViewModel = LinksFilteredViewModel(input: newValue)
+            Task { await linksFilteredViewModel.loadData(setLoading: true) }
         }
         .environment(linksFilteredViewModel)
     }
