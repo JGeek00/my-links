@@ -7,7 +7,7 @@ struct TagsApiClient: Equatable {
         self.instance = instance
     }
     
-    func fetchTags(page: Int? = nil) async -> StatusResponse<TagsResponse> {
+    func fetchTags(page: Int? = nil, search: String? = nil) async -> StatusResponse<TagsResponse> {
         let defaultErrorResponse = StatusResponse<TagsResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.instance.url)/api/v1/tags") else { return defaultErrorResponse }
@@ -15,6 +15,9 @@ struct TagsApiClient: Equatable {
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             if let page = page {
                 components.queryItems?.append(URLQueryItem(name: "cursor", value: String(page)))
+            }
+            if let search = search {
+                components.queryItems?.append(URLQueryItem(name: "search", value: search))
             }
             
             var request = URLRequest(url: components.url!)
