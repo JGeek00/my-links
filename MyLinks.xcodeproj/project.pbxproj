@@ -347,7 +347,6 @@
 				ViewModels/CollectionsViewModel.swift,
 				ViewModels/DashboardViewModel.swift,
 				ViewModels/LinksViewModel.swift,
-				ViewModels/OnboardingViewModel.swift,
 				ViewModels/TagsViewModel.swift,
 			);
 			target = 0D238CCF2C370953007DACF0 /* ShareExtension */;

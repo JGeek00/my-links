@@ -35,22 +35,21 @@ struct RootView: View {
                 }
             }
         }
-        .fontDesign(.rounded)
-        .preferredColorScheme(getColorScheme(theme: theme))
-        .onAppear(perform: {
-            onboardingViewModel.checkInstance()
-        })
         .toast(isPresenting: $rootViewModel.toastPresenting, duration: 2, tapToDismiss: true) {
             rootViewModel.toast ?? AlertToast(type: .regular)
         }
-        .sheet(isPresented: $onboardingViewModel.showOnboarding, content: {
-            ConnectionForm()
-                .interactiveDismissDisabled()
+        .sheet(isPresented: $rootViewModel.showOnboarding, content: {
+            ConnectionForm {
+                rootViewModel.showOnboarding = false
+            }
+            .interactiveDismissDisabled()
         })
-        .onChange(of: onboardingViewModel.showOnboarding) {
-            onboardingViewModel.reset()
+        .onAppear {
+            rootViewModel.initApiClientInstance()
         }
         .environment(rootViewModel)
         .environment(onboardingViewModel)
+        .fontDesign(.rounded)
+        .preferredColorScheme(getColorScheme(theme: theme))
     }
 }

@@ -7,11 +7,9 @@ import SwiftUI
 class OnboardingViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     
-    init() {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository) {
+        self.apiClientRepository = apiClientRepository
     }
-    
-    var showOnboarding = false
     
     var selectedTab = 0
     var hostingMode: Enums.Hosting = .cloud
@@ -33,53 +31,6 @@ class OnboardingViewModel {
     var connectionErrorMessage = ""
     
     var connecting = false
-    
-    func checkInstance() {
-        let fetchRequest: NSFetchRequest<ServerInstance> = ServerInstance.fetchRequest()
-        do {
-            let res = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
-            if res.isEmpty == true {
-                showOnboarding = true
-            }
-            else {
-                if res[0].isSelfHosted == true {
-                    guard let method = res[0].method else {
-                        clearInstances()
-                        return
-                    }
-                    guard let parsedMethod = Enums.ConnectionMethod(rawValue: method) else {
-                        clearInstances()
-                        return
-                    }
-                    guard let domain = res[0].domain else {
-                        clearInstances()
-                        return
-                    }
-                    guard let token = res[0].token else {
-                        clearInstances()
-                        return
-                    }
-                    let port = res[0].port != nil ? Int(res[0].port!) : nil
-                    let client = ApiClient(instance: ServerApiInstance(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true))
-                    DispatchQueue.main.async {
-                        self.apiClientRepository.initialice(instance: client)
-                    }
-                }
-                else {
-                    guard let token = res[0].token else {
-                        clearInstances()
-                        return
-                    }
-                    let client = ApiClient(instance: ServerApiInstance(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false))
-                    DispatchQueue.main.async {
-                        self.apiClientRepository.initialice(instance: client)
-                    }
-                }
-            }
-        } catch {
-            print("Error fetching data: \(error.localizedDescription)")
-        }
-    }
     
     func reset() {
         selectedTab = 0
@@ -139,7 +90,7 @@ class OnboardingViewModel {
         }
     }
     
-    func onConnect() {
+    func onConnect(finishOnboarding: @escaping () -> Void) {
         if hostingMode == .selfhosted {
             let validIpDomain = validateIpDomain(value: ipDomain)
             if validIpDomain == false {
@@ -237,7 +188,7 @@ class OnboardingViewModel {
                 if saved == true {
                     DispatchQueue.main.async {
                         self.apiClientRepository.initialice(instance: instance)
-                        self.showOnboarding = false
+                        finishOnboarding()
                     }
                 }
             }

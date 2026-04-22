@@ -1,7 +1,14 @@
 import SwiftUI
 
 struct ConnectionForm: View {
-    @Environment(OnboardingViewModel.self) private var onboardingViewModel
+    var onOnboardingFinished: () -> Void
+    
+    @State private var onboardingViewModel: OnboardingViewModel
+    
+    init(onOnboardingFinished: @escaping () -> Void) {
+        self.onOnboardingFinished = onOnboardingFinished
+        _onboardingViewModel = State(initialValue: OnboardingViewModel())
+    }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -31,22 +38,6 @@ struct ConnectionForm: View {
                         .tag(Enums.Hosting.selfhosted)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                if onboardingViewModel.hostingMode == .selfhosted {
-                    VStack(alignment: .leading) {
-                        Text("⚠️ Warning")
-                            .fontWeight(.semibold)
-                            .padding(.bottom, 6)
-                        Text("My Links is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server.")
-                    }
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                    .background(Color.yellow.opacity(0.2))
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(.yellow, lineWidth: 2)
-                    )
-                }
             }
             if onboardingViewModel.hostingMode == .selfhosted {
                 Section("Server route") {
@@ -94,7 +85,9 @@ struct ConnectionForm: View {
             }
             Section {
                 Button {
-                    onboardingViewModel.onConnect()
+                    onboardingViewModel.onConnect {
+                        onOnboardingFinished()
+                    }
                 } label: {
                     Group {
                         Spacer()

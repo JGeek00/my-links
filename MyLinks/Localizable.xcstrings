@@ -27,16 +27,6 @@
         }
       }
     },
-    "⚠️ Warning" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "⚠️ Aviso"
-          }
-        }
-      }
-    },
     "1. Log in into your Linkwarden account." : {
       "localizations" : {
         "es" : {
@@ -1547,16 +1537,6 @@
         }
       }
     },
-    "My Links is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "My Links está diseñado para Linkwarden v2.6.0 o superior. Algunas funciones pueden no funcionar en versiones antiguas del servidor."
-          }
-        }
-      }
-    },
     "N/A" : {
       "localizations" : {
         "es" : {
@@ -2036,17 +2016,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reemplazar fichero seleccionado (hasta 10 MB)"
-          }
-        }
-      }
-    },
-    "Replaces the top navigation tab bar introduced on iOS 18 with the previous one. This only affects to iPadOS." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reemplaza la barra de navegación de pestañas superior introducida en iOS 18 con la existente anteriormente. Esto solo afecta a iPadOS."
           }
         }
       }

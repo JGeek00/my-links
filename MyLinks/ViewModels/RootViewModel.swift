@@ -18,6 +18,14 @@ class RootViewModel {
         self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
     }
     
+    var showOnboarding = false
+    
+    func initApiClientInstance() {
+        apiClientRepository.loadInstance {
+            self.showOnboarding = true
+        }
+    }
+    
     func fetchCollections() {
         Task {
             await collectionsRepository.loadData()
