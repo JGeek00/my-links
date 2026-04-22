@@ -193,7 +193,7 @@ struct LinkItemComponent: View {
                         Button {
                             websiteViewerSheet.toggle()
                         } label: {
-                            Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
+                            Label("Webpage", systemImage: "globe")
                         }
                     }
                     if formatsAvailable.reader == true {
@@ -287,4 +287,3 @@ struct LinkItemComponent: View {
         }
     }
 }
-

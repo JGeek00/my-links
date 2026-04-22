@@ -2020,6 +2020,16 @@
         }
       }
     },
+    "Refresh" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refrescar"
+          }
+        }
+      }
+    },
     "Replace selected file (up to 10 MB)" : {
       "localizations" : {
         "es" : {

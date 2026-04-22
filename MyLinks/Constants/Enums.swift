@@ -118,8 +118,8 @@ class Enums {
     enum DashboardView: String {
         case dashboard
         case links
-        case pinned
         case collections
+        case tags
     }
     
     enum DownloadDocumentType: String {

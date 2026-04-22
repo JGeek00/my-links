@@ -34,12 +34,12 @@ struct Sidebar: View {
             Group {
                 HStack(spacing: 6) {
                     VStack(spacing: 6) {
-                        SidebarButton(image: "house.fill", name: "Dashboard", color: .green, dashboardView: .dashboard)
-                        SidebarButton(image: "pin.fill", name: "Pinned", color: .red, dashboardView: .pinned)
+                        SidebarButton(image: "house.fill", name: "Dashboard", color: .gray, dashboardView: .dashboard)
+                        SidebarButton(image: "link", name: "Links", color: .green, dashboardView: .links)
                     }
                     VStack(spacing: 6) {
-                        SidebarButton(image: "link", name: "Links", color: .blue, dashboardView: .links)
-                        SidebarButton(image: "folder.fill", name: "Collections", color: .orange, dashboardView: .collections)
+                        SidebarButton(image: "folder.fill", name: "Collections", color: .blue, dashboardView: .collections)
+                        SidebarButton(image: "tag.fill", name: "Tags", color: .red, dashboardView: .tags)
                     }
                 }
             }
@@ -128,10 +128,10 @@ private struct SidebarButton: View {
                 DashboardView()
             case .links:
                 LinksView()
-            case .pinned:
-                LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
             case .collections:
                 CollectionsView()
+            case .tags:
+                TagsView()
             }
         } label: {
             HStack {

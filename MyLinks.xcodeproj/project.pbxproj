@@ -99,6 +99,9 @@
 				Components/macOS/ListRowWithIconEntry.swift = (
 					macos,
 				);
+				Components/macOS/TagItem.swift = (
+					macos,
+				);
 				Components/macOS/TagsTextField.swift = (
 					macos,
 				);
