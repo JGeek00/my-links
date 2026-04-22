@@ -14,6 +14,7 @@ struct TagFormView: View {
     @State private var saving: Bool = false
     @State private var error: Bool = false
     @State private var noLabel: Bool = false
+    @State private var showConfirmationAlert = false
     
     func createTag() async {
         if label == "" {
@@ -42,7 +43,12 @@ struct TagFormView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     CloseButton {
-                        onClose()
+                        showConfirmationAlert = true
+                    }
+                    .confirmationDialog("Discard changes?", isPresented: $showConfirmationAlert) {
+                        Button("Discard changes", role: .destructive) {
+                            onClose()
+                        }
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
