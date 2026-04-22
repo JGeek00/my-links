@@ -19,43 +19,53 @@ struct TagsView: View {
             case .loading:
                 ProgressView("Loading...")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
             case .success(let data):
-                let searched = searchText != "" ? data.tags.filter() { $0.name.lowercased().contains(searchText.lowercased()) } : data.tags
-                if data.tags.isEmpty {
+                if data.tags.isEmpty && searchText != "" {
+                    ContentUnavailableView {
+                        Label("No tags found", systemImage: "tag")
+                    } description: {
+                        Text("Change the search term to see some tags.")
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
+                }
+                else if data.tags.isEmpty && searchText == "" {
                     ContentUnavailableView {
                         Label("No tags created", systemImage: "tag")
                     } description: {
                         Text("Add tags to links to see them here.")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                else if searched.isEmpty {
-                    if searched.isEmpty {
-                        ContentUnavailableView {
-                            Label("No tags found", systemImage: "tag")
-                        } description: {
-                            Text("Change the search term to see some tags.")
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
+                    .transition(.opacity)
                 }
                 else {
                     if horizontalSizeClass == .regular {
                         ScrollView {
                             LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(searched, id: \.self) { item in
-                                    TagItemComponent(tag: item)
-                                        .padding(6)
+                                ForEach(data.tags, id: \.self) { item in
+                                    TagItemComponent(tag: item) {
+                                        Task {
+                                            await tagsViewModel.deleteTag(tagId: item.id)
+                                        }
+                                    }
+                                    .padding(6)
                                 }
                             }
                             .padding(.horizontal, 12)
                         }
+                        .transition(.opacity)
                     }
                     else {
-                        List(searched, id: \.self) { item in
-                            TagItemComponent(tag: item)
+                        List(data.tags, id: \.self) { item in
+                            TagItemComponent(tag: item) {
+                                Task {
+                                    await tagsViewModel.deleteTag(tagId: item.id)
+                                }
+                            }
                         }
-                        .animation(.default, value: searched)
+                        .animation(.default, value: data.tags)
+                        .transition(.opacity)
                     }
                 }
 
@@ -84,7 +94,15 @@ struct TagsView: View {
         .refreshable {
             await tagsViewModel.loadData()
         }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $tagsViewModel.searchFieldValue, isPresented: $tagsViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
+        .onSubmit(of: .search) {
+            tagsViewModel.search()
+        }
+        .onChange(of: tagsViewModel.searchPresented, { oldValue, newValue in
+            if oldValue == true && newValue == false {
+                tagsViewModel.clearSearch()
+            }
+        })
         .sheet(isPresented: $showCreateTagSheet) {
             TagFormView {
                 showCreateTagSheet = false

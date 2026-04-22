@@ -9,4 +9,5 @@ class Config {
     static let gridColumns = [GridItem(.adaptive(minimum: 400))]
     static let collectionsCountSelectorBreakpoint = 10
     static let selectedTagsCountLabelBreakpoint = 5
+    static let searchViewMoreAmount = 10
 }

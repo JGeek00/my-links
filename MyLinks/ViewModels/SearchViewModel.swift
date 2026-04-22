@@ -24,13 +24,15 @@ class SearchViewModel {
     }
     
     var links: [Link] = []
+    var tags: [TagsResponse_DataClass_Tag] = []
     var loading = false
     var error = false
     
-    var collections: [Collection] {
+    var allCollections: [Collection] {
         get { collectionsRepository.data }
         set { collectionsRepository.data = newValue }
     }
+    var filteredCollections: [Collection] = []
     
     var searchFieldValue = ""
     var searchPresented = false
@@ -48,24 +50,19 @@ class SearchViewModel {
     var deleteCollectionErrorAlert = false
     
     func loadData(
-        cursor: Int? = nil,
         setLoading: Bool = false,
-        setError: Bool = true,
-        loadMore: Bool = false
+        setError: Bool = true
     ) async {
         if setLoading == true {
             self.loading = true
         }
         guard let instance = apiClientRepository.instance else { return }
-        let result = await instance.links.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
-        if result.successful == true {
+        let (linksResult, tagsResult) = await (instance.links.fetchLinks(searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue), instance.tags.fetchTags(search: searchQueryValue))
+        if let linksResult = linksResult.data?.response, let tagsResult = tagsResult.data?.data?.tags {
             DispatchQueue.main.async {
-                if loadMore == true {
-                    self.links = self.links + (result.data?.response ?? [])
-                }
-                else {
-                    self.links = result.data?.response ?? []
-                }
+                self.links = linksResult
+                self.tags = tagsResult
+                self.filteredCollections = self.allCollections.filter({ $0.name.lowercased().contains((self.searchQueryValue?.lowercased()) ?? "") })
                 withAnimation(.default) {
                     self.loading = false
                     self.error = false
@@ -73,7 +70,7 @@ class SearchViewModel {
             }
         }
         else {
-            if result.statusCode == 401 {
+            if linksResult.statusCode == 401 || tagsResult.statusCode == 401 {
                 apiClientRepository.destroy()
                 return
             }
@@ -84,19 +81,6 @@ class SearchViewModel {
                         self.error = true
                     }
                 }
-            }
-        }
-    }
-    
-    func loadMore() {
-        if loadingMore == true && !links.isEmpty {
-            return
-        }
-        self.loadingMore = true
-        Task {
-            await loadData(cursor: links.last!.id, setError: false, loadMore: true)
-            DispatchQueue.main.async {
-                self.loadingMore = false
             }
         }
     }
@@ -147,7 +131,7 @@ class SearchViewModel {
             await collectionsRepository.deleteCollection(id: collectionId) { del in
                 self.progressIndicatorRepository.presenting = del
             } setSuccess: {
-                self.collections = self.collections.filter() { $0.id != collectionId }
+                self.allCollections = self.allCollections.filter() { $0.id != collectionId }
             } setError: { _ in
                 self.deleteCollectionErrorAlert = true
             }
@@ -155,7 +139,7 @@ class SearchViewModel {
     }
     
     func handleEditCollection(collection: Collection) {
-        self.collections = self.collections.map() { item in
+        self.allCollections = self.allCollections.map() { item in
             if item.id == collection.id {
                 return collection
             }
@@ -164,4 +148,17 @@ class SearchViewModel {
             }
         }
     }
+    
+    func handleDeleteTag(tagId: Int) async -> Bool {
+        guard let instance = apiClientRepository.instance else { return false }
+        let result = await instance.tags.deleteTag(tagId: tagId)
+        if result.successful == true {
+            await loadData(setLoading: false)
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

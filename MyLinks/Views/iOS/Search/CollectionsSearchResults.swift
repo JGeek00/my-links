@@ -6,11 +6,10 @@ struct CollectionsSearchResults: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        let collections = searchViewModel.collections.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") })
         if horizontalSizeClass == .regular {
             ScrollView {
                 LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(collections, id: \.self) { item in
+                    ForEach(searchViewModel.filteredCollections, id: \.self) { item in
                         CollectionItemComponent(collection: item) { c, action in
                             switch action {
                             case .edit:
@@ -28,7 +27,7 @@ struct CollectionsSearchResults: View {
             .background(Color.listBackground)
         }
         else {
-            List(collections, id: \.self) { item in
+            List(searchViewModel.filteredCollections, id: \.self) { item in
                 CollectionItemComponent(collection: item) { c, action in
                     switch action {
                     case .edit:

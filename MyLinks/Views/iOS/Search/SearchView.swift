@@ -86,8 +86,8 @@ fileprivate struct SearchCompactView: View {
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
-        let collectionsSliced = searchViewModel.collections.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        // let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let collectionsSliced = searchViewModel.filteredCollections.prefix(10)
+        let tagsSliced = searchViewModel.tags.prefix(10)
         
         List {
             if !linksSliced.isEmpty {
@@ -105,10 +105,10 @@ fileprivate struct SearchCompactView: View {
                 } header: {
                     HStack {
                         Text("Links")
-                        if searchViewModel.links.count > 10 {
+                        if searchViewModel.links.count > Config.searchViewMoreAmount {
                             Spacer()
                             NavigationLink {
-                                LinksSearchResults()
+                                LinksSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
                             } label: {
                                 HStack {
                                     Text("View more")
@@ -136,7 +136,7 @@ fileprivate struct SearchCompactView: View {
                 } header: {
                     HStack {
                         Text("Collections")
-                        if searchViewModel.collections.count > 10 {
+                        if searchViewModel.filteredCollections.count > Config.searchViewMoreAmount {
                             Spacer()
                             NavigationLink {
                                 CollectionsSearchResults()
@@ -152,30 +152,32 @@ fileprivate struct SearchCompactView: View {
                     }
                 }
             }
-//            if !tagsSliced.isEmpty {
-//                Section {
-//                    ForEach(tagsSliced, id: \.self) { item in
-//                        TagItemComponent(tag: item)
-//                    }
-//                } header: {
-//                    HStack {
-//                        Text("Tags")
-//                        if tagsProvider.data.count > 10 {
-//                            Spacer()
-//                            NavigationLink {
-//                                TagsSearchResults()
-//                            } label: {
-//                                HStack {
-//                                    Text("View more")
-//                                    Spacer()
-//                                        .frame(width: 8)
-//                                    Image(systemName: "arrow.right")
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            if !tagsSliced.isEmpty {
+                Section {
+                    ForEach(tagsSliced, id: \.self) { item in
+                        TagItemComponent(tag: item) {
+                            Task { await searchViewModel.handleDeleteTag(tagId: item.id) }
+                        }
+                    }
+                } header: {
+                    HStack {
+                        Text("Tags")
+                        if tagsSliced.count > Config.searchViewMoreAmount {
+                            Spacer()
+                            NavigationLink {
+                                TagsSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
+                            } label: {
+                                HStack {
+                                    Text("View more")
+                                    Spacer()
+                                        .frame(width: 8)
+                                    Image(systemName: "arrow.right")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         .transition(.opacity)
     }
@@ -186,8 +188,8 @@ fileprivate struct SearchRegularView: View {
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
-        let collectionsSliced = searchViewModel.collections.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        // let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let collectionsSliced = searchViewModel.filteredCollections.prefix(10)
+        let tagsSliced = searchViewModel.tags.prefix(10)
         
         ScrollView {
             Group {
@@ -195,14 +197,16 @@ fileprivate struct SearchRegularView: View {
                     Text("Links")
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
-                    Spacer()
-                    NavigationLink {
-                        LinksSearchResults()
-                    } label: {
-                        Text("View all")
-                        Image(systemName: "chevron.right")
+                    if searchViewModel.links.count > Config.searchViewMoreAmount {
+                        Spacer()
+                        NavigationLink {
+                            LinksSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
+                        } label: {
+                            Text("View all")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 16))
                     }
-                    .font(.system(size: 16))
                 }
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
@@ -227,14 +231,16 @@ fileprivate struct SearchRegularView: View {
                     Text("Collections")
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
-                    Spacer()
-                    NavigationLink {
-                        CollectionsSearchResults()
-                    } label: {
-                        Text("View all")
-                        Image(systemName: "chevron.right")
+                    if searchViewModel.filteredCollections.count > Config.searchViewMoreAmount {
+                        Spacer()
+                        NavigationLink {
+                            CollectionsSearchResults()
+                        } label: {
+                            Text("View all")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 16))
                     }
-                    .font(.system(size: 16))
                 }
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
@@ -254,30 +260,34 @@ fileprivate struct SearchRegularView: View {
             }
             .padding(16)
             
-//            Group {
-//                HStack {
-//                    Text("Tags")
-//                        .font(.system(size: 16))
-//                        .fontWeight(.semibold)
-//                    Spacer()
-//                    NavigationLink {
-//                        TagsSearchResults()
-//                    } label: {
-//                        Text("View all")
-//                        Image(systemName: "chevron.right")
-//                    }
-//                    .font(.system(size: 16))
-//                }
-//                .padding(.horizontal, 8)
-//                LazyVGrid(columns: Config.gridColumns) {
-//                    ForEach(tagsSliced, id: \.self) { item in
-//                        TagItemComponent(tag: item)
-//                            .padding(8)
-//                    }
-//                }
-//                .padding(.top, -24)
-//            }
-//            .padding(16)
+            Group {
+                HStack {
+                    Text("Tags")
+                        .font(.system(size: 16))
+                        .fontWeight(.semibold)
+                    if searchViewModel.tags.count > Config.searchViewMoreAmount {
+                        Spacer()
+                        NavigationLink {
+                            TagsSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
+                        } label: {
+                            Text("View all")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 16))
+                    }
+                }
+                .padding(.horizontal, 8)
+                LazyVGrid(columns: Config.gridColumns) {
+                    ForEach(tagsSliced, id: \.self) { item in
+                        TagItemComponent(tag: item) {
+                            Task { await searchViewModel.handleDeleteTag(tagId: item.id) }
+                        }
+                            .padding(8)
+                    }
+                }
+                .padding(.top, -24)
+            }
+            .padding(16)
         }
         .transition(.opacity)
     }

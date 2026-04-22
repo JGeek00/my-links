@@ -8,16 +8,13 @@ class LinksViewModel {
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
-    init() {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
-        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
-    }
+    var initialSearchQuery: String? = nil   // Used on the search results view
     
-    init(apiClientRepository: ApiClientRepository, linkManagerRepository: LinkManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository) {
+    init(searchQuery: String? = nil, apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository =  RepositoriesContainer.shared.linkManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
         self.apiClientRepository = apiClientRepository
         self.linkManagerRepository = linkManagerRepository
         self.progressIndicatorRepository = progressIndicatorRepository
+        self.initialSearchQuery = searchQuery
     }
     
     var data: [Link] = []
@@ -48,7 +45,7 @@ class LinksViewModel {
             self.loading = true
         }
         guard let instance = apiClientRepository.instance else { return }
-        let result = await instance.links.searchLiks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
+        let result = await instance.links.searchLiks(cursor: cursor, searchQueryString: initialSearchQuery ?? searchQueryValue, searchByName: initialSearchQuery != nil || searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
         if result.successful == true {
             DispatchQueue.main.async {
                 if loadMore == true {

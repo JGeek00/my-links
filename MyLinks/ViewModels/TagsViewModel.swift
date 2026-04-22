@@ -1,29 +1,40 @@
 import Foundation
+import SwiftUI
 
 @MainActor
 @Observable
 class TagsViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     
-    init() {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+    var initialSearchQuery: String? = nil   // Used on the search results view
+    
+    init(searchQuery: String? = nil, apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.initialSearchQuery = searchQuery
     }
     
     var state: Enums.LoadingState<TagsResponse_DataClass> = .loading
+    
+    var searchFieldValue = ""
+    var searchPresented = false
+    @ObservationIgnored var searchQueryValue: String? = nil
+    @ObservationIgnored var previousSearch: String? = nil
     
     func loadData(setLoading: Bool = false, page: Int? = nil) async {
         if setLoading == true {
             self.state = .loading
         }
         guard let instance = apiClientRepository.instance else { return }
-        let result = await instance.tags.fetchTags(page: page)
+        let result = await instance.tags.fetchTags(page: page, search: initialSearchQuery ?? searchQueryValue)
         if result.successful == true {
             DispatchQueue.main.async {
-                if let data = result.data?.data {
-                    self.state = .success(data)
-                }
-                else {
-                    self.state = .failure
+                withAnimation {
+                    if let data = result.data?.data {
+                        self.state = .success(data)
+                    }
+                    else {
+                        self.state = .failure
+                    }
                 }
             }
         }
@@ -41,6 +52,24 @@ class TagsViewModel {
     func loadNextPage() {
         Task {
             await loadData(page: self.state.data?.nextCursor)
+        }
+    }
+    
+    func search() {
+        self.searchQueryValue = searchFieldValue
+        Task {
+            await loadData(setLoading: true)
+            self.previousSearch = searchFieldValue
+        }
+    }
+    
+    func clearSearch() {
+        self.searchQueryValue = nil
+        if previousSearch != nil {
+            Task {
+                await loadData(setLoading: true)
+                self.previousSearch = nil
+            }
         }
     }
     
