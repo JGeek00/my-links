@@ -2,7 +2,7 @@ import Foundation
 
 @MainActor
 class RepositoriesContainer {
-    @MainActor static let shared = RepositoriesContainer()
+    @MainActor static var shared = RepositoriesContainer()
     
     let apiClientRepository = ApiClientRepository()
     
@@ -19,4 +19,8 @@ class RepositoriesContainer {
     let toastRepository = ToastRepository()
     
     let progressIndicatorRepository = ProgressIndicatorRepository()
+    
+    static func reset() {
+        shared = RepositoriesContainer()
+    }
 }

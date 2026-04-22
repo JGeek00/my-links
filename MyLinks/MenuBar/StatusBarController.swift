@@ -7,11 +7,13 @@ class StatusBarController {
     private(set) var statusItem: NSStatusItem
     private(set) var popover: NSPopover
     
-    @ObservedObject var popoverState: PopoverState
-    
-    init (_ popover: NSPopover, popoverState: PopoverState) {
+    private var onOpen: () -> Void
+    private var onClose: () -> Void
+        
+    init (_ popover: NSPopover, onOpen: @escaping () -> Void, onClose: @escaping () -> Void) {
         self.popover = popover
-        self.popoverState = popoverState
+        self.onOpen = onOpen
+        self.onClose = onClose
         statusBar = .init()
         
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -39,12 +41,12 @@ class StatusBarController {
     
     @objc
     func popoverWillShow(_ notification: Notification) {
-        popoverState.isPopoverOpen = true
+        onOpen()
     }
     
     @objc
     func popoverDidClose(_ notification: Notification) {
-        popoverState.isPopoverOpen = false
+        onClose()
     }
     
     deinit {

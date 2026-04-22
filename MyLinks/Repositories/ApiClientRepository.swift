@@ -13,8 +13,8 @@ class ApiClientRepository {
     
     func destroy(sessionExpired: Bool? = nil) {
         DispatchQueue.main.async {
-            //TagsProvider.shared.reset()
             clearInstances()
+            RepositoriesContainer.reset()
         }
     }
 }

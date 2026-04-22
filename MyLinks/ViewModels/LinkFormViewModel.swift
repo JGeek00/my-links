@@ -36,6 +36,7 @@ class LinkFormViewModel {
         self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
         
         self.postInit(link: link, defaultCollectionId: defaultCollectionId)
+        self.collection = collectionsRepository.data.first?.id ?? 0
     }
     
     init(apiClientRepository: ApiClientRepository, collectionsRepository: CollectionsRepository, linkManagerRepository: LinkManagerRepository, link: Link? = nil, defaultCollectionId: Int? = nil) {

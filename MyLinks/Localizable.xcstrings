@@ -761,6 +761,16 @@
         }
       }
     },
+    "Current tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas actuales"
+          }
+        }
+      }
+    },
     "Currently there are no options available" : {
       "localizations" : {
         "es" : {
