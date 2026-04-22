@@ -2,11 +2,9 @@ import SwiftUI
 import AlertToast
 
 struct RootView: View {
-    @State private var onboardingViewModel: OnboardingViewModel
     @State private var rootViewModel: RootViewModel
     
     init() {
-        _onboardingViewModel = State(initialValue: OnboardingViewModel())
         _rootViewModel = State(initialValue: RootViewModel())
     }
     
@@ -47,8 +45,11 @@ struct RootView: View {
         .onAppear {
             rootViewModel.initApiClientInstance()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .repositoriesDidReset)) { _ in
+            rootViewModel = RootViewModel()
+            rootViewModel.showOnboarding = true
+        }
         .environment(rootViewModel)
-        .environment(onboardingViewModel)
         .fontDesign(.rounded)
         .preferredColorScheme(getColorScheme(theme: theme))
     }

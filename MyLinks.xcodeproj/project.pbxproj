@@ -93,6 +93,9 @@
 				Components/macOS/CollectionItem.swift = (
 					macos,
 				);
+				Components/macOS/LinkDetailsSheet.swift = (
+					macos,
+				);
 				Components/macOS/LinkItem.swift = (
 					macos,
 				);
@@ -111,13 +114,28 @@
 				MenuBar/AppDelegate.swift = (
 					macos,
 				);
+				MenuBar/Repositories/MenuBarApiClientRepository.swift = (
+					macos,
+				);
+				MenuBar/Repositories/MenuBarRepositoriesContainer.swift = (
+					macos,
+				);
 				MenuBar/StatusBarController.swift = (
 					macos,
 				);
 				MenuBar/ViewModels/MenuBarFormViewModel.swift = (
 					macos,
 				);
+				MenuBar/ViewModels/MenuBarPopoverStateViewModel.swift = (
+					macos,
+				);
+				MenuBar/ViewModels/MenuBarTagsPickerViewModel.swift = (
+					macos,
+				);
 				MenuBar/Views/MenuBarPopoverView.swift = (
+					macos,
+				);
+				MenuBar/Views/MenuBarTagsPickerView.swift = (
 					macos,
 				);
 				Utils/ReviewApp.swift = (
@@ -289,6 +307,9 @@
 					macos,
 				);
 				Views/macOS/TagForm/TagFormView.swift = (
+					macos,
+				);
+				Views/macOS/Tags/TagsView.swift = (
 					macos,
 				);
 			};

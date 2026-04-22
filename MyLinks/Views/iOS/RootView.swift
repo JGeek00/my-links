@@ -3,11 +3,9 @@ import CustomAlert
 import AlertToast
 
 struct RootView: View {
-    @State private var onboardingViewModel: OnboardingViewModel
     @State private var rootViewModel: RootViewModel
     
     init() {
-        _onboardingViewModel = State(initialValue: OnboardingViewModel())
         _rootViewModel = State(initialValue: RootViewModel())
     }
        
@@ -32,20 +30,20 @@ struct RootView: View {
                 .controlSize(.extraLarge)
                 .foregroundStyle(.primary)
         })
-        .fontDesign(.rounded)
-        .preferredColorScheme(getColorScheme(theme: theme))
-        .onAppear(perform: {
-            onboardingViewModel.checkInstance()
+        .onAppear {
+            rootViewModel.initApiClientInstance()
             requestAppReview()
-        })
-        .fullScreenCover(isPresented: $onboardingViewModel.showOnboarding, content: {
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .repositoriesDidReset)) { _ in
+            rootViewModel = RootViewModel()
+            rootViewModel.showOnboarding = true
+        }
+        .fullScreenCover(isPresented: $rootViewModel.showOnboarding, content: {
             OnboardingView()
         })
-        .onChange(of: onboardingViewModel.showOnboarding) {
-            onboardingViewModel.reset()
-        }
         .environment(rootViewModel)
-        .environment(onboardingViewModel)
+        .fontDesign(.rounded)
+        .preferredColorScheme(getColorScheme(theme: theme))
     }
 }
 
@@ -108,25 +106,5 @@ fileprivate struct ActiveServerView: View {
         .task {
             rootViewModel.fetchCollections()
         }
-//        .customAlert(isPresented: $linkManagerProvider.processing, content: {
-//            HStack {
-//                ProgressView()
-//                    .tint(Color.gray)
-//                    .font(.system(size: 20))
-//                Spacer()
-//                    .frame(width: 12)
-//                Text("Processing...")
-//                    .fontWeight(.medium)
-//                    .font(.system(size: 16))
-//            }
-//            .padding(.horizontal)
-//        })
-//        .alert("Error", isPresented: $linkManagerProvider.errorAlert) {
-//            Button("Close", role: .cancel) {
-//                linkManagerProvider.errorAlert.toggle()
-//            }
-//        } message: {
-//            Text(linkManagerProvider.errorMessage)
-//        }
     }
 }

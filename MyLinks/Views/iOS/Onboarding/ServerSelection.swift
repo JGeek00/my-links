@@ -37,6 +37,7 @@ struct ServerSelection: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
+                    .contentShape(Rectangle())
                 }
                 Divider()
                     .padding(.vertical, 6)
@@ -62,6 +63,7 @@ struct ServerSelection: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
+                    .contentShape(Rectangle())
                 }
             }
             .buttonStyle(PlainButtonStyle())

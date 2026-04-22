@@ -3,11 +3,12 @@ import SwiftUI
 struct TagFormView: View {
     var onClose: () -> Void
     
+    @State private var tagsViewModel: TagsViewModel
+    
     init(onClose: @escaping () -> Void) {
         self.onClose = onClose
+        _tagsViewModel = State(initialValue: TagsViewModel())
     }
-    
-    @State(TagsViewModel.self) private var tagsViewModel
     
     @State private var label: String = ""
     @State private var saving: Bool = false

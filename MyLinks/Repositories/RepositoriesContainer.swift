@@ -1,5 +1,9 @@
 import Foundation
 
+extension Notification.Name {
+    static let repositoriesDidReset = Notification.Name("repositoriesDidReset")
+}
+
 @MainActor
 class RepositoriesContainer {
     @MainActor static var shared = RepositoriesContainer()
@@ -21,6 +25,9 @@ class RepositoriesContainer {
     let progressIndicatorRepository = ProgressIndicatorRepository()
     
     static func reset() {
-        shared = RepositoriesContainer()
+        Task { @MainActor in
+            self.shared = RepositoriesContainer()
+            NotificationCenter.default.post(name: .repositoriesDidReset, object: nil)
+        }
     }
 }

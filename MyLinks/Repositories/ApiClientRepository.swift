@@ -60,9 +60,8 @@ class ApiClientRepository {
     }
     
     func destroy(sessionExpired: Bool? = nil) {
-        DispatchQueue.main.async {
-            clearInstances()
-            RepositoriesContainer.reset()
-        }
+        clearInstances()
+        self.instance = nil
+        RepositoriesContainer.reset()
     }
 }
