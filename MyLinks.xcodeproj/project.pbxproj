@@ -365,8 +365,6 @@
 				Utils/ServerInstances.swift,
 				Utils/ServerUrl.swift,
 				Utils/SSLIgnoringDelegate.swift,
-				ViewModels/CollectionsViewModel.swift,
-				ViewModels/DashboardViewModel.swift,
 			);
 			target = 0D238CCF2C370953007DACF0 /* ShareExtension */;
 		};

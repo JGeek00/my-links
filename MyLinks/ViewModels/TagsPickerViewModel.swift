@@ -30,7 +30,7 @@ class TagsPickerViewModel {
         }
         
         suggestionTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 500_000_000)
+            try? await Task.sleep(nanoseconds: Config.tagsPickerRequestDelayNanoseconds)
             if Task.isCancelled { return }
             await self?.fetchSuggestions(query: trimmed)
         }

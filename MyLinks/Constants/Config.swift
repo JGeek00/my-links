@@ -10,4 +10,5 @@ class Config {
     static let collectionsCountSelectorBreakpoint = 10
     static let selectedTagsCountLabelBreakpoint = 5
     static let searchViewMoreAmount = 10
+    static let tagsPickerRequestDelayNanoseconds: UInt64 = 500_000_000
 }
