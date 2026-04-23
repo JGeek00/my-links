@@ -64,8 +64,10 @@ struct Sidebar: View {
                                     Spacer()
                                         .frame(width: 6)
                                     Text(item.name)
-                                    Spacer()
-                                    Text(String(item.count.links))
+                                    if let count = item.count {
+                                        Spacer()
+                                        Text(String(count.links))
+                                    }
                                 }
                                 .contentShape(Rectangle())
                             }

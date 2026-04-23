@@ -81,8 +81,8 @@ struct TagsApiClient: Equatable {
         }
     }
     
-    func deleteTag(tagId: Int) async -> StatusResponse<DeleteTagResponse> {
-        let defaultErrorResponse = StatusResponse<DeleteTagResponse>(successful: false, statusCode: nil, data: nil)
+    func deleteTag(tagId: Int) async -> StatusResponse<UpdateTagResponse> {
+        let defaultErrorResponse = StatusResponse<UpdateTagResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.instance.url)/api/v1/tags/\(tagId)") else { return defaultErrorResponse }
         do {
@@ -99,11 +99,43 @@ struct TagsApiClient: Equatable {
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
             if response.statusCode < 400 {
-                let formatted = try JSONDecoder().decode(DeleteTagResponse.self, from: data)
-                return StatusResponse<DeleteTagResponse>(successful: true, statusCode: response.statusCode, data: formatted)
+                let formatted = try JSONDecoder().decode(UpdateTagResponse.self, from: data)
+                return StatusResponse<UpdateTagResponse>(successful: true, statusCode: response.statusCode, data: formatted)
             }
             else {
-                return StatusResponse<DeleteTagResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+                return StatusResponse<UpdateTagResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+    
+    func editTag(tagId: Int, body: Tag) async -> StatusResponse<UpdateTagResponse> {
+        let defaultErrorResponse = StatusResponse<UpdateTagResponse>(successful: false, statusCode: nil, data: nil)
+        
+        guard let url = URL(string: "\(self.instance.url)/api/v1/tags/\(tagId)") else { return defaultErrorResponse }
+        do {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+            
+            let body = try CustomJSONEncoder().encode(body)
+            
+            var request = URLRequest(url: components.url!)
+            request.httpMethod = "PUT"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(self.instance.token)", forHTTPHeaderField: "Authorization")
+            request.httpBody = body
+
+            let sessionConfig = URLSessionConfiguration.default
+            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+
+            let (data, r) = try await session.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                let formatted = try JSONDecoder().decode(UpdateTagResponse.self, from: data)
+                return StatusResponse<UpdateTagResponse>(successful: true, statusCode: response.statusCode, data: formatted)
+            }
+            else {
+                return StatusResponse<UpdateTagResponse>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
             }
         } catch {
             return defaultErrorResponse

@@ -1,43 +1,26 @@
 import SwiftUI
 
 struct TagFormView: View {
+    var mode: Enums.TagFormMode
     var onClose: () -> Void
+    var onSuccess: () -> Void
     
-    init(onClose: @escaping () -> Void) {
+    @State private var tagFormViewModel: TagFormViewModel
+    
+    init(tag: Tag? = nil, mode: Enums.TagFormMode, onClose: @escaping () -> Void, onSuccess: @escaping() -> Void) {
+        self.mode = mode
         self.onClose = onClose
+        self.onSuccess = onSuccess
+        _tagFormViewModel = State(initialValue: TagFormViewModel(editingTag: tag))
     }
-    
-    @Environment(TagsViewModel.self) private var tagsViewModel
-    
-    @State private var label: String = ""
-    @State private var saving: Bool = false
-    @State private var error: Bool = false
-    @State private var noLabel: Bool = false
-    
-    func createTag() async {
-        if label == "" {
-            noLabel = true
-            return
-        }
-        
-        saving = true
-        let result = await tagsViewModel.createTag(name: label)
-        if result == true {
-            onClose()
-        }
-        else {
-            error = true
-        }
-        saving = false
-    }
-        
+
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Label", text: $label)
+                TextField("Label", text: $tagFormViewModel.label)
             }
             .formStyle(GroupedFormStyle())
-            .navigationTitle("New tag")
+            .navigationTitle(tagFormViewModel.editingTag != nil ? "Edit tag" : "New tag")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {
@@ -48,48 +31,47 @@ struct TagFormView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        Task {
-                            await createTag()
+                        tagFormViewModel.onSave { tag in
+                            onSuccess()
                         }
                     } label: {
                         Text("Save")
                     }
-                    .disabled(saving)
+                    .disabled(tagFormViewModel.saving)
                 }
-                if saving {
+                if tagFormViewModel.saving {
                     ToolbarItem(placement: .destructiveAction) {
                         ProgressView()
                             .controlSize(.small)
                     }
                 }
             }
-            .alert("Error", isPresented: $error) {
+            .alert("Error", isPresented: $tagFormViewModel.savingErrorAlert) {
                 if #available(macOS 26.0, *) {
                     Button("Close", role: .close) {
-                        error = false
+                        tagFormViewModel.savingErrorAlert = false
                     }
                 } else {
                     Button("Close") {
-                        error = false
+                        tagFormViewModel.savingErrorAlert = false
                     }
                 }
             } message: {
-                Text("An error occured when creating the tag. Please try again.")
+                Text(verbatim: tagFormViewModel.savingErrorMessage)
             }
-            .alert("Label is empty", isPresented: $noLabel) {
+            .alert("Label is empty", isPresented: $tagFormViewModel.noLabel) {
                 if #available(macOS 26.0, *) {
                     Button("Close", role: .close) {
-                        noLabel = false
+                        tagFormViewModel.noLabel = false
                     }
                 } else {
                     Button("Close") {
-                        noLabel = false
+                        tagFormViewModel.noLabel = false
                     }
                 }
             } message: {
                 Text("A label is required to create a tag.")
             }
-
         }
     }
 }

@@ -18,6 +18,11 @@ class RepositoriesContainer {
         return LinkManagerRepository(apiClientRepository: apiClientRepository)
     }()
     
+    lazy var tagManagerRepository: TagManagerRepository = {
+        return TagManagerRepository(apiClientRepository: apiClientRepository)
+    }()
+
+    
     let navigationRepository = NavigationRepository()
     
     let toastRepository = ToastRepository()

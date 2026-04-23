@@ -1,17 +1,20 @@
 import SwiftUI
 
 struct TagItemComponent: View {
-    let tag: TagsResponse_DataClass_Tag
-    let onDeleteTag: (TagsResponse_DataClass_Tag) -> Void
+    let tag: Tag
+    let onDeleteTag: (Tag) -> Void
+    let onEditTag: (Tag) -> Void
     
-    init(tag: TagsResponse_DataClass_Tag, onDeleteTag: @escaping (TagsResponse_DataClass_Tag) -> Void) {
+    init(tag: Tag, onDeleteTag: @escaping (Tag) -> Void, onEditTag: @escaping (Tag) -> Void) {
         self.tag = tag
         self.onDeleteTag = onDeleteTag
+        self.onEditTag = onEditTag
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         
     @State private var showDeleteAlert: Bool = false
+    @State private var showEditForm: Bool = false
         
     var body: some View {
         let dateFormatted = formatDate(tag.createdAt)
@@ -33,10 +36,12 @@ struct TagItemComponent: View {
                         Spacer()
                             .frame(width: 16)
                     }
-                    Image(systemName: "link")
-                        .font(.system(size: 12))
-                    Text(String(tag.count.links))
-                        .font(.system(size: 14))
+                    if let count = tag.count {
+                        Image(systemName: "link")
+                            .font(.system(size: 12))
+                        Text(String(count.links))
+                            .font(.system(size: 14))
+                    }
                     Spacer()
                 }
                 .foregroundStyle(Color.gray)
@@ -44,6 +49,9 @@ struct TagItemComponent: View {
             .contentShape(Rectangle())
         }
         .contextMenu {
+            Button("Edit", systemImage: "pencil") {
+                showEditForm = true
+            }
             Button("Delete", systemImage: "trash", role: .destructive) {
                 showDeleteAlert = true
             }
@@ -62,6 +70,14 @@ struct TagItemComponent: View {
             }
         } message: {
             Text("This tag will be deleted. This action is not reversible.")
+        }
+        .sheet(isPresented: $showEditForm) {
+            TagFormView(tag: tag, mode: .edit) {
+                showEditForm = false
+            } onSuccess: {
+                showEditForm = false
+                onEditTag(tag)
+            }
         }
     }
 }

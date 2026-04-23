@@ -132,6 +132,11 @@ class Enums {
         case file
     }
     
+    enum TagFormMode: String {
+        case create
+        case edit
+    }
+    
     enum HTMLViewerMode: String {
         case reader
         case webpage

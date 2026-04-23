@@ -4,18 +4,20 @@ struct TagsList: View {
     var loading: Bool
     var error: Bool
     var withSearch: Bool
-    var data: [TagsResponse_DataClass_Tag]
+    var data: [Tag]
     var onReload: () -> Void
-    var onDeleteTag: (TagsResponse_DataClass_Tag) -> Void
+    var onDeleteTag: (Tag) -> Void
+    var onEditTag: (Tag) -> Void
     var onLoadNextBatch: () -> Void
     
-    init(loading: Bool, error: Bool, withSearch: Bool, data: [TagsResponse_DataClass_Tag], onReload: @escaping () -> Void, onDeleteTag: @escaping (TagsResponse_DataClass_Tag) -> Void, onLoadNextBatch: @escaping () -> Void) {
+    init(loading: Bool, error: Bool, withSearch: Bool, data: [Tag], onReload: @escaping () -> Void, onDeleteTag: @escaping (Tag) -> Void, onEditTag: @escaping (Tag) -> Void, onLoadNextBatch: @escaping () -> Void) {
         self.loading = loading
         self.error = error
         self.withSearch = withSearch
         self.data = data
         self.onReload = onReload
         self.onDeleteTag = onDeleteTag
+        self.onEditTag = onEditTag
         self.onLoadNextBatch = onLoadNextBatch
     }
 
@@ -67,6 +69,8 @@ struct TagsList: View {
                             ForEach(data, id: \.self) { item in
                                 TagItemComponent(tag: item) { tag in
                                     onDeleteTag(tag)
+                                } onEditTag: { tag in
+                                    onEditTag(tag)
                                 }
                                 .padding(6)
                                 .onAppear {
@@ -85,6 +89,8 @@ struct TagsList: View {
                     List(data, id: \.self) { item in
                         TagItemComponent(tag: item) { tag in
                             onDeleteTag(tag)
+                        } onEditTag: { tag in
+                            onEditTag(tag)
                         }
                         .onAppear {
                             if item == data.last {

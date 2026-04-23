@@ -76,6 +76,13 @@ struct SearchView: View {
             } message: {
                 Text("The link could not be deleted. Try again later.")
             }
+            .alert("Error", isPresented: $searchViewModel.deleteTagErrorAlert) {
+                Button("OK", role: .cancel) {
+                    searchViewModel.deleteTagErrorAlert = false
+                }
+            } message: {
+                Text("The tag could not be deleted. Try again later.")
+            }
         }
         .environment(searchViewModel)
     }
@@ -153,7 +160,9 @@ fileprivate struct SearchCompactView: View {
                 Section {
                     ForEach(tagsSliced, id: \.self) { item in
                         TagItemComponent(tag: item) { tag in
-                            Task { await searchViewModel.handleDeleteTag(tagId: tag.id) }
+                            searchViewModel.handleDeleteTag(tagId: tag.id)
+                        } onEditTag: { tag in
+                            Task { await searchViewModel.loadData(setLoading: false) }
                         }
                     }
                 } header: {
@@ -274,7 +283,9 @@ fileprivate struct SearchRegularView: View {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(tagsSliced, id: \.self) { item in
                         TagItemComponent(tag: item) { tag in
-                            Task { await searchViewModel.handleDeleteTag(tagId: tag.id) }
+                            searchViewModel.handleDeleteTag(tagId: tag.id)
+                        } onEditTag: { tag in
+                            Task { await searchViewModel.loadData(setLoading: false) }
                         }
                         .padding(8)
                     }

@@ -15,7 +15,7 @@ class SidebarViewModel {
         get { collectionsRepository.data }
     }
     
-    var tags: [TagsResponse_DataClass_Tag] = []
+    var tags: [Tag] = []
     var loadingTags: Bool = true
     var errorTags: Bool = false
     

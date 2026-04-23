@@ -20,10 +20,13 @@ struct TagsView: View {
             withSearch: tagsViewModel.searchQueryValue != nil,
             data: tagsViewModel.data,
             onReload: {
-                Task { await tagsViewModel.initialLoad()}
+                Task { await tagsViewModel.refresh()}
             },
             onDeleteTag: { tag in
-                Task { await tagsViewModel.deleteTag(tagId: tag.id) }
+                tagsViewModel.deleteTag(tagId: tag.id)
+            },
+            onEditTag: { tag in
+                Task { await tagsViewModel.refresh(setLoading: false) }
             },
             onLoadNextBatch: {
                 tagsViewModel.loadNextPage()
@@ -50,9 +53,19 @@ struct TagsView: View {
             }
         })
         .sheet(isPresented: $showCreateTagSheet) {
-            TagFormView {
+            TagFormView(mode: .create) {
                 showCreateTagSheet = false
+            } onSuccess: {
+                showCreateTagSheet = false
+                Task { await tagsViewModel.refresh(setLoading: false) }
             }
+        }
+        .alert("Error", isPresented: $tagsViewModel.deleteTagErrorAlert) {
+            Button("OK", role: .cancel) {
+                tagsViewModel.deleteTagErrorAlert = false
+            }
+        } message: {
+            Text("An error occured while deleting the tag. Please try again.")
         }
         .task {
             await tagsViewModel.initialLoad()

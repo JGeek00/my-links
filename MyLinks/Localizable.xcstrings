@@ -211,6 +211,7 @@
       }
     },
     "An error occured when creating the tag. Please try again." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -326,6 +327,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocurrió un error al guardar el link"
+          }
+        }
+      }
+    },
+    "An error occured while deleting the tag. Please try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al eliminar la etiqueta. Por favor, prueba de nuevo."
           }
         }
       }
@@ -1038,6 +1049,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Editar subcolección"
+          }
+        }
+      }
+    },
+    "Edit tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar etiqueta"
           }
         }
       }
@@ -2566,6 +2587,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Las subcategorías y los enlaces se muestran en dos listas diferentes, con un sistema de pestañas para cambiar entre ellas."
+          }
+        }
+      }
+    },
+    "The tag could not be deleted. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La etiqueta no pudo ser eliminada. Prueba de nuevo más tarde."
           }
         }
       }

@@ -9,18 +9,18 @@ struct TagsResponse: Codable, Hashable {
 
 // MARK: - TagsResponse_DataClass
 struct TagsResponse_DataClass: Codable, Hashable {
-    let tags: [TagsResponse_DataClass_Tag]
+    let tags: [Tag]
     let nextCursor: Int?
 }
 
-// MARK: - TagsResponse_DataClass_Tag
-struct TagsResponse_DataClass_Tag: Codable, Hashable {
+// MARK: - Tag
+struct Tag: Codable, Hashable {
     let id: Int
-    let name: String
+    var name: String
     let ownerID: Int
     let aiGenerated: Bool
     let createdAt, updatedAt: String
-    let count: TagsResponse_Tag_Count
+    let count: Tag_Count?
 
     enum CodingKeys: String, CodingKey {
         case id, name
@@ -30,7 +30,7 @@ struct TagsResponse_DataClass_Tag: Codable, Hashable {
     }
 }
 
-// MARK: - TagsResponse_Tag_Count
-struct TagsResponse_Tag_Count: Codable, Hashable {
+// MARK: - Tag_Count
+struct Tag_Count: Codable, Hashable {
     let links: Int
 }

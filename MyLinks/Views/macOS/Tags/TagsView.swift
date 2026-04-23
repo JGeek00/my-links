@@ -58,7 +58,9 @@ struct TagsView: View {
                                 LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .tag, id: item.id))
                             } label: {
                                 TagItemComponent(tag: item) { tag in
-                                    Task { await tagsViewModel.deleteTag(tagId: tag.id) }
+                                    tagsViewModel.deleteTag(tagId: tag.id)
+                                } onEditTag: { tag in
+                                    Task { await tagsViewModel.refresh(setLoading: false) }
                                 }
                                 .padding(6)
                             }
@@ -90,8 +92,11 @@ struct TagsView: View {
             tagsViewModel.search()
         }
         .sheet(isPresented: $showCreateTagSheet) {
-            TagFormView {
+            TagFormView(mode: .create) {
                 showCreateTagSheet = false
+            } onSuccess: {
+                showCreateTagSheet = false
+                Task { await tagsViewModel.refresh(setLoading: false) }
             }
         }
         .task {

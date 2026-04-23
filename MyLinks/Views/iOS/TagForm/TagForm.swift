@@ -1,51 +1,32 @@
 import SwiftUI
 
 struct TagFormView: View {
+    var mode: Enums.TagFormMode
     var onClose: () -> Void
+    var onSuccess: () -> Void
     
-    @State private var tagsViewModel: TagsViewModel
+    @State private var tagFormViewModel: TagFormViewModel
     
-    init(onClose: @escaping () -> Void) {
+    init(tag: Tag? = nil, mode: Enums.TagFormMode, onClose: @escaping () -> Void, onSuccess: @escaping() -> Void) {
+        self.mode = mode
         self.onClose = onClose
-        _tagsViewModel = State(initialValue: TagsViewModel())
-    }
-    
-    @State private var label: String = ""
-    @State private var saving: Bool = false
-    @State private var error: Bool = false
-    @State private var noLabel: Bool = false
-    @State private var showConfirmationAlert = false
-    
-    func createTag() async {
-        if label == "" {
-            noLabel = true
-            return
-        }
-        
-        saving = true
-        let result = await tagsViewModel.createTag(name: label)
-        if result == true {
-            onClose()
-        }
-        else {
-            error = true
-        }
-        saving = false
+        self.onSuccess = onSuccess
+        _tagFormViewModel = State(initialValue: TagFormViewModel(editingTag: tag))
     }
         
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Label", text: $label)
+                TextField("Label", text: $tagFormViewModel.label)
             }
-            .navigationTitle("New tag")
+            .navigationTitle(tagFormViewModel.editingTag != nil ? "Edit tag" : "New tag")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     CloseButton {
-                        showConfirmationAlert = true
+                        tagFormViewModel.discardChangesConfirmation = true
                     }
-                    .confirmationDialog("Discard changes?", isPresented: $showConfirmationAlert) {
+                    .confirmationDialog("Discard changes?", isPresented: $tagFormViewModel.discardChangesConfirmation) {
                         Button("Discard changes", role: .destructive) {
                             onClose()
                         }
@@ -53,48 +34,47 @@ struct TagFormView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        Task {
-                            await createTag()
+                        tagFormViewModel.onSave { tag in
+                            onSuccess()
                         }
                     } label: {
-                        if saving == true {
+                        if tagFormViewModel.saving == true {
                             ProgressView()
                         }
                         else {
                             Text("Save")
                         }
                     }
-                    .disabled(saving)
+                    .disabled(tagFormViewModel.saving)
                     .glassProminentButtonStyleIfAvailable()
                 }
             }
-            .alert("Error", isPresented: $error) {
+            .alert("Error", isPresented: $tagFormViewModel.savingErrorAlert) {
                 if #available(iOS 26.0, *) {
                     Button("Close", role: .close) {
-                        error = false
+                        tagFormViewModel.savingErrorAlert = false
                     }
                 } else {
                     Button("Close") {
-                        error = false
+                        tagFormViewModel.savingErrorAlert = false
                     }
                 }
             } message: {
-                Text("An error occured when creating the tag. Please try again.")
+                Text(verbatim: tagFormViewModel.savingErrorMessage)
             }
-            .alert("Label is empty", isPresented: $noLabel) {
+            .alert("Label is empty", isPresented: $tagFormViewModel.noLabel) {
                 if #available(iOS 26.0, *) {
                     Button("Close", role: .close) {
-                        noLabel = false
+                        tagFormViewModel.noLabel = false
                     }
                 } else {
                     Button("Close") {
-                        noLabel = false
+                        tagFormViewModel.noLabel = false
                     }
                 }
             } message: {
                 Text("A label is required to create a tag.")
             }
-
         }
     }
 }

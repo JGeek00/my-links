@@ -1,6 +1,6 @@
 import Foundation
 
-class TagCreationRequest: Codable {
+class TagCreationRequest: Codable, @unchecked Sendable {
     var tags: [TagCreationItem]
     
     init() {
@@ -8,7 +8,7 @@ class TagCreationRequest: Codable {
     }
 }
 
-class TagCreationItem: Codable {
+class TagCreationItem: Codable, @unchecked Sendable {
     var label: String
     
     init(label: String) {

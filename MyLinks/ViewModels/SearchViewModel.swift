@@ -7,17 +7,19 @@ class SearchViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored private let tagManagerRepository: TagManagerRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, tagManagerRepository: TagManagerRepository = RepositoriesContainer.shared.tagManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
         self.apiClientRepository = apiClientRepository
         self.linkManagerRepository = linkManagerRepository
         self.collectionsRepository = collectionsRepository
+        self.tagManagerRepository = tagManagerRepository
         self.progressIndicatorRepository = progressIndicatorRepository
     }
     
     var links: [Link] = []
-    var tags: [TagsResponse_DataClass_Tag] = []
+    var tags: [Tag] = []
     var loading = false
     var error = false
     
@@ -43,6 +45,7 @@ class SearchViewModel {
     
     var deleteLinkErrorAlert = false
     var deleteCollectionErrorAlert = false
+    var deleteTagErrorAlert = false
     
     func loadData(
         setLoading: Bool = false,
@@ -130,16 +133,15 @@ class SearchViewModel {
         }
     }
     
-    func handleDeleteTag(tagId: Int) async -> Bool {
-        guard let instance = apiClientRepository.instance else { return false }
-        let result = await instance.tags.deleteTag(tagId: tagId)
-        if result.successful == true {
-            await loadData(setLoading: false)
-            return true;
-        }
-        else {
-            return false;
+    func handleDeleteTag(tagId: Int) -> Void {
+        Task {
+            await tagManagerRepository.deleteTag(id: tagId) { processing in
+                self.progressIndicatorRepository.presenting = processing
+            } onSuccess: { tag in
+                Task { await self.loadData(setLoading: false) }
+            } onError: {
+                self.deleteTagErrorAlert = true
+            }
         }
     }
-
 }

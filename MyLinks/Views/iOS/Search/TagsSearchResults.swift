@@ -21,7 +21,9 @@ struct TagsSearchResults: View {
                 Task { await searchTagsViewModel.initialLoad() }
             },
             onDeleteTag: { tag in
-                Task { await searchTagsViewModel.deleteTag(tagId: tag.id) }
+                searchTagsViewModel.deleteTag(tagId: tag.id)
+            }, onEditTag: { tag in
+                Task { await searchTagsViewModel.refresh(setLoading: false) }
             },
             onLoadNextBatch: {
                 searchTagsViewModel.loadNextPage()
@@ -35,6 +37,13 @@ struct TagsSearchResults: View {
         }
         .task {
             await searchTagsViewModel.initialLoad()
+        }
+        .alert("Error", isPresented: $searchTagsViewModel.deleteTagErrorAlert) {
+            Button("OK", role: .cancel) {
+                searchTagsViewModel.deleteTagErrorAlert = false
+            }
+        } message: {
+            Text("The tag could not be deleted. Try again later.")
         }
     }
 }

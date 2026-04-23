@@ -5,16 +5,20 @@ import SwiftUI
 @Observable
 class TagsViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let tagManagerRepository: TagManagerRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
     var initialSearchQuery: String? = nil   // Used on the search results view
     
-    init(searchQuery: String? = nil, apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository) {
+    init(searchQuery: String? = nil, apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, tagManagerRepository: TagManagerRepository = RepositoriesContainer.shared.tagManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
         self.apiClientRepository = apiClientRepository
+        self.tagManagerRepository = tagManagerRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
         self.initialSearchQuery = searchQuery
     }
     
     var loading: Bool = true
-    var data: [TagsResponse_DataClass_Tag] = []
+    var data: [Tag] = []
     var error = false
     
     @ObservationIgnored private var nextBatch: Int? = nil
@@ -24,6 +28,8 @@ class TagsViewModel {
     var searchPresented = false
     @ObservationIgnored var searchQueryValue: String? = nil
     @ObservationIgnored var previousSearch: String? = nil
+    
+    var deleteTagErrorAlert = false
     
     private func loadData(setLoading: Bool = false, page: Int? = nil, loadingMore: Bool = false) async {
         if setLoading == true {
@@ -96,29 +102,15 @@ class TagsViewModel {
         }
     }
     
-    func createTag(name: String) async -> Bool {
-        guard let instance = apiClientRepository.instance else { return false }
-        let body = TagCreationRequest()
-        body.tags.append(TagCreationItem(label: name))
-        let result = await instance.tags.createTag(body)
-        if result.successful == true {
-            await loadData(setLoading: false)
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    
-    func deleteTag(tagId: Int) async -> Bool {
-        guard let instance = apiClientRepository.instance else { return false }
-        let result = await instance.tags.deleteTag(tagId: tagId)
-        if result.successful == true {
-            await loadData(setLoading: false)
-            return true;
-        }
-        else {
-            return false;
+    func deleteTag(tagId: Int) -> Void {
+        Task {
+            await tagManagerRepository.deleteTag(id: tagId) { processing in
+                self.progressIndicatorRepository.presenting = processing
+            } onSuccess: { _ in
+                Task { await self.refresh(setLoading: false) }
+            } onError: {
+                self.deleteTagErrorAlert = true
+            }
         }
     }
 }

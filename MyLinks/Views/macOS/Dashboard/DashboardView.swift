@@ -139,7 +139,9 @@ struct DashboardView: View {
                 }
             })
             .sheet(isPresented: $tagFormSheet, content: {
-                TagFormView {
+                TagFormView(mode: .create) {
+                    tagFormSheet = false
+                } onSuccess: {
                     tagFormSheet = false
                 }
             })
