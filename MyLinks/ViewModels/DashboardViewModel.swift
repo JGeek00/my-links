@@ -2,86 +2,65 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class DashboardViewModel: ObservableObject {
-    static let shared = DashboardViewModel()
+@Observable
+class DashboardViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored private let navigationRepository: NavigationRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     
-    @Published var data: [Link] = []
-    @Published var pinnedLinks: Int? = nil
-    @Published var loading = true
-    @Published var error = false
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, navigationRepository: NavigationRepository = RepositoriesContainer.shared.navigationRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.collectionsRepository = collectionsRepository
+        self.navigationRepository = navigationRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
+        self.linkManagerRepository = linkManagerRepository
+    }
     
-    @Published var path = NavigationPath()
+    var loading: Bool = true
+    var error: Bool = false
+    var data: DashboardResponse_Data? = nil
+    var collections: [Collection] {
+        get { collectionsRepository.data }
+    }
+    var loadingCollections: Bool {
+        get { collectionsRepository.loading }
+    }
+    var errorCollections: Bool {
+        get { collectionsRepository.error }
+    }
     
-    init() {}
+    var deleteLinkErrorAlert: Bool = false
+    var pinLinkErrorAlert: Bool = false
+    var unpinLinkErrorAlert: Bool = false
+        
+    var path = NavigationPath()
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {
             self.loading = true
-            self.data = []
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchDashboardV2()
-        if result.successful == true {
+        guard let instance = apiClientRepository.instance else { return }
+        let result = await instance.dashboard.fetchDashboard()
+        if let data = result.data?.data {
             DispatchQueue.main.async {
-                self.data = result.data?.data?.links ?? []
-                self.pinnedLinks = result.data?.data?.numberOfPinnedLinks
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    withAnimation(.default) {
-                        self.loading = false
-                        self.error = false
-                    }
+                withAnimation {
+                    self.data = data
+                    self.loading = false
                 }
             }
         }
         else {
-            if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
-                return
-            }
-            else if result.statusCode != nil {
-                let result2 = await instance.fetchDashboard()
-                if result2.successful == true {
-                    DispatchQueue.main.async {
-                        self.data = result2.data?.response ?? []
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            withAnimation(.default) {
-                                self.loading = false
-                                self.error = false
-                            }
-                        }
-                    }
-                }
-                else {
-                    DispatchQueue.main.async {
-                        withAnimation(.default) {
-                            self.loading = false
-                            self.error = true
-                        }
-                    }
-                }
-            }
-            else {
-                DispatchQueue.main.async {
-                    withAnimation(.default) {
-                        self.loading = false
-                        self.error = true
-                    }
-                }
+            withAnimation {
+                self.error = true
+                self.loading = false
             }
         }
     }
     
     func reload() {
         Task { await loadData() }
-        Task {
-            await LinksViewModel.shared.loadData()
-            LinksViewModel.shared.scrollTopList.toggle()
-        }
-    }
-    
-    func reloadAll(setLoading: Bool = false) async {
-        await loadData(setLoading: setLoading)
-        _ = await (LinksViewModel.shared.loadData(), LinksViewModel.shared.scrollTopList.toggle(), CollectionsProvider.shared.loadData(), TagsProvider.shared.loadData())
     }
     
     func navigateRecent() {
@@ -94,11 +73,56 @@ class DashboardViewModel: ObservableObject {
         path.append(request)
     }
     
-    func reset() {
-        self.data = []
-        self.loading = true
-        self.error = false
-        self.path = NavigationPath()
-        self.pinnedLinks = nil
+    func navigateLinksCatalog() {
+        navigationRepository.navigateLinksCatalog()
+    }
+    
+    func navigateCollectionsCatalog() {
+        navigationRepository.navigateCollectionsCatalog()
+    }
+    
+    func navigateTagsCatalog() {
+        navigationRepository.navigateTagsCatalog()
+    }
+    
+    func handleAddLink(link: Link) {
+        self.reload()
+    }
+    
+    func handleDeleteLink(linkId: Int) {
+        Task {
+            await linkManagerRepository.deleteLink(id: linkId) { processing in
+                self.progressIndicatorRepository.presenting = processing
+            } onSuccess: { _ in
+                self.reload()
+            } onError: {
+                self.deleteLinkErrorAlert = true
+            }
+        }
+    }
+    
+    func handleEditLink(link: Link) {
+        self.reload()
+    }
+    
+    func handleAddCollection(collection: Collection) {
+        Task { await self.collectionsRepository.loadData() }
+    }
+    
+    func handlePinUnpin(link: Link, action: Enums.PinUnpinAction) {
+        Task {
+            await linkManagerRepository.pinUnpinLink(link: link, action: action) { processing in
+                self.progressIndicatorRepository.presenting = processing
+            } onSuccess: { _ in
+                self.reload()
+            } onError: {
+                switch action {
+                case .pin:
+                    self.pinLinkErrorAlert = true
+                case .unpin:
+                    self.unpinLinkErrorAlert = true
+                }
+            }
+        }
     }
 }

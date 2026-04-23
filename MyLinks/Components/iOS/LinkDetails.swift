@@ -25,8 +25,8 @@ struct LinkDetailsSheet: View {
     }
     
     var body: some View {
-        let createdAt = link.createdAt != nil && link.createdAt != "" ? stringToDate(link.createdAt!) : nil
-        let updatedAt = link.updatedAt != nil && link.updatedAt != "" ? stringToDate(link.updatedAt!) : nil
+        let createdAt = link.createdAt != "" ? stringToDate(link.createdAt) : nil
+        let updatedAt = link.updatedAt != "" ? stringToDate(link.updatedAt) : nil
         NavigationStack {
             List {
                 if let url = link.url {
@@ -34,25 +34,17 @@ struct LinkDetailsSheet: View {
                         setCopiedClipboard()
                     }
                 }
-                if let name = link.name {
-                    DetailsItem(icon: "textformat.size.smaller", iconColor: .blue, label: String(localized: "Name"), value: name != "" ? name : String(localized: "No name")) {
-                        setCopiedClipboard()
-                    }
+                DetailsItem(icon: "textformat.size.smaller", iconColor: .blue, label: String(localized: "Name"), value: link.name != "" ? link.name : String(localized: "No name")) {
+                    setCopiedClipboard()
                 }
-                if let description = link.description {
-                    DetailsItem(icon: "paragraph", iconColor: .orange, label: String(localized: "Description"), value: description != "" ? description : String(localized: "No description")) {
-                        setCopiedClipboard()
-                    }
+                DetailsItem(icon: "paragraph", iconColor: .orange, label: String(localized: "Description"), value: link.description != "" ? link.description : String(localized: "No description")) {
+                    setCopiedClipboard()
                 }
-                if let collectionName = link.collection?.name {
-                    DetailsItem(icon: "folder.fill", iconColor: .red, label: String(localized: "Collection"), value: collectionName) {
-                        setCopiedClipboard()
-                    }
+                DetailsItem(icon: "folder.fill", iconColor: .red, label: String(localized: "Collection"), value: link.collection.name) {
+                    setCopiedClipboard()
                 }
-                if let tags = link.tags {
-                    DetailsItem(icon: "tag.fill", iconColor: .gray, label: String(localized: "Tags"), value: tags.isEmpty ? String(localized: "This link has no tags") : tags.map() { $0.name! }.joined(separator: ", ")) {
-                        setCopiedClipboard()
-                    }
+                DetailsItem(icon: "tag.fill", iconColor: .gray, label: String(localized: "Tags"), value: link.tags.isEmpty ? String(localized: "This link has no tags") : link.tags.map() { $0.name }.joined(separator: ", ")) {
+                    setCopiedClipboard()
                 }
                 if let createdAt = createdAt {
                     DetailsItem(icon: "clock.fill", iconColor: .brown, label: String(localized: "Created at"), value: createdAt.formatted(date: .complete, time: .shortened)) {

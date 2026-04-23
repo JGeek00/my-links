@@ -2,15 +2,15 @@ import SwiftUI
 
 struct TagItemComponent: View {
     let tag: TagsResponse_DataClass_Tag
+    let onDeleteTag: (TagsResponse_DataClass_Tag) -> Void
     
-    init(tag: TagsResponse_DataClass_Tag) {
+    init(tag: TagsResponse_DataClass_Tag, onDeleteTag: @escaping (TagsResponse_DataClass_Tag) -> Void) {
         self.tag = tag
+        self.onDeleteTag = onDeleteTag
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    @EnvironmentObject private var tagsProvider: TagsProvider
-    
+        
     @State private var showDeleteAlert: Bool = false
         
     var body: some View {
@@ -58,9 +58,7 @@ struct TagItemComponent: View {
                 showDeleteAlert = false
             }
             Button("Delete tag", role: .destructive) {
-                Task {
-                    await tagsProvider.deleteTag(tagId: tag.id)
-                }
+                onDeleteTag(tag)
             }
         } message: {
             Text("This tag will be deleted. This action is not reversible.")

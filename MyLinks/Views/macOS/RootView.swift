@@ -2,13 +2,11 @@ import SwiftUI
 import AlertToast
 
 struct RootView: View {
-    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
-    @EnvironmentObject private var apiClientProvider: ApiClientProvider
-    @EnvironmentObject private var linkManagerProvider: LinkManagerProvider
-    @EnvironmentObject private var toastProvider: ToastProvider
+    @State private var rootViewModel: RootViewModel
     
-    let collectionsProvider = CollectionsProvider.shared
-    let tagsProvider = TagsProvider.shared
+    init() {
+        _rootViewModel = State(initialValue: RootViewModel())
+    }
     
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
     
@@ -21,7 +19,7 @@ struct RootView: View {
         
     var body: some View {
         Group {
-            if !instances.isEmpty && apiClientProvider.instance != nil {
+            if !instances.isEmpty && rootViewModel.apiClientInstance != nil {
                 NavigationSplitView {
                     Sidebar()
                         .navigationSplitViewColumnWidth(min: 250, ideal: 250, max: 300)
@@ -29,37 +27,30 @@ struct RootView: View {
                 } detail: {
                     DashboardView()
                         .navigationTitle("Dashboard")
-                        .environmentObject(DashboardViewModel.shared)
                 }
-                .onAppear(perform: {
-                    Task { await collectionsProvider.loadData() }
-                    Task { await tagsProvider.loadData() }
-                })
-                .alert("Error", isPresented: $linkManagerProvider.errorAlert) {
-                    Button("Close", role: .cancel) {
-                        linkManagerProvider.errorAlert.toggle()
-                    }
-                } message: {
-                    Text(linkManagerProvider.errorMessage)
+                .task {
+                    rootViewModel.fetchCollections()
                 }
             }
         }
+        .toast(isPresenting: $rootViewModel.toastPresenting, duration: 2, tapToDismiss: true) {
+            rootViewModel.toast ?? AlertToast(type: .regular)
+        }
+        .sheet(isPresented: $rootViewModel.showOnboarding, content: {
+            ConnectionForm {
+                rootViewModel.showOnboarding = false
+            }
+            .interactiveDismissDisabled()
+        })
+        .onAppear {
+            rootViewModel.initApiClientInstance()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .repositoriesDidReset)) { _ in
+            rootViewModel = RootViewModel()
+            rootViewModel.showOnboarding = true
+        }
+        .environment(rootViewModel)
         .fontDesign(.rounded)
         .preferredColorScheme(getColorScheme(theme: theme))
-        .onAppear(perform: {
-            onboardingViewModel.checkInstance()
-        })
-        .toast(isPresenting: $toastProvider.presenting, duration: 2, tapToDismiss: true) {
-            toastProvider.toast ?? AlertToast(type: .regular)
-        }
-        .sheet(isPresented: $onboardingViewModel.showOnboarding, content: {
-            ConnectionForm()
-                .interactiveDismissDisabled()
-        })
-        .onChange(of: onboardingViewModel.showOnboarding) {
-            onboardingViewModel.reset()
-        }
-        .environmentObject(collectionsProvider)
-        .environmentObject(tagsProvider)
     }
 }

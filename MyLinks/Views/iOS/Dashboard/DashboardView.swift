@@ -2,31 +2,51 @@ import SwiftUI
 import CustomAlert
 
 struct DashboardView: View {
+    @State private var dashboardViewModel: DashboardViewModel
     
-    init() {}
-    
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
-    @EnvironmentObject private var tagsProvider: TagsProvider
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var apiClientProvider: ApiClientProvider
-    
+    init() {
+        _dashboardViewModel = State(initialValue: DashboardViewModel())
+    }
+        
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
+        
     @State private var navigationPath = NavigationPath()
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
     @State private var collectionFormSheet = false
     
     var body: some View {
+        @Bindable var dashboardViewModel = dashboardViewModel
         NavigationStack(path: $dashboardViewModel.path) {
             Group {
-                if horizontalSizeClass == .regular {
-                    DashboardRegularView()
+                if dashboardViewModel.loading == true {
+                    ProgressView("Loading...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                else {
-                    DashboardCompactView()
+                else if dashboardViewModel.error == true {
+                    ContentUnavailableView {
+                        Label("Error", systemImage: "exclamationmark.circle")
+                    } description: {
+                        Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
+                        Button {
+                            dashboardViewModel.reload()
+                        } label: {
+                            Label("Retry", systemImage: "arrow.counterclockwise")
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                else if let data = dashboardViewModel.data  {
+                    if horizontalSizeClass == .regular {
+                        DashboardRegularView(data: data)
+                    }
+                    else {
+                        DashboardCompactView(data: data)
+                    }
                 }
             }
+            .background(Color.listBackground)
+            .transition(.opacity)
             .navigationTitle("Dashboard")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -53,101 +73,105 @@ struct DashboardView: View {
                     }
                 }
             }
-            .background(Color.listBackground)
             .navigationDestination(for: LinksFilteredRequest.self) { value in
                 LinksFilteredView(linksFilteredRequest: value)
             }
             .sheet(isPresented: $linkFormUrlSheet, content: {
                 LinkFormView(mode: .url) {
                     linkFormUrlSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormUrlSheet = false
+                    dashboardViewModel.handleAddLink(link: newLink)
                 }
             })
             .sheet(isPresented: $linkFormFileSheet, content: {
                 LinkFormView(mode: .file) {
                     linkFormFileSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormFileSheet = false
+                    dashboardViewModel.handleAddLink(link: newLink)
                 }
             })
-            .onOpenURL { url in
-                if apiClientProvider.instance == nil {
-                    return
-                }
-                if url.scheme == DeepLinks.urlScheme && url.host == DeepLinks.newLink {
-                    linkFormUrlSheet = true
-                }
-            }
             .sheet(isPresented: $collectionFormSheet, content: {
-                CollectionFormView {
+                CollectionFormView(action: .create) {
                     collectionFormSheet = false
-                } onSuccess: { item, action in
+                } onSuccess: { item, _ in
                     collectionFormSheet = false
+                    dashboardViewModel.handleAddCollection(collection: item)
                 }
-                .environmentObject(CollectionFormViewModel())
             })
-        }
-        .onAppear(perform: {
-            if dashboardViewModel.data.isEmpty {
-                Task { await dashboardViewModel.loadData() }
+            .alert("Error", isPresented: $dashboardViewModel.deleteLinkErrorAlert) {
+                Button("OK", role: .cancel) {
+                    dashboardViewModel.deleteLinkErrorAlert = false
+                }
+            } message: {
+                Text("An error occured when deleting the link. Try again later.")
             }
-        })
+        }
+        .task {
+            await dashboardViewModel.loadData()
+        }
+        .environment(dashboardViewModel)
     }
 }
 
 struct DashboardRegularView: View {
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
+    let data: DashboardResponse_Data
+    
+    init(data: DashboardResponse_Data) {
+        self.data = data
+    }
+    
+    @Environment(DashboardViewModel.self) private var dashboardViewModel
     
     @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = false
     
     var body: some View {
         ScrollView {
-            Header(dashboardData: dashboardViewModel.data)
+            Header(dashboardData: data)
             if showPinnedBeforeRecent == true {
-                DashboardRegularViewPinned()
-                DashboardRegularViewRecent()
+                DashboardRegularViewPinned(data: data)
+                DashboardRegularViewRecent(data: data)
             }
             else {
-                DashboardRegularViewRecent()
-                DashboardRegularViewPinned()
+                DashboardRegularViewRecent(data: data)
+                DashboardRegularViewPinned(data: data)
             }
         }
         .refreshable {
             await dashboardViewModel.loadData()
         }
-        .overlay(alignment: .center) {
-            DashboardIndicators()
-        }
     }
 }
 
 fileprivate struct DashboardCompactView: View {
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
+    let data: DashboardResponse_Data
+    
+    init(data: DashboardResponse_Data) {
+        self.data = data
+    }
+    
+    @Environment(DashboardViewModel.self) private var dashboardViewModel
     
     @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = false
     
     var body: some View {
         List {
             Section {} header: {
-                Header(dashboardData: dashboardViewModel.data)
+                Header(dashboardData: data)
             }
             if showPinnedBeforeRecent == true {
-                DashboardCompactViewPinned()
-                DashboardCompactViewRecent()
+                DashboardCompactViewPinned(data: data)
+                DashboardCompactViewRecent(data: data)
             }
             else {
-                DashboardCompactViewRecent()
-                DashboardCompactViewPinned()
+                DashboardCompactViewRecent(data: data)
+                DashboardCompactViewPinned(data: data)
             }
         }
-        .animation(.default, value: dashboardViewModel.data)
+        .animation(.default, value: data)
         .refreshable {
             await dashboardViewModel.loadData()
-        }
-        .overlay(alignment: .center) {
-            DashboardIndicators()
-                .transition(.opacity)
         }
     }
 }

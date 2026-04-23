@@ -1,10 +1,12 @@
 import SwiftUI
 
-struct SearchView: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
-        
+struct SearchView: View {    
+    @State private var searchViewModel: SearchViewModel
+    
+    init() {
+        _searchViewModel = State(initialValue: SearchViewModel())
+    }
+    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
@@ -13,11 +15,13 @@ struct SearchView: View {
                 if searchViewModel.searchQueryValue == nil {
                     ContentUnavailableView("Insert search term", systemImage: "magnifyingglass", description: Text("Input a search term to search links, categories and tags"))
                         .transition(.opacity)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 else {
                     if searchViewModel.loading == true {
                         ProgressView()
                             .transition(.opacity)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     if searchViewModel.error == true {
                         ContentUnavailableView {
@@ -25,12 +29,13 @@ struct SearchView: View {
                         } description: {
                             Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
                             Button {
-                                searchViewModel.reload()
+                                Task { await searchViewModel.loadData() }
                             } label: {
                                 Label("Retry", systemImage: "arrow.counterclockwise")
                             }
                         }
                         .transition(.opacity)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     if searchViewModel.loading == false && searchViewModel.error == false {
                         if horizontalSizeClass == .regular {
@@ -46,6 +51,7 @@ struct SearchView: View {
                 view
                     .background(Color.listBackground)
             }
+            .background(Color.listBackground)
             .navigationTitle("Search")
             .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
             .onSubmit(of: .search) {
@@ -56,33 +62,53 @@ struct SearchView: View {
                     searchViewModel.clearSearch()
                 }
             })
+            .alert("Error", isPresented: $searchViewModel.deleteCollectionErrorAlert) {
+                Button("OK", role: .cancel) {
+                    searchViewModel.deleteCollectionErrorAlert = false
+                }
+            } message: {
+                Text("The collection could not be deleted. Try again later.")
+            }
+            .alert("Error", isPresented: $searchViewModel.deleteLinkErrorAlert) {
+                Button("OK", role: .cancel) {
+                    searchViewModel.deleteLinkErrorAlert = false
+                }
+            } message: {
+                Text("The link could not be deleted. Try again later.")
+            }
         }
+        .environment(searchViewModel)
     }
 }
 
 fileprivate struct SearchCompactView: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
-        let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let collectionsSliced = searchViewModel.filteredCollections.prefix(10)
+        let tagsSliced = searchViewModel.tags.prefix(10)
         
         List {
             if !linksSliced.isEmpty {
                 Section {
                     ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item) { _, _ in }
+                        LinkItemComponent(item: item) {l, id, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditLink(link: l!)
+                            case .delete:
+                                searchViewModel.handleDeleteLink(linkId: id!)
+                            }
+                        }
                     }
                 } header: {
                     HStack {
                         Text("Links")
-                        if searchViewModel.links.count > 10 {
+                        if searchViewModel.links.count > Config.searchViewMoreAmount {
                             Spacer()
                             NavigationLink {
-                                LinksSearchResults()
+                                LinksSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
                             } label: {
                                 HStack {
                                     Text("View more")
@@ -98,14 +124,19 @@ fileprivate struct SearchCompactView: View {
             if !collectionsSliced.isEmpty {
                 Section {
                     ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            collectionsProvider.deleteCollection(id: item.id!)
+                        CollectionItemComponent(collection: item) { c, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditCollection(collection: c)
+                            case .delete:
+                                searchViewModel.handleDeleteCollection(collectionId: c.id)
+                            }
                         }
                     }
                 } header: {
                     HStack {
                         Text("Collections")
-                        if collectionsProvider.data.count > 10 {
+                        if searchViewModel.filteredCollections.count > Config.searchViewMoreAmount {
                             Spacer()
                             NavigationLink {
                                 CollectionsSearchResults()
@@ -124,15 +155,17 @@ fileprivate struct SearchCompactView: View {
             if !tagsSliced.isEmpty {
                 Section {
                     ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item)
+                        TagItemComponent(tag: item) { tag in
+                            Task { await searchViewModel.handleDeleteTag(tagId: tag.id) }
+                        }
                     }
                 } header: {
                     HStack {
                         Text("Tags")
-                        if tagsProvider.data.count > 10 {
+                        if tagsSliced.count > Config.searchViewMoreAmount {
                             Spacer()
                             NavigationLink {
-                                TagsSearchResults()
+                                TagsSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
                             } label: {
                                 HStack {
                                     Text("View more")
@@ -151,14 +184,12 @@ fileprivate struct SearchCompactView: View {
 }
 
 fileprivate struct SearchRegularView: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
-        let collectionsSliced = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
-        let tagsSliced = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") }).prefix(10)
+        let collectionsSliced = searchViewModel.filteredCollections.prefix(10)
+        let tagsSliced = searchViewModel.tags.prefix(10)
         
         ScrollView {
             Group {
@@ -166,20 +197,29 @@ fileprivate struct SearchRegularView: View {
                     Text("Links")
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
-                    Spacer()
-                    NavigationLink {
-                        LinksSearchResults()
-                    } label: {
-                        Text("View all")
-                        Image(systemName: "chevron.right")
+                    if searchViewModel.links.count > Config.searchViewMoreAmount {
+                        Spacer()
+                        NavigationLink {
+                            LinksSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
+                        } label: {
+                            Text("View all")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 16))
                     }
-                    .font(.system(size: 16))
                 }
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item) { _, _ in }
-                            .padding(8)
+                        LinkItemComponent(item: item) { l, id, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditLink(link: l!)
+                            case .delete:
+                                searchViewModel.handleDeleteLink(linkId: id!)
+                            }
+                        }
+                        .padding(8)
                     }
                 }
                 .padding(.top, -24)
@@ -191,20 +231,27 @@ fileprivate struct SearchRegularView: View {
                     Text("Collections")
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
-                    Spacer()
-                    NavigationLink {
-                        CollectionsSearchResults()
-                    } label: {
-                        Text("View all")
-                        Image(systemName: "chevron.right")
+                    if searchViewModel.filteredCollections.count > Config.searchViewMoreAmount {
+                        Spacer()
+                        NavigationLink {
+                            CollectionsSearchResults()
+                        } label: {
+                            Text("View all")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 16))
                     }
-                    .font(.system(size: 16))
                 }
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            collectionsProvider.deleteCollection(id: item.id!)
+                        CollectionItemComponent(collection: item) { c, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditCollection(collection: c)
+                            case .delete:
+                                searchViewModel.handleDeleteCollection(collectionId: c.id)
+                            }
                         }
                         .padding(8)
                     }
@@ -218,20 +265,24 @@ fileprivate struct SearchRegularView: View {
                     Text("Tags")
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
-                    Spacer()
-                    NavigationLink {
-                        TagsSearchResults()
-                    } label: {
-                        Text("View all")
-                        Image(systemName: "chevron.right")
+                    if searchViewModel.tags.count > Config.searchViewMoreAmount {
+                        Spacer()
+                        NavigationLink {
+                            TagsSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
+                        } label: {
+                            Text("View all")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 16))
                     }
-                    .font(.system(size: 16))
                 }
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item)
-                            .padding(8)
+                        TagItemComponent(tag: item) { tag in
+                            Task { await searchViewModel.handleDeleteTag(tagId: tag.id) }
+                        }
+                        .padding(8)
                     }
                 }
                 .padding(.top, -24)

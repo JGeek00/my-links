@@ -3,38 +3,17 @@ import SwiftUI
 struct LinkFormView: View {
     var mode: Enums.LinkFormItem
     var onClose: () -> Void
-    var onSuccess: (Link, Enums.LinkTaskCompleted) -> Void
+    var onSuccess: (Link, Enums.LinkFormAction) -> Void
     
-    @State private var viewModel: LinkFormViewModel
+    @State private var linkFormViewModel: LinkFormViewModel
     
-    init(mode: Enums.LinkFormItem, link: Link? = nil, defaultCollectionId: Int? = nil, onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
+    init(mode: Enums.LinkFormItem, link: Link? = nil, defaultCollectionId: Int? = nil, onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkFormAction) -> Void) {
         self.mode = mode
         self.onClose = onClose
         self.onSuccess = onSuccess
-        _viewModel = State(wrappedValue: LinkFormViewModel(link: link, defaultCollectionId: defaultCollectionId))
+        _linkFormViewModel = State(wrappedValue: LinkFormViewModel(link: link, defaultCollectionId: defaultCollectionId))
     }
-    
-    var body: some View {
-        LinkFormViewContent(mode: mode, onClose: onClose, onSuccess: onSuccess)
-            .environment(viewModel)
-    }
-}
-
-fileprivate struct LinkFormViewContent: View {
-    var mode: Enums.LinkFormItem
-    var onClose: () -> Void
-    var onSuccess: (Link, Enums.LinkTaskCompleted) -> Void
-    
-    init(mode: Enums.LinkFormItem, onClose: @escaping () -> Void, onSuccess: @escaping (Link, Enums.LinkTaskCompleted) -> Void) {
-        self.mode = mode
-        self.onClose = onClose
-        self.onSuccess = onSuccess
-    }
-    
-    @Environment(LinkFormViewModel.self) private var linkFormViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
-    @EnvironmentObject private var tagsProvider: TagsProvider
-    
+        
     @State private var showFilePicker = false
     @State private var fileTooBigAlert = false
     @State private var selectFileError = false
@@ -73,10 +52,10 @@ fileprivate struct LinkFormViewContent: View {
                                         .foregroundStyle(Color.foreground)
                                         .animation(.easeOut, value: linkFormViewModel.selectedFileUrl)
                                     Group {
-                                        if linkFormViewModel.selectedFileUrl != nil {
+                                        if let selectedFileUrl = linkFormViewModel.selectedFileUrl {
                                             Spacer()
                                                 .frame(height: 12)
-                                            Text(linkFormViewModel.selectedFileUrl!.fileSizeString)
+                                            Text(selectedFileUrl.fileSizeString)
                                                 .font(.system(size: 14))
                                                 .fontWeight(.semibold)
                                                 .foregroundStyle(Color.listItemValue)
@@ -86,7 +65,7 @@ fileprivate struct LinkFormViewContent: View {
                                                     RoundedRectangle(cornerRadius: 20)
                                                         .stroke(Color.listItemValue, lineWidth: 1)
                                                 )
-                                                .animation(.easeOut, value: linkFormViewModel.selectedFileUrl)
+                                                .animation(.easeOut, value: selectedFileUrl)
                                             Spacer()
                                                 .frame(height: 12)
                                         }
@@ -128,9 +107,8 @@ fileprivate struct LinkFormViewContent: View {
                     TextField("Description", text: $linkFormViewModel.description, axis: .vertical)
                 }
                 Section {
-                    let filtered = collectionsProvider.data.filter() { $0.name != nil && $0.id != nil }
                     let selectedCollectionName = linkFormViewModel.getCollectionName()
-                    if filtered.count > Config.collectionsCountSelectorBreakpoint {
+                    if linkFormViewModel.availableCollections.count > Config.collectionsCountSelectorBreakpoint {
                         NavigationLink {
                             CollectionsPickerView()
                         } label: {
@@ -147,10 +125,10 @@ fileprivate struct LinkFormViewContent: View {
                     }
                     else {
                         Picker("Collection", selection: $linkFormViewModel.collection) {
-                            if !filtered.isEmpty {
-                                ForEach(filtered, id: \.self) { item in
-                                    Text(item.name!)
-                                        .tag(item.id!)
+                            if !linkFormViewModel.availableCollections.isEmpty {
+                                ForEach(linkFormViewModel.availableCollections, id: \.self) { item in
+                                    Text(item.name)
+                                        .tag(item.id)
                                 }
                             }
                             else {
@@ -161,7 +139,7 @@ fileprivate struct LinkFormViewContent: View {
                         .pickerStyle(.menu)
                     }
                     NavigationLink {
-                        TagsPickerView()
+                        TagsPickerView(existingTags: linkFormViewModel.selectedTags)
                     } label: {
                         VStack(alignment: .leading) {
                             Text("Tags")
@@ -181,13 +159,18 @@ fileprivate struct LinkFormViewContent: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     CloseButton {
-                        onClose()
+                        linkFormViewModel.discardChangesConfirmation = true
                     }
+                    .confirmationDialog("Discard changes?", isPresented: $linkFormViewModel.discardChangesConfirmation, actions: {
+                        Button("Discard changes", role: .destructive) {
+                            onClose()
+                        }
+                    })
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        linkFormViewModel.onSave(mode: mode) { newLink in
-                            onSuccess(newLink, linkFormViewModel.editingLink != nil ? .edit : .create)
+                        linkFormViewModel.onSave(mode: mode) { l in
+                            onSuccess(l, linkFormViewModel.editingLink != nil ? .edit : .create)
                         }
                     } label: {
                         if linkFormViewModel.saving == true {
@@ -238,5 +221,7 @@ fileprivate struct LinkFormViewContent: View {
                 Text("The selected file cannot be loaded on the app.")
             }
         }
+        .interactiveDismissDisabled()
+        .environment(linkFormViewModel)
     }
 }

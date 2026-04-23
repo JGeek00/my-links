@@ -3,16 +3,18 @@ import SwiftUI
 struct TagFormView: View {
     var onClose: () -> Void
     
+    @State private var tagsViewModel: TagsViewModel
+    
     init(onClose: @escaping () -> Void) {
         self.onClose = onClose
+        _tagsViewModel = State(initialValue: TagsViewModel())
     }
-    
-    @EnvironmentObject private var tagsProvider: TagsProvider
     
     @State private var label: String = ""
     @State private var saving: Bool = false
     @State private var error: Bool = false
     @State private var noLabel: Bool = false
+    @State private var showConfirmationAlert = false
     
     func createTag() async {
         if label == "" {
@@ -21,7 +23,7 @@ struct TagFormView: View {
         }
         
         saving = true
-        let result = await tagsProvider.createTag(name: label)
+        let result = await tagsViewModel.createTag(name: label)
         if result == true {
             onClose()
         }
@@ -41,7 +43,12 @@ struct TagFormView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     CloseButton {
-                        onClose()
+                        showConfirmationAlert = true
+                    }
+                    .confirmationDialog("Discard changes?", isPresented: $showConfirmationAlert) {
+                        Button("Discard changes", role: .destructive) {
+                            onClose()
+                        }
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {

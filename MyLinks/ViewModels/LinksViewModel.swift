@@ -2,47 +2,61 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class LinksViewModel: ObservableObject {
-    static let shared = LinksViewModel()
+@Observable
+class LinksViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
-    @Published var data: [Link] = []
-    @Published var loading = true
-    @Published var error = false
+    var initialSearchQuery: String? = nil   // Used on the search results view
     
-    @Published var searchFieldValue = ""
-    @Published var searchPresented = false
-    var searchQueryValue: String? = nil
-    var previousSearch: String? = nil
+    init(searchQuery: String? = nil, apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository =  RepositoriesContainer.shared.linkManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.linkManagerRepository = linkManagerRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
+        self.initialSearchQuery = searchQuery
+    }
     
-    @Published var loadingMore = false
+    var data: [Link] = []
+    var loading = true
+    var error = false
     
-    @Published var sortingSelected = Enums.SortingOptions.dateNewestFirst
+    var searchFieldValue = ""
+    var searchPresented = false
+    @ObservationIgnored var searchQueryValue: String? = nil
+    @ObservationIgnored var previousSearch: String? = nil
+    
+    @ObservationIgnored private var loadingMore = false
+    @ObservationIgnored private var nextBatch: Int? = nil
+    
+    var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
     // Flag to triger onChange
-    @Published var scrollTopList = false
+    var scrollTopList = false
     
-    init() {}
+    var deleteLinkErrorAlert = false
     
-    func loadData(
+    private func loadData(
         cursor: Int? = nil,
         setLoading: Bool = false,
         setError: Bool = true,
-        loadMore: Bool = false
+        loadingMore: Bool = false
     ) async {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.searchLiks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
-        if result.successful == true {
+        guard let instance = apiClientRepository.instance else { return }
+        let result = await instance.links.searchLiks(cursor: cursor, searchQueryString: initialSearchQuery ?? searchQueryValue, searchByName: initialSearchQuery != nil || searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
+        if let data = result.data?.data {
+            self.nextBatch = data.nextCursor
             DispatchQueue.main.async {
-                if loadMore == true {
-                    self.data = self.data + (result.data?.data?.links ?? [])
-                }
-                else {
-                    self.data = result.data?.data?.links ?? []
-                }
                 withAnimation(.default) {
+                    if loadingMore == true {
+                        self.data = self.data + data.links
+                    }
+                    else {
+                        self.data = data.links
+                    }
                     self.loading = false
                     self.error = false
                 }
@@ -50,7 +64,7 @@ class LinksViewModel: ObservableObject {
         }
         else {
             if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {
@@ -64,14 +78,21 @@ class LinksViewModel: ObservableObject {
         }
     }
     
-    func loadMore() {
-        if loadingMore == true && !data.isEmpty {
-            return
+    func loadInitial() async {
+        if data.isEmpty {
+            await loadData(setLoading: true)
         }
-        self.loadingMore = true
-        Task {
-            await loadData(cursor: data.last!.id!, setError: false, loadMore: true)
-            DispatchQueue.main.async {
+    }
+    
+    func refresh(setLoading: Bool = false) async {
+        await loadData(setLoading: setLoading)
+    }
+    
+    func loadMore() {
+        if let nextBatch = nextBatch, !loadingMore {
+            Task {
+                self.loadingMore = true
+                await loadData(cursor: nextBatch, setError: false, loadingMore: true)
                 self.loadingMore = false
             }
         }
@@ -95,39 +116,32 @@ class LinksViewModel: ObservableObject {
         }
     }
     
-    func removeLinkData(linkId: Int) {
-        DispatchQueue.main.async {
-            self.data = self.data.filter() { $0.id! != linkId }
-        }
+    func handleCreatedLink(link: Link) {
+        // Request is done by the form view model
+        self.data.insert(link, at: 0)
     }
     
-    func updateLinkData(link: Link) {
-        DispatchQueue.main.async {
-            self.data = self.data.map() { item in
-                if item.id == link.id {
-                    return link
-                }
-                else {
-                    return item
-                }
+    func handleDeleteLink(linkId: Int) {
+        Task {
+            await linkManagerRepository.deleteLink(id: linkId) { processing in
+                self.progressIndicatorRepository.presenting = processing
+            } onSuccess: { _ in
+                self.data = self.data.filter() { $0.id != linkId }
+            } onError: {
+                self.deleteLinkErrorAlert = true
             }
         }
     }
     
-    func reload() {
-        Task { await loadData() }
-        Task { await DashboardViewModel.shared.loadData() }
-    }
-    
-    func reset() {
-        self.data = []
-        self.loading = true
-        self.error = false
-        self.searchFieldValue = ""
-        self.searchPresented = false
-        self.searchQueryValue = nil
-        self.previousSearch = nil
-        self.loadingMore = false
-        self.sortingSelected = .dateNewestFirst
+    func handleEditLink(link: Link) {
+        // Request is done by the form view model
+        self.data = self.data.map() { item in
+            if item.id == link.id {
+                return link
+            }
+            else {
+                return item
+            }
+        }
     }
 }

@@ -14,10 +14,6 @@ struct MyLinksApp: App {
             RootView()
                 .frame(minWidth: 800, idealWidth: 1000, maxWidth: .infinity, minHeight: 500, idealHeight: 700, maxHeight: .infinity)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(OnboardingViewModel.shared)
-                .environmentObject(ApiClientProvider.shared)
-                .environmentObject(LinkManagerProvider.shared)
-                .environmentObject(ToastProvider.shared)
                 .onAppear {
                     NSApp.setActivationPolicy(.regular)
                     NSWindow.allowsAutomaticWindowTabbing = false
@@ -46,22 +42,13 @@ struct MyLinksApp: App {
             SettingsView()
                 .frame(width: 600, height: 600)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(OnboardingViewModel.shared)
-                .environmentObject(ApiClientProvider.shared)
-                .environmentObject(LinkManagerProvider.shared)
                 .environmentObject(IAPManager())
         }
         #else
         WindowGroup {
             RootView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(NavigationProvider())
-                .environmentObject(OnboardingViewModel.shared)
-                .environmentObject(ApiClientProvider.shared)
-                .environmentObject(LinkManagerProvider.shared)
-                .environmentObject(ToastProvider.shared)
                 .environmentObject(IAPManager())
-                .environmentObject(SearchViewModel())
         }
         #endif
     }

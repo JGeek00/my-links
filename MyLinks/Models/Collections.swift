@@ -12,8 +12,9 @@ struct CollectionResponse: Codable, Sendable {
 
 // MARK: - Collection
 struct Collection: Codable, Hashable, Sendable {
-    let id: Int?
-    let name, description, color: String?
+    let id: Int
+    let name: String
+    let description, color: String?
     var parentID: Int?
     let isPublic: Bool?
     let ownerId: Int?

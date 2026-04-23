@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ServerSelection: View {
-    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) private var onboardingViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -37,6 +37,7 @@ struct ServerSelection: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
+                    .contentShape(Rectangle())
                 }
                 Divider()
                     .padding(.vertical, 6)
@@ -62,6 +63,7 @@ struct ServerSelection: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
+                    .contentShape(Rectangle())
                 }
             }
             .buttonStyle(PlainButtonStyle())

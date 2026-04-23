@@ -2,44 +2,60 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class SearchViewModel: ObservableObject {
-    @Published var links: [Link] = []
-    @Published var loading = false
-    @Published var error = false
+@Observable
+class SearchViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
+    @ObservationIgnored private let collectionsRepository: CollectionsRepository
+    @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
-    @Published var searchFieldValue = ""
-    @Published var searchPresented = false
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.linkManagerRepository = linkManagerRepository
+        self.collectionsRepository = collectionsRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
+    }
+    
+    var links: [Link] = []
+    var tags: [TagsResponse_DataClass_Tag] = []
+    var loading = false
+    var error = false
+    
+    var allCollections: [Collection] {
+        get { collectionsRepository.data }
+        set { collectionsRepository.data = newValue }
+    }
+    var filteredCollections: [Collection] = []
+    
+    var searchFieldValue = ""
+    var searchPresented = false
     var searchQueryValue: String? = nil
     var previousSearch: String? = nil
     
-    @Published var loadingMore = false
+    var loadingMore = false
     
-    @Published var sortingSelected = Enums.SortingOptions.dateNewestFirst
+    var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
     // Flag to triger onChange
-    @Published var scrollTopList = false
+    var scrollTopList = false
     
-    init() {}
+    var deleteLinkErrorAlert = false
+    var deleteCollectionErrorAlert = false
     
     func loadData(
-        cursor: Int? = nil,
         setLoading: Bool = false,
-        setError: Bool = true,
-        loadMore: Bool = false
+        setError: Bool = true
     ) async {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchLinks(cursor: cursor, searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
-        if result.successful == true {
+        guard let instance = apiClientRepository.instance else { return }
+        let (linksResult, tagsResult) = await (instance.links.fetchLinks(searchQueryString: searchQueryValue, searchByName: searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue), instance.tags.fetchTags(search: searchQueryValue))
+        if let linksResult = linksResult.data?.response, let tagsResult = tagsResult.data?.data?.tags {
             DispatchQueue.main.async {
-                if loadMore == true {
-                    self.links = self.links + (result.data?.response ?? [])
-                }
-                else {
-                    self.links = result.data?.response ?? []
-                }
+                self.links = linksResult
+                self.tags = tagsResult
+                self.filteredCollections = self.allCollections.filter({ $0.name.lowercased().contains((self.searchQueryValue?.lowercased()) ?? "") })
                 withAnimation(.default) {
                     self.loading = false
                     self.error = false
@@ -47,8 +63,8 @@ class SearchViewModel: ObservableObject {
             }
         }
         else {
-            if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+            if linksResult.statusCode == 401 || tagsResult.statusCode == 401 {
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {
@@ -58,19 +74,6 @@ class SearchViewModel: ObservableObject {
                         self.error = true
                     }
                 }
-            }
-        }
-    }
-    
-    func loadMore() {
-        if loadingMore == true && !links.isEmpty {
-            return
-        }
-        self.loadingMore = true
-        Task {
-            await loadData(cursor: links.last!.id!, setError: false, loadMore: true)
-            DispatchQueue.main.async {
-                self.loadingMore = false
             }
         }
     }
@@ -93,39 +96,62 @@ class SearchViewModel: ObservableObject {
         }
     }
     
-    func removeLinkData(linkId: Int) {
-        DispatchQueue.main.async {
-            self.links = self.links.filter() { $0.id! != linkId }
-        }
-    }
-    
-    func updateLinkData(link: Link) {
-        DispatchQueue.main.async {
-            self.links = self.links.map() { item in
-                if item.id == link.id {
-                    return link
-                }
-                else {
-                    return item
-                }
+    func handleDeleteLink(linkId: Int) {
+        Task {
+            await linkManagerRepository.deleteLink(id: linkId) { processing in
+                self.progressIndicatorRepository.presenting = processing
+            } onSuccess: { _ in
+                self.links = self.links.filter() { $0.id != linkId }
+            } onError: {
+                self.deleteLinkErrorAlert = true
             }
         }
     }
     
-    func reload() {
-        Task { await loadData() }
-        Task { await DashboardViewModel.shared.loadData() }
+    func handleEditLink(link: Link) {
+        self.links = self.links.map() { item in
+            if item.id == link.id {
+                return link
+            }
+            else {
+                return item
+            }
+        }
     }
     
-    func reset() {
-        self.links = []
-        self.loading = true
-        self.error = false
-        self.searchFieldValue = ""
-        self.searchPresented = false
-        self.searchQueryValue = nil
-        self.previousSearch = nil
-        self.loadingMore = false
-        self.sortingSelected = .dateNewestFirst
+    func handleDeleteCollection(collectionId: Int) {
+        Task {
+            await collectionsRepository.deleteCollection(id: collectionId) { del in
+                self.progressIndicatorRepository.presenting = del
+            } setSuccess: {
+                self.allCollections = self.allCollections.filter() { $0.id != collectionId }
+            } setError: { _ in
+                self.deleteCollectionErrorAlert = true
+            }
+        }
     }
+    
+    func handleEditCollection(collection: Collection) {
+        self.allCollections = self.allCollections.map() { item in
+            if item.id == collection.id {
+                return collection
+            }
+            else {
+                return item
+            }
+        }
+    }
+    
+    func handleDeleteTag(tagId: Int) async -> Bool {
+        guard let instance = apiClientRepository.instance else { return false }
+        let result = await instance.tags.deleteTag(tagId: tagId)
+        if result.successful == true {
+            await loadData(setLoading: false)
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

@@ -1,29 +1,43 @@
 import SwiftUI
 
 struct LinksSearchResults: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
+    @State private var searchLinksViewModel: LinksViewModel
+    
+    init(searchQuery: String) {
+        _searchLinksViewModel = State(initialValue: LinksViewModel(searchQuery: searchQuery))
+    }
+    
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        if horizontalSizeClass == .regular {
-            ScrollView {
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(searchViewModel.links, id: \.self) { item in
-                        LinkItemComponent(item: item) { _, _ in }
-                            .padding(8)
-                    }
-                }
-                .padding(16)
+        LinksList(
+            loading: searchLinksViewModel.loading,
+            error: searchLinksViewModel.error,
+            withSearch: searchLinksViewModel.searchQueryValue != nil,
+            data: searchLinksViewModel.data,
+            scrollToTop: searchLinksViewModel.scrollTopList,
+            onEditLink: { link in
+                searchLinksViewModel.handleEditLink(link: link)
+            },
+            onDeleteLink: { link in
+                searchLinksViewModel.handleDeleteLink(linkId: link.id)
+            },
+            onLoadMore: {
+                searchLinksViewModel.loadMore()
+            },
+            onReload: {
+                Task { await searchLinksViewModel.loadInitial() }
             }
-            .navigationTitle("All search results")
-            .background(Color.listBackground)
+        )
+        .navigationTitle("All search results")
+        .background(Color.listBackground)
+        .refreshable {
+            await searchLinksViewModel.loadInitial()
         }
-        else {
-            List(searchViewModel.links, id: \.self) { item in
-                LinkItemComponent(item: item) { _, _ in }
-            }
-            .navigationTitle("All search results")
+        .task {
+            await searchLinksViewModel.loadInitial()
         }
     }
 }

@@ -1,13 +1,15 @@
 import SwiftUI
 
 struct ConnectionForm: View {
-    @EnvironmentObject private var onboardingViewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) private var onboardingViewModel
+    @Environment(RootViewModel.self) private var rootViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @State private var tokenInstructionsSheet = false
     
     var body: some View {
+        @Bindable var onboardingViewModel = onboardingViewModel
         Form {
             Section {} header: {
                 VStack(alignment: .leading) {
@@ -122,7 +124,9 @@ struct ConnectionForm: View {
                             Spacer()
                                 .frame(width: 16)
                             Button {
-                                onboardingViewModel.onConnect()
+                                onboardingViewModel.onConnect {
+                                    rootViewModel.showOnboarding = false
+                                }
                             } label: {
                                 connectContent
                             }
@@ -140,7 +144,9 @@ struct ConnectionForm: View {
                             Spacer()
                                 .frame(width: 16)
                             Button {
-                                onboardingViewModel.onConnect()
+                                onboardingViewModel.onConnect {
+                                    rootViewModel.showOnboarding = false
+                                }
                             } label: {
                                 connectContent
                             }

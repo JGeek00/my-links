@@ -2,7 +2,11 @@ import SwiftUI
 import CustomAlert
 
 struct TagsView: View {
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @State private var tagsViewModel: TagsViewModel
+    
+    init() {
+        _tagsViewModel = State(initialValue: TagsViewModel())
+    }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -10,62 +14,21 @@ struct TagsView: View {
     @State private var showCreateTagSheet = false
     
     var body: some View {
-        let searched = searchText != "" ? tagsProvider.data.filter() { $0.name.lowercased().contains(searchText.lowercased()) } : tagsProvider.data
-        Group {
-            if horizontalSizeClass == .regular {
-                ScrollView {
-                    LazyVGrid(columns: Config.gridColumns) {
-                        ForEach(searched, id: \.self) { item in
-                            TagItemComponent(tag: item)
-                                .padding(6)
-                        }
-                    }
-                    .padding(.horizontal, 12)
-                }
-                .overlay(alignment: .center) {
-                    if tagsProvider.data.isEmpty {
-                        ContentUnavailableView {
-                            Label("No tags created", systemImage: "tag")
-                        } description: {
-                            Text("Add tags to links to see them here.")
-                        }
-                    }
-                }
-                .overlay(alignment: .center) {
-                    if searched.isEmpty {
-                        ContentUnavailableView {
-                            Label("No tags found", systemImage: "tag")
-                        } description: {
-                            Text("Change the search term to see some tags.")
-                        }
-                    }
-                }
+        TagsList(
+            loading: tagsViewModel.loading,
+            error: tagsViewModel.error,
+            withSearch: tagsViewModel.searchQueryValue != nil,
+            data: tagsViewModel.data,
+            onReload: {
+                Task { await tagsViewModel.initialLoad()}
+            },
+            onDeleteTag: { tag in
+                Task { await tagsViewModel.deleteTag(tagId: tag.id) }
+            },
+            onLoadNextBatch: {
+                tagsViewModel.loadNextPage()
             }
-            else {
-                List(searched, id: \.self) { item in
-                    TagItemComponent(tag: item)
-                }
-                .animation(.default, value: searched)
-                .overlay(alignment: .center) {
-                    if tagsProvider.data.isEmpty {
-                        ContentUnavailableView {
-                            Label("No tags created", systemImage: "tag")
-                        } description: {
-                            Text("Add tags to links to see them here.")
-                        }
-                    }
-                }
-                .overlay(alignment: .center) {
-                    if searched.isEmpty && searchText != "" {
-                        ContentUnavailableView {
-                            Label("No tags found", systemImage: "tag")
-                        } description: {
-                            Text("Change the search term to see some tags.")
-                        }
-                    }
-                }
-            }
-        }
+        )
         .navigationTitle("Tags")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -75,49 +38,25 @@ struct TagsView: View {
             }
         }
         .refreshable {
-            await tagsProvider.loadData()
+            await tagsViewModel.refresh()
         }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-        .overlay(alignment: .center) {
-            TagsIndicators()
+        .searchable(text: $tagsViewModel.searchFieldValue, isPresented: $tagsViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
+        .onSubmit(of: .search) {
+            tagsViewModel.search()
         }
+        .onChange(of: tagsViewModel.searchPresented, { oldValue, newValue in
+            if oldValue == true && newValue == false {
+                tagsViewModel.clearSearch()
+            }
+        })
         .sheet(isPresented: $showCreateTagSheet) {
             TagFormView {
                 showCreateTagSheet = false
             }
         }
-    }
-}
-
-fileprivate struct TagsIndicators: View {
-    @EnvironmentObject private var tagsProvider: TagsProvider
-    
-    init() {}
-    
-    var body: some View {
-        if tagsProvider.loading == true || tagsProvider.error == true {
-            Group {
-                if tagsProvider.loading == true {
-                    Group {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                else if tagsProvider.error == true {
-                    ContentUnavailableView {
-                        Label("Error", systemImage: "exclamationmark.circle")
-                    } description: {
-                        Text("An error occured when loading the links data. Check your Internet connection and try again later.")
-                        Button {
-                            Task { await tagsProvider.loadData(setLoading: true) }
-                        } label: {
-                            Label("Retry", systemImage: "arrow.counterclockwise")
-                        }
-                    }
-                }
-            }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
-            .background(Color.listBackground)
+        .task {
+            await tagsViewModel.initialLoad()
         }
+        .environment(tagsViewModel)
     }
 }

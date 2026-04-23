@@ -15,14 +15,14 @@ struct LinkCreationRequest: Codable {
 
 // MARK: - CollectionCreation
 struct CollectionCreation: Codable {
-    let id: Int?
-    let name: String?
+    let id: Int
+    let name: String
     let ownerId: Int?
 }
 
 // MARK: - TagCreation
 struct TagCreation: Codable {
-    let name: String?
+    let name: String
 }
 
 // MARK: - PinnedByRequest

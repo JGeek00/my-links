@@ -3,78 +3,34 @@ import CoreData
 import SwiftUI
 
 @MainActor
-class OnboardingViewModel: ObservableObject {
-    static let shared = OnboardingViewModel()
+@Observable
+class OnboardingViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
     
-    @Published var showOnboarding = false
-    
-    @Published var selectedTab = 0
-    @Published var hostingMode: Enums.Hosting = .cloud
-    
-    @Published var connectionMethod = Enums.ConnectionMethod.http
-    @Published var ipDomain = ""
-    @Published var port = ""
-    @Published var path = ""
-    
-    @Published var authMethod = Enums.AuthMethod.userPass
-    @Published var username = ""
-    @Published var password = ""
-    @Published var token = ""
-    
-    @Published var invalidValuesAlert = false
-    @Published var invalidValuesMessage = ""
-    
-    @Published var connectionErrorAlert = false
-    @Published var connectionErrorMessage = ""
-    
-    @Published var connecting = false
-    
-    func checkInstance() {
-        let fetchRequest: NSFetchRequest<ServerInstance> = ServerInstance.fetchRequest()
-        do {
-            let res = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
-            if res.isEmpty == true {
-                showOnboarding = true
-            }
-            else {
-                if res[0].isSelfHosted == true {
-                    guard let method = res[0].method else {
-                        clearInstances()
-                        return
-                    }
-                    guard let parsedMethod = Enums.ConnectionMethod(rawValue: method) else {
-                        clearInstances()
-                        return
-                    }
-                    guard let domain = res[0].domain else {
-                        clearInstances()
-                        return
-                    }
-                    guard let token = res[0].token else {
-                        clearInstances()
-                        return
-                    }
-                    let port = res[0].port != nil ? Int(res[0].port!) : nil
-                    let client = ApiClient(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true)
-                    DispatchQueue.main.async {
-                        ApiClientProvider.shared.initialice(instance: client)
-                    }
-                }
-                else {
-                    guard let token = res[0].token else {
-                        clearInstances()
-                        return
-                    }
-                    let client = ApiClient(url: Config.linkwardenCloudUrl, token: token, isSelfHosted: false)
-                    DispatchQueue.main.async {
-                        ApiClientProvider.shared.initialice(instance: client)
-                    }
-                }
-            }
-        } catch {
-            print("Error fetching data: \(error.localizedDescription)")
-        }
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository) {
+        self.apiClientRepository = apiClientRepository
     }
+    
+    var selectedTab = 0
+    var hostingMode: Enums.Hosting = .cloud
+    
+    var connectionMethod = Enums.ConnectionMethod.http
+    var ipDomain = ""
+    var port = ""
+    var path = ""
+    
+    var authMethod = Enums.AuthMethod.userPass
+    var username = ""
+    var password = ""
+    var token = ""
+    
+    var invalidValuesAlert = false
+    var invalidValuesMessage = ""
+    
+    var connectionErrorAlert = false
+    var connectionErrorMessage = ""
+    
+    var connecting = false
     
     func reset() {
         selectedTab = 0
@@ -134,7 +90,7 @@ class OnboardingViewModel: ObservableObject {
         }
     }
     
-    func onConnect() {
+    func onConnect(finishOnboarding: @escaping () -> Void) {
         if hostingMode == .selfhosted {
             let validIpDomain = validateIpDomain(value: ipDomain)
             if validIpDomain == false {
@@ -214,8 +170,8 @@ class OnboardingViewModel: ObservableObject {
                 }
             }
 
-            let instance = hostingMode == .selfhosted ? ApiClient(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: thisToken, isSelfHosted: true) : ApiClient(url: Config.linkwardenCloudUrl, token: thisToken, isSelfHosted: false)
-            let result = await instance.fetchDashboard()
+            let instance = hostingMode == .selfhosted ? ApiClient(instance: ServerApiInstance(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: thisToken, isSelfHosted: true)) : ApiClient(instance: ServerApiInstance(url: Config.linkwardenCloudUrl, token: thisToken, isSelfHosted: false))
+            let result = await instance.dashboard.fetchDashboard()
             DispatchQueue.main.async {
                 self.connecting = false
             }
@@ -231,8 +187,8 @@ class OnboardingViewModel: ObservableObject {
                 let saved = self.saveInstance(token: thisToken)
                 if saved == true {
                     DispatchQueue.main.async {
-                        ApiClientProvider.shared.initialice(instance: instance)
-                        self.showOnboarding = false
+                        self.apiClientRepository.initialice(instance: instance)
+                        finishOnboarding()
                     }
                 }
             }

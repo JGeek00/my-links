@@ -6,13 +6,13 @@ struct HTMLViewer: View {
     var mode: Enums.HTMLViewerMode
     var onClose: () -> Void
     
-    @StateObject private var htmlViewerViewModel: HTMLViewerViewModel
+    @State private var htmlViewerViewModel: HTMLViewerViewModel
     
     init(link: Link, mode: Enums.HTMLViewerMode, onClose: @escaping () -> Void) {
         self.link = link
         self.mode = mode
         self.onClose = onClose
-        _htmlViewerViewModel = StateObject(wrappedValue: HTMLViewerViewModel(link: link, mode: mode))
+        _htmlViewerViewModel = State(initialValue: HTMLViewerViewModel(link: link, mode: mode))
     }
     
     var body: some View {
@@ -75,7 +75,7 @@ struct HTMLViewer: View {
                 }
             }
             .background(Color.listBackground)
-            .navigationTitle(link.name! != "" ? link.name! : link.description! != "" ? link.description! : link.url!)
+            .navigationTitle(link.name != "" ? link.name : link.description != "" ? link.description : link.url ?? String(localized: "HTML viewer"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -93,8 +93,8 @@ struct HTMLViewer: View {
                 }
             }
         }
-        .onAppear {
-            Task { await htmlViewerViewModel.loadData() }
+        .task {
+            await htmlViewerViewModel.loadData()
         }
     }
 }

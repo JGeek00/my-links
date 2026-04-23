@@ -1,70 +1,63 @@
 import SwiftUI
 
 struct TagsPickerView: View {
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @State private var tagsPickerViewModel: TagsPickerViewModel
+    
+    init(existingTags: [String]) {
+        _tagsPickerViewModel = State(initialValue: TagsPickerViewModel(existingTags: existingTags))
+    }
+    
     @Environment(LinkFormViewModel.self) private var linkFormViewModel
     
-    @State private var addTagAlert = false
-    @State private var newTagName = ""
-    @State private var searchText = ""
-    
     var body: some View {
-        let mapped = (tagsProvider.data.map() { $0.name }) + linkFormViewModel.localTags
-        Group {
-            if mapped.isEmpty {
-                ContentUnavailableView {
-                    Label("No tags created", systemImage: "tag")
-                } description: {
-                    Text("Add tags to links to see them here.")
+        @Bindable var linkFormViewModel = linkFormViewModel
+        List {
+            Section {
+                TagsTextField(tags: $tagsPickerViewModel.selectedTags, currentTextInput: $tagsPickerViewModel.currentTextInput) { removedTag in
+                    tagsPickerViewModel.handleRemoveTag(tag: removedTag)
                 }
+                .onChange(of: tagsPickerViewModel.currentTextInput, initial: false) { _, newValue in
+                    tagsPickerViewModel.getTagSuggestions(query: newValue)
+                }
+            } header: {
+                Text("Current tags")
+            } footer: {
+                Text("- Separe each tag by a comma (,) or by hitting enter.\n- Tap on an already added tag to remove it.\n- Write text to see suggestions.\n- Tap on a suggestion to add a tag.\n\n")
             }
-            else {
-                let searched = searchText != "" ? mapped.filter() { $0.lowercased().contains(searchText.lowercased()) } : mapped
-                List(searched, id: \.self) { item in
-                    Button {
-                        if linkFormViewModel.selectedTags.contains(item) {
-                            linkFormViewModel.selectedTags = linkFormViewModel.selectedTags.filter() { $0 != item }
+            if tagsPickerViewModel.tagSuggestions.isEmpty && tagsPickerViewModel.loadingTagSuggestions == true {
+                ProgressView()
+            }
+            if !tagsPickerViewModel.tagSuggestions.isEmpty {
+                Section {
+                    ForEach(tagsPickerViewModel.tagSuggestions, id: \.self) { tag in
+                        Button {
+                            tagsPickerViewModel.handleSelectTag(tag: tag)
+                        } label: {
+                            Text(verbatim: tag)
                         }
-                        else {
-                            linkFormViewModel.selectedTags.append(item)
-                        }
-                    } label: {
-                        HStack {
-                            Text(item)
-                                .foregroundStyle(Color.foreground)
-                            Spacer()
-                            if linkFormViewModel.selectedTags.contains(item) {
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.accentColor)
-                                    .fontWeight(.semibold)
+                        .foregroundStyle(Color.foreground)
+                        .onAppear {
+                            if tag == tagsPickerViewModel.tagSuggestions.last {
+                                tagsPickerViewModel.fetchMore()
                             }
                         }
                     }
+                } header: {
+                    HStack {
+                        Text("Suggested tags")
+                        if tagsPickerViewModel.loadingTagSuggestions == true {
+                            Spacer()
+                            ProgressView()
+                        }
+                    }
                 }
-                .animation(.default, value: searched)
+                .animation(.default, value: tagsPickerViewModel.tagSuggestions)
             }
         }
         .navigationTitle("Tags")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Add tag", systemImage: "plus") {
-                    newTagName = ""
-                    addTagAlert.toggle()
-                }
-            }
-        }
-        .searchable(text: $searchText)
-        .background(Color.listBackground)
-        .alert("Add tag", isPresented: $addTagAlert) {
-            Button("Cancel", role: .cancel) {
-                addTagAlert.toggle()
-            }
-            Button("Save") {
-                linkFormViewModel.localTags.append(newTagName)
-                linkFormViewModel.selectedTags.append(newTagName)
-            }
-            TextField("Tag name", text: $newTagName)
+        .onChange(of: tagsPickerViewModel.selectedTags) { _, newValue in
+            linkFormViewModel.selectedTags = newValue
         }
     }
 }

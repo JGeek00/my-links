@@ -41,6 +41,34 @@ class Enums {
         case error
     }
     
+    enum LoadingState<T> {
+        case loading
+        case success(T)
+        case failure
+        
+        var isLoading: Bool {
+            if case .loading = self {
+                return true
+            }
+            return false
+        }
+        
+        var data: T? {
+            if case .success(let data) = self {
+                return data
+            }
+            return nil
+        }
+        
+        var error: Bool {
+            if case .failure = self {
+                return true
+            }
+            return false
+        }
+    }
+    
+    
     enum LinkFormMode: String {
         case creation
         case editing
@@ -53,11 +81,29 @@ class Enums {
         case pinned
     }
     
-    enum LinkTaskCompleted: String {
+    enum LinkFormAction: String {
+        case create
+        case edit
+    }
+    
+    enum LinkTaskAction: String {
+        case edit
         case delete
-        case pin
+    }
+    
+    enum CollectionFormAction: String {
         case edit
         case create
+    }
+    
+    enum CollectionTaskAction: String {
+        case edit
+        case delete
+    }
+    
+    enum PinUnpinAction: String {
+        case pin
+        case unpin
     }
     
     enum SortingOptions: Int {
@@ -72,8 +118,8 @@ class Enums {
     enum DashboardView: String {
         case dashboard
         case links
-        case pinned
         case collections
+        case tags
     }
     
     enum DownloadDocumentType: String {

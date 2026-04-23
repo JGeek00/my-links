@@ -1,12 +1,15 @@
 import SwiftUI
 
 struct DashboardPinnedLinks: View {
-    @EnvironmentObject private var dashboardViewModel: DashboardViewModel
+    var pinned: [Link]
     
-    var body: some View {
-        let filtered = dashboardViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-        let pinned = filtered.filter() { $0.pinnedBy != nil && $0.pinnedBy!.isEmpty == false }
-        
+    init(pinned: [Link]) {
+        self.pinned = pinned
+    }
+    
+    @Environment(DashboardViewModel.self) private var dashboardViewModel
+    
+    var body: some View {        
         if !pinned.isEmpty {
             VStack {
                 HStack {
@@ -15,7 +18,7 @@ struct DashboardPinnedLinks: View {
                         .fontWeight(.semibold)
                     Spacer()
                     NavigationLink {
-                        LinksFilteredView(input: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
+                        LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: String(localized: "Pinned"), mode: .pinned, id: nil))
                     } label: {
                         Text("View all")
                         Image(systemName: "chevron.right")
@@ -27,8 +30,15 @@ struct DashboardPinnedLinks: View {
                     .frame(height: 16)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(pinned.uniqued(), id: \.self) { item in
-                        LinkItemComponent(item: item) { link, action in
-                            dashboardViewModel.reload()
+                        LinkItemComponent(item: item) { l, id, action in
+                            switch action {
+                            case .edit:
+                                dashboardViewModel.handleEditLink(link: l!)
+                            case .delete:
+                                dashboardViewModel.handleDeleteLink(linkId: id!)
+                            }
+                        } onPinUnpin: { l, action in
+                            dashboardViewModel.handlePinUnpin(link: l, action: action)
                         }
                         .padding(6)
                     }

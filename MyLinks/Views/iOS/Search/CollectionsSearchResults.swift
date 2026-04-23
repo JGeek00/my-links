@@ -1,19 +1,22 @@
 import SwiftUI
 
 struct CollectionsSearchResults: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var collectionsProvider: CollectionsProvider
+    @Environment(SearchViewModel.self) private var searchViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        let collections = collectionsProvider.data.filter({ $0.name!.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") })
         if horizontalSizeClass == .regular {
             ScrollView {
                 LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(collections, id: \.self) { item in
-                        CollectionItemComponent(collection: item) {
-                            collectionsProvider.deleteCollection(id: item.id!)
+                    ForEach(searchViewModel.filteredCollections, id: \.self) { item in
+                        CollectionItemComponent(collection: item) { c, action in
+                            switch action {
+                            case .edit:
+                                searchViewModel.handleEditCollection(collection: c)
+                            case .delete:
+                                searchViewModel.handleDeleteCollection(collectionId: c.id)
+                            }
                         }
                         .padding(8)
                     }
@@ -24,9 +27,14 @@ struct CollectionsSearchResults: View {
             .background(Color.listBackground)
         }
         else {
-            List(collections, id: \.self) { item in
-                CollectionItemComponent(collection: item) {
-                    collectionsProvider.deleteCollection(id: item.id!)
+            List(searchViewModel.filteredCollections, id: \.self) { item in
+                CollectionItemComponent(collection: item) { c, action in
+                    switch action {
+                    case .edit:
+                        searchViewModel.handleEditCollection(collection: c)
+                    case .delete:
+                        searchViewModel.handleDeleteCollection(collectionId: c.id)
+                    }
                 }
             }
             .navigationTitle("All search results")

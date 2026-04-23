@@ -2,28 +2,33 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class ImageViewerViewModel: ObservableObject {
-    @Published var data: Data? = nil
-    @Published var imageData: UIImage? = nil
-    @Published var loading = true
-    @Published var error = false
-    
-    @Published var downloadedFilePath: URL? = nil
-    @Published var saveDocumentSheet = false
-    
-    @Published var savingErrorAlert = false
-    @Published var savingErrorMessage = ""
-    
-    init(link: Link) {
-        Task { await self.loadData(linkId: link.id!) }
+@Observable
+class ImageViewerViewModel {
+    @ObservationIgnored private let apiClientRepository: ApiClientRepository
+    @ObservationIgnored private let link: Link
+  
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, link: Link) {
+        self.apiClientRepository = apiClientRepository
+        self.link = link
     }
     
-    func loadData(linkId: Int, setLoading: Bool = false) async {
+    var data: Data? = nil
+    var imageData: UIImage? = nil
+    var loading = true
+    var error = false
+    
+    var downloadedFilePath: URL? = nil
+    var saveDocumentSheet = false
+    
+    var savingErrorAlert = false
+    var savingErrorMessage = ""
+    
+    func loadData(setLoading: Bool = false) async {
         if setLoading == true {
             self.loading = true
         }
-        guard let instance = ApiClientProvider.shared.instance else { return }
-        let result = await instance.fetchImage(linkId: linkId)
+        guard let instance = apiClientRepository.instance else { return }
+        let result = await instance.files.fetchImage(linkId: link.id)
         if result.successful == true {
             DispatchQueue.main.async {
                 withAnimation(.default) {
@@ -36,7 +41,7 @@ class ImageViewerViewModel: ObservableObject {
         }
         else {
             if result.statusCode == 401 {
-                ApiClientProvider.shared.destroy()
+                apiClientRepository.destroy()
                 return
             }
             DispatchQueue.main.async {

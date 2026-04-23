@@ -2,11 +2,11 @@ import SwiftUI
 
 struct CollectionItemComponent: View {
     let collection: Collection
-    let onDelete: () -> Void
+    let onTaskCompleted: (Collection, Enums.CollectionTaskAction) -> Void
     
-    init(collection: Collection, onDelete: @escaping () -> Void) {
+    init(collection: Collection, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
         self.collection = collection
-        self.onDelete = onDelete
+        self.onTaskCompleted = onTaskCompleted
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -17,7 +17,7 @@ struct CollectionItemComponent: View {
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
         NavigationLink {
-            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: collection.name!, mode: .collection, id: collection.id!))
+            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: collection.name, mode: .collection, id: collection.id))
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -29,10 +29,10 @@ struct CollectionItemComponent: View {
                         Spacer()
                             .frame(width: 6)
                     }
-                    Text(collection.name!)
+                    Text(collection.name)
                         .lineLimit(1)
                         .fontWeight(.medium)
-                    Spacer() // Añade un Spacer aquí para ocupar todo el ancho
+                    Spacer()
                 }
                 if let description = collection.description {
                     if description != "" {
@@ -75,23 +75,23 @@ struct CollectionItemComponent: View {
                 collectionFormSheet = true
             }
             Button("Delete", systemImage: "trash", role: .destructive) {
-                showDeleteAlert.toggle()
+                showDeleteAlert = true
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView {
+            CollectionFormView(action: .edit) {
                 collectionFormSheet = false
             } onSuccess: { item, action in
                 collectionFormSheet = false
+                onTaskCompleted(item, .edit)
             }
-            .environmentObject(CollectionFormViewModel(collection: collection))
         })
         .alert("Delete collection", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) {
                 showDeleteAlert.toggle()
             }
             Button("Delete", role: .destructive) {
-                onDelete()
+                onTaskCompleted(collection, .delete)
             }
         } message: {
             Text("This collection and all it's links will be deleted. This action is not reversible.")

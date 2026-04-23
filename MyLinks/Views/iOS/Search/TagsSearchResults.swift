@@ -1,31 +1,40 @@
 import SwiftUI
 
 struct TagsSearchResults: View {
-    @EnvironmentObject private var searchViewModel: SearchViewModel
-    @EnvironmentObject private var tagsProvider: TagsProvider
+    @State private var searchTagsViewModel: TagsViewModel
+    
+    init(searchQuery: String) {
+        _searchTagsViewModel = State(initialValue: TagsViewModel(searchQuery: searchQuery))
+    }
+    
+    @Environment(SearchViewModel.self) private var searchViewModel: SearchViewModel
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        let tags = tagsProvider.data.filter({ $0.name.lowercased().contains((searchViewModel.searchQueryValue?.lowercased()) ?? "") })
-        if horizontalSizeClass == .regular {
-            ScrollView {
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(tags, id: \.self) { item in
-                        TagItemComponent(tag: item)
-                        .padding(8)
-                    }
-                }
-                .padding(16)
+        TagsList(
+            loading: searchTagsViewModel.loading,
+            error: searchTagsViewModel.error,
+            withSearch: searchTagsViewModel.searchQueryValue != nil,
+            data: searchTagsViewModel.data,
+            onReload: {
+                Task { await searchTagsViewModel.initialLoad() }
+            },
+            onDeleteTag: { tag in
+                Task { await searchTagsViewModel.deleteTag(tagId: tag.id) }
+            },
+            onLoadNextBatch: {
+                searchTagsViewModel.loadNextPage()
             }
-            .navigationTitle("All search results")
-            .background(Color.listBackground)
+        )
+        .background(Color.listBackground)
+        .navigationTitle("All search results")
+        .navigationBarTitleDisplayMode(.inline)
+        .refreshable {
+            await searchTagsViewModel.refresh()
         }
-        else {
-            List(tags, id: \.self) { item in
-                TagItemComponent(tag: item)
-            }
-            .navigationTitle("All search results")
+        .task {
+            await searchTagsViewModel.initialLoad()
         }
     }
 }

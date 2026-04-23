@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct LinksView: View {
-    @StateObject private var linksViewModel = LinksViewModel.shared
+    @State private var linksViewModel: LinksViewModel
+    
+    init() {
+        _linksViewModel = State(initialValue: LinksViewModel())
+    }
 
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
@@ -13,6 +17,7 @@ struct LinksView: View {
                     ProgressView()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
             }
             else if linksViewModel.error == true {
                 ContentUnavailableView {
@@ -20,39 +25,56 @@ struct LinksView: View {
                 } description: {
                     Text("An error occured when loading the links data. Check your Internet connection and try again later.")
                     Button {
-                        Task { await linksViewModel.loadData(setLoading: true) }
+                        Task { await linksViewModel.refresh(setLoading: true) }
                     } label: {
                         Label("Retry", systemImage: "arrow.counterclockwise")
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
+            }
+            else if linksViewModel.data.isEmpty && linksViewModel.searchQueryValue == nil {
+                ContentUnavailableView {
+                    Label("No links added", systemImage: "link")
+                } description: {
+                    Text("Save some links on Linkwarden to see them here.")
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
+            }
+            else if linksViewModel.data.isEmpty && linksViewModel.searchQueryValue != nil {
+                ContentUnavailableView {
+                    Label("No links found", systemImage: "magnifyingglass")
+                } description: {
+                    Text("Change the search term to see some links.")
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
             }
             else {
-                let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-                if !filtered.isEmpty {
-                    ScrollViewReader(content: { scrollView in
-                        ScrollView {
-                            LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(filtered, id: \.self) { item in
-                                    LinkItemComponent(item: item) { _, _ in }
-                                    .onAppear {
-                                        if item == filtered.last {
-                                            linksViewModel.loadMore()
-                                        }
+                ScrollViewReader(content: { scrollView in
+                    ScrollView {
+                        LazyVGrid(columns: Config.gridColumns) {
+                            ForEach(linksViewModel.data, id: \.self) { item in
+                                LinkItemComponent(item: item) { l, id, action in
+                                    switch action {
+                                    case .edit:
+                                        linksViewModel.handleEditLink(link: l!)
+                                    case .delete:
+                                        linksViewModel.handleDeleteLink(linkId: id!)
                                     }
-                                    .padding(6)
                                 }
+                                .onAppear {
+                                    if item == linksViewModel.data.last {
+                                        linksViewModel.loadMore()
+                                    }
+                                }
+                                .padding(6)
                             }
-                            .padding(12)
                         }
-                    })
-                }
-                else {
-                    ContentUnavailableView {
-                        Label("No links added", systemImage: "link")
-                    } description: {
-                        Text("Save some links on Linkwarden to see them here.")
+                        .padding(12)
                     }
-                }
+                })
             }
         }
         .navigationTitle("Links")
@@ -60,7 +82,7 @@ struct LinksView: View {
             ToolbarItem(placement: .automatic) {
                 HStack {
                     Button {
-                        Task { await linksViewModel.loadData(setLoading: true) }
+                        Task { await linksViewModel.refresh(setLoading: true) }
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }
@@ -91,7 +113,7 @@ struct LinksView: View {
                             .tag(Enums.SortingOptions.descriptionZA)
                     }
                     .onChange(of: linksViewModel.sortingSelected, initial: false) {
-                        Task { await linksViewModel.loadData(setLoading: true) }
+                        Task { await linksViewModel.refresh(setLoading: true) }
                     }
                     .disabled(linksViewModel.loading)
                 }
@@ -102,17 +124,19 @@ struct LinksView: View {
             linksViewModel.search()
         }
         .sheet(isPresented: $linkFormUrlSheet, content: {
-            LinkFormView(mode: .url) {
+            LinkFormView(mode: Enums.LinkFormItem.url) {
                 linkFormUrlSheet = false
             } onSuccess: { newLink, action in
                 linkFormUrlSheet = false
+                linksViewModel.handleCreatedLink(link: newLink)
             }
         })
         .sheet(isPresented: $linkFormFileSheet, content: {
-            LinkFormView(mode: .file) {
+            LinkFormView(mode: Enums.LinkFormItem.url) {
                 linkFormFileSheet = false
-            } onSuccess: { newLink, action in
+            } onSuccess: { newLink, _ in
                 linkFormFileSheet = false
+                linksViewModel.handleCreatedLink(link: newLink)
             }
         })
         .onChange(of: linksViewModel.searchPresented, { oldValue, newValue in
@@ -120,8 +144,8 @@ struct LinksView: View {
                 linksViewModel.clearSearch()
             }
         })
-        .onAppear(perform: {
-            Task { await linksViewModel.loadData() }
-        })
+        .task {
+            await linksViewModel.loadInitial()
+        }
     }
 }

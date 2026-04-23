@@ -6,11 +6,11 @@ struct GeneralSettings: View {
     @State var disconnectAlert = false
     @State var collectionsViewModeSheet = false
     
+    @Environment(SettingsViewModel.self) private var settingsViewModel
+    
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
     @AppStorage(StorageKeys.openLinkByDefault, store: UserDefaults.shared) private var openLinkByDefault: Enums.OpenLinkByDefault = .internalBrowser
     @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = false
-    
-    @EnvironmentObject private var apiClientProvider: ApiClientProvider
     
     var body: some View {
         NavigationStack {
@@ -50,10 +50,10 @@ struct GeneralSettings: View {
 
                 
                 Section("Server") {
-                    if let instance = apiClientProvider.instance {
-                        if instance.isSelfHosted == true {
+                    if let instance = settingsViewModel.apiClientInstance {
+                        if instance.getIsSelfHosted() == true {
                             HStack {
-                                Text(instance.url)
+                                Text(instance.getInstanceUrl())
                                 Spacer()
                                 Image(systemName: "server.rack")
                             }
@@ -71,15 +71,15 @@ struct GeneralSettings: View {
                         Button {
                             disconnectAlert.toggle()
                         } label: {
-                            Text(instance.isSelfHosted ==  true ? "Disconnect" : "Log out")
+                            Text(instance.getIsSelfHosted() ==  true ? "Disconnect" : "Log out")
                                 .foregroundStyle(Color.red)
                         }
                         .alert("Disconnect from server", isPresented: $disconnectAlert) {
                             Button("Cancel", role: .cancel) {
                                 disconnectAlert.toggle()
                             }
-                            Button(instance.isSelfHosted == true ? "Disconnect" : "Log out", role: .destructive) {
-                                ApiClientProvider.shared.destroy()
+                            Button(instance.getIsSelfHosted() == true ? "Disconnect" : "Log out", role: .destructive) {
+                                settingsViewModel.destroyServer()
                             }
                         } message: {
                             Text("You will have to establish a connection again.")

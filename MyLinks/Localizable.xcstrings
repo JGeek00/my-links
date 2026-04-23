@@ -17,22 +17,22 @@
         }
       }
     },
+    "- Separe each tag by a comma (,) or by hitting enter.\n- Tap on an already added tag to remove it.\n- Write text to see suggestions.\n- Tap on a suggestion to add a tag.\n\n" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "- Separa cada etiqueta por una coma (,) o pulsando enter.\n- Pulsa sobre una etiqueta ya añadida para eliminarla.\n- Escribe texto para ver sugerencias.\n- Toca sobre una sugerencia para añadir una etiqueta."
+          }
+        }
+      }
+    },
     "%lld tags selected" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld etiquetas seleccionadas"
-          }
-        }
-      }
-    },
-    "⚠️ Warning" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "⚠️ Aviso"
           }
         }
       }
@@ -159,6 +159,7 @@
       }
     },
     "Add tag" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -215,6 +216,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocurrió un error al crear la etiqueta. Prueba de nuevo."
+          }
+        }
+      }
+    },
+    "An error occured when deleting the collection. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al eliminar la colección. Prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
+    "An error occured when deleting the link. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al eliminar el enlace. Prueba de nuevo más tarde."
           }
         }
       }
@@ -305,6 +326,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocurrió un error al guardar el link"
+          }
+        }
+      }
+    },
+    "An error occurred while creating the link. Please try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al crear el enlace. Por favor, prueba de nuevo."
           }
         }
       }
@@ -445,6 +476,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cambia el término de búsqueda para ver algunas colecciones."
+          }
+        }
+      }
+    },
+    "Change the search term to see some links." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia el término de búsqueda para ver algunos enlaces."
           }
         }
       }
@@ -730,6 +771,16 @@
         }
       }
     },
+    "Current tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas actuales"
+          }
+        }
+      }
+    },
     "Currently there are no options available" : {
       "localizations" : {
         "es" : {
@@ -870,6 +921,16 @@
         }
       }
     },
+    "Discard changes?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Descartar los cambios?"
+          }
+        }
+      }
+    },
     "Disconnect" : {
       "localizations" : {
         "es" : {
@@ -971,6 +1032,7 @@
       }
     },
     "Edit subcollection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1118,6 +1180,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cómo obtener un token de API"
+          }
+        }
+      }
+    },
+    "HTML viewer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visor de HTML"
           }
         }
       }
@@ -1383,6 +1455,7 @@
       }
     },
     "Link pinned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1393,6 +1466,7 @@
       }
     },
     "Link unpinned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1443,6 +1517,16 @@
         }
       }
     },
+    "Loading..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando..."
+          }
+        }
+      }
+    },
     "Log out" : {
       "localizations" : {
         "es" : {
@@ -1469,16 +1553,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Más información sobre esta app"
-          }
-        }
-      }
-    },
-    "My Links is designed for Linkwarden v2.6.0 or greater. Some features of this application may not work with older versions of the server." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "My Links está diseñado para Linkwarden v2.6.0 o superior. Algunas funciones pueden no funcionar en versiones antiguas del servidor."
           }
         }
       }
@@ -1543,6 +1617,16 @@
         }
       }
     },
+    "New child collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva colección hija"
+          }
+        }
+      }
+    },
     "New collection" : {
       "localizations" : {
         "es" : {
@@ -1564,6 +1648,7 @@
       }
     },
     "New subcollection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1653,6 +1738,16 @@
         }
       }
     },
+    "No links found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado enlaces"
+          }
+        }
+      }
+    },
     "No name" : {
       "localizations" : {
         "es" : {
@@ -1700,6 +1795,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se han encontrado etiquetas"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
@@ -1855,6 +1960,7 @@
       }
     },
     "Processing..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1924,23 +2030,22 @@
         }
       }
     },
+    "Refresh" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refrescar"
+          }
+        }
+      }
+    },
     "Replace selected file (up to 10 MB)" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reemplazar fichero seleccionado (hasta 10 MB)"
-          }
-        }
-      }
-    },
-    "Replaces the top navigation tab bar introduced on iOS 18 with the previous one. This only affects to iPadOS." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reemplaza la barra de navegación de pestañas superior introducida en iOS 18 con la existente anteriormente. Esto solo afecta a iPadOS."
           }
         }
       }
@@ -2197,6 +2302,16 @@
         }
       }
     },
+    "Suggested tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas sugeridas"
+          }
+        }
+      }
+    },
     "System browser" : {
       "localizations" : {
         "es" : {
@@ -2239,6 +2354,7 @@
       }
     },
     "Tag name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2268,6 +2384,16 @@
         }
       }
     },
+    "The collection could not be deleted. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La colección no pudo ser eliminada. Prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
     "The image of the link is not available." : {
       "localizations" : {
         "es" : {
@@ -2289,6 +2415,7 @@
       }
     },
     "The link could not be deleted due to an error." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2298,7 +2425,18 @@
         }
       }
     },
+    "The link could not be deleted. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El enlace no pudo ser eliminado. Prueba de nuevo más tarde."
+          }
+        }
+      }
+    },
     "The link could not be pinned due to an error." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2309,6 +2447,7 @@
       }
     },
     "The link could not be unpinned due to an error." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

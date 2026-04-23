@@ -1,11 +1,15 @@
 import SwiftUI
 
 struct ElementsView: View {
-    @EnvironmentObject private var navigationProvider: NavigationProvider
+    @State private var elementsViewModel: ElementsViewModel
     
+    init() {
+        _elementsViewModel = State(initialValue: ElementsViewModel())
+    }
+        
     var body: some View {
         NavigationSplitView {
-            List(selection: $navigationProvider.catalogSelectedView) {
+            List(selection: $elementsViewModel.catalogSelectedView) {
                 NavigationLink(value: Enums.ElementsDetailView.links) {
                     Label("Links", systemImage: "link")
                 }
@@ -18,12 +22,11 @@ struct ElementsView: View {
             }
             .navigationTitle("Elements")
         } detail: {
-            if let selectedView = navigationProvider.catalogSelectedView {
+            if let selectedView = elementsViewModel.catalogSelectedView {
                 switch selectedView {
                 case .links:
                     NavigationStack {
                         LinksView()
-                            .environmentObject(LinksViewModel.shared)
                             .background(Color.listBackground)
                     }
                 case .collections:
@@ -40,6 +43,7 @@ struct ElementsView: View {
             } else {
                 ContentUnavailableView("Choose one option", systemImage: "list.dash")
                     .background(Color.listBackground)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .background(Color.listBackground)

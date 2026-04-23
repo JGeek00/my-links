@@ -5,16 +5,17 @@ import MobileCoreServices
 struct PDFViewerView: View {
     var link: Link
     var onClose: () -> Void
-    
-    @EnvironmentObject private var pdfViewerViewModel: PdfViewerViewModel
+        
+    @State private var pdfViewerViewModel: PdfViewerViewModel
 
     init(link: Link, onClose: @escaping () -> Void) {
         self.link = link
         self.onClose = onClose
+        _pdfViewerViewModel = State(initialValue: PdfViewerViewModel(linkId: link.id))
     }
     
     var body: some View {
-        let name = link.name != "" ? link.name! : link.description != "" ? link.description! : link.url!
+        let name = link.name != "" ? link.name : link.description != "" ? link.description : link.url ?? ""
         let fileName = (name.hasSuffix(".") ? String(name.dropLast()) : name).replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: "/", with: "")
         NavigationStack {
             Group {
@@ -31,7 +32,7 @@ struct PDFViewerView: View {
                     } description: {
                         Text("An error occured when loading the PDF. Check your Internet connection and try again later.")
                         Button {
-                            Task { await pdfViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
+                            Task { await pdfViewerViewModel.loadData(setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -62,7 +63,7 @@ struct PDFViewerView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack {
                         Button {
-                            Task { await pdfViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
+                            Task { await pdfViewerViewModel.loadData(setLoading: true) }
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                         }
@@ -109,6 +110,9 @@ struct PDFViewerView: View {
             } message: {
                 Text(pdfViewerViewModel.savingErrorMessage)
             }
+        }
+        .task {
+            await pdfViewerViewModel.loadData(setLoading: true)
         }
     }
 }

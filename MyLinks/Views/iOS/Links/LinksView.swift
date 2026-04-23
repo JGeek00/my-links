@@ -1,90 +1,39 @@
 import SwiftUI
 import CustomAlert
 
-struct LinksView: View {
+struct LinksView: View {    
+    @State private var linksViewModel: LinksViewModel
+    
+    init() {
+        _linksViewModel = State(initialValue: LinksViewModel())
+    }
+    
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    @EnvironmentObject private var linksViewModel: LinksViewModel
-    
-    init() {}
     
     @State private var linkFormUrlSheet = false
     @State private var linkFormFileSheet = false
     
     var body: some View {
         NavigationStack {
-            Group {
-                if linksViewModel.loading == true {
-                    Group {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .transition(.opacity)
+            LinksList(
+                loading: linksViewModel.loading,
+                error: linksViewModel.error,
+                withSearch: linksViewModel.searchQueryValue != nil,
+                data: linksViewModel.data,
+                scrollToTop: linksViewModel.scrollTopList,
+                onEditLink: { link in
+                    linksViewModel.handleEditLink(link: link)
+                },
+                onDeleteLink: { link in
+                    linksViewModel.handleDeleteLink(linkId: link.id)
+                },
+                onLoadMore: {
+                    linksViewModel.loadMore()
+                },
+                onReload: {
+                    Task { await linksViewModel.loadInitial() }
                 }
-                else if linksViewModel.error == true {
-                    ContentUnavailableView {
-                        Label("Error", systemImage: "exclamationmark.circle")
-                    } description: {
-                        Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
-                        Button {
-                            linksViewModel.reload()
-                        } label: {
-                            Label("Retry", systemImage: "arrow.counterclockwise")
-                        }
-                    }
-                    .transition(.opacity)
-                }
-                else {
-                    Group {
-                        let filtered = linksViewModel.data.filter() { $0.id != nil && $0.name != nil && $0.description != nil && $0.tags != nil && $0.collection?.id != nil }
-                        if filtered.isEmpty {
-                            ContentUnavailableView {
-                                Label("No links added", systemImage: "link")
-                            } description: {
-                                Text("Save some links on Linkwarden to see them here.")
-                            }
-                            .transition(.opacity)
-                        }
-                        else {
-                            if horizontalSizeClass == .regular {
-                                ScrollViewReader(content: { scrollView in
-                                    ScrollView {
-                                        LazyVGrid(columns: Config.gridColumns) {
-                                            ForEach(filtered, id: \.self) { item in
-                                                LinkItemComponent(item: item) { _, _ in }
-                                                .onAppear {
-                                                    if item == filtered.last {
-                                                        linksViewModel.loadMore()
-                                                    }
-                                                }
-                                                .padding(6)
-                                            }
-                                        }
-                                        .padding(.horizontal, 12)
-                                    }
-                                })
-                            }
-                            else {
-                                ScrollViewReader { scrollView in
-                                    List(filtered, id: \.self) { item in
-                                        LinkItemComponent(item: item) { _, _ in }
-                                        .onAppear {
-                                            if item == filtered.last {
-                                                linksViewModel.loadMore()
-                                            }
-                                        }
-                                    }
-                                    .animation(.default, value: filtered)
-                                    .onChange(of: linksViewModel.scrollTopList, initial: false) {
-                                        guard let first = linksViewModel.data.first else { return }
-                                        scrollView.scrollTo(first)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            )
             .navigationTitle("Links")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -105,7 +54,7 @@ struct LinksView: View {
                                     .tag(Enums.SortingOptions.descriptionZA)
                             }
                             .onChange(of: linksViewModel.sortingSelected, initial: false) {
-                                Task { await linksViewModel.loadData(setLoading: true) }
+                                Task { await linksViewModel.refresh(setLoading: true) }
                             }
                         } label: {
                             Image(systemName: "arrow.up.arrow.down")
@@ -129,7 +78,7 @@ struct LinksView: View {
                 }
             }
             .refreshable {
-                await linksViewModel.loadData()
+                await linksViewModel.refresh()
             }
             .searchable(text: $linksViewModel.searchFieldValue, isPresented: $linksViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
             .onSubmit(of: .search) {
@@ -145,20 +94,27 @@ struct LinksView: View {
                     linkFormUrlSheet = false
                 } onSuccess: { newLink, action in
                     linkFormUrlSheet = false
+                    linksViewModel.handleCreatedLink(link: newLink)
                 }
             })
             .sheet(isPresented: $linkFormFileSheet, content: {
                 LinkFormView(mode: .file) {
                     linkFormFileSheet = false
-                } onSuccess: { newLink, action in
+                } onSuccess: { newLink, _ in
                     linkFormFileSheet = false
+                    linksViewModel.handleCreatedLink(link: newLink)
                 }
             })
-        }
-        .onAppear(perform: {
-            if linksViewModel.data.isEmpty {
-                Task { await linksViewModel.loadData() }
+            .alert("Error", isPresented: $linksViewModel.deleteLinkErrorAlert) {
+                Button("OK", role: .cancel) {
+                    linksViewModel.deleteLinkErrorAlert = false
+                }
+            } message: {
+                Text("An error occured when deleting the link. Try again later.")
             }
-        })
+        }
+        .task {
+            await linksViewModel.loadInitial()
+        }
     }
 }

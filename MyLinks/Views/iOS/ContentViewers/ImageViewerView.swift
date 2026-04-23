@@ -4,15 +4,16 @@ struct ImageViewerView: View {
     var link: Link
     var onClose: () -> Void
     
-    @EnvironmentObject private var imageViewerViewModel: ImageViewerViewModel
+    @State private var imageViewerViewModel: ImageViewerViewModel
     
     init(link: Link, onClose: @escaping () -> Void) {
+        _imageViewerViewModel = State(initialValue: ImageViewerViewModel(link: link))
         self.link = link
         self.onClose = onClose
     }
     
     var body: some View {
-        let name = link.name! != "" ? link.name! : link.description! != "" ? link.description! : link.url!
+        let name = link.name != "" ? link.name : link.description != "" ? link.description : link.url ?? ""
         let fileName = (name.hasSuffix(".") ? String(name.dropLast()) : name).replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: "/", with: "")
         NavigationStack {
             Group {
@@ -29,7 +30,7 @@ struct ImageViewerView: View {
                     } description: {
                         Text("An error occured when loading the image. Check your Internet connection and try again later.")
                         Button {
-                            Task { await imageViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
+                            Task { await imageViewerViewModel.loadData(setLoading: true) }
                         } label: {
                             Label("Retry", systemImage: "arrow.counterclockwise")
                         }
@@ -49,7 +50,7 @@ struct ImageViewerView: View {
                     .transition(.opacity)
                 }
             }
-            .navigationTitle(link.name ?? "Image")
+            .navigationTitle(link.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -60,7 +61,7 @@ struct ImageViewerView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack {
                         Button {
-                            Task { await imageViewerViewModel.loadData(linkId: link.id!, setLoading: true) }
+                            Task { await imageViewerViewModel.loadData(setLoading: true) }
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                         }
@@ -107,6 +108,9 @@ struct ImageViewerView: View {
             } message: {
                 Text(imageViewerViewModel.savingErrorMessage)
             }
+        }
+        .task {
+            await imageViewerViewModel.loadData()
         }
     }
 }
