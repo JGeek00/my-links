@@ -5,11 +5,15 @@ import AppKit
 struct TagsTextField: View {
     @Binding var tags: [String]
     @Binding var currentTextInput: String
+    var onRemoveTag: (String) -> Void
 
     var body: some View {
         FlowLayout(spacing: 6) {
             ForEach(Array(tags.enumerated()), id: \.offset) { _, tag in
                 TagChip(label: tag)
+                    .onTapGesture {
+                        onRemoveTag(tag)
+                    }
             }
             BackspaceTextField(
                 text: $currentTextInput,
@@ -194,12 +198,14 @@ fileprivate struct FlowLayout: Layout {
     
     List {
         Section {
-            TagsTextField(tags: $tags, currentTextInput: $currentTextInput)
-                .onChange(of: currentTextInput, initial: false) { _, newValue in
-                    suggestedTags = newValue.isEmpty ? [] : availableTags.filter {
-                        $0.lowercased().contains(newValue.lowercased())
-                    }
+            TagsTextField(tags: $tags, currentTextInput: $currentTextInput) { removedTag in
+                tags = tags.filter { $0 != removedTag }
+            }
+            .onChange(of: currentTextInput, initial: false) { _, newValue in
+                suggestedTags = newValue.isEmpty ? [] : availableTags.filter {
+                    $0.lowercased().contains(newValue.lowercased())
                 }
+            }
         }
         if !suggestedTags.isEmpty {
             Section("Suggestions") {

@@ -5,8 +5,8 @@ import Foundation
 class SettingsViewModel {
     @ObservationIgnored private var apiClientRepository: ApiClientRepository
     
-    init() {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository) {
+        self.apiClientRepository = apiClientRepository
     }
     
     var contactDeveloperSafariOpen = false

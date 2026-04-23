@@ -10,12 +10,12 @@ class RootViewModel {
     @ObservationIgnored private let navigationRepository: NavigationRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
-    init() {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.toastRepository = RepositoriesContainer.shared.toastRepository
-        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
-        self.navigationRepository = RepositoriesContainer.shared.navigationRepository
-        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, toastRepository: ToastRepository = RepositoriesContainer.shared.toastRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, navigationRepository: NavigationRepository = RepositoriesContainer.shared.navigationRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
+        self.apiClientRepository = apiClientRepository
+        self.toastRepository = toastRepository
+        self.collectionsRepository = collectionsRepository
+        self.navigationRepository = navigationRepository
+        self.progressIndicatorRepository = progressIndicatorRepository
     }
     
     var showOnboarding = false

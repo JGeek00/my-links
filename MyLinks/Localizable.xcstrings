@@ -17,6 +17,16 @@
         }
       }
     },
+    "- Separe each tag by a comma (,) or by hitting enter.\n- Tap on an already added tag to remove it.\n- Write text to see suggestions.\n- Tap on a suggestion to add a tag.\n\n" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "- Separa cada etiqueta por una coma (,) o pulsando enter.\n- Pulsa sobre una etiqueta ya añadida para eliminarla.\n- Escribe texto para ver sugerencias.\n- Toca sobre una sugerencia para añadir una etiqueta."
+          }
+        }
+      }
+    },
     "%lld tags selected" : {
       "localizations" : {
         "es" : {

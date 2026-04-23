@@ -10,15 +10,7 @@ class DashboardViewModel {
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     
-    init() {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
-        self.navigationRepository = RepositoriesContainer.shared.navigationRepository
-        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
-        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
-    }
-    
-    init(apiClientRepository: ApiClientRepository, collectionsRepository: CollectionsRepository, navigationRepository: NavigationRepository, progressIndicatorRepository: ProgressIndicatorRepository, linkManagerRepository: LinkManagerRepository) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, navigationRepository: NavigationRepository = RepositoriesContainer.shared.navigationRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository) {
         self.apiClientRepository = apiClientRepository
         self.collectionsRepository = collectionsRepository
         self.navigationRepository = navigationRepository

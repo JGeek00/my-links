@@ -12,10 +12,16 @@ struct ShareExtensionTagsPickerView: View {
     var body: some View {
         List {
             Section {
-                TagsTextField(tags: $tagsPickerViewModel.selectedTags, currentTextInput: $tagsPickerViewModel.currentTextInput)
-                    .onChange(of: tagsPickerViewModel.currentTextInput, initial: false) { _, newValue in
-                        tagsPickerViewModel.getTagSuggestions(query: newValue)
-                    }
+                TagsTextField(tags: $tagsPickerViewModel.selectedTags, currentTextInput: $tagsPickerViewModel.currentTextInput) { removedTag in
+                    tagsPickerViewModel.handleRemoveTag(tag: removedTag)
+                }
+                .onChange(of: tagsPickerViewModel.currentTextInput, initial: false) { _, newValue in
+                    tagsPickerViewModel.getTagSuggestions(query: newValue)
+                }
+            } header: {
+                Text("Current tags")
+            } footer: {
+                Text("- Separe each tag by a comma (,) or by hitting enter.\n- Tap on an already added tag to remove it.\n- Write text to see suggestions.\n- Tap on a suggestion to add a tag.\n\n")
             }
             if tagsPickerViewModel.tagSuggestions.isEmpty && tagsPickerViewModel.loadingTagSuggestions == true {
                 ProgressView()

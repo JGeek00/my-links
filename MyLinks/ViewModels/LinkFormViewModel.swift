@@ -30,24 +30,11 @@ class LinkFormViewModel {
     
     var discardChangesConfirmation = false
     
-    init(link: Link? = nil, defaultCollectionId: Int? = nil) {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
-        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
-        
-        self.postInit(link: link, defaultCollectionId: defaultCollectionId)
-        self.collection = collectionsRepository.data.first?.id ?? 0
-    }
-    
-    init(apiClientRepository: ApiClientRepository, collectionsRepository: CollectionsRepository, linkManagerRepository: LinkManagerRepository, link: Link? = nil, defaultCollectionId: Int? = nil) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, link: Link? = nil, defaultCollectionId: Int? = nil) {
         self.apiClientRepository = apiClientRepository
         self.collectionsRepository = collectionsRepository
         self.linkManagerRepository = linkManagerRepository
 
-        self.postInit(link: link, defaultCollectionId: defaultCollectionId)
-    }
-    
-    fileprivate func postInit(link: Link? = nil, defaultCollectionId: Int? = nil) {
         if let defaultCollectionId = defaultCollectionId {
             collection = collectionsRepository.data.first(where: { collection in
                 collection.id == defaultCollectionId

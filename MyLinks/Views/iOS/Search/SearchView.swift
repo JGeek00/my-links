@@ -155,8 +155,8 @@ fileprivate struct SearchCompactView: View {
             if !tagsSliced.isEmpty {
                 Section {
                     ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item) {
-                            Task { await searchViewModel.handleDeleteTag(tagId: item.id) }
+                        TagItemComponent(tag: item) { tag in
+                            Task { await searchViewModel.handleDeleteTag(tagId: tag.id) }
                         }
                     }
                 } header: {
@@ -279,10 +279,10 @@ fileprivate struct SearchRegularView: View {
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item) {
-                            Task { await searchViewModel.handleDeleteTag(tagId: item.id) }
+                        TagItemComponent(tag: item) { tag in
+                            Task { await searchViewModel.handleDeleteTag(tagId: tag.id) }
                         }
-                            .padding(8)
+                        .padding(8)
                     }
                 }
                 .padding(.top, -24)

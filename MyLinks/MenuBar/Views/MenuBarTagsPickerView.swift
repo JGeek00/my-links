@@ -33,10 +33,16 @@ struct MenuBarTagsPickerView: View {
             .padding(.horizontal, 24)
             Form {
                 Section {
-                    TagsTextField(tags: $menuBarTagsPickerViewModel.selectedTags, currentTextInput: $menuBarTagsPickerViewModel.currentTextInput)
-                        .onChange(of: menuBarTagsPickerViewModel.currentTextInput, initial: false) { _, newValue in
-                            menuBarTagsPickerViewModel.getTagSuggestions(query: newValue)
-                        }
+                    TagsTextField(tags: $menuBarTagsPickerViewModel.selectedTags, currentTextInput: $menuBarTagsPickerViewModel.currentTextInput) { removedTag in
+                        menuBarTagsPickerViewModel.handleRemoveTag(tag: removedTag)
+                    }
+                    .onChange(of: menuBarTagsPickerViewModel.currentTextInput, initial: false) { _, newValue in
+                        menuBarTagsPickerViewModel.getTagSuggestions(query: newValue)
+                    }
+                } header: {
+                    Text("Current tags")
+                } footer: {
+                    Text("- Separe each tag by a comma (,) or by hitting enter.\n- Tap on an already added tag to remove it.\n- Write text to see suggestions.\n- Tap on a suggestion to add a tag.\n\n")
                 }
                 if menuBarTagsPickerViewModel.tagSuggestions.isEmpty && menuBarTagsPickerViewModel.loadingTagSuggestions == true {
                     ProgressView()

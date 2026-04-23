@@ -7,12 +7,7 @@ class ImageViewerViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     @ObservationIgnored private let link: Link
   
-    init(link: Link) {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.link = link
-    }
-    
-    init(apiClientRepository: ApiClientRepository, link: Link) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, link: Link) {
         self.apiClientRepository = apiClientRepository
         self.link = link
     }

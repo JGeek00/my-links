@@ -8,15 +8,8 @@ class SearchViewModel {
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
-  
-    init() {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
-        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
-        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
-    }
     
-    init(apiClientRepository: ApiClientRepository, linkManagerRepository: LinkManagerRepository, collectionsRepository: CollectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
         self.apiClientRepository = apiClientRepository
         self.linkManagerRepository = linkManagerRepository
         self.collectionsRepository = collectionsRepository

@@ -7,13 +7,8 @@ import SwiftUI
 class PdfViewerViewModel {
     @ObservationIgnored private let apiClientRepository: ApiClientRepository
     @ObservationIgnored private let linkId: Int
-    
-    init(linkId: Int) {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.linkId = linkId
-    }
-    
-    init(apiClientRepisotory: ApiClientRepository, linkId: Int) {
+
+    init(apiClientRepisotory: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkId: Int) {
         self.apiClientRepository = apiClientRepisotory
         self.linkId = linkId
     }

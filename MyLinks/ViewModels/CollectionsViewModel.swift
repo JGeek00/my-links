@@ -7,12 +7,7 @@ class CollectionsViewModel {
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     
-    init() {
-        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
-        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
-    }
-    
-    init(collectionsRepository: CollectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository) {
+    init(collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
         self.collectionsRepository = collectionsRepository
         self.progressIndicatorRepository = progressIndicatorRepository
     }

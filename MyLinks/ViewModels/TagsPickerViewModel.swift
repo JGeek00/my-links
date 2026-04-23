@@ -55,10 +55,11 @@ class TagsPickerViewModel {
         self.loadingTagSuggestions = true
         let result = await instance.tags.fetchTags(page: batch, search: query)
         if let data = result.data?.data {
+            let newSuggestions = filterSuggestionsWithSelectedTags(suggestions: data.tags, existingTags: selectedTags)
             DispatchQueue.main.async {
                 self.nextTagsBatch = data.nextCursor
                 withAnimation {
-                    self.tagSuggestions = data.tags.map() { $0.name }
+                    self.tagSuggestions = newSuggestions
                     self.loadingTagSuggestions = false
                 }
             }
@@ -68,5 +69,9 @@ class TagsPickerViewModel {
     func handleSelectTag(tag: String) {
         selectedTags.append(tag)
         currentTextInput = ""
+    }
+    
+    func handleRemoveTag(tag: String) {
+        selectedTags.removeAll { $0 == tag }
     }
 }

@@ -10,17 +10,7 @@ class LinksFilteredViewModel {
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
     @ObservationIgnored var input: LinksFilteredRequest
     
-    init(input: LinksFilteredRequest) {
-        self.apiClientRepository = RepositoriesContainer.shared.apiClientRepository
-        self.collectionsRepository = RepositoriesContainer.shared.collectionsRepository
-        self.linkManagerRepository = RepositoriesContainer.shared.linkManagerRepository
-        self.progressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository
-        self.input = input
-        
-        self.collections = collectionsRepository.data
-    }
-    
-    init(apiClientRepository: ApiClientRepository, linkManagerRepository: LinkManagerRepository, collectionsRepository: CollectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository, input: LinksFilteredRequest) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository, input: LinksFilteredRequest) {
         self.apiClientRepository = apiClientRepository
         self.collectionsRepository = collectionsRepository
         self.linkManagerRepository = linkManagerRepository
