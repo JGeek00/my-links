@@ -21,6 +21,8 @@ class ShareExtensionTagsPickerViewModel {
     var selectedTags: [String] = []
     var loadingTagSuggestions = false
     var tagSuggestions: [String] = []
+    var nextTagsBatch: Int? = nil
+    var fetchingMore: Bool = false
     
     func getTagSuggestions(query: String) {
         suggestionTask?.cancel()
@@ -39,14 +41,29 @@ class ShareExtensionTagsPickerViewModel {
         }
     }
     
-    private func fetchSuggestions(query: String) async {
+    func fetchMore() {
+        if let nextBatch = nextTagsBatch, fetchingMore == false {
+            Task {
+                DispatchQueue.main.async {
+                    self.fetchingMore = true
+                }
+                await fetchSuggestions(batch: nextBatch, query: currentTextInput)
+                DispatchQueue.main.async {
+                    self.fetchingMore = false
+                }
+            }
+        }
+    }
+    
+    private func fetchSuggestions(batch: Int? = nil, query: String) async {
         guard let instance = apiClientRepository.instance else { return }
         self.loadingTagSuggestions = true
-        let result = await instance.tags.fetchTags(search: query)
-        if let tags = result.data?.data?.tags {
+        let result = await instance.tags.fetchTags(page: batch, search: query)
+        if let data = result.data?.data {
             DispatchQueue.main.async {
+                self.nextTagsBatch = data.nextCursor
                 withAnimation {
-                    self.tagSuggestions = tags.map() { $0.name }
+                    self.tagSuggestions = data.tags.map() { $0.name }
                     self.loadingTagSuggestions = false
                 }
             }

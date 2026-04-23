@@ -29,6 +29,11 @@ struct ShareExtensionTagsPickerView: View {
                             Text(verbatim: tag)
                         }
                         .foregroundStyle(Color.foreground)
+                        .onAppear {
+                            if tag == tagsPickerViewModel.tagSuggestions.last {
+                                tagsPickerViewModel.fetchMore()
+                            }
+                        }
                     }
                 } header: {
                     HStack {

@@ -31,6 +31,11 @@ struct TagsPickerView: View {
                             Text(verbatim: tag)
                         }
                         .buttonStyle(.plain)
+                        .onAppear {
+                            if tag == tagsPickerViewModel.tagSuggestions.last {
+                                tagsPickerViewModel.fetchMore()
+                            }
+                        }
                     }
                 } header: {
                     HStack {

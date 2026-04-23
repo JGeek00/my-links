@@ -7,23 +7,31 @@ struct TagsApiClient: Equatable {
         self.instance = instance
     }
     
-    func fetchTags(page: Int? = nil, search: String? = nil) async -> StatusResponse<TagsResponse> {
+    func fetchTags(page: Int? = nil, sort: Int? = nil, search: String? = nil) async -> StatusResponse<TagsResponse> {
         let defaultErrorResponse = StatusResponse<TagsResponse>(successful: false, statusCode: nil, data: nil)
         
         guard let url = URL(string: "\(self.instance.url)/api/v1/tags") else { return defaultErrorResponse }
         do {
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+
+            var queryItems = components.queryItems ?? []
             if let page = page {
-                components.queryItems?.append(URLQueryItem(name: "cursor", value: String(page)))
+                queryItems.append(URLQueryItem(name: "cursor", value: String(page)))
+            }
+            if let sort = sort {
+                queryItems.append(URLQueryItem(name: "sort", value: String(sort)))
             }
             if let search = search {
-                components.queryItems?.append(URLQueryItem(name: "search", value: search))
+                queryItems.append(URLQueryItem(name: "search", value: search))
             }
-            
+            if !queryItems.isEmpty {
+                components.queryItems = queryItems
+            }
+
             var request = URLRequest(url: components.url!)
-            
+
             request.addValue("Bearer \(self.instance.token)", forHTTPHeaderField: "Authorization")
-            
+
             let sessionConfig = URLSessionConfiguration.default
             let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
             

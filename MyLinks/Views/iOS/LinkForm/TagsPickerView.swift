@@ -12,7 +12,7 @@ struct TagsPickerView: View {
     var body: some View {
         @Bindable var linkFormViewModel = linkFormViewModel
         List {
-            Section {
+            Section("Current tags") {
                 TagsTextField(tags: $tagsPickerViewModel.selectedTags, currentTextInput: $tagsPickerViewModel.currentTextInput)
                     .onChange(of: tagsPickerViewModel.currentTextInput, initial: false) { _, newValue in
                         tagsPickerViewModel.getTagSuggestions(query: newValue)
@@ -30,6 +30,11 @@ struct TagsPickerView: View {
                             Text(verbatim: tag)
                         }
                         .foregroundStyle(Color.foreground)
+                        .onAppear {
+                            if tag == tagsPickerViewModel.tagSuggestions.last {
+                                tagsPickerViewModel.fetchMore()
+                            }
+                        }
                     }
                 } header: {
                     HStack {

@@ -13,7 +13,12 @@ class TagsViewModel {
         self.initialSearchQuery = searchQuery
     }
     
-    var state: Enums.LoadingState<TagsResponse_DataClass> = .loading
+    var loading: Bool = true
+    var data: [TagsResponse_DataClass_Tag] = []
+    var error = false
+    
+    @ObservationIgnored private var nextBatch: Int? = nil
+    @ObservationIgnored private var loadingMore: Bool = false
     
     var searchFieldValue = ""
     var searchPresented = false
@@ -22,19 +27,16 @@ class TagsViewModel {
     
     func loadData(setLoading: Bool = false, page: Int? = nil) async {
         if setLoading == true {
-            self.state = .loading
+            self.loading = true
         }
         guard let instance = apiClientRepository.instance else { return }
         let result = await instance.tags.fetchTags(page: page, search: initialSearchQuery ?? searchQueryValue)
-        if result.successful == true {
+        if let data = result.data?.data {
             DispatchQueue.main.async {
+                self.nextBatch = data.nextCursor
                 withAnimation {
-                    if let data = result.data?.data {
-                        self.state = .success(data)
-                    }
-                    else {
-                        self.state = .failure
-                    }
+                    self.data = data.tags
+                    self.loading = false
                 }
             }
         }
@@ -44,14 +46,21 @@ class TagsViewModel {
                 return
             }
             DispatchQueue.main.async {
-                self.state = .failure
+                self.error = true
+                self.loading = false
             }
         }
     }
     
     func loadNextPage() {
         Task {
-            await loadData(page: self.state.data?.nextCursor)
+            DispatchQueue.main.async {
+                self.loadingMore = true
+            }
+            await loadData(page: self.nextBatch)
+            DispatchQueue.main.async {
+                self.loadingMore = false
+            }
         }
     }
     
@@ -97,9 +106,5 @@ class TagsViewModel {
         else {
             return false;
         }
-    }
-    
-    func reset() {
-        self.state = .loading
     }
 }
