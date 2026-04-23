@@ -471,7 +471,14 @@
       }
     },
     "Change the search term to see some links." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia el término de búsqueda para ver algunos enlaces."
+          }
+        }
+      }
     },
     "Change the search term to see some tags." : {
       "localizations" : {
@@ -1722,7 +1729,14 @@
       }
     },
     "No links found" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han encontrado enlaces"
+          }
+        }
+      }
     },
     "No name" : {
       "localizations" : {
