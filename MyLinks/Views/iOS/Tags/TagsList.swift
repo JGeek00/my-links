@@ -40,6 +40,7 @@ struct TagsList: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
             }
             else if data.isEmpty && withSearch {
                 ContentUnavailableView {
@@ -77,6 +78,7 @@ struct TagsList: View {
                         }
                         .padding(.horizontal, 12)
                     }
+                    .animation(.default, value: data)
                     .transition(.opacity)
                 }
                 else {

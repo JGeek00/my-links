@@ -12,53 +12,32 @@ struct LinksSearchResults: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        Group {
-            if horizontalSizeClass == .regular {
-                ScrollView {
-                    LazyVGrid(columns: Config.gridColumns) {
-                        ForEach(searchViewModel.links, id: \.self) { item in
-                            LinkItemComponent(item: item) { l, id, action in
-                                switch action {
-                                case .edit:
-                                    searchViewModel.handleEditLink(link: l!)
-                                case .delete:
-                                    searchViewModel.handleDeleteLink(linkId: id!)
-                                }
-                            }
-                            .padding(8)
-                            .onAppear {
-                                if item == searchLinksViewModel.data.last {
-                                    searchLinksViewModel.loadMore()
-                                }
-                            }
-                        }
-                    }
-                    .padding(16)
-                }
-                .navigationTitle("All search results")
-                .background(Color.listBackground)
+        LinksList(
+            loading: searchLinksViewModel.loading,
+            error: searchLinksViewModel.error,
+            withSearch: searchLinksViewModel.searchQueryValue != nil,
+            data: searchLinksViewModel.data,
+            scrollToTop: searchLinksViewModel.scrollTopList,
+            onEditLink: { link in
+                searchLinksViewModel.handleEditLink(link: link)
+            },
+            onDeleteLink: { link in
+                searchLinksViewModel.handleDeleteLink(linkId: link.id)
+            },
+            onLoadMore: {
+                searchLinksViewModel.loadMore()
+            },
+            onReload: {
+                Task { await searchLinksViewModel.loadInitial() }
             }
-            else {
-                List(searchViewModel.links, id: \.self) { item in
-                    LinkItemComponent(item: item) { l, id, action in
-                        switch action {
-                        case .edit:
-                            searchViewModel.handleEditLink(link: l!)
-                        case .delete:
-                            searchViewModel.handleDeleteLink(linkId: id!)
-                        }
-                    }
-                    .onAppear {
-                        if item == searchLinksViewModel.data.last {
-                            searchLinksViewModel.loadMore()
-                        }
-                    }
-                }
-                .navigationTitle("All search results")
-            }
+        )
+        .navigationTitle("All search results")
+        .background(Color.listBackground)
+        .refreshable {
+            await searchLinksViewModel.loadInitial()
         }
         .task {
-            await searchLinksViewModel.loadData()
+            await searchLinksViewModel.loadInitial()
         }
     }
 }

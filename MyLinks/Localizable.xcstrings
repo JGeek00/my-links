@@ -470,6 +470,9 @@
         }
       }
     },
+    "Change the search term to see some links." : {
+
+    },
     "Change the search term to see some tags." : {
       "localizations" : {
         "es" : {
@@ -1717,6 +1720,9 @@
           }
         }
       }
+    },
+    "No links found" : {
+
     },
     "No name" : {
       "localizations" : {

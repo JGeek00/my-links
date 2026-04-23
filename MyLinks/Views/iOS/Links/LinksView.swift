@@ -15,81 +15,25 @@ struct LinksView: View {
     
     var body: some View {
         NavigationStack {
-            Group {
-                if linksViewModel.loading == true {
-                    ProgressView("Loading...")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .transition(.opacity)
+            LinksList(
+                loading: linksViewModel.loading,
+                error: linksViewModel.error,
+                withSearch: linksViewModel.searchQueryValue != nil,
+                data: linksViewModel.data,
+                scrollToTop: linksViewModel.scrollTopList,
+                onEditLink: { link in
+                    linksViewModel.handleEditLink(link: link)
+                },
+                onDeleteLink: { link in
+                    linksViewModel.handleDeleteLink(linkId: link.id)
+                },
+                onLoadMore: {
+                    linksViewModel.loadMore()
+                },
+                onReload: {
+                    Task { await linksViewModel.loadInitial() }
                 }
-                else if linksViewModel.error == true {
-                    ContentUnavailableView("Error", systemImage: "exclamationmark.circle", description: Text("An error occured when loading the dashboard data. Check your Internet connection and try again later."))
-                    .transition(.opacity)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                else {
-                    Group {
-                        if linksViewModel.data.isEmpty {
-                            ContentUnavailableView {
-                                Label("No links added", systemImage: "link")
-                            } description: {
-                                Text("Save some links on Linkwarden to see them here.")
-                            }
-                            .transition(.opacity)
-                        }
-                        else {
-                            if horizontalSizeClass == .regular {
-                                ScrollViewReader(content: { scrollView in
-                                    ScrollView {
-                                        LazyVGrid(columns: Config.gridColumns) {
-                                            ForEach(linksViewModel.data, id: \.self) { item in
-                                                LinkItemComponent(item: item) { l, id, action in
-                                                    switch action {
-                                                    case .edit:
-                                                        linksViewModel.handleEditLink(link: l!)
-                                                    case .delete:
-                                                        linksViewModel.handleDeleteLink(linkId: id!)
-                                                    }
-                                                }
-                                                .onAppear {
-                                                    if item == linksViewModel.data.last {
-                                                        linksViewModel.loadMore()
-                                                    }
-                                                }
-                                                .padding(6)
-                                            }
-                                        }
-                                        .padding(.horizontal, 12)
-                                    }
-                                })
-                            }
-                            else {
-                                ScrollViewReader { scrollView in
-                                    List(linksViewModel.data, id: \.self) { item in
-                                        LinkItemComponent(item: item) { l, id, action in
-                                            switch action {
-                                            case .edit:
-                                                linksViewModel.handleEditLink(link: l!)
-                                            case .delete:
-                                                linksViewModel.handleDeleteLink(linkId: id!)
-                                            }
-                                        }
-                                        .onAppear {
-                                            if item == linksViewModel.data.last {
-                                                linksViewModel.loadMore()
-                                            }
-                                        }
-                                    }
-                                    .animation(.default, value: linksViewModel.data)
-                                    .onChange(of: linksViewModel.scrollTopList, initial: false) {
-                                        guard let first = linksViewModel.data.first else { return }
-                                        scrollView.scrollTo(first)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            )
             .navigationTitle("Links")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -110,7 +54,7 @@ struct LinksView: View {
                                     .tag(Enums.SortingOptions.descriptionZA)
                             }
                             .onChange(of: linksViewModel.sortingSelected, initial: false) {
-                                Task { await linksViewModel.loadData(setLoading: true) }
+                                Task { await linksViewModel.loadInitial() }
                             }
                         } label: {
                             Image(systemName: "arrow.up.arrow.down")
@@ -134,7 +78,7 @@ struct LinksView: View {
                 }
             }
             .refreshable {
-                await linksViewModel.loadData()
+                await linksViewModel.refresh()
             }
             .searchable(text: $linksViewModel.searchFieldValue, isPresented: $linksViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
             .onSubmit(of: .search) {
@@ -170,7 +114,7 @@ struct LinksView: View {
             }
         }
         .task {
-            await linksViewModel.loadData()
+            await linksViewModel.loadInitial()
         }
     }
 }

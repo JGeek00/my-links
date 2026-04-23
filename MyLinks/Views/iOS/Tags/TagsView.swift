@@ -20,7 +20,7 @@ struct TagsView: View {
             withSearch: tagsViewModel.searchQueryValue != nil,
             data: tagsViewModel.data,
             onReload: {
-                Task { await tagsViewModel.loadData()}
+                Task { await tagsViewModel.initialLoad()}
             },
             onDeleteTag: { tag in
                 Task { await tagsViewModel.deleteTag(tagId: tag.id) }
@@ -38,7 +38,7 @@ struct TagsView: View {
             }
         }
         .refreshable {
-            await tagsViewModel.loadData()
+            await tagsViewModel.refresh()
         }
         .searchable(text: $tagsViewModel.searchFieldValue, isPresented: $tagsViewModel.searchPresented, placement: .navigationBarDrawer(displayMode: .always))
         .onSubmit(of: .search) {
@@ -55,7 +55,7 @@ struct TagsView: View {
             }
         }
         .task {
-            await tagsViewModel.loadData()
+            await tagsViewModel.initialLoad()
         }
         .environment(tagsViewModel)
     }

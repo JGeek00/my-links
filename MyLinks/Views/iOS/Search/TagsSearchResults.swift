@@ -18,7 +18,7 @@ struct TagsSearchResults: View {
             withSearch: searchTagsViewModel.searchQueryValue != nil,
             data: searchTagsViewModel.data,
             onReload: {
-                Task { await searchTagsViewModel.loadData()}
+                Task { await searchTagsViewModel.initialLoad() }
             },
             onDeleteTag: { tag in
                 Task { await searchTagsViewModel.deleteTag(tagId: tag.id) }
@@ -30,5 +30,11 @@ struct TagsSearchResults: View {
         .background(Color.listBackground)
         .navigationTitle("All search results")
         .navigationBarTitleDisplayMode(.inline)
+        .refreshable {
+            await searchTagsViewModel.refresh()
+        }
+        .task {
+            await searchTagsViewModel.initialLoad()
+        }
     }
 }

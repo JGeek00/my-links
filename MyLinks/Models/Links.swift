@@ -14,7 +14,7 @@ struct SearchLinksResponse: Codable {
 
 // MARK: - SearchLinks
 struct SearchLinks: Codable {
-    let links: [Link]?
+    let links: [Link]
     let nextCursor: Int?
 }
 

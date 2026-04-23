@@ -26,7 +26,8 @@ class LinksViewModel {
     @ObservationIgnored var searchQueryValue: String? = nil
     @ObservationIgnored var previousSearch: String? = nil
     
-    var loadingMore = false
+    @ObservationIgnored private var loadingMore = false
+    @ObservationIgnored private var nextBatch: Int? = nil
     
     var sortingSelected = Enums.SortingOptions.dateNewestFirst
     
@@ -35,26 +36,27 @@ class LinksViewModel {
     
     var deleteLinkErrorAlert = false
     
-    func loadData(
+    private func loadData(
         cursor: Int? = nil,
         setLoading: Bool = false,
         setError: Bool = true,
-        loadMore: Bool = false
+        loadingMore: Bool = false
     ) async {
         if setLoading == true {
             self.loading = true
         }
         guard let instance = apiClientRepository.instance else { return }
         let result = await instance.links.searchLiks(cursor: cursor, searchQueryString: initialSearchQuery ?? searchQueryValue, searchByName: initialSearchQuery != nil || searchQueryValue != nil ? true : nil, sort: sortingSelected.rawValue)
-        if result.successful == true {
+        if let data = result.data?.data {
+            self.nextBatch = data.nextCursor
             DispatchQueue.main.async {
-                if loadMore == true {
-                    self.data = self.data + (result.data?.data?.links ?? [])
-                }
-                else {
-                    self.data = result.data?.data?.links ?? []
-                }
                 withAnimation(.default) {
+                    if loadingMore == true {
+                        self.data = self.data + data.links
+                    }
+                    else {
+                        self.data = data.links
+                    }
                     self.loading = false
                     self.error = false
                 }
@@ -76,14 +78,21 @@ class LinksViewModel {
         }
     }
     
-    func loadMore() {
-        if loadingMore == true && !data.isEmpty {
-            return
+    func loadInitial() async {
+        if data.isEmpty {
+            await loadData(setLoading: true)
         }
-        self.loadingMore = true
-        Task {
-            await loadData(cursor: data.last!.id, setError: false, loadMore: true)
-            DispatchQueue.main.async {
+    }
+    
+    func refresh() async {
+        await loadData(setLoading: false)
+    }
+    
+    func loadMore() {
+        if let nextBatch = nextBatch, !loadingMore {
+            Task {
+                self.loadingMore = true
+                await loadData(cursor: nextBatch, setError: false, loadingMore: true)
                 self.loadingMore = false
             }
         }
@@ -134,9 +143,5 @@ class LinksViewModel {
                 return item
             }
         }
-    }
-    
-    func reload() {
-        Task { await loadData() }
     }
 }

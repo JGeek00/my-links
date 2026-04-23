@@ -25,7 +25,7 @@ class TagsViewModel {
     @ObservationIgnored var searchQueryValue: String? = nil
     @ObservationIgnored var previousSearch: String? = nil
     
-    func loadData(setLoading: Bool = false, page: Int? = nil) async {
+    private func loadData(setLoading: Bool = false, page: Int? = nil, loadingMore: Bool = false) async {
         if setLoading == true {
             self.loading = true
         }
@@ -35,8 +35,14 @@ class TagsViewModel {
             DispatchQueue.main.async {
                 self.nextBatch = data.nextCursor
                 withAnimation {
-                    self.data = data.tags
+                    if loadingMore == true {
+                        self.data = self.data + data.tags
+                    }
+                    else {
+                        self.data = data.tags
+                    }
                     self.loading = false
+                    self.error = false
                 }
             }
         }
@@ -52,13 +58,21 @@ class TagsViewModel {
         }
     }
     
+    func initialLoad() async {
+        if data.isEmpty {
+            await loadData(setLoading: true)
+        }
+    }
+    
+    func refresh() async {
+        await loadData(setLoading: false)
+    }
+    
     func loadNextPage() {
-        Task {
-            DispatchQueue.main.async {
+        if let nextBatch = nextBatch, !loadingMore {
+            Task {
                 self.loadingMore = true
-            }
-            await loadData(page: self.nextBatch)
-            DispatchQueue.main.async {
+                await loadData(page: nextBatch)
                 self.loadingMore = false
             }
         }
