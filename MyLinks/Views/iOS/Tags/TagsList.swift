@@ -65,8 +65,8 @@ struct TagsList: View {
                     ScrollView {
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(data, id: \.self) { item in
-                                TagItemComponent(tag: item) {
-                                    onDeleteTag(item)
+                                TagItemComponent(tag: item) { tag in
+                                    onDeleteTag(tag)
                                 }
                                 .padding(6)
                                 .onAppear {
@@ -83,8 +83,8 @@ struct TagsList: View {
                 }
                 else {
                     List(data, id: \.self) { item in
-                        TagItemComponent(tag: item) {
-                            onDeleteTag(item)
+                        TagItemComponent(tag: item) { tag in
+                            onDeleteTag(tag)
                         }
                         .onAppear {
                             if item == data.last {

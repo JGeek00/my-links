@@ -17,6 +17,7 @@ struct LinksView: View {
                     ProgressView()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
             }
             else if linksViewModel.error == true {
                 ContentUnavailableView {
@@ -24,45 +25,56 @@ struct LinksView: View {
                 } description: {
                     Text("An error occured when loading the links data. Check your Internet connection and try again later.")
                     Button {
-                        Task { await linksViewModel.loadData(setLoading: true) }
+                        Task { await linksViewModel.refresh(setLoading: true) }
                     } label: {
                         Label("Retry", systemImage: "arrow.counterclockwise")
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
+            }
+            else if linksViewModel.data.isEmpty && linksViewModel.searchQueryValue == nil {
+                ContentUnavailableView {
+                    Label("No links added", systemImage: "link")
+                } description: {
+                    Text("Save some links on Linkwarden to see them here.")
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
+            }
+            else if linksViewModel.data.isEmpty && linksViewModel.searchQueryValue != nil {
+                ContentUnavailableView {
+                    Label("No links found", systemImage: "magnifyingglass")
+                } description: {
+                    Text("Change the search term to see some links.")
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.opacity)
             }
             else {
-                if !linksViewModel.data.isEmpty {
-                    ScrollViewReader(content: { scrollView in
-                        ScrollView {
-                            LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(linksViewModel.data, id: \.self) { item in
-                                    LinkItemComponent(item: item) { l, id, action in
-                                        switch action {
-                                        case .edit:
-                                            linksViewModel.handleEditLink(link: l!)
-                                        case .delete:
-                                            linksViewModel.handleDeleteLink(linkId: id!)
-                                        }
+                ScrollViewReader(content: { scrollView in
+                    ScrollView {
+                        LazyVGrid(columns: Config.gridColumns) {
+                            ForEach(linksViewModel.data, id: \.self) { item in
+                                LinkItemComponent(item: item) { l, id, action in
+                                    switch action {
+                                    case .edit:
+                                        linksViewModel.handleEditLink(link: l!)
+                                    case .delete:
+                                        linksViewModel.handleDeleteLink(linkId: id!)
                                     }
-                                    .onAppear {
-                                        if item == linksViewModel.data.last {
-                                            linksViewModel.loadMore()
-                                        }
-                                    }
-                                    .padding(6)
                                 }
+                                .onAppear {
+                                    if item == linksViewModel.data.last {
+                                        linksViewModel.loadMore()
+                                    }
+                                }
+                                .padding(6)
                             }
-                            .padding(12)
                         }
-                    })
-                }
-                else {
-                    ContentUnavailableView {
-                        Label("No links added", systemImage: "link")
-                    } description: {
-                        Text("Save some links on Linkwarden to see them here.")
+                        .padding(12)
                     }
-                }
+                })
             }
         }
         .navigationTitle("Links")
@@ -70,7 +82,7 @@ struct LinksView: View {
             ToolbarItem(placement: .automatic) {
                 HStack {
                     Button {
-                        Task { await linksViewModel.loadData(setLoading: true) }
+                        Task { await linksViewModel.refresh(setLoading: true) }
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }
@@ -101,7 +113,7 @@ struct LinksView: View {
                             .tag(Enums.SortingOptions.descriptionZA)
                     }
                     .onChange(of: linksViewModel.sortingSelected, initial: false) {
-                        Task { await linksViewModel.loadData(setLoading: true) }
+                        Task { await linksViewModel.refresh(setLoading: true) }
                     }
                     .disabled(linksViewModel.loading)
                 }
@@ -133,7 +145,7 @@ struct LinksView: View {
             }
         })
         .task {
-            await linksViewModel.loadData()
+            await linksViewModel.loadInitial()
         }
     }
 }

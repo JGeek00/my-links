@@ -54,7 +54,7 @@ struct LinksView: View {
                                     .tag(Enums.SortingOptions.descriptionZA)
                             }
                             .onChange(of: linksViewModel.sortingSelected, initial: false) {
-                                Task { await linksViewModel.loadInitial() }
+                                Task { await linksViewModel.refresh(setLoading: true) }
                             }
                         } label: {
                             Image(systemName: "arrow.up.arrow.down")

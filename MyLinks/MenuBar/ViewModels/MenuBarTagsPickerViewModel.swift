@@ -59,7 +59,7 @@ class MenuBarTagsPickerViewModel {
         guard let instance = apiClientRepository.instance else { return }
         self.loadingTagSuggestions = true
         let result = await instance.tags.fetchTags(page: batch, search: query)
-        if let data = result.data?.data? {
+        if let data = result.data?.data {
             DispatchQueue.main.async {
                 self.nextTagsBatch = data.nextCursor
                 withAnimation {

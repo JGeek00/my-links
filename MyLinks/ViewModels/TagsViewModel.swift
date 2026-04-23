@@ -64,8 +64,8 @@ class TagsViewModel {
         }
     }
     
-    func refresh() async {
-        await loadData(setLoading: false)
+    func refresh(setLoading: Bool = false) async {
+        await loadData(setLoading: setLoading)
     }
     
     func loadNextPage() {
