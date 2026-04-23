@@ -138,10 +138,22 @@ class SearchViewModel {
             await tagManagerRepository.deleteTag(id: tagId) { processing in
                 self.progressIndicatorRepository.presenting = processing
             } onSuccess: { tag in
-                Task { await self.loadData(setLoading: false) }
+                self.tags = self.tags.filter() { $0.id != tagId }
             } onError: {
                 self.deleteTagErrorAlert = true
             }
         }
     }
+    
+    func handleEditTag(tag: Tag) {
+        self.tags = self.tags.map() { item in
+            if item.id == tag.id {
+                return tag
+            }
+            else {
+                return item
+            }
+        }
+    }
+    
 }

@@ -23,7 +23,7 @@ struct TagsSearchResults: View {
             onDeleteTag: { tag in
                 searchTagsViewModel.deleteTag(tagId: tag.id)
             }, onEditTag: { tag in
-                Task { await searchTagsViewModel.refresh(setLoading: false) }
+                searchTagsViewModel.handleEditTag(tag: tag)
             },
             onLoadNextBatch: {
                 searchTagsViewModel.loadNextPage()

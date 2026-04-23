@@ -74,7 +74,7 @@ struct TagItemComponent: View {
         .sheet(isPresented: $showEditForm) {
             TagFormView(tag: tag, mode: .edit) {
                 showEditForm = false
-            } onSuccess: {
+            } onSuccess: { tag in
                 showEditForm = false
                 onEditTag(tag)
             }

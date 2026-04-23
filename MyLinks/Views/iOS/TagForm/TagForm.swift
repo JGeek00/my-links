@@ -3,11 +3,11 @@ import SwiftUI
 struct TagFormView: View {
     var mode: Enums.TagFormMode
     var onClose: () -> Void
-    var onSuccess: () -> Void
+    var onSuccess: (Tag) -> Void
     
     @State private var tagFormViewModel: TagFormViewModel
     
-    init(tag: Tag? = nil, mode: Enums.TagFormMode, onClose: @escaping () -> Void, onSuccess: @escaping() -> Void) {
+    init(tag: Tag? = nil, mode: Enums.TagFormMode, onClose: @escaping () -> Void, onSuccess: @escaping(Tag) -> Void) {
         self.mode = mode
         self.onClose = onClose
         self.onSuccess = onSuccess
@@ -35,7 +35,7 @@ struct TagFormView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         tagFormViewModel.onSave { tag in
-                            onSuccess()
+                            onSuccess(tag)
                         }
                     } label: {
                         if tagFormViewModel.saving == true {

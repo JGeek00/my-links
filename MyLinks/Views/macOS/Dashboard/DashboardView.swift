@@ -141,7 +141,7 @@ struct DashboardView: View {
             .sheet(isPresented: $tagFormSheet, content: {
                 TagFormView(mode: .create) {
                     tagFormSheet = false
-                } onSuccess: {
+                } onSuccess: { _ in
                     tagFormSheet = false
                 }
             })

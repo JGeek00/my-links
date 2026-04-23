@@ -107,9 +107,21 @@ class TagsViewModel {
             await tagManagerRepository.deleteTag(id: tagId) { processing in
                 self.progressIndicatorRepository.presenting = processing
             } onSuccess: { _ in
-                Task { await self.refresh(setLoading: false) }
+                self.data = self.data.filter() { $0.id != tagId }
             } onError: {
                 self.deleteTagErrorAlert = true
+            }
+        }
+    }
+    
+    func handleEditTag(tag: Tag) {
+        // Request is done by the form view model
+        self.data = self.data.map() { item in
+            if item.id == tag.id {
+                return tag
+            }
+            else {
+                return item
             }
         }
     }

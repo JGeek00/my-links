@@ -162,7 +162,7 @@ fileprivate struct SearchCompactView: View {
                         TagItemComponent(tag: item) { tag in
                             searchViewModel.handleDeleteTag(tagId: tag.id)
                         } onEditTag: { tag in
-                            Task { await searchViewModel.loadData(setLoading: false) }
+                            searchViewModel.handleEditTag(tag: tag)
                         }
                     }
                 } header: {
@@ -285,7 +285,7 @@ fileprivate struct SearchRegularView: View {
                         TagItemComponent(tag: item) { tag in
                             searchViewModel.handleDeleteTag(tagId: tag.id)
                         } onEditTag: { tag in
-                            Task { await searchViewModel.loadData(setLoading: false) }
+                            searchViewModel.handleEditTag(tag: tag)
                         }
                         .padding(8)
                     }

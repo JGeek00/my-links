@@ -26,7 +26,7 @@ struct TagsView: View {
                 tagsViewModel.deleteTag(tagId: tag.id)
             },
             onEditTag: { tag in
-                Task { await tagsViewModel.refresh(setLoading: false) }
+                tagsViewModel.handleEditTag(tag: tag)
             },
             onLoadNextBatch: {
                 tagsViewModel.loadNextPage()
@@ -55,7 +55,7 @@ struct TagsView: View {
         .sheet(isPresented: $showCreateTagSheet) {
             TagFormView(mode: .create) {
                 showCreateTagSheet = false
-            } onSuccess: {
+            } onSuccess: { tag in
                 showCreateTagSheet = false
                 Task { await tagsViewModel.refresh(setLoading: false) }
             }

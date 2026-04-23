@@ -60,7 +60,7 @@ struct TagsView: View {
                                 TagItemComponent(tag: item) { tag in
                                     tagsViewModel.deleteTag(tagId: tag.id)
                                 } onEditTag: { tag in
-                                    Task { await tagsViewModel.refresh(setLoading: false) }
+                                    tagsViewModel.handleEditTag(tag: tag)
                                 }
                                 .padding(6)
                             }
@@ -94,7 +94,7 @@ struct TagsView: View {
         .sheet(isPresented: $showCreateTagSheet) {
             TagFormView(mode: .create) {
                 showCreateTagSheet = false
-            } onSuccess: {
+            } onSuccess: { tag in
                 showCreateTagSheet = false
                 Task { await tagsViewModel.refresh(setLoading: false) }
             }
