@@ -63,15 +63,11 @@ class LinkManagerRepository {
     
     func deleteLink(id: Int, setProcessing: @escaping (Bool) -> Void, onSuccess: @escaping (DeletedLink) -> Void, onError: @escaping() -> Void) async {
         guard let instance = apiClientRepository.instance else { return }
-        DispatchQueue.main.async {
-            setProcessing(true)
-        }
+        setProcessing(true)
         let result = await instance.links.deleteLink(linkId: id)
         if let response = result.data?.response {
-            DispatchQueue.main.async {
-                setProcessing(false)
-                onSuccess(response)
-            }
+            setProcessing(false)
+            onSuccess(response)
         }
         else {
             if result.statusCode == 401 {
@@ -85,9 +81,7 @@ class LinkManagerRepository {
     
     func pinUnpinLink(link: Link, action: Enums.PinUnpinAction, setProcessing: @escaping (Bool) -> Void, onSuccess: @escaping (Link) -> Void, onError: () -> Void) async {
         guard let instance = apiClientRepository.instance else { return }
-        DispatchQueue.main.async {
-            setProcessing(true)
-        }
+        setProcessing(true)
         let body = LinkEditingRequest(
             id: link.id,
             url: link.url,
@@ -101,10 +95,8 @@ class LinkManagerRepository {
         )
         let result = await instance.links.editLink(linkId: link.id, body: body)
         if let data = result.data?.response {
-            DispatchQueue.main.async {
-                setProcessing(false)
-                onSuccess(data)
-            }
+            setProcessing(false)
+            onSuccess(data)
         }
         else {
             if result.statusCode == 401 {

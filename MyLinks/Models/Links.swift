@@ -79,7 +79,7 @@ struct DeletedLink: Codable, Hashable {
     let id: Int
     let name, type, description: String
     let createdById, collectionId: Int
-    let url: String
+    let url: String?
     let clientSide, aiTagged: Bool
     let createdAt, updatedAt: String
 }
