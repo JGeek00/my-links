@@ -7,6 +7,18 @@ struct TagsTextField: View {
     @Binding var currentTextInput: String
     var onRemoveTag: (String) -> Void
 
+    private func addOrMoveTag(_ newTag: String) {
+        let trimmed = newTag.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return }
+
+        if let idx = tags.firstIndex(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
+            let existing = tags.remove(at: idx)
+            tags.append(existing)
+        } else {
+            tags.append(trimmed)
+        }
+    }
+
     var body: some View {
         FlowLayout(spacing: 6) {
             ForEach(Array(tags.enumerated()), id: \.offset) { _, tag in
@@ -19,11 +31,11 @@ struct TagsTextField: View {
                 text: $currentTextInput,
                 placeholder: "\(String(localized: "Tags"))...",
                 onCommitTag: { text in
-                    let trimmed = text.trimmingCharacters(in: .whitespaces)
-                    if !trimmed.isEmpty {
-                        tags.append(trimmed)
-                        currentTextInput = ""
-                    }
+                        let trimmed = text.trimmingCharacters(in: .whitespaces)
+                        if !trimmed.isEmpty {
+                            addOrMoveTag(trimmed)
+                            currentTextInput = ""
+                        }
                 },
                 onDeleteBackwardWhenEmpty: {
                     guard !tags.isEmpty else { return }
@@ -195,7 +207,13 @@ fileprivate struct FlowLayout: Layout {
                 ForEach(suggestedTags, id: \.self) { tag in
                     Text(tag)
                         .onTapGesture {
-                            tags.append(tag)
+                            let trimmed = tag.trimmingCharacters(in: .whitespaces)
+                            if let idx = tags.firstIndex(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
+                                let existing = tags.remove(at: idx)
+                                tags.append(existing)
+                            } else {
+                                tags.append(trimmed)
+                            }
                             currentTextInput = ""
                             suggestedTags = []
                         }
