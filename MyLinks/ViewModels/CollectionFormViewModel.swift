@@ -69,8 +69,6 @@ class CollectionFormViewModel {
             self.nameRequiredAlert = true
             return
         }
-                
-        self.saving = true
         
         Task {
             if let editingCollection = editingCollection {
@@ -83,22 +81,18 @@ class CollectionFormViewModel {
                     parentId: editingCollection.parent?.id,
                     parent: Parent(id: editingCollection.parent?.id, name: editingCollection.parent?.name)
                 )
-                await collectionsRepository.editCollection(collectionId: editingCollection.id, body: data) { collection in
+                await collectionsRepository.editCollection(collectionId: editingCollection.id, body: data) { processing in
+                    self.saving = processing
+                } onSuccess: { collection in
                     onCompleted(collection)
                 } onError: { statusCode in
                     if let statusCode = statusCode {
-                        DispatchQueue.main.async {
-                            self.saving = false
-                            self.savingErrorMessage = "Error \(statusCode)."
-                            self.savingErrorAlert = true
-                        }
+                        self.savingErrorMessage = "Error \(statusCode)."
+                        self.savingErrorAlert = true
                     }
                     else {
-                        DispatchQueue.main.async {
-                            self.saving = false
-                            self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
-                            self.savingErrorAlert = true
-                        }
+                        self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                        self.savingErrorAlert = true
                     }
                 }
             }
@@ -111,7 +105,9 @@ class CollectionFormViewModel {
                     parentId: parentCollection?.id,
                     parent: nil
                 )
-                await collectionsRepository.createCollection(body: data) { collection in
+                await collectionsRepository.createCollection(body: data) { processing in
+                    self.saving = processing
+                } onSuccess: { collection in
                     var newCollection = collection
                     if collection.parentID != self.parentCollection?.id {
                         newCollection.parentID = self.parentCollection?.id
@@ -120,18 +116,12 @@ class CollectionFormViewModel {
                     onCompleted(newCollection)
                 } onError: { statusCode in
                     if let statusCode = statusCode {
-                        DispatchQueue.main.async {
-                            self.saving = false
-                            self.savingErrorMessage = "Error \(statusCode)."
-                            self.savingErrorAlert = true
-                        }
+                        self.savingErrorMessage = "Error \(statusCode)."
+                        self.savingErrorAlert = true
                     }
                     else {
-                        DispatchQueue.main.async {
-                            self.saving = false
-                            self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
-                            self.savingErrorAlert = true
-                        }
+                        self.savingErrorMessage = String(localized: "Cannot reach the server. Check your Internet connection.")
+                        self.savingErrorAlert = true
                     }
                 }
             }

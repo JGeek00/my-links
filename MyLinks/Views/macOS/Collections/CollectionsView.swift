@@ -50,10 +50,7 @@ struct CollectionsView: View {
                                             LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
                                         } label: {
                                             CollectionItemComponent(collection: item) { c, action in
-                                                switch action {
-                                                case .edit:
-                                                    collectionsViewModel.handleEditCollection(collection: c)
-                                                case .delete:
+                                                if action == .delete {
                                                     collectionsViewModel.handleDeleteCollection(collectionId: c.id)
                                                 }
                                             }

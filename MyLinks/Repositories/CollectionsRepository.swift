@@ -44,15 +44,13 @@ class CollectionsRepository {
         }
     }
     
-    func deleteCollection(id: Int, setDeleting: @escaping (Bool) -> Void, setSuccess: @escaping () -> Void, setError: @escaping (Int?) -> Void) async {
+    func deleteCollection(id: Int, setDeleting: ((Bool) -> Void)? = nil, setSuccess: (() -> Void)? = nil, setError: ((Int?) -> Void)? = nil) async {
         guard let instance = apiClientRepository.instance else { return }
-        setDeleting(true)
+        if let setDeleting = setDeleting { setDeleting(true) }
         let result = await instance.collections.deleteCollection(collectionId: id)
+        if let setDeleting = setDeleting { setDeleting(false) }
         if result.successful == true {
-            DispatchQueue.main.async {
-                setDeleting(false)
-                setSuccess()
-            }
+            if let setSuccess = setSuccess { setSuccess() }
             Task { await self.loadData() }
         }
         else {
@@ -60,42 +58,43 @@ class CollectionsRepository {
                 apiClientRepository.destroy()
                 return
             }
-            DispatchQueue.main.async {
-                setDeleting(false)
-                setError(result.statusCode)
-            }
+            if let setError = setError { setError(result.statusCode) }
         }
     }
     
-    func editCollection(collectionId: Int, body: CollectionCreationRequest, onSuccess: @escaping (Collection) -> Void, onError: @escaping (Int?) -> Void) async {
+    func editCollection(collectionId: Int, body: CollectionCreationRequest, setProcessing: ((Bool) -> Void)? = nil, onSuccess: ((Collection) -> Void)? = nil, onError: ((Int?) -> Void)? = nil) async {
         guard let instance = apiClientRepository.instance else { return }
+        if let setProcessing = setProcessing { setProcessing(true) }
         let result = await instance.collections.editCollection(collectionId: collectionId, body: body)
+        if let setProcessing = setProcessing { setProcessing(false) } 
         if let data = result.data?.response {
-            onSuccess(data)
+            if let onSuccess = onSuccess { onSuccess(data) }
             await loadData()
         }
         else {
             if result.statusCode == 401 {
-               apiClientRepository.destroy()
+                apiClientRepository.destroy()
                 return
             }
-            onError(result.statusCode)
+            if let onError = onError { onError(result.statusCode) }
         }
     }
     
-    func createCollection(body: CollectionCreationRequest, onSuccess: @escaping (Collection) -> Void, onError: @escaping (Int?) -> Void) async {
+    func createCollection(body: CollectionCreationRequest, setProcessing: ((Bool) -> Void)? = nil, onSuccess: ((Collection) -> Void)? = nil, onError: ((Int?) -> Void)? = nil) async {
         guard let instance = apiClientRepository.instance else { return }
+        if let setProcessing = setProcessing { setProcessing(true) }
         let result = await instance.collections.createCollection(body)
+        if let setProcessing = setProcessing { setProcessing(false) }
         if let data = result.data?.response {
-            onSuccess(data)
+            if let onSuccess = onSuccess { onSuccess(data) }
             await loadData()
         }
         else {
             if result.statusCode == 401 {
-               apiClientRepository.destroy()
+                apiClientRepository.destroy()
                 return
             }
-            onError(result.statusCode)
+            if let onError = onError { onError(result.statusCode) }
         }
     }
     

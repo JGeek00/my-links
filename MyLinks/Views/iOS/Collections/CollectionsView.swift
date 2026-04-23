@@ -32,10 +32,7 @@ struct CollectionsView: View {
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(searched, id: \.self) { item in
                                 CollectionItemComponent(collection: item) { c, action in
-                                    switch action {
-                                    case .edit:
-                                        collectionsViewModel.handleEditCollection(collection: c)
-                                    case .delete:
+                                    if action == .delete {
                                         collectionsViewModel.handleDeleteCollection(collectionId: c.id)
                                     }
                                 }
@@ -66,10 +63,7 @@ struct CollectionsView: View {
                 else {
                     List(searched, id: \.self) { item in
                         CollectionItemComponent(collection: item) { c, action in
-                            switch action {
-                            case .edit:
-                                collectionsViewModel.handleEditCollection(collection: c)
-                            case .delete:
+                            if action == .delete {
                                 collectionsViewModel.handleDeleteCollection(collectionId: c.id)
                             }
                         }

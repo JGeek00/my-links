@@ -79,7 +79,7 @@ struct CollectionItemComponent: View {
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
-            CollectionFormView(action: .edit) {
+            CollectionFormView(collectionId: collection.id, action: .edit) {
                 collectionFormSheet = false
             } onSuccess: { item, action in
                 collectionFormSheet = false

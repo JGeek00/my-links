@@ -25,7 +25,9 @@ class SearchViewModel {
         get { collectionsRepository.data }
         set { collectionsRepository.data = newValue }
     }
-    var filteredCollections: [Collection] = []
+    var filteredCollections: [Collection] {
+        get { allCollections.filter({ $0.name.lowercased().contains((self.searchQueryValue?.lowercased()) ?? "") }) }
+    }
     
     var searchFieldValue = ""
     var searchPresented = false
@@ -55,7 +57,6 @@ class SearchViewModel {
             DispatchQueue.main.async {
                 self.links = linksResult
                 self.tags = tagsResult
-                self.filteredCollections = self.allCollections.filter({ $0.name.lowercased().contains((self.searchQueryValue?.lowercased()) ?? "") })
                 withAnimation(.default) {
                     self.loading = false
                     self.error = false
@@ -123,21 +124,8 @@ class SearchViewModel {
         Task {
             await collectionsRepository.deleteCollection(id: collectionId) { del in
                 self.progressIndicatorRepository.presenting = del
-            } setSuccess: {
-                self.allCollections = self.allCollections.filter() { $0.id != collectionId }
             } setError: { _ in
                 self.deleteCollectionErrorAlert = true
-            }
-        }
-    }
-    
-    func handleEditCollection(collection: Collection) {
-        self.allCollections = self.allCollections.map() { item in
-            if item.id == collection.id {
-                return collection
-            }
-            else {
-                return item
             }
         }
     }

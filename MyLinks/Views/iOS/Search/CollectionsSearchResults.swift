@@ -11,10 +11,7 @@ struct CollectionsSearchResults: View {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(searchViewModel.filteredCollections, id: \.self) { item in
                         CollectionItemComponent(collection: item) { c, action in
-                            switch action {
-                            case .edit:
-                                searchViewModel.handleEditCollection(collection: c)
-                            case .delete:
+                            if action == .delete {
                                 searchViewModel.handleDeleteCollection(collectionId: c.id)
                             }
                         }
@@ -29,10 +26,7 @@ struct CollectionsSearchResults: View {
         else {
             List(searchViewModel.filteredCollections, id: \.self) { item in
                 CollectionItemComponent(collection: item) { c, action in
-                    switch action {
-                    case .edit:
-                        searchViewModel.handleEditCollection(collection: c)
-                    case .delete:
+                    if action == .delete {
                         searchViewModel.handleDeleteCollection(collectionId: c.id)
                     }
                 }

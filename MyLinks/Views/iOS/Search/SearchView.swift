@@ -125,10 +125,7 @@ fileprivate struct SearchCompactView: View {
                 Section {
                     ForEach(collectionsSliced, id: \.self) { item in
                         CollectionItemComponent(collection: item) { c, action in
-                            switch action {
-                            case .edit:
-                                searchViewModel.handleEditCollection(collection: c)
-                            case .delete:
+                            if action == .delete {
                                 searchViewModel.handleDeleteCollection(collectionId: c.id)
                             }
                         }
@@ -246,10 +243,7 @@ fileprivate struct SearchRegularView: View {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(collectionsSliced, id: \.self) { item in
                         CollectionItemComponent(collection: item) { c, action in
-                            switch action {
-                            case .edit:
-                                searchViewModel.handleEditCollection(collection: c)
-                            case .delete:
+                            if action == .delete {
                                 searchViewModel.handleDeleteCollection(collectionId: c.id)
                             }
                         }
