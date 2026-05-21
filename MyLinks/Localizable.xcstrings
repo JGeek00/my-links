@@ -682,6 +682,16 @@
         }
       }
     },
+    "Copied to clipboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiado al portapapeles"
+          }
+        }
+      }
+    },
     "Copied to the clipboard" : {
       "localizations" : {
         "es" : {
@@ -698,6 +708,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copiar URL del enlace"
+          }
+        }
+      }
+    },
+    "Copy public URL" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar URL pública"
           }
         }
       }
@@ -1558,6 +1578,16 @@
         }
       }
     },
+    "Make collection public" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacer colección pública"
+          }
+        }
+      }
+    },
     "Method" : {
       "localizations" : {
         "es" : {
@@ -1991,6 +2021,16 @@
         }
       }
     },
+    "Public" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Público"
+          }
+        }
+      }
+    },
     "Purchase completed successfully" : {
       "localizations" : {
         "es" : {
@@ -2269,6 +2309,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartir"
+          }
+        }
+      }
+    },
+    "Share and collaborate" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir y colaborar"
           }
         }
       }
@@ -2757,17 +2807,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL"
-          }
-        }
-      }
-    },
-    "Use old navigation tab bar" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usar barra de pestañas de navegación antigua"
           }
         }
       }

@@ -13,6 +13,7 @@ struct CollectionItemComponent: View {
     
     @State private var showDeleteAlert = false
     @State private var collectionFormSheet = false
+    @State private var shareCollaborateSheet = false
     
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
@@ -58,6 +59,14 @@ struct CollectionItemComponent: View {
                             .font(.system(size: 12))
                         Text(String(linkCount))
                             .font(.system(size: 14))
+                        Spacer()
+                            .frame(width: 16)
+                    }
+                    if collection.isPublic == true {
+                        Image(systemName: "globe")
+                            .font(.system(size: 12))
+                        Text("Public")
+                            .font(.system(size: 14))
                     }
                     Spacer()
                 }
@@ -71,11 +80,18 @@ struct CollectionItemComponent: View {
         .background(horizontalSizeClass == .regular ? Color.listItemBackground: Color.clear)
         .cornerRadius(horizontalSizeClass == .regular ? 24 : 1)
         .contextMenu {
-            Button("Edit", systemImage: "pencil") {
-                collectionFormSheet = true
+            Section {
+                Button("Share and collaborate", systemImage: "globe") {
+                    shareCollaborateSheet = true
+                }
             }
-            Button("Delete", systemImage: "trash", role: .destructive) {
-                showDeleteAlert = true
+            Section {
+                Button("Edit", systemImage: "pencil") {
+                    collectionFormSheet = true
+                }
+                Button("Delete", systemImage: "trash", role: .destructive) {
+                    showDeleteAlert = true
+                }
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
@@ -83,6 +99,14 @@ struct CollectionItemComponent: View {
                 collectionFormSheet = false
             } onSuccess: { item, action in
                 collectionFormSheet = false
+                onTaskCompleted(item, .edit)
+            }
+        })
+        .sheet(isPresented: $shareCollaborateSheet, content: {
+            ShareCollaborateView(collection: collection) {
+                shareCollaborateSheet = false
+            } onSave: { item in
+                shareCollaborateSheet = false
                 onTaskCompleted(item, .edit)
             }
         })
