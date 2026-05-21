@@ -9,13 +9,19 @@ class SearchViewModel {
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
     @ObservationIgnored private let tagManagerRepository: TagManagerRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
+    @ObservationIgnored private let userRepository: UserRepository
     
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, tagManagerRepository: TagManagerRepository = RepositoriesContainer.shared.tagManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, tagManagerRepository: TagManagerRepository = RepositoriesContainer.shared.tagManagerRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository, userRepository: UserRepository = RepositoriesContainer.shared.userRepository) {
         self.apiClientRepository = apiClientRepository
         self.linkManagerRepository = linkManagerRepository
         self.collectionsRepository = collectionsRepository
         self.tagManagerRepository = tagManagerRepository
         self.progressIndicatorRepository = progressIndicatorRepository
+        self.userRepository = userRepository
+    }
+    
+    var loggedUserId: Int? {
+        userRepository.data?.id
     }
     
     var links: [Link] = []

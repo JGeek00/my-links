@@ -7,7 +7,11 @@ struct UserApiClient: Equatable, @unchecked Sendable {
         self.apiClient = apiClient
     }
 
-    func fetchUsers() async -> StatusResponse<UserDataResponse> {
+   func fetchUsers() async -> StatusResponse<UserDataResponse> {
         return await apiClient.get("/api/v1/users/me")
+    }
+
+    func fetchPublicUser(username: String) async -> StatusResponse<PublicUserResponse> {
+        return await apiClient.get("/api/v1/public/users/\(username)")
     }
 }

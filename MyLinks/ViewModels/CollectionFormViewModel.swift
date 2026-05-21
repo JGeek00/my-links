@@ -77,7 +77,7 @@ class CollectionFormViewModel {
                     name: name,
                     description: description,
                     color: color.toHex(),
-                    members: [],
+                    members: editingCollection.toCreationMembers(),
                     parentId: editingCollection.parent?.id,
                     parent: Parent(id: editingCollection.parent?.id, name: editingCollection.parent?.name)
                 )

@@ -137,6 +137,26 @@
         }
       }
     },
+    "Add member" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir miembro"
+          }
+        }
+      }
+    },
+    "Add members by email or username" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir miembros por email o nombre de usuario"
+          }
+        }
+      }
+    },
     "Add some links to this collection to see them here." : {
       "localizations" : {
         "es" : {
@@ -185,6 +205,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Añade esta etiqueta a algunos enlaces para verlos aquí."
+          }
+        }
+      }
+    },
+    "Admin" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrador"
           }
         }
       }
@@ -367,6 +397,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versión de la app"
+          }
+        }
+      }
+    },
+    "Apply members and roles to subcollections" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplicar miembros y roles a subcolecciones"
           }
         }
       }
@@ -678,6 +718,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contenido no disponible. Prueba de nuevo mas tarde."
+          }
+        }
+      }
+    },
+    "Contributor" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contribuidor"
           }
         }
       }
@@ -1588,6 +1638,16 @@
         }
       }
     },
+    "Members" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miembros"
+          }
+        }
+      }
+    },
     "Method" : {
       "localizations" : {
         "es" : {
@@ -1900,6 +1960,16 @@
         }
       }
     },
+    "Owner" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propietario"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "es" : {
@@ -2031,6 +2101,16 @@
         }
       }
     },
+    "Public collection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colección pública"
+          }
+        }
+      }
+    },
     "Purchase completed successfully" : {
       "localizations" : {
         "es" : {
@@ -2101,6 +2181,16 @@
         }
       }
     },
+    "Remove" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        }
+      }
+    },
     "Replace selected file (up to 10 MB)" : {
       "localizations" : {
         "es" : {
@@ -2137,6 +2227,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "Role" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rol"
           }
         }
       }
@@ -2811,6 +2911,16 @@
         }
       }
     },
+    "User not found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuario no encontrado"
+          }
+        }
+      }
+    },
     "Username" : {
       "localizations" : {
         "es" : {
@@ -2877,6 +2987,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver mas"
+          }
+        }
+      }
+    },
+    "Viewer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizador"
           }
         }
       }

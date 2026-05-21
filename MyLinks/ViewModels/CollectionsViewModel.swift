@@ -6,12 +6,18 @@ import SwiftUI
 class CollectionsViewModel {
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
+    @ObservationIgnored private let userRepository: UserRepository
     
-    init(collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository) {
+    init(collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository, userRepository: UserRepository = RepositoriesContainer.shared.userRepository) {
         self.collectionsRepository = collectionsRepository
         self.progressIndicatorRepository = progressIndicatorRepository
+        self.userRepository = userRepository
     }
         
+    var loggedUserId: Int? {
+        userRepository.data?.id
+    }
+    
     var data: [Collection] {
         get { collectionsRepository.data }
         set { collectionsRepository.data = newValue }

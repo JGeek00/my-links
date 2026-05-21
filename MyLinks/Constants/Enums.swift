@@ -175,4 +175,10 @@ class Enums {
         case jpeg = "image/jpeg"
         case plainText = "text/plain"
     }
+    
+    enum MemberRole: String {
+        case viewer
+        case contributor
+        case admin
+    }
 }

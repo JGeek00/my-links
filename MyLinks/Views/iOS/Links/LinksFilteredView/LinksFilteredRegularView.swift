@@ -31,7 +31,7 @@ struct LinksFilteredRegularView: View {
                         else {
                             LazyVGrid(columns: Config.gridColumns) {
                                 ForEach(filteredSubCollections, id: \.self) { item in
-                                    CollectionItemComponent(collection: item) { c, action in
+                                    CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == linksFilteredViewModel.loggedUserId) { c, action in
                                         switch action {
                                         case .edit:
                                             linksFilteredViewModel.handleEditCollection(collection: c)

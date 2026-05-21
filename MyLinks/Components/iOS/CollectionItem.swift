@@ -2,10 +2,12 @@ import SwiftUI
 
 struct CollectionItemComponent: View {
     let collection: Collection
+    let allowSharingOptions: Bool
     let onTaskCompleted: (Collection, Enums.CollectionTaskAction) -> Void
     
-    init(collection: Collection, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
+    init(collection: Collection, allowSharingOptions: Bool, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
         self.collection = collection
+        self.allowSharingOptions = allowSharingOptions
         self.onTaskCompleted = onTaskCompleted
     }
     
@@ -45,28 +47,38 @@ struct CollectionItemComponent: View {
                 }
                 Spacer()
                     .frame(height: 6)
-                HStack {
+                HStack(spacing: 12) {
                     if let dateFormatted = dateFormatted {
-                        Image(systemName: "calendar")
-                            .font(.system(size: 12))
-                        Text(dateFormatted)
-                            .font(.system(size: 14))
-                        Spacer()
-                            .frame(width: 16)
+                        HStack(spacing: 6) {
+                            Image(systemName: "calendar")
+                                .font(.system(size: 12))
+                            Text(dateFormatted)
+                                .font(.system(size: 14))
+                        }
                     }
                     if let linkCount = collection._count?.links {
-                        Image(systemName: "link")
-                            .font(.system(size: 12))
-                        Text(String(linkCount))
-                            .font(.system(size: 14))
-                        Spacer()
-                            .frame(width: 16)
+                        HStack(spacing: 6) {
+                            Image(systemName: "link")
+                                .font(.system(size: 12))
+                            Text(String(linkCount))
+                                .font(.system(size: 14))
+                        }
+                    }
+                    if collection.members.isEmpty == false {
+                        HStack(spacing: 6) {
+                            Image(systemName: "person")
+                                .font(.system(size: 12))
+                            Text(verbatim: String(collection.members.count + 1)) // members + owner
+                                .font(.system(size: 14))
+                        }
                     }
                     if collection.isPublic == true {
-                        Image(systemName: "globe")
-                            .font(.system(size: 12))
-                        Text("Public")
-                            .font(.system(size: 14))
+                        HStack(spacing: 6) {
+                            Image(systemName: "globe")
+                                .font(.system(size: 12))
+                            Text("Public")
+                                .font(.system(size: 14))
+                        }
                     }
                     Spacer()
                 }
@@ -80,9 +92,11 @@ struct CollectionItemComponent: View {
         .background(horizontalSizeClass == .regular ? Color.listItemBackground: Color.clear)
         .cornerRadius(horizontalSizeClass == .regular ? 24 : 1)
         .contextMenu {
-            Section {
-                Button("Share and collaborate", systemImage: "globe") {
-                    shareCollaborateSheet = true
+            if allowSharingOptions == true {
+                Section {
+                    Button("Share and collaborate", systemImage: "globe") {
+                        shareCollaborateSheet = true
+                    }
                 }
             }
             Section {

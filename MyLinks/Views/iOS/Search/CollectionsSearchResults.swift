@@ -10,7 +10,7 @@ struct CollectionsSearchResults: View {
             ScrollView {
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(searchViewModel.filteredCollections, id: \.self) { item in
-                        CollectionItemComponent(collection: item) { c, action in
+                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
                             if action == .delete {
                                 searchViewModel.handleDeleteCollection(collectionId: c.id)
                             }
@@ -25,7 +25,7 @@ struct CollectionsSearchResults: View {
         }
         else {
             List(searchViewModel.filteredCollections, id: \.self) { item in
-                CollectionItemComponent(collection: item) { c, action in
+                CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
                     if action == .delete {
                         searchViewModel.handleDeleteCollection(collectionId: c.id)
                     }

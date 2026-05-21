@@ -8,16 +8,22 @@ class LinksFilteredViewModel {
     @ObservationIgnored private let linkManagerRepository: LinkManagerRepository
     @ObservationIgnored private let collectionsRepository: CollectionsRepository
     @ObservationIgnored private let progressIndicatorRepository: ProgressIndicatorRepository
+    @ObservationIgnored private let userRepository: UserRepository
     @ObservationIgnored var input: LinksFilteredRequest
     
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository, input: LinksFilteredRequest) {
+    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository, linkManagerRepository: LinkManagerRepository = RepositoriesContainer.shared.linkManagerRepository, collectionsRepository: CollectionsRepository = RepositoriesContainer.shared.collectionsRepository, progressIndicatorRepository: ProgressIndicatorRepository = RepositoriesContainer.shared.progressIndicatorRepository, userRepository: UserRepository = RepositoriesContainer.shared.userRepository, input: LinksFilteredRequest) {
         self.apiClientRepository = apiClientRepository
         self.collectionsRepository = collectionsRepository
         self.linkManagerRepository = linkManagerRepository
         self.progressIndicatorRepository = progressIndicatorRepository
+        self.userRepository = userRepository
         self.input = input
         
         self.collections = collectionsRepository.data
+    }
+    
+    var loggedUserId: Int? {
+        userRepository.data?.id
     }
     
     var collections: [Collection] = []

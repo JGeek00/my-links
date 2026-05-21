@@ -131,7 +131,7 @@ fileprivate struct SearchCompactView: View {
             if !collectionsSliced.isEmpty {
                 Section {
                     ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item) { c, action in
+                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
                             if action == .delete {
                                 searchViewModel.handleDeleteCollection(collectionId: c.id)
                             }
@@ -251,7 +251,7 @@ fileprivate struct SearchRegularView: View {
                 .padding(.horizontal, 8)
                 LazyVGrid(columns: Config.gridColumns) {
                     ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item) { c, action in
+                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
                             if action == .delete {
                                 searchViewModel.handleDeleteCollection(collectionId: c.id)
                             }

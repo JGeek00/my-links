@@ -339,6 +339,7 @@
 				Models/LinkEditingRequest.swift,
 				Models/Links.swift,
 				Models/LinksFilteredRequest.swift,
+				Models/PublicUserResponse.swift,
 				Models/ReaderResponse.swift,
 				Models/ServerApiInstance.swift,
 				Models/SessionToken.swift,
