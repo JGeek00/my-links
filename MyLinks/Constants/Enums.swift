@@ -167,4 +167,12 @@ class Enums {
         case pdfDocument
         case imageDocument
     }
+    
+    enum ContentType: String {
+        case json = "application/json"
+        case pdf = "application/pdf"
+        case png = "application/png"
+        case jpeg = "image/jpeg"
+        case plainText = "text/plain"
+    }
 }
