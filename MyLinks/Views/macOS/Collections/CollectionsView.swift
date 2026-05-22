@@ -49,7 +49,7 @@ struct CollectionsView: View {
                                         NavigationLink {
                                             LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
                                         } label: {
-                                            CollectionItemComponent(collection: item) { c, action in
+                                            CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == collectionsViewModel.loggedUserId) { c, action in
                                                 if action == .delete {
                                                     collectionsViewModel.handleDeleteCollection(collectionId: c.id)
                                                 }

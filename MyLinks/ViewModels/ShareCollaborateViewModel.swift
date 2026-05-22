@@ -2,6 +2,9 @@
 import Foundation
 import SwiftUI
 import AlertToast
+#if canImport(AppKit)
+import AppKit
+#endif
 
 @MainActor
 @Observable
@@ -57,7 +60,12 @@ class ShareCollaborateViewModel {
     var addingMember: Bool = false
 
     func copyPublicUrlClipboard() {
+        #if os(iOS)
         UIPasteboard.general.string = publicUrl
+        #elseif os(macOS)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(publicUrl, forType: .string)
+        #endif
         toast = AlertToast(type: .systemImage("doc.on.doc", .foreground.opacity(0.7)), title: String(localized: "Copied to clipboard"), style: .style(titleColor: .foreground.opacity(0.7)))
         toastPresenting = true
     }

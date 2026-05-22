@@ -246,6 +246,9 @@
 				Views/iOS/Settings/TipsView.swift = (
 					ios,
 				);
+				Views/iOS/ShareCollaborate/ShareCollaborateView.swift = (
+					ios,
+				);
 				Views/iOS/TagForm/TagForm.swift = (
 					ios,
 				);
@@ -301,6 +304,9 @@
 					macos,
 				);
 				Views/macOS/Settings/TipsView.swift = (
+					macos,
+				);
+				Views/macOS/ShareCollaborate/ShareCollaborateView.swift = (
 					macos,
 				);
 				Views/macOS/Sidebar.swift = (

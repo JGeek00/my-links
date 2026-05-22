@@ -61,7 +61,7 @@ struct LinksFilteredView: View {
                                             NavigationLink {
                                                 LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: item.name, mode: .collection, id: item.id))
                                             } label: {
-                                                CollectionItemComponent(collection: item) { c, action in
+                                                CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == linksFilteredViewModel.loggedUserId) { c, action in
                                                     switch action {
                                                     case .edit:
                                                         linksFilteredViewModel.handleEditCollection(collection: c)

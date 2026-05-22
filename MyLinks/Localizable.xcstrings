@@ -2191,6 +2191,16 @@
         }
       }
     },
+    "Remove member" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar miembro"
+          }
+        }
+      }
+    },
     "Replace selected file (up to 10 MB)" : {
       "localizations" : {
         "es" : {

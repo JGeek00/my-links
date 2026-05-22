@@ -2,10 +2,12 @@ import SwiftUI
 
 struct CollectionItemComponent: View {
     let collection: Collection
+    let allowSharingOptions: Bool
     let onTaskCompleted: (Collection, Enums.CollectionTaskAction) -> Void
     
-    init(collection: Collection, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
+    init(collection: Collection, allowSharingOptions: Bool, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
         self.collection = collection
+        self.allowSharingOptions = allowSharingOptions
         self.onTaskCompleted = onTaskCompleted
     }
     
@@ -13,6 +15,7 @@ struct CollectionItemComponent: View {
     
     @State private var showDeleteAlert = false
     @State private var collectionFormSheet = false
+    @State private var shareCollaborateSheet = false
     
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
@@ -67,11 +70,20 @@ struct CollectionItemComponent: View {
         .contentShape(Rectangle())
         .cornerRadius(12)
         .contextMenu {
-            Button("Edit", systemImage: "pencil") {
-                collectionFormSheet = true
+            if allowSharingOptions == true {
+                Section {
+                    Button("Share and collaborate", systemImage: "globe") {
+                        shareCollaborateSheet = true
+                    }
+                }
             }
-            Button("Delete", systemImage: "trash", role: .destructive) {
-                showDeleteAlert.toggle()
+            Section {
+                Button("Edit", systemImage: "pencil") {
+                    collectionFormSheet = true
+                }
+                Button("Delete", systemImage: "trash", role: .destructive) {
+                    showDeleteAlert.toggle()
+                }
             }
         }
         .sheet(isPresented: $collectionFormSheet, content: {
@@ -79,6 +91,14 @@ struct CollectionItemComponent: View {
                 collectionFormSheet = false
             } onSuccess: { item, action in
                 collectionFormSheet = false
+                onTaskCompleted(item, .edit)
+            }
+        })
+        .sheet(isPresented: $shareCollaborateSheet, content: {
+            ShareCollaborateView(collection: collection) {
+                shareCollaborateSheet = false
+            } onSave: { item in
+                shareCollaborateSheet = false
                 onTaskCompleted(item, .edit)
             }
         })
