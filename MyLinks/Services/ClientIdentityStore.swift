@@ -11,9 +11,9 @@ enum ClientIdentityError: Error, LocalizedError {
     case expired
     case notYetValid
     case importFailed(underlying: Error)
-    case keychainSaveFailed
-    case keychainLoadFailed
-    case keychainDeleteFailed
+    case keychainSaveFailed(OSStatus)
+    case keychainLoadFailed(OSStatus)
+    case keychainDeleteFailed(OSStatus)
     case identityNotFound
 
     var errorDescription: String? {
@@ -57,46 +57,6 @@ final class ClientIdentityStore {
         return true
 #endif
     }
-
-    /// Resolved once: the team-prefixed access group both targets share.
-    /// Falls back to bare bundle ID if the keychain query fails (unlikely on a signed build).
-    static let keychainAccessGroup: String = {
-        let bundleId = "com.jgeek00.MyLinks"
-        // Create a throwaway item, read back its access group to learn the team prefix
-        let account = "__com_jgeek00_mtls_teamid"
-        let addQuery: [CFString: Any] = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: account,
-            kSecAttrService: "teamid",
-            kSecValueData: Data(),
-            kSecAttrAccessible: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        ]
-        SecItemDelete(addQuery as CFDictionary) // clean any stale
-        let addStatus = SecItemAdd(addQuery as CFDictionary, nil)
-        defer { SecItemDelete(addQuery as CFDictionary) }
-
-        if addStatus == errSecSuccess {
-            let readQuery: [CFString: Any] = [
-                kSecClass: kSecClassGenericPassword,
-                kSecAttrAccount: account,
-                kSecAttrService: "teamid",
-                kSecReturnAttributes: true,
-                kSecMatchLimit: kSecMatchLimitOne
-            ]
-            var result: CFTypeRef?
-            if SecItemCopyMatching(readQuery as CFDictionary, &result) == errSecSuccess,
-               let attrs = result as? [CFString: Any],
-               let group = attrs[kSecAttrAccessGroup] as? String {
-                // group format: <TeamID>.<bundle-id>
-                if let dot = group.firstIndex(of: ".") {
-                    let prefix = group[group.startIndex...dot]
-                    return "\(prefix)\(bundleId)"
-                }
-            }
-        }
-        // Last resort: without prefix — Security will still match against the first entitled group
-        return bundleId
-    }()
 
     // MARK: - Import & validate
 
@@ -144,7 +104,6 @@ final class ClientIdentityStore {
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: accountKey,
             kSecAttrService: Self.keychainService,
-            kSecAttrAccessGroup: Self.keychainAccessGroup,
             kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
             kSecUseDataProtectionKeychain: true,
             kSecValueData: pkcs12Data as CFData
@@ -152,7 +111,7 @@ final class ClientIdentityStore {
 
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            return .failure(.keychainSaveFailed)
+            return .failure(.keychainSaveFailed(status))
         }
 
         if !password.isEmpty {
@@ -160,14 +119,14 @@ final class ClientIdentityStore {
                 kSecClass: kSecClassGenericPassword,
                 kSecAttrAccount: accountKey,
                 kSecAttrService: Self.passwordKeychainService,
-                kSecAttrAccessGroup: Self.keychainAccessGroup,
                 kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
                 kSecUseDataProtectionKeychain: true,
                 kSecValueData: password.data(using: .utf8)! as CFData
             ]
-            guard SecItemAdd(passwordQuery as CFDictionary, nil) == errSecSuccess else {
+            let passwordStatus = SecItemAdd(passwordQuery as CFDictionary, nil)
+            guard passwordStatus == errSecSuccess else {
                 _ = delete(serverId: serverId)
-                return .failure(.keychainSaveFailed)
+                return .failure(.keychainSaveFailed(passwordStatus))
             }
         }
 
@@ -181,7 +140,6 @@ final class ClientIdentityStore {
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: accountKey,
             kSecAttrService: Self.keychainService,
-            kSecAttrAccessGroup: Self.keychainAccessGroup,
             kSecUseDataProtectionKeychain: true,
             kSecReturnData: true,
             kSecMatchLimit: kSecMatchLimitOne
@@ -191,14 +149,13 @@ final class ClientIdentityStore {
         let status = SecItemCopyMatching(query as CFDictionary, &result)
 
         guard status == errSecSuccess, let data = result as? Data else {
-            return .failure(status == errSecItemNotFound ? .identityNotFound : .keychainLoadFailed)
+            return .failure(status == errSecItemNotFound ? .identityNotFound : .keychainLoadFailed(status))
         }
 
         let passwordQuery: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: accountKey,
             kSecAttrService: Self.passwordKeychainService,
-            kSecAttrAccessGroup: Self.keychainAccessGroup,
             kSecUseDataProtectionKeychain: true,
             kSecReturnData: true,
             kSecMatchLimit: kSecMatchLimitOne
@@ -210,11 +167,11 @@ final class ClientIdentityStore {
         if passwordStatus == errSecSuccess {
             guard let passwordData = passwordResult as? Data,
                   let decodedPassword = String(data: passwordData, encoding: .utf8) else {
-                return .failure(.keychainLoadFailed)
+                return .failure(.keychainLoadFailed(passwordStatus))
             }
             password = decodedPassword
         } else if passwordStatus != errSecItemNotFound {
-            return .failure(.keychainLoadFailed)
+            return .failure(.keychainLoadFailed(passwordStatus))
         }
 
         return .success((data, password))
@@ -227,7 +184,6 @@ final class ClientIdentityStore {
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: accountKey,
             kSecAttrService: Self.keychainService,
-            kSecAttrAccessGroup: Self.keychainAccessGroup,
             kSecUseDataProtectionKeychain: true
         ]
 
@@ -239,7 +195,7 @@ final class ClientIdentityStore {
            passwordStatus == errSecSuccess || passwordStatus == errSecItemNotFound {
             return .success(())
         }
-        return .failure(.keychainDeleteFailed)
+        return .failure(.keychainDeleteFailed(status != errSecSuccess && status != errSecItemNotFound ? status : passwordStatus))
     }
 
     // MARK: - Helpers
