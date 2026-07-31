@@ -5,6 +5,7 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isSelfHosted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="method" optional="YES" attributeType="String"/>
+        <attribute name="mtlsEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="path" optional="YES" attributeType="String"/>
         <attribute name="port" optional="YES" attributeType="String"/>

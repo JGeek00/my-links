@@ -38,6 +38,9 @@ struct ConnectionForm: View {
                         .tag(Enums.Hosting.selfhosted)
                 }
                 .pickerStyle(SegmentedPickerStyle())
+                .onChange(of: onboardingViewModel.hostingMode) { _, _ in
+                    onboardingViewModel.checkMtlsCompatibility()
+                }
             }
             if onboardingViewModel.hostingMode == .selfhosted {
                 Section("Server route") {
@@ -46,6 +49,9 @@ struct ConnectionForm: View {
                             .tag(Enums.ConnectionMethod.http)
                         Text("HTTPS")
                             .tag(Enums.ConnectionMethod.https)
+                    }
+                    .onChange(of: onboardingViewModel.connectionMethod) { _, _ in
+                        onboardingViewModel.checkMtlsCompatibility()
                     }
                     TextField("IP address or domain", text: $onboardingViewModel.ipDomain)
                         .autocorrectionDisabled()
@@ -82,6 +88,11 @@ struct ConnectionForm: View {
                     .font(.system(size: 12))
                     .buttonStyle(LinkButtonStyle())
                 }
+            }
+            // macOS 14 imports PKCS#12 identities into the default Keychain.
+            if onboardingViewModel.connectionMethod == .https,
+               #available(macOS 15.0, *) {
+                MTLSConfigurationSection(onboardingViewModel: onboardingViewModel)
             }
             Section {
                 Button {

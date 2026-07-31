@@ -21,6 +21,13 @@ struct ShareExtensionView: View {
                 if shareExtensionViewModel.invalidUrl == true {
                     ContentUnavailableView("Invalid URL", systemImage: "link", description: Text("The provided URL is not valid."))
                 }
+                else if shareExtensionViewModel.identityRecoveryRequired {
+                    ContentUnavailableView(
+                        "Certificate configuration required",
+                        systemImage: "lock.trianglebadge.exclamationmark",
+                        description: Text("Open My Links to restore the client certificate.")
+                    )
+                }
                 else if shareExtensionViewModel.serverInstanceAvailable == false {
                     ContentUnavailableView("Server unavailable", systemImage: "server.rack", description: Text("Open the app to create a connection to a server."))
                 }

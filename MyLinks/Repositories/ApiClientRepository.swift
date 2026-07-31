@@ -5,9 +5,13 @@ import CoreData
 @Observable
 class ApiClientRepository {
     var instance: ApiClient? = nil
-    
-    init() {}
-    
+
+    let clientIdentityStore: ClientIdentityStore
+
+    init(clientIdentityStore: ClientIdentityStore = ClientIdentityStore()) {
+        self.clientIdentityStore = clientIdentityStore
+    }
+
     func loadInstance(onNoInstance: @escaping () -> Void) {
         let fetchRequest: NSFetchRequest<ServerInstance> = ServerInstance.fetchRequest()
         do {
@@ -16,8 +20,9 @@ class ApiClientRepository {
                 onNoInstance()
             }
             else {
-                if res[0].isSelfHosted == true {
-                    guard let method = res[0].method else {
+                let record = res[0]
+                if record.isSelfHosted == true {
+                    guard let method = record.method else {
                         clearInstances()
                         return
                     }
@@ -25,22 +30,73 @@ class ApiClientRepository {
                         clearInstances()
                         return
                     }
-                    guard let domain = res[0].domain else {
+                    guard let domain = record.domain else {
                         clearInstances()
                         return
                     }
-                    guard let token = res[0].token else {
+                    guard let token = record.token else {
                         clearInstances()
                         return
                     }
-                    let port = res[0].port != nil ? Int(res[0].port!) : nil
-                    let client = ApiClient(instance: ServerApiInstance(url: serverUrl(method: parsedMethod, domain: domain, port: port, path: res[0].path), token: token, isSelfHosted: true))
+                    let port = record.port != nil ? Int(record.port!) : nil
+
+                    if record.mtlsEnabled && !ClientIdentityStore.isMTLSAvailable {
+                        clearInstances()
+                        DispatchQueue.main.async { onNoInstance() }
+                        return
+                    }
+
+                    // Restore mTLS identity
+                    if record.mtlsEnabled {
+                        let identityLoaded: Bool = {
+                            guard let serverId = record.id else { return false }
+                            let loadResult = clientIdentityStore.load(serverId: serverId)
+                            switch loadResult {
+                            case .success(let (pkcs12Data, password)):
+                                let importResult = clientIdentityStore.importIdentity(
+                                    pkcs12Data: pkcs12Data,
+                                    password: password ?? ""
+                                )
+                                if case .success = importResult { return true }; return false
+                            case .failure:
+                                return false
+                            }
+                        }()
+                        // Identity is required and couldn't be restored → route to recovery
+                        guard identityLoaded else {
+                            clearInstances()
+                            DispatchQueue.main.async { onNoInstance() }
+                            return
+                        }
+                    }
+
+                    // Load identity again cleanly for the ApiClient (we already validated it above)
+                    let clientIdentity: ClientIdentity? = {
+                        guard record.mtlsEnabled, let serverId = record.id else { return nil }
+                        let loadResult = clientIdentityStore.load(serverId: serverId)
+                        guard case .success(let (pkcs12Data, password)) = loadResult else { return nil }
+                        let importResult = clientIdentityStore.importIdentity(
+                            pkcs12Data: pkcs12Data,
+                            password: password ?? ""
+                        )
+                        guard case .success(let identity) = importResult else { return nil }
+                        return identity
+                    }()
+
+                    let client = ApiClient(
+                        instance: ServerApiInstance(
+                            url: serverUrl(method: parsedMethod, domain: domain, port: port, path: record.path),
+                            token: token,
+                            isSelfHosted: true
+                        ),
+                        clientIdentity: clientIdentity
+                    )
                     DispatchQueue.main.async {
                         self.initialice(instance: client)
                     }
                 }
                 else {
-                    guard let token = res[0].token else {
+                    guard let token = record.token else {
                         clearInstances()
                         return
                     }
@@ -54,11 +110,11 @@ class ApiClientRepository {
             print("Error fetching data: \(error.localizedDescription)")
         }
     }
-    
+
     func initialice(instance: ApiClient) {
         self.instance = instance
     }
-    
+
     func destroy(sessionExpired: Bool? = nil) {
         clearInstances()
         self.instance = nil

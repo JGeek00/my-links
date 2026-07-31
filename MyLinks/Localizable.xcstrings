@@ -97,6 +97,22 @@
         }
       }
     },
+    "A client certificate file is required." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A client certificate file is required."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere un archivo de certificado de cliente."
+          }
+        }
+      }
+    },
     "A label is required to create a tag." : {
       "localizations" : {
         "es" : {
@@ -491,12 +507,18 @@
         }
       }
     },
-    "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid." : {
+    "Cannot establish a connection with the server. If you are using HTTPS, check that your client certificate is valid." : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot establish a connection with the server. If you are using HTTPS, check that your client certificate is valid."
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se puede establecer una conexión con el servidor. Si estás usando HTTPS, comprueba que tu certificado sea válido."
+            "value" : "No se puede establecer una conexión con el servidor. Si estás usando HTTPS, comprueba que tu certificado de cliente sea válido."
           }
         }
       }
@@ -507,6 +529,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se puede alcanzar el servidor. Comprueba tu conexión."
+          }
+        }
+      }
+    },
+    "Certificate configuration required" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certificate configuration required"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere configurar el certificado"
+          }
+        }
+      }
+    },
+    "Certificate password (optional)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certificate password (optional)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña del certificado (opcional)"
           }
         }
       }
@@ -597,6 +651,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elige una opción"
+          }
+        }
+      }
+    },
+    "Client certificate" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client certificate"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certificado de cliente"
           }
         }
       }
@@ -1204,6 +1274,54 @@
         }
       }
     },
+    "The client certificate could not be loaded from the secure store." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate could not be loaded from the secure store."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo cargar el certificado de cliente desde el almacén seguro."
+          }
+        }
+      }
+    },
+    "The client certificate could not be removed from the secure store." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate could not be removed from the secure store."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo eliminar el certificado de cliente del almacén seguro."
+          }
+        }
+      }
+    },
+    "The client certificate could not be saved to the secure store." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate could not be saved to the secure store."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo guardar el certificado de cliente en el almacén seguro."
+          }
+        }
+      }
+    },
     "File size: %@" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1668,6 +1786,22 @@
         }
       }
     },
+    "Mutual TLS (mTLS)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mutual TLS (mTLS)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TLS mutuo (mTLS)"
+          }
+        }
+      }
+    },
     "N/A" : {
       "localizations" : {
         "es" : {
@@ -1950,6 +2084,22 @@
         }
       }
     },
+    "Open My Links to restore the client certificate." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open My Links to restore the client certificate."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre My Links para restaurar el certificado de cliente."
+          }
+        }
+      }
+    },
     "Open the app to create a connection to a server." : {
       "localizations" : {
         "es" : {
@@ -2201,6 +2351,22 @@
         }
       }
     },
+    "Replace" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reemplazar"
+          }
+        }
+      }
+    },
     "Replace selected file (up to 10 MB)" : {
       "localizations" : {
         "es" : {
@@ -2333,6 +2499,38 @@
         }
       }
     },
+    "Select a .p12 or .pfx file containing your client certificate and private key." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a .p12 or .pfx file containing your client certificate and private key."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un archivo .p12 o .pfx que contenga tu certificado de cliente y clave privada."
+          }
+        }
+      }
+    },
+    "Select certificate file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select certificate file"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccionar archivo de certificado"
+          }
+        }
+      }
+    },
     "Self hosted" : {
       "localizations" : {
         "es" : {
@@ -2354,6 +2552,7 @@
       }
     },
     "Server failed to return the access token." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -2555,6 +2754,54 @@
         }
       }
     },
+    "The client certificate could not be imported." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate could not be imported."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo importar el certificado de cliente."
+          }
+        }
+      }
+    },
+    "The client certificate has expired." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate has expired."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El certificado de cliente ha caducado."
+          }
+        }
+      }
+    },
+    "The client certificate is not yet valid." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate is not yet valid."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El certificado de cliente todavía no es válido."
+          }
+        }
+      }
+    },
     "The collection could not be deleted due to an error." : {
       "localizations" : {
         "es" : {
@@ -2638,6 +2885,22 @@
         }
       }
     },
+    "The client certificate password is incorrect." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate password is incorrect."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña del certificado de cliente es incorrecta."
+          }
+        }
+      }
+    },
     "The PDF document of the link is not available." : {
       "localizations" : {
         "es" : {
@@ -2688,6 +2951,22 @@
         }
       }
     },
+    "The client certificate file could not be read." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate file could not be read."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo leer el archivo del certificado de cliente."
+          }
+        }
+      }
+    },
     "The selected file could not be uploaded." : {
       "localizations" : {
         "es" : {
@@ -2698,12 +2977,44 @@
         }
       }
     },
+    "The client certificate file does not contain a matching private key." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate file does not contain a matching private key."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo del certificado de cliente no contiene una clave privada correspondiente."
+          }
+        }
+      }
+    },
     "The selected file has an unsupported format" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "El fichero seleccionado tiene un formato no soportado."
+          }
+        }
+      }
+    },
+    "The selected client certificate file is not a valid PKCS#12 identity." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected client certificate file is not a valid PKCS#12 identity."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo seleccionado no es una identidad PKCS#12 de certificado de cliente válida."
           }
         }
       }
@@ -2725,6 +3036,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La sesión ha caducado. Inicia sesión de nuevo."
+          }
+        }
+      }
+    },
+    "The stored client certificate was not found." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The stored client certificate was not found."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontró el certificado de cliente almacenado."
           }
         }
       }
@@ -2767,6 +3094,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tema"
+          }
+        }
+      }
+    },
+    "The client certificate requires a password." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The client certificate requires a password."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El certificado de cliente requiere una contraseña."
           }
         }
       }
@@ -3053,6 +3396,12 @@
     },
     "Your application to manage your Linkwarden links" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your application to manage your Linkwarden links"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",

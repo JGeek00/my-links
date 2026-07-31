@@ -35,6 +35,9 @@ struct ConnectionForm: View {
                         Text("HTTPS")
                             .tag(Enums.ConnectionMethod.https)
                     }
+                    .onChange(of: onboardingViewModel.connectionMethod) { _, _ in
+                        onboardingViewModel.checkMtlsCompatibility()
+                    }
                     TextField("IP address or domain", text: $onboardingViewModel.ipDomain)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
@@ -90,73 +93,80 @@ struct ConnectionForm: View {
                         .font(.system(size: 12))
                     }
                     Spacer()
-                    let backContent = HStack {
-                        Spacer()
-                        Image(systemName: "chevron.left")
-                        Text("Back")
-                        Spacer()
-                    }
-                    .fontWeight(.semibold)
 
-                    let connectContent = Group {
-                        Spacer()
-                        if onboardingViewModel.connecting == true {
-                            ProgressView()
-                        }
-                        else {
-                            Text("Connect")
-                                .fontWeight(.semibold)
-                                .font(.system(size: 18))
-                        }
-                        Spacer()
-                    }
-
-                    HStack {
-                        if #available(iOS 26, *) {
-                            Button {
-                                withAnimation(.default) {
-                                    onboardingViewModel.selectedTab = 1
-                                }
-                            } label: {
-                                backContent
-                            }
-                            .buttonStyle(.glass)
-                            Spacer()
-                                .frame(width: 16)
-                            Button {
-                                onboardingViewModel.onConnect {
-                                    rootViewModel.showOnboarding = false
-                                }
-                            } label: {
-                                connectContent
-                            }
-                            .buttonStyle(.glassProminent)
-                        }
-                        else {
-                            Button {
-                                withAnimation(.default) {
-                                    onboardingViewModel.selectedTab = 1
-                                }
-                            } label: {
-                                backContent
-                            }
-                            .buttonStyle(.bordered)
-                            Spacer()
-                                .frame(width: 16)
-                            Button {
-                                onboardingViewModel.onConnect {
-                                    rootViewModel.showOnboarding = false
-                                }
-                            } label: {
-                                connectContent
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                    }
-                    .padding(.top, 12)
-                    .padding(.bottom, 32)
-                    .disabled(onboardingViewModel.connecting)
                 }
+            }
+            // mTLS section: only for self-hosted HTTPS
+            if onboardingViewModel.connectionMethod == .https {
+                MTLSConfigurationSection(onboardingViewModel: onboardingViewModel)
+            }
+
+            Section {} header: {
+                let backContent = HStack {
+                    Spacer()
+                    Image(systemName: "chevron.left")
+                    Text("Back")
+                    Spacer()
+                }
+                .fontWeight(.semibold)
+
+                let connectContent = Group {
+                    Spacer()
+                    if onboardingViewModel.connecting == true {
+                        ProgressView()
+                    }
+                    else {
+                        Text("Connect")
+                            .fontWeight(.semibold)
+                            .font(.system(size: 18))
+                    }
+                    Spacer()
+                }
+                HStack {
+                    if #available(iOS 26, *) {
+                        Button {
+                            withAnimation(.default) {
+                                onboardingViewModel.selectedTab = 1
+                            }
+                        } label: {
+                            backContent
+                        }
+                        .buttonStyle(.glass)
+                        Spacer()
+                            .frame(width: 16)
+                        Button {
+                            onboardingViewModel.onConnect {
+                                rootViewModel.showOnboarding = false
+                            }
+                        } label: {
+                            connectContent
+                        }
+                        .buttonStyle(.glassProminent)
+                    }
+                    else {
+                        Button {
+                            withAnimation(.default) {
+                                onboardingViewModel.selectedTab = 1
+                            }
+                        } label: {
+                            backContent
+                        }
+                        .buttonStyle(.bordered)
+                        Spacer()
+                            .frame(width: 16)
+                        Button {
+                            onboardingViewModel.onConnect {
+                                rootViewModel.showOnboarding = false
+                            }
+                        } label: {
+                            connectContent
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                }
+                .padding(.top, 12)
+                .padding(.bottom, 32)
+                .disabled(onboardingViewModel.connecting)
             }
         }
         .disabled(onboardingViewModel.connecting)

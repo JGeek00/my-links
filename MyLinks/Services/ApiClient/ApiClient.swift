@@ -1,6 +1,6 @@
 import Foundation
 
-func getSessionToken(baseUrl: String, body: SessionTokenRequest) async -> StatusResponse<SessionToken> {
+func getSessionToken(baseUrl: String, body: SessionTokenRequest, clientIdentity: ClientIdentity? = nil) async -> StatusResponse<SessionToken> {
     let defaultErrorResponse = StatusResponse<SessionToken>(successful: false, statusCode: nil, data: nil)
 
     guard let url = URL(string: "\(baseUrl)/api/v1/session") else { return defaultErrorResponse }
@@ -13,7 +13,8 @@ func getSessionToken(baseUrl: String, body: SessionTokenRequest) async -> Status
         request.httpBody = try CustomJSONEncoder().encode(body)
 
         let sessionConfig = URLSessionConfiguration.default
-        let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+        let delegate = SSLIgnoringDelegate(clientIdentity: clientIdentity)
+        let session = URLSession(configuration: sessionConfig, delegate: delegate, delegateQueue: nil)
 
         let (data, r) = try await session.data(for: request)
         guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -31,6 +32,7 @@ func getSessionToken(baseUrl: String, body: SessionTokenRequest) async -> Status
 
 class ApiClient: Equatable, @unchecked Sendable {
     private let instance: ServerApiInstance
+    private let clientIdentity: ClientIdentity?
 
    lazy var links: LinksApiClient = LinksApiClient(apiClient: self)
     lazy var collections: CollectionsApiClient = CollectionsApiClient(apiClient: self)
@@ -39,8 +41,9 @@ class ApiClient: Equatable, @unchecked Sendable {
     lazy var files: FilesApiClient = FilesApiClient(apiClient: self)
     lazy var users: UserApiClient = UserApiClient(apiClient: self)
 
-    init(instance: ServerApiInstance) {
+    init(instance: ServerApiInstance, clientIdentity: ClientIdentity? = nil) {
         self.instance = instance
+        self.clientIdentity = clientIdentity
     }
 
     func getInstanceUrl() -> String {
@@ -53,6 +56,14 @@ class ApiClient: Equatable, @unchecked Sendable {
 
     static func == (lhs: ApiClient, rhs: ApiClient) -> Bool {
         lhs === rhs
+    }
+
+    // MARK: - Session factory
+
+    private func makeSession() -> URLSession {
+        let sessionConfig = URLSessionConfiguration.default
+        let delegate = SSLIgnoringDelegate(clientIdentity: clientIdentity)
+        return URLSession(configuration: sessionConfig, delegate: delegate, delegateQueue: nil)
     }
 
     // MARK: - Private helpers
@@ -89,8 +100,7 @@ class ApiClient: Equatable, @unchecked Sendable {
         let defaultErrorResponse = StatusResponse<T>(successful: false, statusCode: nil, data: nil)
 
         do {
-            let sessionConfig = URLSessionConfiguration.default
-            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = makeSession()
 
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -182,8 +192,7 @@ class ApiClient: Equatable, @unchecked Sendable {
         let request = buildRequest(path: path, method: "GET", query: query, contentType: contentType)
 
         do {
-            let sessionConfig = URLSessionConfiguration.default
-            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = makeSession()
 
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -209,8 +218,7 @@ class ApiClient: Equatable, @unchecked Sendable {
         let request = buildRequest(path: path, method: "GET", query: query, contentType: contentType)
 
         do {
-            let sessionConfig = URLSessionConfiguration.default
-            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = makeSession()
 
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
@@ -272,8 +280,7 @@ class ApiClient: Equatable, @unchecked Sendable {
             body += Data("--\(boundary)--\r\n".utf8)
             request.httpBody = body
 
-            let sessionConfig = URLSessionConfiguration.default
-            let session = await URLSession(configuration: sessionConfig, delegate: SSLIgnoringDelegate(), delegateQueue: nil)
+            let session = makeSession()
 
             let (data, r) = try await session.data(for: request)
             guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }

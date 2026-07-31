@@ -59,7 +59,25 @@ struct PopoverContent: View {
         @Bindable var menuBarFormViewModel = menuBarFormViewModel
         NavigationStack(path: $path) {
             VStack {
-                if menuBarFormViewModel.serverInstanceAvailable == true {
+                if menuBarFormViewModel.identityRecoveryRequired {
+                    ContentUnavailableView(
+                        "Certificate configuration required",
+                        systemImage: "lock.trianglebadge.exclamationmark",
+                        description: Text("Open My Links to restore the client certificate.")
+                    )
+                    Spacer()
+                        .frame(height: 30)
+                    Button {
+                        openMainWindow()
+                    } label: {
+                        Text("Open My Links")
+                            .font(.system(size: 16))
+                            .fontWeight(.medium)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                    }
+                }
+                else if menuBarFormViewModel.serverInstanceAvailable == true {
                     Group {
                         if menuBarFormViewModel.loading == true {
                             ProgressView()
@@ -198,4 +216,3 @@ struct PopoverContent: View {
         }
     }
 }
-

@@ -5,33 +5,71 @@ import SwiftUI
 @MainActor
 @Observable
 class OnboardingViewModel {
-    @ObservationIgnored private let apiClientRepository: ApiClientRepository
-    
-    init(apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository) {
+    @ObservationIgnored let apiClientRepository: ApiClientRepository
+    @ObservationIgnored let clientIdentityStore: ClientIdentityStore
+
+    init(
+        apiClientRepository: ApiClientRepository = RepositoriesContainer.shared.apiClientRepository,
+        clientIdentityStore: ClientIdentityStore = ClientIdentityStore()
+    ) {
         self.apiClientRepository = apiClientRepository
+        self.clientIdentityStore = clientIdentityStore
     }
-    
+
     var selectedTab = 0
-    var hostingMode: Enums.Hosting = .cloud
-    
-    var connectionMethod = Enums.ConnectionMethod.http
+    var hostingMode: Enums.Hosting = .cloud {
+        didSet { checkMtlsCompatibility() }
+    }
+
+    var connectionMethod = Enums.ConnectionMethod.http {
+        didSet { checkMtlsCompatibility() }
+    }
     var ipDomain = ""
     var port = ""
     var path = ""
-    
+
     var authMethod = Enums.AuthMethod.userPass
     var username = ""
     var password = ""
     var token = ""
-    
+
     var invalidValuesAlert = false
     var invalidValuesMessage = ""
-    
     var connectionErrorAlert = false
     var connectionErrorMessage = ""
-    
     var connecting = false
-    
+
+    // MARK: - mTLS state
+
+    var mtlsEnabled = false
+    var mtlsFileData: Data? = nil
+    var mtlsFileName: String? = nil
+    var mtlsPassword = ""
+    var isMtlsAvailable: Bool { ClientIdentityStore.isMTLSAvailable }
+    @ObservationIgnored var activeClientIdentity: ClientIdentity? = nil
+
+    /// Clears mTLS fields when the switch or the connection mode becomes incompatible.
+    func resetMtls() {
+        mtlsEnabled = false
+        clearMtlsFile()
+    }
+
+    func clearMtlsFile() {
+        mtlsFileData = nil
+        mtlsFileName = nil
+        mtlsPassword = ""
+        activeClientIdentity = nil
+    }
+
+    /// Called when hosting mode or connection method changes to an incompatible one.
+    func checkMtlsCompatibility() {
+        if !isMtlsAvailable || hostingMode != .selfhosted || connectionMethod != .https {
+            if mtlsEnabled || mtlsFileData != nil {
+                resetMtls()
+            }
+        }
+    }
+
     func reset() {
         selectedTab = 0
         hostingMode = .cloud
@@ -48,182 +86,23 @@ class OnboardingViewModel {
         username = ""
         password = ""
         authMethod = .userPass
+        resetMtls()
     }
-    
+
     func validateIpDomain(value: String) -> Bool {
         let domainValid = NSPredicate(format: "SELF MATCHES %@", Regexps.domain).evaluate(with: value)
         let ipValid = NSPredicate(format: "SELF MATCHES %@", Regexps.ipAddress).evaluate(with: value)
-        if domainValid || ipValid {
-            return true
-        }
-        else {
-            return false
-        }
+        return domainValid || ipValid
     }
-    
-    func validatePort(value: String) -> Bool {
-        if value == "" {
-            return true
-        }
-        let parsed = Int(value)
-        if parsed == nil {
-            return false
-        }
-        if parsed! <= 65535 {
-            return true
-        }
-        else {
-            return false
-        }
-    }
-    
-    func validatePath(value: String) -> Bool {
-        if value == "" {
-            return true
-        }
-        let valid = NSPredicate(format: "SELF MATCHES %@", Regexps.path).evaluate(with: value)
-        if valid {
-            return true
-        }
-        else {
-            return false
-        }
-    }
-    
-    func onConnect(finishOnboarding: @escaping () -> Void) {
-        if hostingMode == .selfhosted {
-            let validIpDomain = validateIpDomain(value: ipDomain)
-            if validIpDomain == false {
-                invalidValuesMessage = String(localized: "Invalid IP or domain.")
-                invalidValuesAlert.toggle()
-                return
-            }
-            
-            let validPort = validatePort(value: port)
-            if validPort == false {
-                invalidValuesMessage = String(localized: "Invalid port.")
-                invalidValuesAlert.toggle()
-                return
-            }
-            
-            let validPath = validatePath(value: path)
-            if validPath == false {
-                invalidValuesMessage = String(localized: "Invalid path.")
-                invalidValuesAlert.toggle()
-                return
-            }
-        }
-        
-        if authMethod == .userPass {
-            if username == "" || password == "" {
-                invalidValuesMessage = String(localized: "Username and password are required.")
-                invalidValuesAlert.toggle()
-                return
-            }
-        }
-        else if authMethod == .token {
-            if token == "" {
-                invalidValuesMessage = String(localized: "Authentication token is required.")
-                invalidValuesAlert.toggle()
-                return
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.connecting = true
-        }
-        Task {
-            var thisToken = token
-            if authMethod == .userPass {
-                let reqBody = SessionTokenRequest(username: username, password: password, sessionName: getDeviceInfo())
-                let tokenResponse = await getSessionToken(baseUrl: hostingMode == .selfhosted ? serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil) : Config.linkwardenCloudUrl, body: reqBody)
-                if tokenResponse.successful == true {
-                    if let t = tokenResponse.data?.response?.token {
-                        thisToken = t
-                    }
-                    else {
-                        DispatchQueue.main.async {
-                            self.connecting = false
-                            self.connectionErrorMessage = String(localized: "Server failed to return the access token.")
-                            self.connectionErrorAlert.toggle()
-                        }
-                        return
-                    }
-                }
-                else {
-                    if tokenResponse.statusCode != nil {
-                        DispatchQueue.main.async {
-                            self.connecting = false
-                            self.connectionErrorMessage = String(localized: "Authentication error. Invalid username or password.")
-                            self.connectionErrorAlert.toggle()
-                        }
-                        return
-                    }
-                    else {
-                        DispatchQueue.main.async {
-                            self.connecting = false
-                            self.connectionErrorMessage = String(localized: "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid.")
-                            self.connectionErrorAlert.toggle()
-                        }
-                        return
-                    }
-                }
-            }
 
-            let instance = hostingMode == .selfhosted ? ApiClient(instance: ServerApiInstance(url: serverUrl(method: connectionMethod, domain: ipDomain, port: port != "" ? Int(port) : nil, path: path != "" ? path : nil), token: thisToken, isSelfHosted: true)) : ApiClient(instance: ServerApiInstance(url: Config.linkwardenCloudUrl, token: thisToken, isSelfHosted: false))
-            let result = await instance.dashboard.fetchDashboard()
-            DispatchQueue.main.async {
-                self.connecting = false
-            }
-            guard let statusCode = result.statusCode else {
-                DispatchQueue.main.async {
-                    self.connectionErrorMessage = String(localized: "Cannot establish a connection with the server. If you are using HTTPS, check if your certificate is valid.")
-                    self.connectionErrorAlert.toggle()
-                }
-                return
-            }
-            if statusCode < 300 {
-                // success
-                let saved = self.saveInstance(token: thisToken)
-                if saved == true {
-                    DispatchQueue.main.async {
-                        self.apiClientRepository.initialice(instance: instance)
-                        finishOnboarding()
-                    }
-                }
-            }
-            else if statusCode == 401 {
-                DispatchQueue.main.async {
-                    self.connectionErrorMessage = String(localized: "Authentication error. Check your authentication token.")
-                    self.connectionErrorAlert.toggle()
-                }
-            }
-            else {
-                DispatchQueue.main.async {
-                    self.connectionErrorMessage = "Error \(statusCode)."
-                    self.connectionErrorAlert.toggle()
-                }
-            }
-        }
+    func validatePort(value: String) -> Bool {
+        guard !value.isEmpty else { return true }
+        guard let parsed = Int(value) else { return false }
+        return parsed <= 65535
     }
-    
-    func saveInstance(token: String? = nil) -> Bool {
-        let managedContext = PersistenceController.shared.container.viewContext
-        let newInstance = ServerInstance(context: managedContext)
-        newInstance.id = UUID()
-        newInstance.method = connectionMethod.rawValue
-        newInstance.domain = ipDomain
-        newInstance.port = port != "" ? port : nil
-        newInstance.path = path != "" ? path : nil
-        newInstance.token = token ?? self.token
-        newInstance.isSelfHosted = hostingMode == .selfhosted
-        
-        do {
-            try managedContext.save()
-            return true
-        } catch {
-            print("Failed to save object: \(error)")
-            return false
-        }
+
+    func validatePath(value: String) -> Bool {
+        guard !value.isEmpty else { return true }
+        return NSPredicate(format: "SELF MATCHES %@", Regexps.path).evaluate(with: value)
     }
 }

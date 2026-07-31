@@ -1,2 +1,13 @@
+.codegraph/
+
 MyLinks.xcodeproj/project.xcworkspace/xcuserdata/juan.xcuserdatad/IDEFindNavigatorScopes.plist
 MyLinks.xcodeproj/xcuserdata/juan.xcuserdatad
+
+# Swift/Xcode build and package artifacts
+.build/
+DerivedData/
+*.swiftpm/
+Packages/
+*.xcuserstate
+*.xcscmblueprint
+.DS_Store

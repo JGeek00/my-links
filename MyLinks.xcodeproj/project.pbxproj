@@ -370,6 +370,7 @@
 				Services/ApiClient/LinksApiClient.swift,
 				Services/ApiClient/TagsApiClient.swift,
 				Services/ApiClient/UserApiClient.swift,
+				Services/ClientIdentityStore.swift,
 				Services/Persistence.swift,
 				Utils/DeviceInfo.swift,
 				Utils/JsonEncoder.swift,

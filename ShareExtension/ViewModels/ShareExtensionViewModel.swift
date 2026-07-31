@@ -12,6 +12,10 @@ class ShareExtensionViewModel {
     var serverInstanceAvailable: Bool {
         get { return apiClientRepository.instance != nil }
     }
+
+    var identityRecoveryRequired: Bool {
+        apiClientRepository.identityRecoveryRequired
+    }
     
     var url = ""
     var name = ""
