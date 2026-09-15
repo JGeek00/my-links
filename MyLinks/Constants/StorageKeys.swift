@@ -8,4 +8,5 @@ class StorageKeys {
     public static let showFavicons = "SHOW_FAVICONS"
     public static let openLinkByDefault = "OPEN_LINK_BY_DEFAULT"
     public static let showPinnedBeforeRecent = "SHOW_PINNED_BEFORE_RECENT"
+    public static let useSoftEdgeEffect = "USE_SOFT_EDGE_EFFECT"
 }

@@ -10,6 +10,7 @@ struct RootView: View {
     }
        
     @AppStorage(StorageKeys.theme, store: UserDefaults.shared) private var theme: Enums.Theme = .system
+    @AppStorage(StorageKeys.useSoftEdgeEffect, store: UserDefaults.shared) private var useSoftEdgeEffect: Bool = false
     
     @FetchRequest(
         entity: ServerInstance.entity(),
@@ -43,6 +44,12 @@ struct RootView: View {
         })
         .environment(rootViewModel)
         .fontDesign(.rounded)
+        .condition(transform: { view in
+            if #available(iOS 27, *) {
+                view.scrollEdgeEffectStyle(useSoftEdgeEffect == true ? .soft : .automatic, for: .all)
+            }
+            else { view }
+        })
         .preferredColorScheme(getColorScheme(theme: theme))
     }
 }

@@ -11,6 +11,7 @@ struct GeneralSettings: View {
     @AppStorage(StorageKeys.showFavicons, store: UserDefaults.shared) private var showFavicons: Bool = true
     @AppStorage(StorageKeys.openLinkByDefault, store: UserDefaults.shared) private var openLinkByDefault: Enums.OpenLinkByDefault = .internalBrowser
     @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = false
+    @AppStorage(StorageKeys.useSoftEdgeEffect, store: UserDefaults.shared) private var useSoftEdgeEffect: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -92,6 +93,12 @@ struct GeneralSettings: View {
                         } message: {
                             Text("You will have to establish a connection again.")
                         }
+                    }
+                }
+                
+                if #available(iOS 27, *) {
+                    Section("Other") {
+                        Toggle("Use soft edge effect (iOS 26 style)", isOn: $useSoftEdgeEffect)
                     }
                 }
             }

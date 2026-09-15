@@ -16,6 +16,11 @@ extension View {
     }
     
     @ViewBuilder
+    func condition<Content: View>(@ViewBuilder transform: (Self) -> Content) -> some View {
+        transform(self)
+    }
+    
+    @ViewBuilder
     func glassProminentButtonStyleIfAvailable() -> some View {
         #if os(iOS)
         if #available(iOS 26.0, *) {
