@@ -338,7 +338,14 @@
       }
     },
     "An error occured when loading the page. Check your Internet connection and try again later." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error al cargar la página. Comprueba tu conexión a internet y prueba de nuevo."
+          }
+        }
+      }
     },
     "An error occured when loading the PDF. Check your Internet connection and try again later." : {
       "localizations" : {
@@ -644,6 +651,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elige una carpeta y un nombre para guardar el PDF"
+          }
+        }
+      }
+    },
+    "Choose a link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige un enlace"
           }
         }
       }
@@ -1299,7 +1316,14 @@
       }
     },
     "Forward" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente"
+          }
+        }
+      }
     },
     "General settings" : {
       "localizations" : {
@@ -1685,7 +1709,14 @@
       }
     },
     "Loading progress" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso de carga"
+          }
+        }
+      }
     },
     "Loading..." : {
       "localizations" : {
@@ -2303,7 +2334,14 @@
       }
     },
     "Reload" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recargar"
+          }
+        }
+      }
     },
     "Remove" : {
       "localizations" : {
@@ -2489,6 +2527,16 @@
         }
       }
     },
+    "Select a link from the left column" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un enlace de la columna de la izquierda"
+          }
+        }
+      }
+    },
     "Select certificate file" : {
       "localizations" : {
         "en" : {
@@ -2504,9 +2552,6 @@
           }
         }
       }
-    },
-    "Select link" : {
-
     },
     "Self hosted" : {
       "localizations" : {

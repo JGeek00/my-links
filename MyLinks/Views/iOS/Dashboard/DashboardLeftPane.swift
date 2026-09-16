@@ -2,13 +2,14 @@ import SwiftUI
 
 struct DashboardLeftPane: View {
     let width: CGFloat
+    let isRegular: Bool
     
-    init(width: CGFloat) {
+    init(width: CGFloat, isRegular: Bool) {
         self.width = width
+        self.isRegular = isRegular
     }
     
     @Environment(DashboardViewModel.self) private var dashboardViewModel
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.openURL) private var openURL
     
     @AppStorage(StorageKeys.showPinnedBeforeRecent, store: UserDefaults.shared) private var showPinnedBeforeRecent: Bool = false
@@ -43,7 +44,7 @@ struct DashboardLeftPane: View {
                     let pinned = data.links.filter() { $0.pinnedBy?.isEmpty == false }
                     List {
                         Section {} header: {
-                            Header(dashboardData: data, isSingleColumn: horizontalSizeClass == .regular && (width/3) < 300)
+                            Header(dashboardData: data, isSingleColumn: isRegular && (width/3) < 300)
                         }
                         if showPinnedBeforeRecent == true {
                             linksSection(title: "Pinned", links: pinned, source: .allPinned, hideWhenEmpty: true, onViewAll: dashboardViewModel.navigatePinned)
@@ -96,7 +97,7 @@ struct DashboardLeftPane: View {
                     else if let urlString = link.url, let url = URL(string: urlString) {
                         openURL(url)
                     }
-                }, selectedLinkId: dashboardViewModel.selectedLink?.link.id)
+                }, selectedLinkId: isRegular ? dashboardViewModel.selectedLink?.link.id : nil)
             }
             .sheet(isPresented: $linkFormUrlSheet, content: {
                 LinkFormView(mode: .url) {
@@ -165,7 +166,7 @@ struct DashboardLeftPane: View {
                         else if let urlString = link.url, let url = URL(string: urlString) {
                             openURL(url)
                         }
-                    }, isSelected: dashboardViewModel.isSelected(link: item, source: source))
+                    }, isSelected: isRegular && dashboardViewModel.isSelected(link: item, source: source))
                 }
                 .overlay(alignment: .center) {
                     if links.isEmpty {

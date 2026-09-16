@@ -1,5 +1,4 @@
 import SwiftUI
-import CustomAlert
 
 struct DashboardView: View {
     @State private var dashboardViewModel: DashboardViewModel
@@ -16,7 +15,7 @@ struct DashboardView: View {
 
         GeometryReader { proxy in
             NavigationSplitView(preferredCompactColumn: $dashboardViewModel.preferredColumn) {
-                DashboardLeftPane(width: proxy.size.width)
+                DashboardLeftPane(width: proxy.size.width, isRegular: horizontalSizeClass == .regular)
                     .navigationSplitViewColumnWidth(min: proxy.size.width / 3, ideal: proxy.size.width / 3, max: proxy.size.width / 3)
             } detail: {
                 if let selected = dashboardViewModel.selectedLink {
@@ -25,7 +24,7 @@ struct DashboardView: View {
                     }
                 }
                 else if horizontalSizeClass == .regular {
-                    Text("Select link")
+                    ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
                 }
                 else {
                     EmptyView()
