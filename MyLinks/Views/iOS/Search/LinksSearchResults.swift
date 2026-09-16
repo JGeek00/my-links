@@ -8,8 +8,7 @@ struct LinksSearchResults: View {
     }
     
     @Environment(SearchViewModel.self) private var searchViewModel
-    
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.openURL) private var openURL
     
     var body: some View {
         LinksList(
@@ -29,7 +28,16 @@ struct LinksSearchResults: View {
             },
             onReload: {
                 Task { await searchLinksViewModel.loadInitial() }
-            }
+            },
+            onLinkTap: { link, mode in
+                if let mode = mode {
+                    searchViewModel.navigateDetail(link: link, mode: mode)
+                }
+                else if let urlString = link.url, let url = URL(string: urlString) {
+                    openURL(url)
+                }
+            },
+            selectedLinkId: searchViewModel.selectedLink?.link.id
         )
         .navigationTitle("All search results")
         .background(Color.listBackground)

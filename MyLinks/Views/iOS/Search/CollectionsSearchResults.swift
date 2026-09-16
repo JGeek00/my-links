@@ -3,35 +3,24 @@ import SwiftUI
 struct CollectionsSearchResults: View {
     @Environment(SearchViewModel.self) private var searchViewModel
     
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.openURL) private var openURL
     
     var body: some View {
-        if horizontalSizeClass == .regular {
-            ScrollView {
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(searchViewModel.filteredCollections, id: \.self) { item in
-                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
-                            if action == .delete {
-                                searchViewModel.handleDeleteCollection(collectionId: c.id)
-                            }
-                        }
-                        .padding(8)
-                    }
+        List(searchViewModel.filteredCollections, id: \.self) { item in
+            CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId, onTaskCompleted: { c, action in
+                if action == .delete {
+                    searchViewModel.handleDeleteCollection(collectionId: c.id)
                 }
-                .padding(16)
-            }
-            .navigationTitle("All search results")
-            .background(Color.listBackground)
-        }
-        else {
-            List(searchViewModel.filteredCollections, id: \.self) { item in
-                CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
-                    if action == .delete {
-                        searchViewModel.handleDeleteCollection(collectionId: c.id)
-                    }
+            }, onLinkTap: { link, mode in
+                if let mode = mode {
+                    searchViewModel.navigateDetail(link: link, mode: mode)
                 }
-            }
-            .navigationTitle("All search results")
+                else if let urlString = link.url, let url = URL(string: urlString) {
+                    openURL(url)
+                }
+            }, selectedLinkId: searchViewModel.selectedLink?.link.id)
         }
+        .listStyle(.insetGrouped)
+        .navigationTitle("All search results")
     }
 }

@@ -10,86 +10,102 @@ struct SearchView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        NavigationStack {
-            Group {
-                if searchViewModel.searchQueryValue == nil {
-                    ContentUnavailableView("Insert search term", systemImage: "magnifyingglass", description: Text("Input a search term to search links, categories and tags"))
-                        .transition(.opacity)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                else {
-                    if searchViewModel.loading == true {
-                        ProgressView()
-                            .transition(.opacity)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    if searchViewModel.error == true {
-                        ContentUnavailableView {
-                            Label("Error", systemImage: "exclamationmark.circle")
-                        } description: {
-                            Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
-                            Button {
-                                Task { await searchViewModel.loadData() }
-                            } label: {
-                                Label("Retry", systemImage: "arrow.counterclockwise")
-                            }
-                        }
-                        .transition(.opacity)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    if searchViewModel.loading == false && searchViewModel.error == false {
-                        if horizontalSizeClass == .regular {
-                            SearchRegularView()
+        @Bindable var searchViewModel = searchViewModel
+
+        GeometryReader { proxy in
+            NavigationSplitView(preferredCompactColumn: $searchViewModel.preferredColumn) {
+                NavigationStack {
+                    Group {
+                        if searchViewModel.searchQueryValue == nil {
+                            ContentUnavailableView("Insert search term", systemImage: "magnifyingglass", description: Text("Input a search term to search links, categories and tags"))
+                                .transition(.opacity)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                         else {
-                            SearchCompactView()
+                            if searchViewModel.loading == true {
+                                ProgressView()
+                                    .transition(.opacity)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                            if searchViewModel.error == true {
+                                ContentUnavailableView {
+                                    Label("Error", systemImage: "exclamationmark.circle")
+                                } description: {
+                                    Text("An error occured when loading the dashboard data. Check your Internet connection and try again later.")
+                                    Button {
+                                        Task { await searchViewModel.loadData() }
+                                    } label: {
+                                        Label("Retry", systemImage: "arrow.counterclockwise")
+                                    }
+                                }
+                                .transition(.opacity)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                            if searchViewModel.loading == false && searchViewModel.error == false {
+                                SerachContent()
+                            }
                         }
                     }
-                }
-            }
-            .if(horizontalSizeClass == .regular) { view in
-                view
+                    .if(horizontalSizeClass == .regular) { view in
+                        view
+                            .background(Color.listBackground)
+                    }
                     .background(Color.listBackground)
-            }
-            .background(Color.listBackground)
-            .navigationTitle("Search")
-            .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
-            .onSubmit(of: .search) {
-                searchViewModel.search()
-            }
-            .onChange(of: searchViewModel.searchPresented, { oldValue, newValue in
-                if oldValue == true && newValue == false {
-                    searchViewModel.clearSearch()
+                    .navigationTitle("Search")
+                    .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
+                    .onSubmit(of: .search) {
+                        searchViewModel.search()
+                    }
+                    .onChange(of: searchViewModel.searchPresented, { oldValue, newValue in
+                        if oldValue == true && newValue == false {
+                            searchViewModel.clearSearch()
+                        }
+                    })
+                    .alert("Error", isPresented: $searchViewModel.deleteCollectionErrorAlert) {
+                        Button("OK", role: .cancel) {
+                            searchViewModel.deleteCollectionErrorAlert = false
+                        }
+                    } message: {
+                        Text("The collection could not be deleted. Try again later.")
+                    }
+                    .alert("Error", isPresented: $searchViewModel.deleteLinkErrorAlert) {
+                        Button("OK", role: .cancel) {
+                            searchViewModel.deleteLinkErrorAlert = false
+                        }
+                    } message: {
+                        Text("The link could not be deleted. Try again later.")
+                    }
+                    .alert("Error", isPresented: $searchViewModel.deleteTagErrorAlert) {
+                        Button("OK", role: .cancel) {
+                            searchViewModel.deleteTagErrorAlert = false
+                        }
+                    } message: {
+                        Text("The tag could not be deleted. Try again later.")
+                    }
                 }
-            })
-            .alert("Error", isPresented: $searchViewModel.deleteCollectionErrorAlert) {
-                Button("OK", role: .cancel) {
-                    searchViewModel.deleteCollectionErrorAlert = false
+                .navigationSplitViewColumnWidth(min: proxy.size.width / 3, ideal: proxy.size.width / 3, max: proxy.size.width / 3)
+            } detail: {
+                if let selected = searchViewModel.selectedLink {
+                    NavigationStack {
+                        DashboardDetailView(linkOpen: selected)
+                    }
                 }
-            } message: {
-                Text("The collection could not be deleted. Try again later.")
-            }
-            .alert("Error", isPresented: $searchViewModel.deleteLinkErrorAlert) {
-                Button("OK", role: .cancel) {
-                    searchViewModel.deleteLinkErrorAlert = false
+                else if horizontalSizeClass == .regular {
+                    ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
                 }
-            } message: {
-                Text("The link could not be deleted. Try again later.")
-            }
-            .alert("Error", isPresented: $searchViewModel.deleteTagErrorAlert) {
-                Button("OK", role: .cancel) {
-                    searchViewModel.deleteTagErrorAlert = false
+                else {
+                    EmptyView()
                 }
-            } message: {
-                Text("The tag could not be deleted. Try again later.")
             }
         }
         .environment(searchViewModel)
+        .toolbar(horizontalSizeClass == .compact && searchViewModel.preferredColumn == .detail ? .hidden : .visible, for: .tabBar)
     }
 }
 
-fileprivate struct SearchCompactView: View {
+fileprivate struct SerachContent: View {
     @Environment(SearchViewModel.self) private var searchViewModel
+    @Environment(\.openURL) private var openURL
     
     var body: some View {
         let linksSliced = searchViewModel.links.prefix(10)
@@ -100,14 +116,21 @@ fileprivate struct SearchCompactView: View {
             if !linksSliced.isEmpty {
                 Section {
                     ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item) {l, id, action in
+                        LinkItemComponent(item: item, onTaskCompleted: { l, id, action in
                             switch action {
                             case .edit:
                                 searchViewModel.handleEditLink(link: l!)
                             case .delete:
                                 searchViewModel.handleDeleteLink(linkId: id!)
                             }
-                        }
+                        }, onLinkTap: { link, mode in
+                            if let mode = mode {
+                                searchViewModel.navigateDetail(link: link, mode: mode)
+                            }
+                            else if let urlString = link.url, let url = URL(string: urlString) {
+                                openURL(url)
+                            }
+                        }, isSelected: searchViewModel.isSelected(link: item))
                     }
                 } header: {
                     HStack {
@@ -124,6 +147,7 @@ fileprivate struct SearchCompactView: View {
                                     Image(systemName: "arrow.right")
                                 }
                             }
+                            .isDetailLink(false)
                         }
                     }
                 }
@@ -131,11 +155,18 @@ fileprivate struct SearchCompactView: View {
             if !collectionsSliced.isEmpty {
                 Section {
                     ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
+                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId, onTaskCompleted: { c, action in
                             if action == .delete {
                                 searchViewModel.handleDeleteCollection(collectionId: c.id)
                             }
-                        }
+                        }, onLinkTap: { link, mode in
+                            if let mode = mode {
+                                searchViewModel.navigateDetail(link: link, mode: mode)
+                            }
+                            else if let urlString = link.url, let url = URL(string: urlString) {
+                                openURL(url)
+                            }
+                        }, selectedLinkId: searchViewModel.selectedLink?.link.id)
                     }
                 } header: {
                     HStack {
@@ -152,6 +183,7 @@ fileprivate struct SearchCompactView: View {
                                     Image(systemName: "arrow.right")
                                 }
                             }
+                            .isDetailLink(false)
                         }
                     }
                 }
@@ -159,11 +191,18 @@ fileprivate struct SearchCompactView: View {
             if !tagsSliced.isEmpty {
                 Section {
                     ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item) { tag in
+                        TagItemComponent(tag: item, onDeleteTag: { tag in
                             searchViewModel.handleDeleteTag(tagId: tag.id)
-                        } onEditTag: { tag in
+                        }, onEditTag: { tag in
                             searchViewModel.handleEditTag(tag: tag)
-                        }
+                        }, onLinkTap: { link, mode in
+                            if let mode = mode {
+                                searchViewModel.navigateDetail(link: link, mode: mode)
+                            }
+                            else if let urlString = link.url, let url = URL(string: urlString) {
+                                openURL(url)
+                            }
+                        }, selectedLinkId: searchViewModel.selectedLink?.link.id)
                     }
                 } header: {
                     HStack {
@@ -180,120 +219,14 @@ fileprivate struct SearchCompactView: View {
                                     Image(systemName: "arrow.right")
                                 }
                             }
+                            .isDetailLink(false)
                         }
                     }
                 }
             }
         }
+        .listStyle(.insetGrouped)
         .transition(.opacity)
     }
 }
 
-fileprivate struct SearchRegularView: View {
-    @Environment(SearchViewModel.self) private var searchViewModel
-    
-    var body: some View {
-        let linksSliced = searchViewModel.links.prefix(10)
-        let collectionsSliced = searchViewModel.filteredCollections.prefix(10)
-        let tagsSliced = searchViewModel.tags.prefix(10)
-        
-        ScrollView {
-            Group {
-                HStack {
-                    Text("Links")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                    if searchViewModel.links.count > Config.searchViewMoreAmount {
-                        Spacer()
-                        NavigationLink {
-                            LinksSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
-                        } label: {
-                            Text("View all")
-                            Image(systemName: "chevron.right")
-                        }
-                        .font(.system(size: 16))
-                    }
-                }
-                .padding(.horizontal, 8)
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(linksSliced, id: \.self) { item in
-                        LinkItemComponent(item: item) { l, id, action in
-                            switch action {
-                            case .edit:
-                                searchViewModel.handleEditLink(link: l!)
-                            case .delete:
-                                searchViewModel.handleDeleteLink(linkId: id!)
-                            }
-                        }
-                        .padding(8)
-                    }
-                }
-                .padding(.top, -24)
-            }
-            .padding(16)
-            
-            Group {
-                HStack {
-                    Text("Collections")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                    if searchViewModel.filteredCollections.count > Config.searchViewMoreAmount {
-                        Spacer()
-                        NavigationLink {
-                            CollectionsSearchResults()
-                        } label: {
-                            Text("View all")
-                            Image(systemName: "chevron.right")
-                        }
-                        .font(.system(size: 16))
-                    }
-                }
-                .padding(.horizontal, 8)
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(collectionsSliced, id: \.self) { item in
-                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == searchViewModel.loggedUserId) { c, action in
-                            if action == .delete {
-                                searchViewModel.handleDeleteCollection(collectionId: c.id)
-                            }
-                        }
-                        .padding(8)
-                    }
-                }
-                .padding(.top, -24)
-            }
-            .padding(16)
-            
-            Group {
-                HStack {
-                    Text("Tags")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                    if searchViewModel.tags.count > Config.searchViewMoreAmount {
-                        Spacer()
-                        NavigationLink {
-                            TagsSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "")
-                        } label: {
-                            Text("View all")
-                            Image(systemName: "chevron.right")
-                        }
-                        .font(.system(size: 16))
-                    }
-                }
-                .padding(.horizontal, 8)
-                LazyVGrid(columns: Config.gridColumns) {
-                    ForEach(tagsSliced, id: \.self) { item in
-                        TagItemComponent(tag: item) { tag in
-                            searchViewModel.handleDeleteTag(tagId: tag.id)
-                        } onEditTag: { tag in
-                            searchViewModel.handleEditTag(tag: tag)
-                        }
-                        .padding(8)
-                    }
-                }
-                .padding(.top, -24)
-            }
-            .padding(16)
-        }
-        .transition(.opacity)
-    }
-}

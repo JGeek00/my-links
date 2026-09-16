@@ -52,6 +52,18 @@ class SearchViewModel {
     var deleteLinkErrorAlert = false
     var deleteCollectionErrorAlert = false
     var deleteTagErrorAlert = false
+
+    var selectedLink: SelectedLinkOpen? = nil
+    var preferredColumn: NavigationSplitViewColumn = .sidebar
+
+    func navigateDetail(link: Link, mode: Enums.OpenLinkAction) {
+        selectedLink = SelectedLinkOpen(link: link, type: mode, source: nil)
+        preferredColumn = .detail
+    }
+
+    func isSelected(link: Link) -> Bool {
+        selectedLink?.link.id == link.id
+    }
     
     func loadData(
         setLoading: Bool = false,

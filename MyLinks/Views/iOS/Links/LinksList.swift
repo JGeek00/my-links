@@ -26,9 +26,7 @@ struct LinksList: View {
         self.onLinkTap = onLinkTap
         self.selectedLinkId = selectedLinkId
     }
-    
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
+        
     var body: some View {
         Group {
             if loading == true {
@@ -69,54 +67,27 @@ struct LinksList: View {
                 .transition(.opacity)
             }
             else {
-                if horizontalSizeClass == .regular {
-                    ScrollViewReader(content: { scrollView in
-                        ScrollView {
-                            LazyVGrid(columns: Config.gridColumns) {
-                                ForEach(data, id: \.self) { item in
-                                    LinkItemComponent(item: item, onTaskCompleted: { _, _, action in
-                                        switch action {
-                                        case .edit:
-                                            onEditLink(item)
-                                        case .delete:
-                                            onDeleteLink(item)
-                                        }
-                                    }, onLinkTap: onLinkTap, isSelected: selectedLinkId == item.id)
-                                    .onAppear {
-                                        if item == data.last {
-                                            onLoadMore()
-                                        }
-                                    }
-                                    .padding(6)
-                                }
+                ScrollViewReader { scrollView in
+                    List(data, id: \.self) { item in
+                        LinkItemComponent(item: item, onTaskCompleted: { _, _, action in
+                            switch action {
+                            case .edit:
+                                onEditLink(item)
+                            case .delete:
+                                onDeleteLink(item)
                             }
-                            .padding(.horizontal, 12)
-                        }
-                    })
-                }
-                else {
-                    ScrollViewReader { scrollView in
-                        List(data, id: \.self) { item in
-                            LinkItemComponent(item: item, onTaskCompleted: { _, _, action in
-                                switch action {
-                                case .edit:
-                                    onEditLink(item)
-                                case .delete:
-                                    onDeleteLink(item)
-                                }
-                            }, onLinkTap: onLinkTap, isSelected: selectedLinkId == item.id)
-                            .onAppear {
-                                if item == data.last {
-                                    onLoadMore()
-                                }
+                        }, onLinkTap: onLinkTap, isSelected: selectedLinkId == item.id)
+                        .onAppear {
+                            if item == data.last {
+                                onLoadMore()
                             }
                         }
-                        .animation(.default, value: data)
-                        .listStyle(.insetGrouped)
-                        .onChange(of: scrollToTop, initial: false) {
-                            guard let first = data.first else { return }
-                            scrollView.scrollTo(first)
-                        }
+                    }
+                    .animation(.default, value: data)
+                    .listStyle(.insetGrouped)
+                    .onChange(of: scrollToTop, initial: false) {
+                        guard let first = data.first else { return }
+                        scrollView.scrollTo(first)
                     }
                 }
             }

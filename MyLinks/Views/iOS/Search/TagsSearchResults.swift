@@ -9,7 +9,7 @@ struct TagsSearchResults: View {
     
     @Environment(SearchViewModel.self) private var searchViewModel: SearchViewModel
     
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.openURL) private var openURL
     
     var body: some View {
         TagsList(
@@ -27,7 +27,16 @@ struct TagsSearchResults: View {
             },
             onLoadNextBatch: {
                 searchTagsViewModel.loadNextPage()
-            }
+            },
+            onLinkTap: { link, mode in
+                if let mode = mode {
+                    searchViewModel.navigateDetail(link: link, mode: mode)
+                }
+                else if let urlString = link.url, let url = URL(string: urlString) {
+                    openURL(url)
+                }
+            },
+            selectedLinkId: searchViewModel.selectedLink?.link.id
         )
         .background(Color.listBackground)
         .navigationTitle("All search results")
