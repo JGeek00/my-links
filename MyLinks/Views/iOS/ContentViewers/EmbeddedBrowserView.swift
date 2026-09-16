@@ -34,33 +34,36 @@ struct EmbeddedBrowserView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Group {
-                    if viewModel.isLoading {
+                VStack {
+                    if viewModel.showProgress {
                         ProgressView(value: viewModel.progress, total: 1)
                             .accessibilityLabel("Loading progress")
-                    } else if let domain = viewModel.domain {
+                            .transition(.opacity)
+                    }
+                    if let domain = viewModel.domain {
                         Text(domain)
                             .lineLimit(1)
                             .truncationMode(.middle)
+                            .padding(.top, 6)
                     }
                 }
                 .frame(width: 160)
                 .transition(.opacity)
-                .animation(.default, value: viewModel.isLoading)
+                .animation(.default, value: viewModel.showProgress)
             }
             if isRegular {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    backForwardButtons(viewModel: viewModel)
+                    backForwardButtons()
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    reloadButton(viewModel: viewModel)
+                    reloadButton()
                 }
             } else {
                 if viewModel.bottomBarHidden == false {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        backForwardButtons(viewModel: viewModel)
+                        backForwardButtons()
                         Spacer()
-                        reloadButton(viewModel: viewModel)
+                        reloadButton()
                     }
                 }
             }
@@ -71,7 +74,7 @@ struct EmbeddedBrowserView: View {
     // MARK: - Toolbar buttons
 
     @ViewBuilder
-    private func backForwardButtons(viewModel: EmbeddedBrowserViewModel) -> some View {
+    private func backForwardButtons() -> some View {
         Button {
             viewModel.goBack()
         } label: {
@@ -87,7 +90,7 @@ struct EmbeddedBrowserView: View {
     }
 
     @ViewBuilder
-    private func reloadButton(viewModel: EmbeddedBrowserViewModel) -> some View {
+    private func reloadButton() -> some View {
         Button {
             viewModel.reload()
         } label: {

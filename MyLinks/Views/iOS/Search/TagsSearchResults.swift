@@ -9,6 +9,7 @@ struct TagsSearchResults: View {
     
     @Environment(SearchViewModel.self) private var searchViewModel: SearchViewModel
     
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.openURL) private var openURL
     
     var body: some View {
@@ -36,7 +37,7 @@ struct TagsSearchResults: View {
                     openURL(url)
                 }
             },
-            selectedLinkId: searchViewModel.selectedLink?.link.id
+            selectedLinkId: horizontalSizeClass == .regular ? searchViewModel.selectedLink?.link.id : nil
         )
         .background(Color.listBackground)
         .navigationTitle("All search results")

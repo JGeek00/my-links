@@ -105,6 +105,7 @@ struct SearchView: View {
 
 fileprivate struct SerachContent: View {
     @Environment(SearchViewModel.self) private var searchViewModel
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.openURL) private var openURL
     
     var body: some View {
@@ -130,7 +131,7 @@ fileprivate struct SerachContent: View {
                             else if let urlString = link.url, let url = URL(string: urlString) {
                                 openURL(url)
                             }
-                        }, isSelected: searchViewModel.isSelected(link: item))
+                        }, isSelected: horizontalSizeClass == .regular && searchViewModel.isSelected(link: item))
                     }
                 } header: {
                     HStack {

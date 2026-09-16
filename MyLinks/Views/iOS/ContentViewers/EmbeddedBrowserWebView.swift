@@ -92,7 +92,6 @@ struct EmbeddedBrowserWebView: UIViewRepresentable {
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             Task { @MainActor in
                 self.viewModel.didFinish(
-                    url: webView.url,
                     canGoBack: webView.canGoBack,
                     canGoForward: webView.canGoForward
                 )

@@ -9,17 +9,17 @@ final class EmbeddedBrowserViewModel {
 
     var progress: Double = 0
     var isLoading: Bool = false
-    var currentURL: URL? = nil
+    var showProgress: Bool = true
     var canGoBack: Bool = false
     var canGoForward: Bool = false
     var loadFailed: Bool = false
     var bottomBarHidden: Bool = false
 
     @ObservationIgnored weak var webView: WKWebView?
+    @ObservationIgnored private var hideProgressTask: Task<Void, Never>?
 
     var domain: String? {
-        guard isLoading == false else { return nil }
-        return currentURL?.host
+        initialURL?.host
     }
 
     var initialURL: URL? {
@@ -58,6 +58,8 @@ final class EmbeddedBrowserViewModel {
         } else if let url = initialURL {
             isLoading = true
             loadFailed = false
+            progress = 0
+            showProgress = true
             webView?.load(URLRequest(url: url))
         } else {
             failInvalidURL()
@@ -78,26 +80,37 @@ final class EmbeddedBrowserViewModel {
         isLoading = true
         loadFailed = false
         bottomBarHidden = false
+        progress = 0
+        hideProgressTask?.cancel()
+        showProgress = true
     }
 
     func didUpdateProgress(_ value: Double) {
         progress = value
     }
 
-    func didFinish(url: URL?, canGoBack: Bool, canGoForward: Bool) {
+    func didFinish(canGoBack: Bool, canGoForward: Bool) {
         isLoading = false
         loadFailed = false
         bottomBarHidden = false
         progress = 1
-        currentURL = url
         self.canGoBack = canGoBack
         self.canGoForward = canGoForward
+        // ponytail: keep the full bar visible briefly so completion reads, then fade it
+        hideProgressTask?.cancel()
+        hideProgressTask = Task {
+            try? await Task.sleep(for: .milliseconds(500))
+            guard !Task.isCancelled else { return }
+            self.showProgress = false
+        }
     }
 
     func didFail(canGoBack: Bool, canGoForward: Bool) {
         isLoading = false
         loadFailed = true
         bottomBarHidden = false
+        hideProgressTask?.cancel()
+        showProgress = false
         self.canGoBack = canGoBack
         self.canGoForward = canGoForward
     }
@@ -105,5 +118,7 @@ final class EmbeddedBrowserViewModel {
     func failInvalidURL() {
         isLoading = false
         loadFailed = true
+        hideProgressTask?.cancel()
+        showProgress = false
     }
 }
