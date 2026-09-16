@@ -29,6 +29,7 @@ struct EmbeddedBrowserView: View {
                 }
             } else {
                 EmbeddedBrowserWebView(viewModel: viewModel)
+                    .ignoresSafeArea(edges: .bottom)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
