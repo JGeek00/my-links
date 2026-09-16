@@ -13,11 +13,15 @@ struct LinkItemComponent: View {
     let item: Link
     let onTaskCompleted: (Link?, Int?, Enums.LinkTaskAction) -> Void
     let onPinUnpin: ((Link, Enums.PinUnpinAction) -> Void)?
+    let onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    let isSelected: Bool
     
-    init(item: Link, onTaskCompleted: @escaping (Link?, Int?, Enums.LinkTaskAction) -> Void, onPinUnpin: ((Link, Enums.PinUnpinAction) -> Void)? = nil) {
+    init(item: Link, onTaskCompleted: @escaping (Link?, Int?, Enums.LinkTaskAction) -> Void, onPinUnpin: ((Link, Enums.PinUnpinAction) -> Void)? = nil, onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, isSelected: Bool = false) {
         self.item = item
         self.onTaskCompleted = onTaskCompleted
         self.onPinUnpin = onPinUnpin
+        self.onLinkTap = onLinkTap
+        self.isSelected = isSelected
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -96,7 +100,11 @@ struct LinkItemComponent: View {
         }()
         
         Button {
-            openItem(formatsAvailable)
+            if let onLinkTap = onLinkTap {
+                onLinkTap(item, openLinkHandler(link: item, defaultOption: openLinkByDefault))
+            } else {
+                openItem(formatsAvailable)
+            }
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -132,7 +140,7 @@ struct LinkItemComponent: View {
                             .font(.system(size: 14))
                     }
                 }
-                .foregroundStyle(Color.gray)
+                .foregroundStyle(isSelected ? .white : Color.gray)
                 if dateFormatted != nil {
                     Spacer()
                         .frame(height: 4)
@@ -149,14 +157,19 @@ struct LinkItemComponent: View {
                                 .font(.system(size: 14))
                         }
                     }
-                    .foregroundStyle(Color.gray)
+                    .foregroundStyle(isSelected ? .white : Color.gray)
                 }
             }
         }
-        .padding(horizontalSizeClass == .regular ? 16 : 0)
-        .foregroundColor(Color.foreground)
-        .background(horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear)
+        .padding((isSelected || horizontalSizeClass == .regular) ? 16 : 0)
+        .foregroundColor(isSelected ? .white : Color.foreground)
+        .background(isSelected ? Color.accentColor : (horizontalSizeClass == .regular ? Color.listItemBackground : Color.clear))
         .cornerRadius(horizontalSizeClass == .regular ? 24 : 0)
+        .if(isSelected) {
+            $0.listRowBackground(Color.accentColor)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .listRowSeparator(.hidden)
+        }
         .contextMenu {
             contextMenu(formatsAvailable)
         }
@@ -216,7 +229,12 @@ struct LinkItemComponent: View {
             Section {
                 Menu("Open in...", systemImage: "square.and.arrow.up.on.square") {
                     Button("In app browser") {
-                        openSafariView(url)
+                        if let onLinkTap = onLinkTap {
+                            onLinkTap(item, .url)
+                        }
+                        else {
+                            openSafariView(url)
+                        }
                     }
                     Button("System default browser") {
                         if let url = URL(string: url) {
@@ -244,28 +262,48 @@ struct LinkItemComponent: View {
                 Menu("Preserved formats", systemImage: "doc.viewfinder") {
                     if item.monolith != nil && item.monolith != "unavailable" {
                         Button {
-                            websiteViewerSheet.toggle()
+                            if let onLinkTap = onLinkTap {
+                                onLinkTap(item, .webpage)
+                            }
+                            else {
+                                websiteViewerSheet.toggle()
+                            }
                         } label: {
                             Label("Webpage", image: colorScheme == .dark ? "htmltag-white" : "htmltag-black")
                         }
                     }
                     if formats.reader == true {
                         Button {
-                            readerModeSheet.toggle()
+                            if let onLinkTap = onLinkTap {
+                                onLinkTap(item, .readableMode)
+                            }
+                            else {
+                                readerModeSheet.toggle()
+                            }
                         } label: {
                             Label("Readable", systemImage: "textformat")
                         }
                     }
                     if formats.pdf == true {
                         Button {
-                            pdfViewerSheet.toggle()
+                            if let onLinkTap = onLinkTap {
+                                onLinkTap(item, .pdfDocument)
+                            }
+                            else {
+                                pdfViewerSheet.toggle()
+                            }
                         } label: {
                             Label("PDF", systemImage: "doc")
                         }
                     }
                     if formats.image == true {
                         Button {
-                            imageViewerSheet.toggle()
+                            if let onLinkTap = onLinkTap {
+                                onLinkTap(item, .imageDocument)
+                            }
+                            else {
+                                imageViewerSheet.toggle()
+                            }
                         } label: {
                             Label("Image", systemImage: "photo")
                         }

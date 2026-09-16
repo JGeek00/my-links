@@ -2,13 +2,17 @@ import SwiftUI
 
 struct LinksFilteredView: View {
     var linksFilterdRequest: LinksFilteredRequest
+    var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    var selectedLinkId: Int?
         
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @State private var linksFilteredViewModel: LinksFilteredViewModel
     
-    init(linksFilteredRequest: LinksFilteredRequest) {
+    init(linksFilteredRequest: LinksFilteredRequest, onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         self.linksFilterdRequest = linksFilteredRequest
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
         _linksFilteredViewModel = State(initialValue: LinksFilteredViewModel(input: linksFilteredRequest))
     }
     
@@ -50,10 +54,10 @@ struct LinksFilteredView: View {
                 else {
                     Group {
                         if horizontalSizeClass == .regular {
-                            LinksFilteredRegularView(mode: linksFilterdRequest.mode)
+                            LinksFilteredRegularView(mode: linksFilterdRequest.mode, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                         }
                         else {
-                            LinksFilteredCompactView(mode: linksFilterdRequest.mode)
+                            LinksFilteredCompactView(mode: linksFilterdRequest.mode, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                         }
                     }
                 }

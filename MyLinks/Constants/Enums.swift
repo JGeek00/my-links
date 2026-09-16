@@ -160,9 +160,22 @@ class Enums {
         case tags = "Tags"
     }
     
+    enum DashboardSubView: String, CaseIterable {
+        case allPinned = "Pinned"
+        case allRecent = "Recent"
+    }
+    
     enum OpenLinkByDefault: String {
         case internalBrowser
         case systemBrowser
+        case readableMode
+        case pdfDocument
+        case imageDocument
+    }
+    
+    enum OpenLinkAction: String {
+        case url
+        case webpage
         case readableMode
         case pdfDocument
         case imageDocument

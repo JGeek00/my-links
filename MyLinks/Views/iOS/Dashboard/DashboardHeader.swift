@@ -2,65 +2,69 @@ import SwiftUI
 
 struct Header: View {
     var dashboardData: DashboardResponse_Data
+    var isSingleColumn: Bool
     
-    init(dashboardData: DashboardResponse_Data) {
+    init(dashboardData: DashboardResponse_Data, isSingleColumn: Bool = false) {
         self.dashboardData = dashboardData
+        self.isSingleColumn = isSingleColumn
     }
-    
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @Environment(DashboardViewModel.self) private var dashboardViewModel
     
     var body: some View {
-        if horizontalSizeClass == .regular {
-            Section {
-                HStack(spacing: 16) {
-                    SummaryEntry(icon: "link", label: "Links", value: (dashboardViewModel.collections.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded) {
-                        dashboardViewModel.navigateLinksCatalog()
-                    }
-                    SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardData.numberOfPinnedLinks, color: Color.orange, status: .loaded) {
-                        dashboardViewModel.navigatePinned()
-                    }
-                    SummaryEntry(icon: "folder.fill", label: "Collections", value: dashboardViewModel.collections.count, color: Color.blue, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded) {
-                        dashboardViewModel.navigateLinksCatalog()
-                    }
-                    SummaryEntry(icon: "tag.fill", label: "Tags", value: dashboardData.numberOfTags, color: Color.red, status: .loaded) {
-                        dashboardViewModel.navigateTagsCatalog()
-                    }
+        Group {
+            if isSingleColumn {
+                VStack(spacing: 12) {
+                    linksEntry
+                    pinnedEntry
+                    collectionsEntry
+                    tagsEntry
                 }
             }
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-            .padding(16)
-        }
-        else {
-            Section {
+            else {
                 VStack(spacing: 12) {
                     HStack(spacing: 12) {
-                        SummaryEntry(icon: "link", label: "Links", value: (dashboardViewModel.collections.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded) {
-                            dashboardViewModel.navigateLinksCatalog()
-                        }
-                        SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardData.numberOfPinnedLinks, color: Color.orange, status: .loaded) {
-                            dashboardViewModel.navigatePinned()
-                        }
+                        linksEntry
+                        pinnedEntry
                     }
                     HStack(spacing: 12) {
-                        SummaryEntry(icon: "folder.fill", label: "Collections", value: dashboardViewModel.collections.count, color: Color.blue, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded) {
-                            dashboardViewModel.navigateCollectionsCatalog()
-                        }
-                        SummaryEntry(icon: "tag.fill", label: "Tags", value: dashboardData.numberOfTags, color: Color.red, status: .loaded) {
-                            dashboardViewModel.navigateTagsCatalog()
-                        }
+                        collectionsEntry
+                        tagsEntry
                     }
                 }
             }
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-            .padding(.top, 16)
+        }
+        .padding(.top, 8)
+        .padding(.leading, -16)
+        .padding(.trailing, -16)
+    }
+
+    private var linksEntry: some View {
+        SummaryEntry(icon: "link", label: "Links", value: (dashboardViewModel.collections.map() { $0._count!.links! }).reduce(0, +), color: Color.green, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded) {
+            dashboardViewModel.navigateLinksCatalog()
+        }
+    }
+
+    private var pinnedEntry: some View {
+        SummaryEntry(icon: "pin.fill", label: "Pinned", value: dashboardData.numberOfPinnedLinks, color: Color.orange, status: .loaded) {
+            dashboardViewModel.navigatePinned()
+        }
+    }
+
+    private var collectionsEntry: some View {
+        SummaryEntry(icon: "folder.fill", label: "Collections", value: dashboardViewModel.collections.count, color: Color.blue, status: dashboardViewModel.loadingCollections == true ? .loading : dashboardViewModel.errorCollections == true ? .error : .loaded) {
+            dashboardViewModel.navigateCollectionsCatalog()
+        }
+    }
+
+    private var tagsEntry: some View {
+        SummaryEntry(icon: "tag.fill", label: "Tags", value: dashboardData.numberOfTags, color: Color.red, status: .loaded) {
+            dashboardViewModel.navigateTagsCatalog()
         }
     }
 }
 
-struct SummaryEntry: View {
+fileprivate struct SummaryEntry: View {
     var icon: String
     var label: String
     var value: Int?

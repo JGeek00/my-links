@@ -1,6 +1,12 @@
 import Foundation
 import SwiftUI
 
+struct SelectedLinkOpen {
+    let link: Link
+    let type: Enums.OpenLinkAction
+    let source: Enums.DashboardSubView?
+}
+
 @MainActor
 @Observable
 class DashboardViewModel {
@@ -36,6 +42,18 @@ class DashboardViewModel {
     var unpinLinkErrorAlert: Bool = false
         
     var path = NavigationPath()
+    var selectedLink: SelectedLinkOpen? = nil
+    var preferredColumn: NavigationSplitViewColumn = .sidebar
+    
+    func navigateDetail(link: Link, mode: Enums.OpenLinkAction, source: Enums.DashboardSubView? = nil){
+        selectedLink = SelectedLinkOpen(link: link, type: mode, source: source)
+        preferredColumn = .detail
+    }
+    
+    func isSelected(link: Link, source: Enums.DashboardSubView) -> Bool {
+        guard let selectedLink = selectedLink, selectedLink.link.id == link.id else { return false }
+        return selectedLink.source == nil || selectedLink.source == source
+    }
     
     func loadData(setLoading: Bool = false) async {
         if setLoading == true {

@@ -141,7 +141,7 @@
 				Utils/ReviewApp.swift = (
 					ios,
 				);
-				Utils/SafariView.swift = (
+				Utils/SafariSheetOpener.swift = (
 					ios,
 				);
 				ViewModels/DocumentDownloaderViewModel.swift = (
@@ -174,13 +174,7 @@
 				Views/iOS/ContentViewers/PdfViewerView.swift = (
 					ios,
 				);
-				Views/iOS/Dashboard/DashboardCompactView.swift = (
-					ios,
-				);
 				Views/iOS/Dashboard/DashboardHeader.swift = (
-					ios,
-				);
-				Views/iOS/Dashboard/DashboardRegularView.swift = (
 					ios,
 				);
 				Views/iOS/Dashboard/DashboardView.swift = (

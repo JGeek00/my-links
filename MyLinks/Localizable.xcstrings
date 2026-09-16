@@ -337,6 +337,9 @@
         }
       }
     },
+    "An error occured when loading the page. Check your Internet connection and try again later." : {
+
+    },
     "An error occured when loading the PDF. Check your Internet connection and try again later." : {
       "localizations" : {
         "es" : {
@@ -1295,6 +1298,9 @@
         }
       }
     },
+    "Forward" : {
+
+    },
     "General settings" : {
       "localizations" : {
         "es" : {
@@ -1677,6 +1683,9 @@
           }
         }
       }
+    },
+    "Loading progress" : {
+
     },
     "Loading..." : {
       "localizations" : {
@@ -2293,6 +2302,9 @@
         }
       }
     },
+    "Reload" : {
+
+    },
     "Remove" : {
       "localizations" : {
         "es" : {
@@ -2492,6 +2504,9 @@
           }
         }
       }
+    },
+    "Select link" : {
+
     },
     "Self hosted" : {
       "localizations" : {

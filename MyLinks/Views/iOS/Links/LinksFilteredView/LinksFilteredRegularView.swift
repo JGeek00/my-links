@@ -2,9 +2,13 @@ import SwiftUI
 
 struct LinksFilteredRegularView: View {
     var mode: Enums.LinksFilteredMode
+    var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    var selectedLinkId: Int?
     
-    init(mode: Enums.LinksFilteredMode) {
+    init(mode: Enums.LinksFilteredMode, onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         self.mode = mode
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
     }
     
     @Environment(LinksFilteredViewModel.self) private var linksFilteredViewModel
@@ -58,14 +62,14 @@ struct LinksFilteredRegularView: View {
                         }
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(linksFilteredViewModel.data, id: \.self) { item in
-                                LinkItemComponent(item: item) { l, id, action in
+                                LinkItemComponent(item: item, onTaskCompleted: { l, id, action in
                                     switch action {
                                     case .edit:
                                         linksFilteredViewModel.handleEditLink(link: l!)
                                     case .delete:
                                         linksFilteredViewModel.handleDeleteLink(linkId: id!)
                                     }
-                                }
+                                }, onLinkTap: onLinkTap, isSelected: selectedLinkId == item.id)
                                 .onAppear {
                                     if item == linksFilteredViewModel.data.last {
                                         linksFilteredViewModel.loadMore()
