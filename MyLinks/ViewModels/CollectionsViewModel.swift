@@ -43,6 +43,8 @@ class CollectionsViewModel {
         Task {
             await collectionsRepository.deleteCollection(id: collectionId) { del in
                 self.progressIndicatorRepository.presenting = del
+            } setError: { _ in
+                self.deleteError = true
             }
         }
     }

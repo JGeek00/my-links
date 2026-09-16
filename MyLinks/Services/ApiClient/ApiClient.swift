@@ -181,6 +181,31 @@ class ApiClient: Equatable, @unchecked Sendable {
         return await executeRequest(request, as: T.self)
     }
 
+    // MARK: - DELETE with raw data response (success = HTTP < 400, body shape ignored)
+
+    func deleteData(
+        _ path: String,
+        query: [String: String]? = nil
+    ) async -> StatusResponse<Data> {
+        let defaultErrorResponse = StatusResponse<Data>(successful: false, statusCode: nil, data: nil)
+        let request = buildRequest(path: path, method: "DELETE", query: query, contentType: .json)
+
+        do {
+            let session = makeSession()
+
+            let (data, r) = try await session.data(for: request)
+            guard let response = r as? HTTPURLResponse else { return defaultErrorResponse }
+            if response.statusCode < 400 {
+                return StatusResponse<Data>(successful: true, statusCode: response.statusCode, data: data)
+            }
+            else {
+                return StatusResponse<Data>(successful: false, statusCode: response.statusCode, rawBody: String(data: data, encoding: .utf8))
+            }
+        } catch {
+            return defaultErrorResponse
+        }
+    }
+
     // MARK: - Raw Data response
 
     func getData(

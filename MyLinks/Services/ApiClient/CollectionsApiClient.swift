@@ -19,7 +19,7 @@ struct CollectionsApiClient: Equatable, @unchecked Sendable {
         return await apiClient.put("/api/v1/collections/\(collectionId)", body: body)
     }
 
-    func deleteCollection(collectionId: Int) async -> StatusResponse<Bool> {
-        return await apiClient.delete("/api/v1/collections/\(collectionId)")
+    func deleteCollection(collectionId: Int) async -> StatusResponse<Data> {
+        return await apiClient.deleteData("/api/v1/collections/\(collectionId)")
     }
 }

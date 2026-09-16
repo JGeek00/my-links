@@ -153,6 +153,15 @@ class LinksFilteredViewModel {
     
     func handleEditLink(link: Link) {
         // Request is being handled in the form view model
+        // if the edit moved the link out of this filtered view, drop it instead of replacing
+        if input.mode == .collection && link.collection.id != input.id {
+            self.data = self.data.filter() { $0.id != link.id }
+            return
+        }
+        if input.mode == .tag && !link.tags.contains(where: { $0.id == input.id }) {
+            self.data = self.data.filter() { $0.id != link.id }
+            return
+        }
         self.data = self.data.map() { item in
             if item.id == link.id {
                 return link

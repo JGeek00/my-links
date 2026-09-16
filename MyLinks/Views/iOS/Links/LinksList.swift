@@ -69,10 +69,10 @@ struct LinksList: View {
             else {
                 ScrollViewReader { scrollView in
                     List(data, id: \.self) { item in
-                        LinkItemComponent(item: item, onTaskCompleted: { _, _, action in
+                        LinkItemComponent(item: item, onTaskCompleted: { link, _, action in
                             switch action {
                             case .edit:
-                                onEditLink(item)
+                                onEditLink(link!)
                             case .delete:
                                 onDeleteLink(item)
                             }
