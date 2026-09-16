@@ -42,14 +42,14 @@ struct LinksFilteredCompactView: View {
                             }
                             else {
                                 ForEach(filteredSubCollections, id: \.self) { item in
-                                    CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == linksFilteredViewModel.loggedUserId) { c, action in
+                                    CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == linksFilteredViewModel.loggedUserId, onTaskCompleted: { c, action in
                                         switch action {
                                         case .edit:
                                             linksFilteredViewModel.handleEditCollection(collection: c)
                                         case .delete:
                                             linksFilteredViewModel.handleDeleteCollection(collectionId: c.id)
                                         }
-                                    }
+                                    }, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                                 }
                                 .transition(.opacity)
                             }

@@ -66,6 +66,9 @@
 				Components/iOS/CollectionItem.swift = (
 					ios,
 				);
+				Components/iOS/DashboardDetailView.swift = (
+					ios,
+				);
 				Components/iOS/DocumentPicker.swift = (
 					ios,
 				);

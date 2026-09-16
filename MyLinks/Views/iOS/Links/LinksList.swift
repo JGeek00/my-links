@@ -6,12 +6,14 @@ struct LinksList: View {
     var withSearch: Bool
     var data: [Link]
     var scrollToTop: Bool
+    var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    var selectedLinkId: Int?
     var onEditLink: (Link) -> Void
     var onDeleteLink: (Link) -> Void
     var onLoadMore: () -> Void
     var onReload: () -> Void
     
-    init(loading: Bool, error: Bool, withSearch: Bool, data: [Link], scrollToTop: Bool, onEditLink: @escaping (Link) -> Void, onDeleteLink: @escaping (Link) -> Void, onLoadMore: @escaping () -> Void, onReload: @escaping () -> Void) {
+    init(loading: Bool, error: Bool, withSearch: Bool, data: [Link], scrollToTop: Bool, onEditLink: @escaping (Link) -> Void, onDeleteLink: @escaping (Link) -> Void, onLoadMore: @escaping () -> Void, onReload: @escaping () -> Void, onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         self.loading = loading
         self.error = error
         self.withSearch = withSearch
@@ -21,6 +23,8 @@ struct LinksList: View {
         self.onDeleteLink = onDeleteLink
         self.onLoadMore = onLoadMore
         self.onReload = onReload
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -70,14 +74,14 @@ struct LinksList: View {
                         ScrollView {
                             LazyVGrid(columns: Config.gridColumns) {
                                 ForEach(data, id: \.self) { item in
-                                    LinkItemComponent(item: item) { _, _, action in
+                                    LinkItemComponent(item: item, onTaskCompleted: { _, _, action in
                                         switch action {
                                         case .edit:
                                             onEditLink(item)
                                         case .delete:
                                             onDeleteLink(item)
                                         }
-                                    }
+                                    }, onLinkTap: onLinkTap, isSelected: selectedLinkId == item.id)
                                     .onAppear {
                                         if item == data.last {
                                             onLoadMore()
@@ -93,14 +97,14 @@ struct LinksList: View {
                 else {
                     ScrollViewReader { scrollView in
                         List(data, id: \.self) { item in
-                            LinkItemComponent(item: item) { _, _, action in
+                            LinkItemComponent(item: item, onTaskCompleted: { _, _, action in
                                 switch action {
                                 case .edit:
                                     onEditLink(item)
                                 case .delete:
                                     onDeleteLink(item)
                                 }
-                            }
+                            }, onLinkTap: onLinkTap, isSelected: selectedLinkId == item.id)
                             .onAppear {
                                 if item == data.last {
                                     onLoadMore()
@@ -108,6 +112,7 @@ struct LinksList: View {
                             }
                         }
                         .animation(.default, value: data)
+                        .listStyle(.insetGrouped)
                         .onChange(of: scrollToTop, initial: false) {
                             guard let first = data.first else { return }
                             scrollView.scrollTo(first)

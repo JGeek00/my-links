@@ -666,6 +666,7 @@
       }
     },
     "Choose one option" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

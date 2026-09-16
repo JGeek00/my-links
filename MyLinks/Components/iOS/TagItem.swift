@@ -4,11 +4,15 @@ struct TagItemComponent: View {
     let tag: Tag
     let onDeleteTag: (Tag) -> Void
     let onEditTag: (Tag) -> Void
+    let onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    let selectedLinkId: Int?
     
-    init(tag: Tag, onDeleteTag: @escaping (Tag) -> Void, onEditTag: @escaping (Tag) -> Void) {
+    init(tag: Tag, onDeleteTag: @escaping (Tag) -> Void, onEditTag: @escaping (Tag) -> Void, onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         self.tag = tag
         self.onDeleteTag = onDeleteTag
         self.onEditTag = onEditTag
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -19,7 +23,7 @@ struct TagItemComponent: View {
     var body: some View {
         let dateFormatted = formatDate(tag.createdAt)
         NavigationLink {
-            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: tag.name, mode: .tag, id: tag.id))
+            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: tag.name, mode: .tag, id: tag.id), onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
         } label: {
             VStack(alignment: .leading) {
                 Text(tag.name)
@@ -48,6 +52,7 @@ struct TagItemComponent: View {
             }
             .contentShape(Rectangle())
         }
+        .isDetailLink(onLinkTap == nil)
         .contextMenu {
             Button("Edit", systemImage: "pencil") {
                 showEditForm = true

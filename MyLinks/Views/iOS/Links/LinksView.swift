@@ -3,9 +3,13 @@ import CustomAlert
 
 struct LinksView: View {    
     @State private var linksViewModel: LinksViewModel
+    var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    var selectedLinkId: Int?
     
-    init() {
+    init(onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         _linksViewModel = State(initialValue: LinksViewModel())
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -14,8 +18,7 @@ struct LinksView: View {
     @State private var linkFormFileSheet = false
     
     var body: some View {
-        NavigationStack {
-            LinksList(
+        LinksList(
                 loading: linksViewModel.loading,
                 error: linksViewModel.error,
                 withSearch: linksViewModel.searchQueryValue != nil,
@@ -32,7 +35,9 @@ struct LinksView: View {
                 },
                 onReload: {
                     Task { await linksViewModel.loadInitial() }
-                }
+                },
+                onLinkTap: onLinkTap,
+                selectedLinkId: selectedLinkId
             )
             .navigationTitle("Links")
             .toolbar {
@@ -112,7 +117,6 @@ struct LinksView: View {
             } message: {
                 Text("An error occured when deleting the link. Try again later.")
             }
-        }
         .task {
             await linksViewModel.loadInitial()
         }

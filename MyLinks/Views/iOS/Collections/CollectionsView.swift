@@ -3,9 +3,13 @@ import CustomAlert
 
 struct CollectionsView: View {
     @State private var collectionsViewModel: CollectionsViewModel
+    var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    var selectedLinkId: Int?
     
-    init() {
+    init(onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
        _collectionsViewModel = State(initialValue: CollectionsViewModel())
+       self.onLinkTap = onLinkTap
+       self.selectedLinkId = selectedLinkId
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -31,11 +35,11 @@ struct CollectionsView: View {
                     ScrollView {
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(searched, id: \.self) { item in
-                                CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == collectionsViewModel.loggedUserId) { c, action in
+                                CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == collectionsViewModel.loggedUserId, onTaskCompleted: { c, action in
                                     if action == .delete {
                                         collectionsViewModel.handleDeleteCollection(collectionId: c.id)
                                     }
-                                }
+                                }, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                                 .padding(6)
                             }
                         }
@@ -62,13 +66,14 @@ struct CollectionsView: View {
                 }
                 else {
                     List(searched, id: \.self) { item in
-                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == collectionsViewModel.loggedUserId) { c, action in
+                        CollectionItemComponent(collection: item, allowSharingOptions: item.ownerId == collectionsViewModel.loggedUserId, onTaskCompleted: { c, action in
                             if action == .delete {
                                 collectionsViewModel.handleDeleteCollection(collectionId: c.id)
                             }
-                        }
+                        }, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                     }
                     .animation(.default, value: searched)
+                    .listStyle(.insetGrouped)
                     .overlay(alignment: .center) {
                         if collectionsViewModel.data.isEmpty {
                             ContentUnavailableView {

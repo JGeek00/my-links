@@ -4,11 +4,15 @@ struct CollectionItemComponent: View {
     let collection: Collection
     let allowSharingOptions: Bool
     let onTaskCompleted: (Collection, Enums.CollectionTaskAction) -> Void
+    let onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    let selectedLinkId: Int?
     
-    init(collection: Collection, allowSharingOptions: Bool, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void) {
+    init(collection: Collection, allowSharingOptions: Bool, onTaskCompleted: @escaping (Collection, Enums.CollectionTaskAction) -> Void, onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         self.collection = collection
         self.allowSharingOptions = allowSharingOptions
         self.onTaskCompleted = onTaskCompleted
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -20,7 +24,7 @@ struct CollectionItemComponent: View {
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
         NavigationLink {
-            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: collection.name, mode: .collection, id: collection.id))
+            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: collection.name, mode: .collection, id: collection.id), onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -86,6 +90,7 @@ struct CollectionItemComponent: View {
             }
             .contentShape(Rectangle())
         }
+        .isDetailLink(onLinkTap == nil)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(horizontalSizeClass == .regular ? 16 : 2)
         .foregroundStyle(Color.foreground)

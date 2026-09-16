@@ -3,9 +3,13 @@ import CustomAlert
 
 struct TagsView: View {
     @State private var tagsViewModel: TagsViewModel
+    var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    var selectedLinkId: Int?
     
-    init() {
+    init(onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         _tagsViewModel = State(initialValue: TagsViewModel())
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
     }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -30,7 +34,9 @@ struct TagsView: View {
             },
             onLoadNextBatch: {
                 tagsViewModel.loadNextPage()
-            }
+            },
+            onLinkTap: onLinkTap,
+            selectedLinkId: selectedLinkId
         )
         .navigationTitle("Tags")
         .toolbar {

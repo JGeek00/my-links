@@ -9,8 +9,10 @@ struct TagsList: View {
     var onDeleteTag: (Tag) -> Void
     var onEditTag: (Tag) -> Void
     var onLoadNextBatch: () -> Void
+    var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
+    var selectedLinkId: Int?
     
-    init(loading: Bool, error: Bool, withSearch: Bool, data: [Tag], onReload: @escaping () -> Void, onDeleteTag: @escaping (Tag) -> Void, onEditTag: @escaping (Tag) -> Void, onLoadNextBatch: @escaping () -> Void) {
+    init(loading: Bool, error: Bool, withSearch: Bool, data: [Tag], onReload: @escaping () -> Void, onDeleteTag: @escaping (Tag) -> Void, onEditTag: @escaping (Tag) -> Void, onLoadNextBatch: @escaping () -> Void, onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
         self.loading = loading
         self.error = error
         self.withSearch = withSearch
@@ -19,6 +21,8 @@ struct TagsList: View {
         self.onDeleteTag = onDeleteTag
         self.onEditTag = onEditTag
         self.onLoadNextBatch = onLoadNextBatch
+        self.onLinkTap = onLinkTap
+        self.selectedLinkId = selectedLinkId
     }
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -67,11 +71,7 @@ struct TagsList: View {
                     ScrollView {
                         LazyVGrid(columns: Config.gridColumns) {
                             ForEach(data, id: \.self) { item in
-                                TagItemComponent(tag: item) { tag in
-                                    onDeleteTag(tag)
-                                } onEditTag: { tag in
-                                    onEditTag(tag)
-                                }
+                                TagItemComponent(tag: item, onDeleteTag: onDeleteTag, onEditTag: onEditTag, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                                 .padding(6)
                                 .onAppear {
                                     if item == data.last {
@@ -87,11 +87,7 @@ struct TagsList: View {
                 }
                 else {
                     List(data, id: \.self) { item in
-                        TagItemComponent(tag: item) { tag in
-                            onDeleteTag(tag)
-                        } onEditTag: { tag in
-                            onEditTag(tag)
-                        }
+                        TagItemComponent(tag: item, onDeleteTag: onDeleteTag, onEditTag: onEditTag, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                         .onAppear {
                             if item == data.last {
                                 onLoadNextBatch()
@@ -99,6 +95,7 @@ struct TagsList: View {
                         }
                     }
                     .animation(.default, value: data)
+                    .listStyle(.insetGrouped)
                     .transition(.opacity)
                 }
             }

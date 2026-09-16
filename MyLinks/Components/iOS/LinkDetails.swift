@@ -58,6 +58,7 @@ struct LinkDetailsSheet: View {
                 }
             }
             .listRowSpacing(12)
+            .listStyle(.insetGrouped)
             .navigationTitle("Link details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
