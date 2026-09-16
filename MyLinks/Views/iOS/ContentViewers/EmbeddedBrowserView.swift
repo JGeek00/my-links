@@ -32,7 +32,6 @@ struct EmbeddedBrowserView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar(isRegular ? .visible : .hidden, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Group {

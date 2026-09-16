@@ -35,5 +35,6 @@ struct DashboardView: View {
             await dashboardViewModel.loadData()
         }
         .environment(dashboardViewModel)
+        .toolbar(horizontalSizeClass == .compact && dashboardViewModel.preferredColumn == .detail ? .hidden : .visible, for: .tabBar)
     }
 }
