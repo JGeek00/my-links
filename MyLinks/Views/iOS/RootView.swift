@@ -73,10 +73,18 @@ fileprivate struct ActiveServerView: View {
                     } label: {
                         Label("Elements", systemImage: "books.vertical.fill")
                     }
-                    Tab(value: .search, role: .search) {
-                        SearchView()
-                    } label: {
-                        Label("Search", systemImage: "magnifyingglass")
+                    if #available(iOS 27.0, *) {
+                        Tab(value: .search, role: .prominent) {
+                            SearchView()
+                        } label: {
+                            Label("Search", systemImage: "magnifyingglass")
+                        }
+                    } else {
+                        Tab(value: .search, role: .search) {
+                            SearchView()
+                        } label: {
+                            Label("Search", systemImage: "magnifyingglass")
+                        }
                     }
                     Tab(value: .settings) {
                         SettingsView()
