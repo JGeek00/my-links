@@ -18,17 +18,20 @@ struct DashboardView: View {
                 DashboardLeftPane(width: proxy.size.width, isRegular: horizontalSizeClass == .regular)
                     .navigationSplitViewColumnWidth(min: proxy.size.width / 3, ideal: proxy.size.width / 3, max: proxy.size.width / 3)
             } detail: {
-                if let selected = dashboardViewModel.selectedLink {
-                    NavigationStack {
-                        DashboardDetailView(linkOpen: selected)
+                Group {
+                    if let selected = dashboardViewModel.selectedLink {
+                        NavigationStack {
+                            DashboardDetailView(linkOpen: selected)
+                        }
+                    }
+                    else if horizontalSizeClass == .regular {
+                        ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
+                    }
+                    else {
+                        EmptyView()
                     }
                 }
-                else if horizontalSizeClass == .regular {
-                    ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
-                }
-                else {
-                    EmptyView()
-                }
+                .background(Color.listBackground)
             }
         }
         .task {

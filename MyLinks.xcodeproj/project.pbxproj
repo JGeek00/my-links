@@ -87,6 +87,9 @@
 				Components/iOS/PdfViewer.swift = (
 					ios,
 				);
+				Components/iOS/SquareIcon.swift = (
+					ios,
+				);
 				Components/iOS/TagItem.swift = (
 					ios,
 				);
@@ -168,6 +171,12 @@
 				Views/iOS/Collections/CollectionsView.swift = (
 					ios,
 				);
+				Views/iOS/ContentViewers/EmbeddedBrowserView.swift = (
+					ios,
+				);
+				Views/iOS/ContentViewers/EmbeddedBrowserWebView.swift = (
+					ios,
+				);
 				Views/iOS/ContentViewers/HtmlViewer.swift = (
 					ios,
 				);
@@ -178,6 +187,9 @@
 					ios,
 				);
 				Views/iOS/Dashboard/DashboardHeader.swift = (
+					ios,
+				);
+				Views/iOS/Dashboard/DashboardLeftPane.swift = (
 					ios,
 				);
 				Views/iOS/Dashboard/DashboardView.swift = (
@@ -198,7 +210,16 @@
 				Views/iOS/LinkForm/TagsPickerView.swift = (
 					ios,
 				);
+				Views/iOS/Links/LinksFilteredView/LinksFilteredCompactView.swift = (
+					ios,
+				);
+				Views/iOS/Links/LinksFilteredView/LinksFilteredRegularView.swift = (
+					ios,
+				);
 				Views/iOS/Links/LinksFilteredView/LinksFilteredView.swift = (
+					ios,
+				);
+				Views/iOS/Links/LinksList.swift = (
 					ios,
 				);
 				Views/iOS/Links/LinksView.swift = (
@@ -247,6 +268,9 @@
 					ios,
 				);
 				Views/iOS/TagForm/TagForm.swift = (
+					ios,
+				);
+				Views/iOS/Tags/TagsList.swift = (
 					ios,
 				);
 				Views/iOS/Tags/TagsView.swift = (
@@ -779,6 +803,7 @@
 				INFOPLIST_FILE = MyLinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Links";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -821,6 +846,7 @@
 				INFOPLIST_FILE = MyLinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Links";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
