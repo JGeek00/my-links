@@ -52,14 +52,7 @@ struct LinksFilteredView: View {
                         .transition(.opacity)
                 }
                 else {
-                    Group {
-                        if horizontalSizeClass == .regular {
-                            LinksFilteredRegularView(mode: linksFilterdRequest.mode, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
-                        }
-                        else {
-                            LinksFilteredCompactView(mode: linksFilterdRequest.mode, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
-                        }
-                    }
+                    LinksFilteredList(mode: linksFilterdRequest.mode, onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
                 }
             }
         }

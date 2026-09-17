@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct LinksFilteredCompactView: View {
+struct LinksFilteredList: View {
     var mode: Enums.LinksFilteredMode
     var onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)?
     var selectedLinkId: Int?

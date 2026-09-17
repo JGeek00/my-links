@@ -210,10 +210,7 @@
 				Views/iOS/LinkForm/TagsPickerView.swift = (
 					ios,
 				);
-				Views/iOS/Links/LinksFilteredView/LinksFilteredCompactView.swift = (
-					ios,
-				);
-				Views/iOS/Links/LinksFilteredView/LinksFilteredRegularView.swift = (
+				Views/iOS/Links/LinksFilteredView/LinksFilteredList.swift = (
 					ios,
 				);
 				Views/iOS/Links/LinksFilteredView/LinksFilteredView.swift = (
