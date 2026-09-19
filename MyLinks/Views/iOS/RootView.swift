@@ -22,6 +22,9 @@ struct RootView: View {
             if !instances.isEmpty && rootViewModel.apiClientInstance != nil {
                 ActiveServerView()
             }
+            else {
+                Text(verbatim: "")
+            }
         }
         .toast(isPresenting: $rootViewModel.toastPresenting, duration: 2, tapToDismiss: true) {
             rootViewModel.toast ?? AlertToast(type: .regular)

@@ -9,15 +9,17 @@ struct DashboardView: View {
         
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.openURL) private var openURL
-        
+            
     var body: some View {
-        @Bindable var dashboardViewModel = dashboardViewModel
-
         GeometryReader { proxy in
-            NavigationSplitView(preferredCompactColumn: $dashboardViewModel.preferredColumn) {
-                DashboardLeftPane(width: proxy.size.width, isRegular: horizontalSizeClass == .regular)
-                    .navigationSplitViewColumnWidth(min: proxy.size.width / 3, ideal: proxy.size.width / 3, max: proxy.size.width / 3)
-            } detail: {
+            CustomAdaptiveLayout(splitViewPreferredColumn: $dashboardViewModel.preferredColumn) { mode in
+                switch mode {
+                case .arrangementView:
+                    DashboardLeftPane(headerSingleColumn: false, showSelectedLink: true)
+                case .splitView:
+                    DashboardLeftPane(headerSingleColumn: horizontalSizeClass == .regular && (proxy.size.width < 300), showSelectedLink: horizontalSizeClass == .regular)
+                }
+            } secondaryView: { _ in
                 Group {
                     if let selected = dashboardViewModel.selectedLink {
                         NavigationStack {
@@ -31,13 +33,11 @@ struct DashboardView: View {
                         EmptyView()
                     }
                 }
-                .background(Color.listBackground)
             }
         }
         .task {
             await dashboardViewModel.loadData()
         }
         .environment(dashboardViewModel)
-        .toolbar(horizontalSizeClass == .compact && dashboardViewModel.preferredColumn == .detail ? .hidden : .visible, for: .tabBar)
     }
 }
