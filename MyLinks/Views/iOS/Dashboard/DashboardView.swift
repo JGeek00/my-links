@@ -8,30 +8,31 @@ struct DashboardView: View {
     }
         
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.openURL) private var openURL
             
     var body: some View {
-        GeometryReader { proxy in
-            CustomAdaptiveLayout(splitViewPreferredColumn: $dashboardViewModel.preferredColumn) { mode in
-                switch mode {
-                case .arrangementView:
-                    DashboardLeftPane(headerSingleColumn: false, showSelectedLink: true)
-                case .splitView:
+        @Bindable var dashboardViewModel = dashboardViewModel
+
+        CustomAdaptiveLayout(splitViewPreferredColumn: $dashboardViewModel.preferredColumn) { mode in
+            switch mode {
+            case .arrangementView:
+                DashboardLeftPane(headerSingleColumn: false, showSelectedLink: true)
+            case .splitView:
+                GeometryReader { proxy in
                     DashboardLeftPane(headerSingleColumn: horizontalSizeClass == .regular && (proxy.size.width < 300), showSelectedLink: horizontalSizeClass == .regular)
                 }
-            } secondaryView: { _ in
-                Group {
-                    if let selected = dashboardViewModel.selectedLink {
-                        NavigationStack {
-                            DashboardDetailView(linkOpen: selected)
-                        }
+            }
+        } secondaryView: { _ in
+            Group {
+                if let selected = dashboardViewModel.selectedLink {
+                    NavigationStack {
+                        DashboardDetailView(linkOpen: selected)
                     }
-                    else if horizontalSizeClass == .regular {
-                        ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
-                    }
-                    else {
-                        EmptyView()
-                    }
+                }
+                else if horizontalSizeClass == .regular {
+                    ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
+                }
+                else {
+                    EmptyView()
                 }
             }
         }
