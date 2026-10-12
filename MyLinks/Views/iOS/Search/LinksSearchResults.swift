@@ -3,12 +3,14 @@ import SwiftUI
 struct LinksSearchResults: View {
     @State private var searchLinksViewModel: LinksViewModel
     
-    init(searchQuery: String) {
+    let showSelectedLink: Bool
+    
+    init(searchQuery: String, showSelectedLink: Bool) {
         _searchLinksViewModel = State(initialValue: LinksViewModel(searchQuery: searchQuery))
+        self.showSelectedLink = showSelectedLink
     }
     
     @Environment(SearchViewModel.self) private var searchViewModel
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.openURL) private var openURL
     
     var body: some View {
@@ -38,7 +40,7 @@ struct LinksSearchResults: View {
                     openURL(url)
                 }
             },
-            selectedLinkId: horizontalSizeClass == .regular ? searchViewModel.selectedLink?.link.id : nil
+            selectedLinkId: showSelectedLink ? searchViewModel.selectedLink?.link.id : nil
         )
         .navigationTitle("All search results")
         .background(Color.listBackground)

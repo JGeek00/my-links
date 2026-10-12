@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct CollectionsSearchResults: View {
-    @Environment(SearchViewModel.self) private var searchViewModel
+    let showSelectedLink: Bool
     
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(SearchViewModel.self) private var searchViewModel
     @Environment(\.openURL) private var openURL
     
     var body: some View {
@@ -19,7 +19,7 @@ struct CollectionsSearchResults: View {
                 else if let urlString = link.url, let url = URL(string: urlString) {
                     openURL(url)
                 }
-            }, selectedLinkId: horizontalSizeClass == .regular ? searchViewModel.selectedLink?.link.id : nil)
+            }, selectedLinkId: showSelectedLink ? searchViewModel.selectedLink?.link.id : nil)
         }
         .listStyle(.insetGrouped)
         .navigationTitle("All search results")

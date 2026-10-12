@@ -8,80 +8,93 @@ struct ElementsView: View {
     }
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    var body: some View {
+        @Bindable var elementsViewModel = elementsViewModel
+
+        CustomAdaptiveLayout(splitViewPreferredColumn: $elementsViewModel.preferredColumn) { mode in
+            switch mode {
+            case .arrangementView:
+                ElementsLeftPane(showSelectedLink: true)
+            case .splitView:
+                ElementsLeftPane(showSelectedLink: horizontalSizeClass == .regular)
+            }
+        } secondaryView: { _ in
+            Group {
+                if let selected = elementsViewModel.selectedLink {
+                    NavigationStack {
+                        DashboardDetailView(linkOpen: selected)
+                    }
+                }
+                else if horizontalSizeClass == .regular {
+                    ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
+                }
+                else {
+                    EmptyView()
+                }
+            }
+            .background(Color.listBackground)
+        }
+        .environment(elementsViewModel)
+    }
+}
+
+private struct ElementsLeftPane: View {
+    let showSelectedLink: Bool
+
+    @Environment(ElementsViewModel.self) private var elementsViewModel
     @Environment(\.openURL) private var openURL
 
     var body: some View {
         @Bindable var elementsViewModel = elementsViewModel
 
-        GeometryReader { proxy in
-            NavigationSplitView(preferredCompactColumn: $elementsViewModel.preferredColumn) {
-                NavigationStack(path: $elementsViewModel.path) {
-                    List {
-                        NavigationLink(value: Enums.ElementsDetailView.links) {
-                            Label("Links", systemImage: "link")
-                        }
-                        NavigationLink(value: Enums.ElementsDetailView.collections) {
-                            Label("Collections", systemImage: "folder")
-                        }
-                        NavigationLink(value: Enums.ElementsDetailView.tags) {
-                            Label("Tags", systemImage: "tag")
-                        }
-                    }
-                    .navigationTitle("Elements")
-                    .listStyle(.insetGrouped)
-                    .navigationDestination(for: Enums.ElementsDetailView.self) { view in
-                        switch view {
-                        case .links:
-                            LinksView(onLinkTap: handleTap, selectedLinkId: selectedId)
-                                .background(Color.listBackground)
-                        case .collections:
-                            CollectionsView(onLinkTap: handleTap, selectedLinkId: selectedId)
-                                .background(Color.listBackground)
-                        case .tags:
-                            TagsView(onLinkTap: handleTap, selectedLinkId: selectedId)
-                                .background(Color.listBackground)
-                        }
-                    }
-                    .navigationDestination(for: LinksFilteredRequest.self) { request in
-                        LinksFilteredView(linksFilteredRequest: request, onLinkTap: handleTap, selectedLinkId: selectedId)
-                    }
-                    .onAppear {
-                        elementsViewModel.restoreCatalogSelection()
-                    }
-                    .onChange(of: elementsViewModel.catalogSelectedView) {
-                        elementsViewModel.restoreCatalogSelection()
-                    }
-                    .onChange(of: elementsViewModel.path.count) { _, count in
-                        if count == 0 {
-                            elementsViewModel.catalogSelectedView = nil
-                        }
-                    }
+        NavigationStack(path: $elementsViewModel.path) {
+            List {
+                NavigationLink(value: Enums.ElementsDetailView.links) {
+                    Label("Links", systemImage: "link")
                 }
-                .background(Color.listBackground)
-                .navigationSplitViewColumnWidth(min: proxy.size.width / 3, ideal: proxy.size.width / 3, max: proxy.size.width / 3)
-            } detail: {
-                Group {
-                    if let selected = elementsViewModel.selectedLink {
-                        NavigationStack {
-                            DashboardDetailView(linkOpen: selected)
-                        }
-                    }
-                    else if horizontalSizeClass == .regular {
-                        ContentUnavailableView("Choose a link", systemImage: "link", description: Text("Select a link from the left column"))
-                    }
-                    else {
-                        EmptyView()
-                    }
+                NavigationLink(value: Enums.ElementsDetailView.collections) {
+                    Label("Collections", systemImage: "folder")
                 }
-                .background(Color.listBackground)
+                NavigationLink(value: Enums.ElementsDetailView.tags) {
+                    Label("Tags", systemImage: "tag")
+                }
+            }
+            .navigationTitle("Elements")
+            .listStyle(.insetGrouped)
+            .navigationDestination(for: Enums.ElementsDetailView.self) { view in
+                switch view {
+                case .links:
+                    LinksView(onLinkTap: handleTap, selectedLinkId: selectedId)
+                        .background(Color.listBackground)
+                case .collections:
+                    CollectionsView(onLinkTap: handleTap, selectedLinkId: selectedId)
+                        .background(Color.listBackground)
+                case .tags:
+                    TagsView(onLinkTap: handleTap, selectedLinkId: selectedId)
+                        .background(Color.listBackground)
+                }
+            }
+            .navigationDestination(for: LinksFilteredRequest.self) { request in
+                LinksFilteredView(linksFilteredRequest: request, onLinkTap: handleTap, selectedLinkId: selectedId)
+            }
+            .onAppear {
+                elementsViewModel.restoreCatalogSelection()
+            }
+            .onChange(of: elementsViewModel.catalogSelectedView) {
+                elementsViewModel.restoreCatalogSelection()
+            }
+            .onChange(of: elementsViewModel.path.count) { _, count in
+                if count == 0 {
+                    elementsViewModel.catalogSelectedView = nil
+                }
             }
         }
-        .environment(elementsViewModel)
-        .toolbar(horizontalSizeClass == .compact && elementsViewModel.preferredColumn == .detail ? .hidden : .visible, for: .tabBar)
+        .background(Color.listBackground)
     }
 
     private var selectedId: Int? {
-        horizontalSizeClass == .regular ? elementsViewModel.selectedLink?.link.id : nil
+        showSelectedLink ? elementsViewModel.selectedLink?.link.id : nil
     }
 
     private func handleTap(link: Link, mode: Enums.OpenLinkAction?) {
