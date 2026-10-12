@@ -66,6 +66,27 @@ final class EmbeddedBrowserViewModel {
         }
     }
 
+    /// Mirrors a pooled web view's state so no fake loading flashes over live content.
+    func syncFromWebView(_ webView: WKWebView) {
+        canGoBack = webView.canGoBack
+        canGoForward = webView.canGoForward
+        if webView.url == nil {
+            return
+        }
+        if webView.isLoading {
+            isLoading = true
+            loadFailed = false
+            showProgress = true
+            progress = webView.estimatedProgress
+        } else {
+            isLoading = false
+            loadFailed = false
+            bottomBarHidden = false
+            progress = 1
+            showProgress = false
+        }
+    }
+
     // MARK: - Bottom bar visibility (Safari-like collapse)
 
     func setBottomBarHidden(_ hidden: Bool) {

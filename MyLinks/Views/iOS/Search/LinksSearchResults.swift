@@ -6,7 +6,7 @@ struct LinksSearchResults: View {
     let showSelectedLink: Bool
     
     init(searchQuery: String, showSelectedLink: Bool) {
-        _searchLinksViewModel = State(initialValue: LinksViewModel(searchQuery: searchQuery))
+        _searchLinksViewModel = State(initialValue: ListViewModelStore.shared.linksViewModel(searchQuery: searchQuery))
         self.showSelectedLink = showSelectedLink
     }
     

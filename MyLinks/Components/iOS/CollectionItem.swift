@@ -23,9 +23,8 @@ struct CollectionItemComponent: View {
     
     var body: some View {
         let dateFormatted = collection.createdAt != nil ? formatDate(collection.createdAt!) : nil
-        NavigationLink {
-            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: collection.name, mode: .collection, id: collection.id), onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
-        } label: {
+        // Value-based push: the route lives in the stack's NavigationPath.
+        NavigationLink(value: LinksFilteredRequest(name: collection.name, mode: .collection, id: collection.id)) {
             VStack(alignment: .leading) {
                 HStack {
                     if let color = collection.color {

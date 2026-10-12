@@ -7,7 +7,7 @@ struct LinksView: View {
     var selectedLinkId: Int?
     
     init(onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
-        _linksViewModel = State(initialValue: LinksViewModel())
+        _linksViewModel = State(initialValue: ListViewModelStore.shared.linksViewModel())
         self.onLinkTap = onLinkTap
         self.selectedLinkId = selectedLinkId
     }

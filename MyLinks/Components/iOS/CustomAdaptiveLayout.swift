@@ -34,10 +34,18 @@ struct CustomAdaptiveLayout<MainView: View, SecondaryView: View>: View {
                     options: .includeInactive
                 ).isEmpty
 
-                if hasFold {
-                    arrangementView()
-                } else {
-                    splitView(width: proxy.size.width)
+                Group {
+                    if hasFold {
+                        arrangementView()
+                    } else {
+                        splitView(width: proxy.size.width)
+                    }
+                }
+                // A closed Duo reports no fold but is still foldable.
+                .onChange(of: hasFold, initial: true) { _, folded in
+                    if folded {
+                        FoldableDevice.shared.noteFoldObserved()
+                    }
                 }
             } else {
                 splitView(width: proxy.size.width)

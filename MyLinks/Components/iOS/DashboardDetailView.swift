@@ -2,16 +2,18 @@ import SwiftUI
 
 struct DashboardDetailView: View {
     let linkOpen: SelectedLinkOpen
+    let isArrangementView: Bool
     
-    init(linkOpen: SelectedLinkOpen) {
+    init(linkOpen: SelectedLinkOpen, isArrangementView: Bool = false) {
         self.linkOpen = linkOpen
+        self.isArrangementView = isArrangementView
     }
     
     var body: some View {
         Group {
             switch linkOpen.type {
             case .url:
-                EmbeddedBrowserView(link: linkOpen.link)
+                EmbeddedBrowserView(link: linkOpen.link, collapsibleToolbar: !isArrangementView)
                 .id(linkOpen.link.id)
             case .webpage:
                 HTMLViewer(link: linkOpen.link, mode: .webpage, onClose: nil)

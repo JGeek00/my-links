@@ -13,17 +13,12 @@ struct ElementsView: View {
         @Bindable var elementsViewModel = elementsViewModel
 
         CustomAdaptiveLayout(splitViewPreferredColumn: $elementsViewModel.preferredColumn) { mode in
-            switch mode {
-            case .arrangementView:
-                ElementsLeftPane(showSelectedLink: true)
-            case .splitView:
-                ElementsLeftPane(showSelectedLink: horizontalSizeClass == .regular)
-            }
-        } secondaryView: { _ in
+            ElementsLeftPane(showSelectedLink: mode == .arrangementView ? true : horizontalSizeClass == .regular)
+        } secondaryView: { mode in
             Group {
                 if let selected = elementsViewModel.selectedLink {
                     NavigationStack {
-                        DashboardDetailView(linkOpen: selected)
+                        DashboardDetailView(linkOpen: selected, isArrangementView: mode == .arrangementView)
                     }
                 }
                 else if horizontalSizeClass == .regular {

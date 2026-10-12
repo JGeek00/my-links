@@ -19,8 +19,45 @@ class HTMLViewerViewModel {
     var loading = true
     var error = false
     
-    func loadData(setLoading: Bool = false) async {
-        if setLoading == true {
+    func loadData(setLoading: Bool = false, forceRefresh: Bool = false) async {
+        // Layout-driven `.task` re-runs use the cache; explicit reloads bypass it.
+        if forceRefresh == false {
+            switch mode {
+            case .reader:
+                if let cached = HTMLContentCache.shared.readerData(linkId: link.id) {
+                    withAnimation(.default) {
+                        self.readerData = cached
+                        self.loading = false
+                        self.error = false
+                    }
+                    return
+                }
+                if readerData != nil {
+                    withAnimation(.default) {
+                        self.loading = false
+                        self.error = false
+                    }
+                    return
+                }
+            case .webpage:
+                if let cached = HTMLContentCache.shared.webpageHtml(linkId: link.id) {
+                    withAnimation(.default) {
+                        self.htmlData = cached
+                        self.loading = false
+                        self.error = false
+                    }
+                    return
+                }
+                if htmlData != nil {
+                    withAnimation(.default) {
+                        self.loading = false
+                        self.error = false
+                    }
+                    return
+                }
+            }
+        }
+        if setLoading == true || forceRefresh == true {
             self.loading = true
         }
         guard let instance = apiClientRepository.instance else { return }
@@ -28,9 +65,11 @@ class HTMLViewerViewModel {
         case .reader:
             let result = await instance.files.fetchReader(linkId: link.id)
             if result.successful == true {
+                let data = result.data!
+                HTMLContentCache.shared.storeReader(data, linkId: self.link.id)
                 DispatchQueue.main.async {
                     withAnimation(.default) {
-                        self.readerData = result.data!
+                        self.readerData = data
                         self.loading = false
                         self.error = false
                     }
@@ -51,9 +90,11 @@ class HTMLViewerViewModel {
         case .webpage:
             let result = await instance.files.fetchWebpageHtml(linkId: link.id)
             if result.successful == true {
+                let html = result.data!
+                HTMLContentCache.shared.storeWebpage(html, linkId: self.link.id)
                 DispatchQueue.main.async {
                     withAnimation(.default) {
-                        self.htmlData = result.data!
+                        self.htmlData = html
                         self.loading = false
                         self.error = false
                     }

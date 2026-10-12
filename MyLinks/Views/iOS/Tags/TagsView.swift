@@ -7,7 +7,7 @@ struct TagsView: View {
     var selectedLinkId: Int?
     
     init(onLinkTap: ((Link, Enums.OpenLinkAction?) -> Void)? = nil, selectedLinkId: Int? = nil) {
-        _tagsViewModel = State(initialValue: TagsViewModel())
+        _tagsViewModel = State(initialValue: ListViewModelStore.shared.tagsViewModel())
         self.onLinkTap = onLinkTap
         self.selectedLinkId = selectedLinkId
     }

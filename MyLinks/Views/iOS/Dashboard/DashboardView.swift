@@ -13,19 +13,12 @@ struct DashboardView: View {
         @Bindable var dashboardViewModel = dashboardViewModel
 
         CustomAdaptiveLayout(splitViewPreferredColumn: $dashboardViewModel.preferredColumn) { mode in
-            switch mode {
-            case .arrangementView:
-                DashboardLeftPane(headerSingleColumn: false, showSelectedLink: true)
-            case .splitView:
-                GeometryReader { proxy in
-                    DashboardLeftPane(headerSingleColumn: horizontalSizeClass == .regular && (proxy.size.width < 300), showSelectedLink: horizontalSizeClass == .regular)
-                }
-            }
-        } secondaryView: { _ in
+            DashboardMainPane(mode: mode, horizontalSizeClass: horizontalSizeClass)
+        } secondaryView: { mode in
             Group {
                 if let selected = dashboardViewModel.selectedLink {
                     NavigationStack {
-                        DashboardDetailView(linkOpen: selected)
+                        DashboardDetailView(linkOpen: selected, isArrangementView: mode == .arrangementView)
                     }
                 }
                 else if horizontalSizeClass == .regular {
@@ -40,5 +33,38 @@ struct DashboardView: View {
             await dashboardViewModel.loadData()
         }
         .environment(dashboardViewModel)
+    }
+}
+
+/// Same view type in both layout modes so SwiftUI keeps the subtree identity.
+private struct DashboardMainPane: View {
+    let mode: AdaptiveLayoutMode
+    let horizontalSizeClass: UserInterfaceSizeClass?
+
+    var body: some View {
+        GeometryReader { proxy in
+            DashboardLeftPane(
+                headerSingleColumn: headerSingleColumn(width: proxy.size.width),
+                showSelectedLink: showSelectedLink
+            )
+        }
+    }
+
+    private var showSelectedLink: Bool {
+        switch mode {
+        case .arrangementView:
+            return true
+        case .splitView:
+            return horizontalSizeClass == .regular
+        }
+    }
+
+    private func headerSingleColumn(width: CGFloat) -> Bool {
+        switch mode {
+        case .arrangementView:
+            return false
+        case .splitView:
+            return horizontalSizeClass == .regular && width < 300
+        }
     }
 }

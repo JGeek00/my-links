@@ -6,7 +6,7 @@ struct TagsSearchResults: View {
     let showSelectedLink: Bool
     
     init(searchQuery: String, showSelectedLink: Bool) {
-        _searchTagsViewModel = State(initialValue: TagsViewModel(searchQuery: searchQuery))
+        _searchTagsViewModel = State(initialValue: ListViewModelStore.shared.tagsViewModel(searchQuery: searchQuery))
         self.showSelectedLink = showSelectedLink
     }
     

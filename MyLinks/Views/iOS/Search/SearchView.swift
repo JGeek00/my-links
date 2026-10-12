@@ -13,17 +13,12 @@ struct SearchView: View {
         @Bindable var searchViewModel = searchViewModel
 
         CustomAdaptiveLayout(splitViewPreferredColumn: $searchViewModel.preferredColumn) { mode in
-            switch mode {
-            case .arrangementView:
-                SearchLeftPane(showSelectedLink: true)
-            case .splitView:
-                SearchLeftPane(showSelectedLink: horizontalSizeClass == .regular)
-            }
-        } secondaryView: { _ in
+            SearchLeftPane(showSelectedLink: mode == .arrangementView ? true : horizontalSizeClass == .regular)
+        } secondaryView: { mode in
             Group {
                 if let selected = searchViewModel.selectedLink {
                     NavigationStack {
-                        DashboardDetailView(linkOpen: selected)
+                        DashboardDetailView(linkOpen: selected, isArrangementView: mode == .arrangementView)
                     }
                 }
                 else if horizontalSizeClass == .regular {
@@ -39,16 +34,24 @@ struct SearchView: View {
     }
 }
 
+/// Value-based routes for Search "view more" pushes (kept in `SearchViewModel.path`).
+private enum SearchResultsRoute: Hashable {
+    case links(query: String)
+    case collections
+    case tags(query: String)
+}
+
 private struct SearchLeftPane: View {
     let showSelectedLink: Bool
 
     @Environment(SearchViewModel.self) private var searchViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         @Bindable var searchViewModel = searchViewModel
 
-        NavigationStack {
+        NavigationStack(path: $searchViewModel.path) {
             Group {
                 if searchViewModel.searchQueryValue == nil {
                     ContentUnavailableView("Insert search term", systemImage: "magnifyingglass", description: Text("Input a search term to search links, categories and tags"))
@@ -86,6 +89,19 @@ private struct SearchLeftPane: View {
             }
             .background(Color.listBackground)
             .navigationTitle("Search")
+            .navigationDestination(for: LinksFilteredRequest.self) { request in
+                LinksFilteredView(linksFilteredRequest: request, onLinkTap: handleTap, selectedLinkId: showSelectedLink ? searchViewModel.selectedLink?.link.id : nil)
+            }
+            .navigationDestination(for: SearchResultsRoute.self) { route in
+                switch route {
+                case .links(let query):
+                    LinksSearchResults(searchQuery: query, showSelectedLink: showSelectedLink)
+                case .collections:
+                    CollectionsSearchResults(showSelectedLink: showSelectedLink)
+                case .tags(let query):
+                    TagsSearchResults(searchQuery: query, showSelectedLink: showSelectedLink)
+                }
+            }
             .searchable(text: $searchViewModel.searchFieldValue, isPresented: $searchViewModel.searchPresented)
             .onSubmit(of: .search) {
                 searchViewModel.search()
@@ -116,6 +132,15 @@ private struct SearchLeftPane: View {
             } message: {
                 Text("The tag could not be deleted. Try again later.")
             }
+        }
+    }
+
+    private func handleTap(link: Link, mode: Enums.OpenLinkAction?) {
+        if let mode = mode {
+            searchViewModel.navigateDetail(link: link, mode: mode)
+        }
+        else if let urlString = link.url, let url = URL(string: urlString) {
+            openURL(url)
         }
     }
 }
@@ -156,9 +181,7 @@ fileprivate struct SerachContent: View {
                         Text("Links")
                         if searchViewModel.links.count > Config.searchViewMoreAmount {
                             Spacer()
-                            NavigationLink {
-                                LinksSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "", showSelectedLink: showSelectedLink)
-                            } label: {
+                            NavigationLink(value: SearchResultsRoute.links(query: searchViewModel.searchQueryValue ?? "")) {
                                 HStack {
                                     Text("View more")
                                     Spacer()
@@ -192,9 +215,7 @@ fileprivate struct SerachContent: View {
                         Text("Collections")
                         if searchViewModel.filteredCollections.count > Config.searchViewMoreAmount {
                             Spacer()
-                            NavigationLink {
-                                CollectionsSearchResults(showSelectedLink: showSelectedLink)
-                            } label: {
+                            NavigationLink(value: SearchResultsRoute.collections) {
                                 HStack {
                                     Text("View more")
                                     Spacer()
@@ -228,9 +249,7 @@ fileprivate struct SerachContent: View {
                         Text("Tags")
                         if tagsSliced.count > Config.searchViewMoreAmount {
                             Spacer()
-                            NavigationLink {
-                                TagsSearchResults(searchQuery: searchViewModel.searchQueryValue ?? "", showSelectedLink: showSelectedLink)
-                            } label: {
+                            NavigationLink(value: SearchResultsRoute.tags(query: searchViewModel.searchQueryValue ?? "")) {
                                 HStack {
                                     Text("View more")
                                     Spacer()

@@ -10,26 +10,45 @@ struct EmbeddedBrowserWebView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> WKWebView {
-        let configuration = WKWebViewConfiguration()
-        configuration.websiteDataStore = .default()
-        let webView = WKWebView(frame: .zero, configuration: configuration)
-        webView.navigationDelegate = context.coordinator
-        context.coordinator.startObserving(webView: webView)
+        // Pooled instance: a layout swap re-parents the live page, no reload.
+        let webView = WebViewPool.shared.acquire(for: viewModel.link.id, seedURL: viewModel.initialURL)
+        context.coordinator.attach(to: webView)
         viewModel.webView = webView
-        if let url = viewModel.initialURL {
-            webView.load(URLRequest(url: url))
-        } else {
+        guard let initialURL = viewModel.initialURL else {
             viewModel.failInvalidURL()
+            return webView
+        }
+        if webView.url == nil {
+            webView.load(URLRequest(url: initialURL))
+        } else if WebViewPool.shared.seedURL(for: viewModel.link.id) != initialURL {
+            // Edited link (same id, new URL). In-page navigation keeps the seed
+            // and must never reload here.
+            webView.load(URLRequest(url: initialURL))
+        } else {
+            viewModel.syncFromWebView(webView)
         }
         return webView
     }
 
-    func updateUIView(_ webView: WKWebView, context: Context) {}
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        context.coordinator.attach(to: webView)
+        if viewModel.webView !== webView {
+            viewModel.webView = webView
+        }
+    }
+
+    static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
+        // The pool retains the view; detach the dying coordinator only.
+        if webView.navigationDelegate as AnyObject? === coordinator {
+            webView.navigationDelegate = nil
+        }
+    }
 
     // MARK: - Coordinator
 
     final class Coordinator: NSObject, WKNavigationDelegate {
         private let viewModel: EmbeddedBrowserViewModel
+        private weak var observedWebView: WKWebView?
         private var progressObservation: NSKeyValueObservation?
         private var scrollObservation: NSKeyValueObservation?
         private var lastOffsetY: CGFloat = 0
@@ -39,6 +58,18 @@ struct EmbeddedBrowserWebView: UIViewRepresentable {
 
         init(viewModel: EmbeddedBrowserViewModel) {
             self.viewModel = viewModel
+        }
+
+        /// Idempotent: repeated `updateUIView` calls never stack duplicate observers.
+        func attach(to webView: WKWebView) {
+            webView.navigationDelegate = self
+            guard observedWebView !== webView else { return }
+            observedWebView = webView
+            startObserving(webView: webView)
+            Task { @MainActor [weak self, weak webView] in
+                guard let self, let webView else { return }
+                self.viewModel.syncFromWebView(webView)
+            }
         }
 
         func startObserving(webView: WKWebView) {

@@ -175,7 +175,7 @@ struct LinksFilteredView: View {
             }
         }
         .refreshable {
-            await linksFilteredViewModel.loadData()
+            await linksFilteredViewModel.loadData(forceRefresh: true)
         }
         .searchable(text: $linksFilteredViewModel.searchLinksValue, isPresented: $linksFilteredViewModel.searchLinksPresented)
         .onSubmit(of: .search) {

@@ -13,7 +13,7 @@ struct LinksFilteredView: View {
         self.linksFilterdRequest = linksFilteredRequest
         self.onLinkTap = onLinkTap
         self.selectedLinkId = selectedLinkId
-        _linksFilteredViewModel = State(initialValue: LinksFilteredViewModel(input: linksFilteredRequest))
+        _linksFilteredViewModel = State(initialValue: ListViewModelStore.shared.filteredViewModel(for: linksFilteredRequest))
     }
     
     @State private var collectionFormSheet = false
@@ -59,7 +59,7 @@ struct LinksFilteredView: View {
         .background(Color.listBackground)
         .navigationTitle(linksFilteredViewModel.input.name)
         .refreshable {
-            await linksFilteredViewModel.loadData()
+            await linksFilteredViewModel.loadData(forceRefresh: true)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

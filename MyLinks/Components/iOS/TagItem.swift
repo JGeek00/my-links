@@ -22,9 +22,8 @@ struct TagItemComponent: View {
         
     var body: some View {
         let dateFormatted = formatDate(tag.createdAt)
-        NavigationLink {
-            LinksFilteredView(linksFilteredRequest: LinksFilteredRequest(name: tag.name, mode: .tag, id: tag.id), onLinkTap: onLinkTap, selectedLinkId: selectedLinkId)
-        } label: {
+        // Value-based push: the route lives in the stack's NavigationPath.
+        NavigationLink(value: LinksFilteredRequest(name: tag.name, mode: .tag, id: tag.id)) {
             VStack(alignment: .leading) {
                 Text(tag.name)
                     .lineLimit(1)

@@ -50,12 +50,22 @@ class LinksFilteredViewModel {
         setLoading: Bool = false,
         setError: Bool = true,
         loadMore: Bool = false,
-        searchTerm: String? = nil
+        searchTerm: String? = nil,
+        forceRefresh: Bool = false
     ) async {
         if (input.mode == .collection || input.mode == .tag) && input.id == nil {
             return
         }
-        
+        // Cached view model with data: the layout-driven `.task` re-run is a
+        // no-op. Explicit reloads (forceRefresh, setLoading, search, paging) fetch.
+        if forceRefresh == false && setLoading == false && cursor == nil && searchTerm == nil && loadMore == false && data.isEmpty == false {
+            withAnimation(.default) {
+                self.loading = false
+                self.error = false
+            }
+            return
+        }
+
         if setLoading == true {
             self.loading = true
         }

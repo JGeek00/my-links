@@ -2,15 +2,23 @@ import SwiftUI
 
 struct EmbeddedBrowserView: View {
     @State private var viewModel: EmbeddedBrowserViewModel
+    /// When false, the scroll-driven toolbar collapse is disabled.
+    let collapsibleToolbar: Bool
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    init(link: Link) {
+    init(link: Link, collapsibleToolbar: Bool = true) {
         _viewModel = State(initialValue: EmbeddedBrowserViewModel(link: link))
+        self.collapsibleToolbar = collapsibleToolbar
     }
 
     private var isRegular: Bool {
         horizontalSizeClass == .regular
+    }
+
+    private var isToolbarVisible: Bool {
+        // Foldables never collapse, open or closed.
+        FoldableDevice.shared.isFoldable || collapsibleToolbar == false || viewModel.bottomBarHidden == false
     }
 
     var body: some View {
@@ -60,7 +68,7 @@ struct EmbeddedBrowserView: View {
                     reloadButton()
                 }
             } else {
-                if viewModel.bottomBarHidden == false {
+                if isToolbarVisible {
                     ToolbarItemGroup(placement: .bottomBar) {
                         backForwardButtons()
                         Spacer()

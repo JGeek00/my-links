@@ -30,7 +30,7 @@ struct HTMLViewer: View {
                 } description: {
                     Text("An error occured when loading the content. Check your Internet connection and try again later.")
                     Button {
-                        Task { await htmlViewerViewModel.loadData(setLoading: true) }
+                        Task { await htmlViewerViewModel.loadData(setLoading: true, forceRefresh: true) }
                     } label: {
                         Label("Retry", systemImage: "arrow.counterclockwise")
                     }
@@ -86,7 +86,7 @@ struct HTMLViewer: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    Task { await htmlViewerViewModel.loadData(setLoading: true) }
+                    Task { await htmlViewerViewModel.loadData(setLoading: true, forceRefresh: true) }
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                 }

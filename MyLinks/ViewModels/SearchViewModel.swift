@@ -55,6 +55,8 @@ class SearchViewModel {
 
     var selectedLink: SelectedLinkOpen? = nil
     var preferredColumn: NavigationSplitViewColumn = .sidebar
+    // Hoisted route: the NavigationStack view is recreated on layout swaps.
+    var path = NavigationPath()
 
     func navigateDetail(link: Link, mode: Enums.OpenLinkAction) {
         selectedLink = SelectedLinkOpen(link: link, type: mode, source: nil)
